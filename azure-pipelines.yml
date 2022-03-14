@@ -28,9 +28,9 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '**\*.sln'
-    clean: true
-    restoreNugetPackages: true
+#- task: VSBuild@1
+#  inputs:
+#    solution: '**\*.sln'
+#    clean: true
+#    restoreNugetPackages: true
 
