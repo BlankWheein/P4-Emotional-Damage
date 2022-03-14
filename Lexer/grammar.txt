@@ -1,0 +1,31 @@
+
+
+Prog -> Stmts $
+
+Stmts -> Stmt Stmts
+ | λ
+
+Stmt -> ValType id = Val Math
+    | print Val
+
+Math -> Factor
+    | Expr
+    | λ
+
+Expr -> plus Val Factor
+    | minus Val Factor
+    | λ
+
+Factor -> times Val Factor
+    | divide Val Factor
+    | Expr
+    | λ
+
+Val -> id
+    | num
+    | - num
+
+ValType -> Int
+    | Float
+    | Double
+
