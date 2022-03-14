@@ -1,4 +1,6 @@
-﻿namespace Compiler.CodeAnalysis.Syntax
+﻿using System.Collections.Generic;
+
+namespace Compiler.CodeAnalysis.Syntax
 {
     internal sealed class Parser
     {

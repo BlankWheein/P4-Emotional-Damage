@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32210.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstLexer", "FirstLexer.csproj", "{EF31382A-74B1-48AF-A33D-F894E3E05946}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "Lexer.csproj", "{F4688C90-6454-4199-AB63-BD588789195A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF31382A-74B1-48AF-A33D-F894E3E05946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF31382A-74B1-48AF-A33D-F894E3E05946}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF31382A-74B1-48AF-A33D-F894E3E05946}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF31382A-74B1-48AF-A33D-F894E3E05946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4688C90-6454-4199-AB63-BD588789195A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4688C90-6454-4199-AB63-BD588789195A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4688C90-6454-4199-AB63-BD588789195A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4688C90-6454-4199-AB63-BD588789195A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BD9130DE-1C66-40FA-A7A9-6D224629BB0F}
+		SolutionGuid = {C56FAFA6-D6F2-4E88-97C7-4CCDEBB8F1D0}
 	EndGlobalSection
 EndGlobal

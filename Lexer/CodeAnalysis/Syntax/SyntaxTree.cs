@@ -1,4 +1,7 @@
-﻿namespace Compiler.CodeAnalysis.Syntax
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Compiler.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {

@@ -1,4 +1,6 @@
 ﻿using Compiler.CodeAnalysis.Syntax;
+using System;
+using System.Collections.Generic;
 
 namespace Compiler.CodeAnalysis.Binding
 {

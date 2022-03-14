@@ -1,5 +1,7 @@
 ﻿
 using Compiler.CodeAnalysis.Syntax;
+using System;
+using System.Linq;
 
 public class Pretty
 {
