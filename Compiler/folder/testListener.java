@@ -1,4 +1,4 @@
-// Generated from test.g4 by ANTLR 4.9.3
+// Generated from c:\Users\noobs\OneDrive\Documents\GitHub\P4-Emotional-Damage\Compiler\folder\test.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -47,6 +47,16 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitExpr(testParser.ExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link testParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBexpr(testParser.BexprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBexpr(testParser.BexprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link testParser#assignment}.
 	 * @param ctx the parse tree
 	 */
@@ -56,6 +66,16 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignment(testParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(testParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(testParser.PrintContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#val}.
 	 * @param ctx the parse tree
@@ -86,14 +106,4 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNum(testParser.NumContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link testParser#print}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrint(testParser.PrintContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link testParser#print}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrint(testParser.PrintContext ctx);
 }
