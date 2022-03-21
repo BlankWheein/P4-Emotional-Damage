@@ -1,12 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-class Value
+﻿public class Value
 {
     public IEnumerable<Value> Children { get; }
     private float data;
     private string _op;
     private Action? _backwards;
     private HashSet<Value> _prev;
-    private float grad;
+    public float grad;
 
     public Value(float data, IEnumerable<Value>? _children = null, string _op = "")
     {
@@ -20,7 +19,7 @@ class Value
         _prev = new HashSet<Value>(Children);
     }
 
-    public static Value operator + (Value self, object v)
+    public static Value operator +(Value self, object v)
     {
         Value other;
         if (v is Value v2)
@@ -62,7 +61,7 @@ class Value
         else
             throw new Exception();
 
-        Value? _out = new Value(other.data * (float)Math.Pow(this.data, other.data-1), new List<Value>() { this, other }, "+");
+        Value? _out = new Value(other.data * (float)Math.Pow(this.data, other.data - 1), new List<Value>() { this, other }, "+");
         _out._backwards = () =>
         {
             if (_out.data > 0)
@@ -74,7 +73,7 @@ class Value
     }
     public Value relu()
     {
-        Value? _out = new Value(data < 0 ? 0 : this.data, new List<Value>() {this }, "ReLU");
+        Value? _out = new Value(data < 0 ? 0 : this.data, new List<Value>() { this }, "ReLU");
         _out._backwards = () =>
         {
             if (_out.data > 0)
@@ -94,7 +93,7 @@ class Value
             {
                 visited.Add(v);
             }
-            foreach(var child in v._prev)
+            foreach (var child in v._prev)
             {
                 build_topo(child);
             }
@@ -108,11 +107,11 @@ class Value
             v?._backwards();
         }
     }
-    public static Value operator - (Value self)
+    public static Value operator -(Value self)
     {
         return -self;
     }
-    public static Value operator - (Value self, Value other)
+    public static Value operator -(Value self, Value other)
     {
         return self - other;
     }
@@ -120,7 +119,7 @@ class Value
     {
         return self - other;
     }
-    public static Value operator / (Value self, Value other)
+    public static Value operator /(Value self, Value other)
     {
         return other / self;
     }
