@@ -2,24 +2,31 @@ grammar test;
 
 prog : stmts EOF;
 stmts : (stmt stmts)?;
-stmt : (assignment | print)';' ;
+stmt : (assignment | print | dummy)';' ;
+assignment: valtype? ID '=' expr;
+exprs: expr(','exprs)?;
 expr : '(' expr ')'
     | 'sqrt' expr
     | expr ('%' | '**') expr
     | expr ('*' | '/') expr
     | expr ('+' | '-') expr
+    | expr'++'
+    | expr'--'
     | val
     ;
-    
+selective: 'if''('bexpr')''{'stmts'}'
+    ('elif''('bexpr')''{'stmts'}')*
+    ('else''{'stmts'}')? 
+    ;
+iterative: 'for''('assignment';'bexpr';'exprs')''{'stmts'}';
 bexpr :
         bexpr ('>' | '<')'='? bexpr
       | bexpr ('!' | '=')'=' bexpr
       | '!'?expr
       | '!''('bexpr')'
       ;
-assignment: valtype ID '=' expr;
 print: 'Print' (expr | String) NEWLINE?;
-
+dummy: 'dummy';
 val: ID
     | ('+' | '-'?) num;
 
