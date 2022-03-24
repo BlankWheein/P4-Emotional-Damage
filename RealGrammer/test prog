@@ -1,0 +1,29 @@
+
+
+fun int kage() {
+
+}
+fun int[,] kage() {
+    int kage = 3;
+    float kage = 3.0;
+    float kage = 3.;
+    int[1, 2] kage;
+    return kage;
+}
+
+fun int auto kage2(string kage) {
+
+}
+main {
+    int kage = 2;
+    float stiansmor = 69;
+    int[1, 2] kage;
+    kage.T;
+    kage[1, 2] = 3;
+    string ting = "stirnoa";
+    int kage = kage(ting);
+    int[1, 2] kage;
+    kage = kage2(ting);
+    kage2(ting);
+
+}

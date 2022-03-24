@@ -1,9 +1,21 @@
 grammar MLgramma;
 
-prog : stmts EOF;
+prog : stmts main EOF;
 stmts : (stmt stmts)?;
-stmt : (assignment | print)';' ;
-assignment: valtype? ID '=' expr;
+block: '{'stmts'}';
+stmt : (( function_call | assignment | return_ | matrix_assignment | print)';') | function | dummy | selective | iterative ;
+function_call: ID'('(ID(','ID)*)?')'
+            | rettype? ID '=' ID'('(ID(','ID)*)?')'
+            ;
+assignment: valtype? ID '=' expr
+            | 'string' ID '=' String;
+function: 'fun' rettype ('auto')? ID'('(rettype ID (','rettype ID)*)?')'block;
+selective: 'if''('bexpr')'block
+    ('elif''('bexpr')'block)*
+    ('else'block)? 
+    ;
+iterative: 'for''('assignment';'bexpr';'exprs')'block;
+
 exprs: expr(','exprs)?;
 expr : '(' expr ')'
     | 'sqrt' expr
@@ -14,25 +26,43 @@ expr : '(' expr ')'
     | expr'--'
     | val
     ;
-selective: 'if''('bexpr')''{'stmts'}'
-    ('elif''('bexpr')''{'stmts'}')*
-    ('else''{'stmts'}')? 
-    ;
-iterative: 'for''('assignment';'bexpr';'exprs')''{'stmts'}';
 bexpr :
         bexpr ('>' | '<')'='? bexpr
       | bexpr ('!' | '=')'=' bexpr
       | '!'?expr
       | '!''('bexpr')'
       ;
+main: 'main'block;
 print: 'Print' (expr | String) NEWLINE?;
 dummy: 'dummy';
 val: ID
     | ('+' | '-'?) num;
-
 valtype: 'int'
         | 'float'
         | 'double';
+
+return_: 'return' ID;
+
+
+matrix_assignment: (valtype'['Inum','Inum']')? ID
+                    | ID'['Inum',' Inum']' '=' expr
+                    | ID martix_pre_stuff 
+                    | ID '=' martix_math
+                    ;
+martix_math: 
+             ID '/' ID
+            |ID '+' ID
+            |ID '-' ID
+            |ID '*' expr
+            |ID '.' ID
+            ;
+martix_pre_stuff:
+             '.T'
+            |'.random'
+            |'.one'
+            |'.zero'
+            ;
+rettype: valtype('['','*']')? | 'string' | 'void';
 
 num: Inum|Fnum|Dnum ;
 Inum: [0-9]+ ;
@@ -43,11 +73,3 @@ ID : [a-zA-Z_][a-zA-Z0-9_]*;
 WHITESPACE          : [' '\t\r\n]+ -> skip ;
 NEWLINE             : ('\r'?'\n')+ ;
 
-matrix_assignment: (valtype ID'['Inum','Inum']' | ID)('=' '{'(num'['Inum','Inum']'(',')?)+'}')?; 
-martix_math: ID'.'ID
-            |ID'.Transpose'
-            |ID '/' ID
-            |ID '+' ID
-            |ID '-' ID
-            |ID '*' expr
-            ;
