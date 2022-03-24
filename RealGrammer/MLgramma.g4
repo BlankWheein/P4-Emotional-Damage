@@ -3,17 +3,18 @@ grammar MLgramma;
 prog : stmts main EOF;
 stmts : (stmt stmts)?;
 block: '{'stmts'}';
-stmt : (( function_call | array_statements | assignment | return_ | matrix_assignment | print)';') | function | selective | iterative ;
+stmt : (( function_call | return_ | array_statements | assignment | matrix_assignment | print)';') | function | selective | iterative ;
 function_call: ID'('(parameters(','parameters)*)?')'
             | rettype? ID '=' ID'('(parameters(','parameters)*)?')'
             ;
-assignment: valtype? ID '=' expr
-            | 'string' ID '=' String;
+assignment: valtype? ID '=' expr(','ID '=' expr)*
+            | 'string' ID '=' String(','ID '=' String)*;
 function: 'fun' rettype ('auto')? ID'('(rettype ID (','rettype ID)*)?')'block;
 selective: 'if''('bexpr')'block
     ('elif''('bexpr')'block)*
     ('else'block)? 
     ;
+return_: 'return' expr;
 iterative: 'for''('assignment';'bexpr';'exprs')'block;
 parameters: bexpr | martix_math | martix_pre_stuff | String;
 exprs: expr(','exprs)?;
@@ -43,7 +44,6 @@ valtype: 'int'
         | 'float'
         | 'double';
 
-return_: 'return' ID;
 
 
 matrix_assignment: valtype'['Inum','Inum']' ID
@@ -52,10 +52,6 @@ matrix_assignment: valtype'['Inum','Inum']' ID
                     | ID '=' martix_math
                     ;
 martix_math: 
-             ID '/' ID
-            |ID '+' ID
-            |ID '-' ID
-            |ID '*' expr
             |ID '.' ID
             ;
 martix_pre_stuff:

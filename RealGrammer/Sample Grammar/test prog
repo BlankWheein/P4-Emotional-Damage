@@ -1,20 +1,20 @@
-
-
 fun int kage() {
-
 }
 fun int[,] kage() {
     int kage = 3;
     float kage = 3.0;
     float kage = 3.;
     int[1, 2] kage;
-    return kage;
+    return kage + kage;
 }
 
 fun int auto kage2(string kage) {
-
 }
 main {
+    ID = kage * 2;
+    ID = kage . kage;
+    ID = kage.kage;
+
     int kage = 2;
     kage = kage2(ting);
     for(int i = 2; i < 2; i++) {
@@ -37,7 +37,6 @@ main {
     kage(kage[2, 1]);
     print kage[2,1];
     if (kage[2] == kage[1, 2]) {
-        
-    }
 
+    }
 }
