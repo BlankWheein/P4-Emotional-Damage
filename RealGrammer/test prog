@@ -16,14 +16,28 @@ fun int auto kage2(string kage) {
 }
 main {
     int kage = 2;
+    kage = kage2(ting);
+    for(int i = 2; i < 2; i++) {
+        if (kage == 2) {
     float stiansmor = 69;
     int[1, 2] kage;
-    kage.T;
     kage[1, 2] = 3;
+        } elif (hellothere == 2) {
+    kage.T;
+        }elif (hellothere) {
     string ting = "stirnoa";
-    int kage = kage(ting);
+        } else {
     int[1, 2] kage;
-    kage = kage2(ting);
-    kage2(ting);
+    int kage = kage(ting);
+        }
+    }
+    int[5] kage = [1, 2, 3, 4, 5];
+    int[5] kage = [1, 2, 3, 4, 5.];
+    kage(kage[2]);
+    kage(kage[2, 1]);
+    print kage[2,1];
+    if (kage[2] == kage[1, 2]) {
+        
+    }
 
 }

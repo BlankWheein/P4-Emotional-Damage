@@ -97,6 +97,16 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitIterative(MLgrammaParser.IterativeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters(MLgrammaParser.ParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters(MLgrammaParser.ParametersContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#exprs}.
 	 * @param ctx the parse tree
 	 */
@@ -146,16 +156,6 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrint(MLgrammaParser.PrintContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#dummy}.
-	 * @param ctx the parse tree
-	 */
-	void enterDummy(MLgrammaParser.DummyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#dummy}.
-	 * @param ctx the parse tree
-	 */
-	void exitDummy(MLgrammaParser.DummyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#val}.
 	 * @param ctx the parse tree
@@ -226,6 +226,26 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRettype(MLgrammaParser.RettypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#array_constructs}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_constructs(MLgrammaParser.Array_constructsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#array_constructs}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_constructs(MLgrammaParser.Array_constructsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#array_statements}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_statements(MLgrammaParser.Array_statementsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#array_statements}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_statements(MLgrammaParser.Array_statementsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#num}.
 	 * @param ctx the parse tree
