@@ -1,15 +1,20 @@
 grammar MLgramma;
 
-prog : stmts main EOF;
+prog : prototypes stmts main EOF;
 stmts : (stmt stmts)?;
 block: '{'stmts'}';
+prototypes: (function_prototype prototypes)?; 
 stmt : (( function_call | return_ | array_statements | assignment | matrix_assignment | print)';') | function | selective | iterative ;
 function_call: ID'('(parameters(','parameters)*)?')'
             | rettype? ID '=' ID'('(parameters(','parameters)*)?')'
             ;
+
 assignment: valtype? ID '=' expr(','ID '=' expr)*
             | 'string' ID '=' String(','ID '=' String)*;
 function: 'fun' rettype ('auto')? ID'('(rettype ID (','rettype ID)*)?')'block;
+function_prototype: 'prototype' rettype ('auto')? ID'('(rettype(','rettype)*)?')'';'
+    
+    ;
 selective: 'if''('bexpr')'block
     ('elif''('bexpr')'block)*
     ('else'block)? 

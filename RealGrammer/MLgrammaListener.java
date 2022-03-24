@@ -37,6 +37,16 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitBlock(MLgrammaParser.BlockContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#prototypes}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrototypes(MLgrammaParser.PrototypesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#prototypes}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrototypes(MLgrammaParser.PrototypesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#stmt}.
 	 * @param ctx the parse tree
 	 */
@@ -76,6 +86,16 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction(MLgrammaParser.FunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#function_prototype}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_prototype(MLgrammaParser.Function_prototypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#function_prototype}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_prototype(MLgrammaParser.Function_prototypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#selective}.
 	 * @param ctx the parse tree

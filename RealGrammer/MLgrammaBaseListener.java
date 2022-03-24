@@ -51,6 +51,18 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrototypes(MLgrammaParser.PrototypesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrototypes(MLgrammaParser.PrototypesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStmt(MLgrammaParser.StmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -94,6 +106,18 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunction(MLgrammaParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_prototype(MLgrammaParser.Function_prototypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_prototype(MLgrammaParser.Function_prototypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

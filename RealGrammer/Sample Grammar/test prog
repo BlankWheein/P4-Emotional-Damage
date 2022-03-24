@@ -1,3 +1,7 @@
+prototype int kage();
+prototype int[,]kage();
+prototype int auto kage2(string);
+
 fun int kage() {
 }
 fun int[,] kage() {
