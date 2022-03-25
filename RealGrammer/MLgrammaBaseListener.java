@@ -255,13 +255,13 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx) { }
+	@Override public void enterMatrix_setters(MLgrammaParser.Matrix_settersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx) { }
+	@Override public void exitMatrix_setters(MLgrammaParser.Matrix_settersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

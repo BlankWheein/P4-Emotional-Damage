@@ -3,7 +3,7 @@ grammar MLgramma;
 prog : prototypes stmts EOF;
 
 prototypes: (function_prototype prototypes)?; 
-function_prototype: 'prototype' rettype ('auto')? ID'('(rettype(','rettype)*)?')'';';
+function_prototype: 'prototype' rettype ('autograd')? ID'('(rettype(','rettype)*)?')'';';
 
 stmts : (stmt stmts)?;
 stmt : (( function_call | return_ | assignment | print | one_word_statements)';') | function | selective | iterative | main ;
@@ -12,7 +12,7 @@ main: 'main'block;
 block: '{'stmts'}';
 
 parameters: bexpr | matrix_setters | String | getters;
-function: 'fun' rettype ('auto')? ID'('(rettype ID (','rettype ID)*)?')'block;
+function: 'fun' rettype ('autograd')? ID'('(rettype ID (','rettype ID)*)?')'block;
 function_call: ID'('(parameters(','parameters)*)?')'
             | rettype? ID '=' ID'('(parameters(','parameters)*)?')'
             ;
@@ -62,6 +62,7 @@ bexpr :
       | '!'expr
       | '!''('bexpr')'
       | expr
+      | String
       ;
 
 matrix_setters:

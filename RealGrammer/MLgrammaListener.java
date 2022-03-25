@@ -207,15 +207,15 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitBexpr(MLgrammaParser.BexprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#matrix_pre_stuff}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#matrix_setters}.
 	 * @param ctx the parse tree
 	 */
-	void enterMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx);
+	void enterMatrix_setters(MLgrammaParser.Matrix_settersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#matrix_pre_stuff}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#matrix_setters}.
 	 * @param ctx the parse tree
 	 */
-	void exitMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx);
+	void exitMatrix_setters(MLgrammaParser.Matrix_settersContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#rettype}.
 	 * @param ctx the parse tree
