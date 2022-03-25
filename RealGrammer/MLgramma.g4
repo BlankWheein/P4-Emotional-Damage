@@ -11,7 +11,7 @@ stmt : (( function_call | return_ | assignment | print | one_word_statements)';'
 main: 'main'block;
 block: '{'stmts'}';
 
-parameters: bexpr | matrix_pre_stuff | String | getters;
+parameters: bexpr | matrix_setters | String | getters;
 function: 'fun' rettype ('auto')? ID'('(rettype ID (','rettype ID)*)?')'block;
 function_call: ID'('(parameters(','parameters)*)?')'
             | rettype? ID '=' ID'('(parameters(','parameters)*)?')'
@@ -43,7 +43,7 @@ selective: 'if''('bexpr')'block
 
 exprs: expr(','exprs)?;
 expr : '(' expr ')'
-    | ID matrix_pre_stuff 
+    | ID matrix_setters 
     | 'sqrt' expr
     | expr ('%' | '**') expr
     | expr ('*' | '/') expr
@@ -51,6 +51,7 @@ expr : '(' expr ')'
     | expr'++'
     | expr'--'
     | ID '.' ID
+    | ID'.T'
     | getters
     | val
     ;
@@ -63,9 +64,8 @@ bexpr :
       | expr
       ;
 
-matrix_pre_stuff:
-             '.T'
-            |'.random'
+matrix_setters:
+             '.random'
             |'.one'
             |'.zero'
             ;
