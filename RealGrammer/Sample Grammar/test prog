@@ -45,6 +45,7 @@ main {
     int[5] kage = [1, 2, 3, 4, 5.];
     kage(kage[2]);
     kage(kage[2, 1]);
+    kage[2, 1] = 2;
     print kage[2,1];
     if (kage[2] == kage[1, 2]) {
 
