@@ -1,6 +1,6 @@
 ﻿namespace Compiler.CodeAnalysis
 {
-        public sealed class Diagnotics
+    public sealed class Diagnotics
         {
             public Diagnotics(TextSpan span, string message)
             {
