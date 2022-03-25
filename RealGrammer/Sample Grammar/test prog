@@ -18,7 +18,7 @@ fun int[,] kage() {
     int[1, 2] kage;
     return kage + kage;
 }
-
+#//#din mor
 fun int auto kage2(string kage) {
 }
 main {

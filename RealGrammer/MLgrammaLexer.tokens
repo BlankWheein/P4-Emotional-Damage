@@ -47,6 +47,7 @@ Dnum=46
 String=47
 ID=48
 WHITESPACE=49
+COMMENT=50
 'prototype'=1
 'auto'=2
 '('=3

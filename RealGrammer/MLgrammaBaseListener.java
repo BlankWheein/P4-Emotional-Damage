@@ -75,18 +75,6 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIterative_stmts(MLgrammaParser.Iterative_stmtsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIterative_stmts(MLgrammaParser.Iterative_stmtsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMain(MLgrammaParser.MainContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -106,18 +94,6 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBlock(MLgrammaParser.BlockContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIterative_block(MLgrammaParser.Iterative_blockContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIterative_block(MLgrammaParser.Iterative_blockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -279,13 +255,13 @@ public class MLgrammaBaseListener implements MLgrammaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx) { }
+	@Override public void enterMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx) { }
+	@Override public void exitMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

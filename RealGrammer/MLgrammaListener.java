@@ -57,16 +57,6 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitStmt(MLgrammaParser.StmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#iterative_stmts}.
-	 * @param ctx the parse tree
-	 */
-	void enterIterative_stmts(MLgrammaParser.Iterative_stmtsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#iterative_stmts}.
-	 * @param ctx the parse tree
-	 */
-	void exitIterative_stmts(MLgrammaParser.Iterative_stmtsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#main}.
 	 * @param ctx the parse tree
 	 */
@@ -86,16 +76,6 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBlock(MLgrammaParser.BlockContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#iterative_block}.
-	 * @param ctx the parse tree
-	 */
-	void enterIterative_block(MLgrammaParser.Iterative_blockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#iterative_block}.
-	 * @param ctx the parse tree
-	 */
-	void exitIterative_block(MLgrammaParser.Iterative_blockContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#parameters}.
 	 * @param ctx the parse tree
@@ -227,15 +207,15 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitBexpr(MLgrammaParser.BexprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#martix_pre_stuff}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#matrix_pre_stuff}.
 	 * @param ctx the parse tree
 	 */
-	void enterMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx);
+	void enterMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#martix_pre_stuff}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#matrix_pre_stuff}.
 	 * @param ctx the parse tree
 	 */
-	void exitMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx);
+	void exitMatrix_pre_stuff(MLgrammaParser.Matrix_pre_stuffContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#rettype}.
 	 * @param ctx the parse tree
