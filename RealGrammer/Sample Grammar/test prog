@@ -3,6 +3,13 @@ prototype int[,]kage();
 prototype int auto kage2(string);
 
 fun int kage() {
+    for(int i = 2; i < 10; i++) {
+        if (i % 2 == 0) {
+            continue;
+        } elif (i == 9) {
+            break;
+        }
+    }
 }
 fun int[,] kage() {
     int kage = 3;
@@ -27,7 +34,7 @@ main {
     int[1, 2] kage;
     kage[1, 2] = 3;
         } elif (hellothere == 2) {
-    kage.T;
+    int kage = kage.T;
         }elif (hellothere) {
     string ting = "stirnoa";
         } else {
