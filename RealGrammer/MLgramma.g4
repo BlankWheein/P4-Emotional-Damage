@@ -22,8 +22,7 @@ one_word_statements: 'continue' | 'break';
 
 print: 'print' '('?parameters(',' parameters)*')'?;
 
-assignment: valtype? ID '=' bexpr(','ID '=' bexpr)*
-            | 'string' ID '=' String(','ID '=' String)*
+assignment: (valtype | 'string')? ID '=' bexpr(','ID '=' bexpr)*
             | valtype'['Inum','Inum']' ID
             | ID'['Inum',' Inum']' '=' bexpr
             | rettype'['Inum']' ID ('=' array_constructs)?
