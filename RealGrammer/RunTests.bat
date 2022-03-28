@@ -170,6 +170,11 @@ echo:
 echo -------------------------------------         PlusFloatString       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/plus/PlusFloatString.java
 
+echo:
+echo:
+
+echo -------------------------------------         PlusDoubleString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/PlusDoubleString.java
 
 
 
