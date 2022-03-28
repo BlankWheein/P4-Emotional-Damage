@@ -186,8 +186,18 @@ echo:
 echo -------------------------------------         PlusDoubleString       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/plus/PlusDoubleString.java
 
+echo:
+echo:
+
+echo -------------------------------------         times      ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/gange/valTimes.java
 
 
+cho:
+echo:
+
+echo -------------------------------------         dividere      ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/Dividere/dividere.java
 
 
 
