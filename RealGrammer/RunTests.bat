@@ -94,6 +94,11 @@ echo:
 
 echo -------------------------------------         MinusFloatString       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/plus/MinusFloatString.java
+echo:
+echo:
+
+echo -------------------------------------         MinusDoubleString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/MinusDoubleString.java
 
 echo:
 echo:
