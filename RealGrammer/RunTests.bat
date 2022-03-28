@@ -12,6 +12,12 @@ call grun MLgramma prog -diagnostics Tests/syntax/IfTests.java
 echo:
 echo:
 
+echo -------------------------------------While Tests---------------------------------------------- : 1
+call grun MLgramma prog -diagnostics Tests/syntax/WhileTests.java
+
+echo:
+echo:
+
 echo -------------------------------------         DIncDouble       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/DIncDouble.java
 
@@ -21,6 +27,12 @@ echo:
 
 echo -------------------------------------         DIncFloat       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/DIncFloat.java
+
+echo:
+echo:
+
+echo -------------------------------------         Prototype Tests       ----------------------------------------------- : 3
+call grun MLgramma prog -diagnostics Tests/syntax/PrototypeTests.java
 
 echo:
 echo:
@@ -188,6 +200,13 @@ call grun MLgramma prog -diagnostics Tests/plus/PlusDoubleString.java
 
 echo:
 echo:
+
+
+echo -------------------------------------         ForLoop Tests       ----------------------------------------------- : 3
+call grun MLgramma prog -diagnostics Tests/syntax/ForLoopTests.java
+
+
+
 
 echo -------------------------------------         times      ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/gange/valTimes.java
