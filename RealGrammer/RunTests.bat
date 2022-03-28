@@ -89,6 +89,11 @@ echo:
 echo -------------------------------------         Minusintstring2       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/Minusintstring2.java
 
+echo:
+echo:
+
+echo -------------------------------------         MinusFloatString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/MinusFloatString.java
 
 echo:
 echo:
