@@ -31,6 +31,12 @@ call grun MLgramma prog -diagnostics Tests/minus/DIncFloat.java
 echo:
 echo:
 
+echo -------------------------------------         Prototype Tests       ----------------------------------------------- : 3
+call grun MLgramma prog -diagnostics Tests/syntax/PrototypeTests.java
+
+echo:
+echo:
+
 echo -------------------------------------         DIncInt       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/DIncInt.java
 
