@@ -1,12 +1,17 @@
 cls
 @echo off
-echo -------------------------------------FunctionParameterTest----------------------------------------------- : 2
-call grun MLgramma prog -diagnostics Tests/FunctionParameterTest.java
+echo -------------------------------------FunctionTests---------------------------------------------- : 8
+call grun MLgramma prog -diagnostics Tests/syntax/FunctionTests.java
 
 echo:
 echo:
 
-echo -------------------------------------         Minus             -----------------------------------------------
+echo -------------------------------------IfTests---------------------------------------------- : 7
+call grun MLgramma prog -diagnostics Tests/syntax/IfTests.java
+
+echo:
+echo:
+
 echo -------------------------------------         DIncDouble       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/DIncDouble.java
 
