@@ -17,26 +17,6 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitProg(MLgrammaParser.ProgContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#stmts}.
-	 * @param ctx the parse tree
-	 */
-	void enterStmts(MLgrammaParser.StmtsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#stmts}.
-	 * @param ctx the parse tree
-	 */
-	void exitStmts(MLgrammaParser.StmtsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#block}.
-	 * @param ctx the parse tree
-	 */
-	void enterBlock(MLgrammaParser.BlockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#block}.
-	 * @param ctx the parse tree
-	 */
-	void exitBlock(MLgrammaParser.BlockContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#prototypes}.
 	 * @param ctx the parse tree
 	 */
@@ -46,46 +26,6 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrototypes(MLgrammaParser.PrototypesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterStmt(MLgrammaParser.StmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitStmt(MLgrammaParser.StmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#function_call}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction_call(MLgrammaParser.Function_callContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#function_call}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction_call(MLgrammaParser.Function_callContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignment(MLgrammaParser.AssignmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignment(MLgrammaParser.AssignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#function}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction(MLgrammaParser.FunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#function}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction(MLgrammaParser.FunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#function_prototype}.
 	 * @param ctx the parse tree
@@ -97,15 +37,75 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitFunction_prototype(MLgrammaParser.Function_prototypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#selective}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#stmts}.
 	 * @param ctx the parse tree
 	 */
-	void enterSelective(MLgrammaParser.SelectiveContext ctx);
+	void enterStmts(MLgrammaParser.StmtsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#selective}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#stmts}.
 	 * @param ctx the parse tree
 	 */
-	void exitSelective(MLgrammaParser.SelectiveContext ctx);
+	void exitStmts(MLgrammaParser.StmtsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmt(MLgrammaParser.StmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmt(MLgrammaParser.StmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#main}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain(MLgrammaParser.MainContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#main}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain(MLgrammaParser.MainContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(MLgrammaParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(MLgrammaParser.BlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters(MLgrammaParser.ParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters(MLgrammaParser.ParametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction(MLgrammaParser.FunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction(MLgrammaParser.FunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#function_call}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_call(MLgrammaParser.Function_callContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#function_call}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_call(MLgrammaParser.Function_callContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#return_}.
 	 * @param ctx the parse tree
@@ -117,6 +117,46 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitReturn_(MLgrammaParser.Return_Context ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#one_word_statements}.
+	 * @param ctx the parse tree
+	 */
+	void enterOne_word_statements(MLgrammaParser.One_word_statementsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#one_word_statements}.
+	 * @param ctx the parse tree
+	 */
+	void exitOne_word_statements(MLgrammaParser.One_word_statementsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(MLgrammaParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(MLgrammaParser.PrintContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment(MLgrammaParser.AssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment(MLgrammaParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#getters}.
+	 * @param ctx the parse tree
+	 */
+	void enterGetters(MLgrammaParser.GettersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#getters}.
+	 * @param ctx the parse tree
+	 */
+	void exitGetters(MLgrammaParser.GettersContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#iterative}.
 	 * @param ctx the parse tree
 	 */
@@ -127,15 +167,15 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitIterative(MLgrammaParser.IterativeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#selective}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameters(MLgrammaParser.ParametersContext ctx);
+	void enterSelective(MLgrammaParser.SelectiveContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#parameters}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#selective}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameters(MLgrammaParser.ParametersContext ctx);
+	void exitSelective(MLgrammaParser.SelectiveContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#exprs}.
 	 * @param ctx the parse tree
@@ -167,75 +207,15 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitBexpr(MLgrammaParser.BexprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#main}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#matrix_setters}.
 	 * @param ctx the parse tree
 	 */
-	void enterMain(MLgrammaParser.MainContext ctx);
+	void enterMatrix_setters(MLgrammaParser.Matrix_settersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#main}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#matrix_setters}.
 	 * @param ctx the parse tree
 	 */
-	void exitMain(MLgrammaParser.MainContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#print}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrint(MLgrammaParser.PrintContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#print}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrint(MLgrammaParser.PrintContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#val}.
-	 * @param ctx the parse tree
-	 */
-	void enterVal(MLgrammaParser.ValContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#val}.
-	 * @param ctx the parse tree
-	 */
-	void exitVal(MLgrammaParser.ValContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#valtype}.
-	 * @param ctx the parse tree
-	 */
-	void enterValtype(MLgrammaParser.ValtypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#valtype}.
-	 * @param ctx the parse tree
-	 */
-	void exitValtype(MLgrammaParser.ValtypeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#matrix_assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterMatrix_assignment(MLgrammaParser.Matrix_assignmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#matrix_assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitMatrix_assignment(MLgrammaParser.Matrix_assignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#martix_math}.
-	 * @param ctx the parse tree
-	 */
-	void enterMartix_math(MLgrammaParser.Martix_mathContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#martix_math}.
-	 * @param ctx the parse tree
-	 */
-	void exitMartix_math(MLgrammaParser.Martix_mathContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#martix_pre_stuff}.
-	 * @param ctx the parse tree
-	 */
-	void enterMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#martix_pre_stuff}.
-	 * @param ctx the parse tree
-	 */
-	void exitMartix_pre_stuff(MLgrammaParser.Martix_pre_stuffContext ctx);
+	void exitMatrix_setters(MLgrammaParser.Matrix_settersContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#rettype}.
 	 * @param ctx the parse tree
@@ -257,15 +237,25 @@ public interface MLgrammaListener extends ParseTreeListener {
 	 */
 	void exitArray_constructs(MLgrammaParser.Array_constructsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MLgrammaParser#array_statements}.
+	 * Enter a parse tree produced by {@link MLgrammaParser#val}.
 	 * @param ctx the parse tree
 	 */
-	void enterArray_statements(MLgrammaParser.Array_statementsContext ctx);
+	void enterVal(MLgrammaParser.ValContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MLgrammaParser#array_statements}.
+	 * Exit a parse tree produced by {@link MLgrammaParser#val}.
 	 * @param ctx the parse tree
 	 */
-	void exitArray_statements(MLgrammaParser.Array_statementsContext ctx);
+	void exitVal(MLgrammaParser.ValContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLgrammaParser#valtype}.
+	 * @param ctx the parse tree
+	 */
+	void enterValtype(MLgrammaParser.ValtypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLgrammaParser#valtype}.
+	 * @param ctx the parse tree
+	 */
+	void exitValtype(MLgrammaParser.ValtypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLgrammaParser#num}.
 	 * @param ctx the parse tree

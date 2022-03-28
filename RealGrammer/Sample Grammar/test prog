@@ -1,8 +1,15 @@
 prototype int kage();
 prototype int[,]kage();
-prototype int auto kage2(string);
+prototype int autograd kage2(string);
 
 fun int kage() {
+    for(int i = 2; i < 10; i++) {
+        if (i % 2 == 0) {
+            continue;
+        } elif (i == 9) {
+            break;
+        }
+    }
 }
 fun int[,] kage() {
     int kage = 3;
@@ -11,13 +18,15 @@ fun int[,] kage() {
     int[1, 2] kage;
     return kage + kage;
 }
-
-fun int auto kage2(string kage) {
+fun int autograd kage2(string kage) {
 }
 main {
     ID = kage * 2;
     ID = kage . kage;
     ID = kage.kage;
+    if (kage == "hello there") {
+
+    }
 
     int kage = 2;
     kage = kage2(ting);
@@ -27,7 +36,7 @@ main {
     int[1, 2] kage;
     kage[1, 2] = 3;
         } elif (hellothere == 2) {
-    kage.T;
+    int kage = kage.T;
         }elif (hellothere) {
     string ting = "stirnoa";
         } else {
@@ -39,6 +48,7 @@ main {
     int[5] kage = [1, 2, 3, 4, 5.];
     kage(kage[2]);
     kage(kage[2, 1]);
+    kage[2, 1] = 2;
     print kage[2,1];
     if (kage[2] == kage[1, 2]) {
 
