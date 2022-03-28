@@ -166,6 +166,13 @@ echo -------------------------------------         plusintstring2       --------
 call grun MLgramma prog -diagnostics Tests/plus/plusintstring2.java
 
 
+echo:
+echo:
+
+echo -------------------------------------         ForLoop Tests       ----------------------------------------------- : 3
+call grun MLgramma prog -diagnostics Tests/syntax/ForLoopTests.java
+
+
 
 
 
