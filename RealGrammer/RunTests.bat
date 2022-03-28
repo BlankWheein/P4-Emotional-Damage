@@ -159,6 +159,11 @@ echo:
 echo -------------------------------------         plusintstring2       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/plus/plusintstring2.java
 
+echo:
+echo:
+
+echo -------------------------------------         PlusFloatDouble       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/PlusFloatDouble.java
 
 
 
