@@ -12,6 +12,12 @@ call grun MLgramma prog -diagnostics Tests/syntax/IfTests.java
 echo:
 echo:
 
+echo -------------------------------------While Tests---------------------------------------------- : 1
+call grun MLgramma prog -diagnostics Tests/syntax/WhileTests.java
+
+echo:
+echo:
+
 echo -------------------------------------         DIncDouble       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/DIncDouble.java
 
