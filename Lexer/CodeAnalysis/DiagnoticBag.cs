@@ -10,6 +10,10 @@ namespace Compiler.CodeAnalysis
         public IEnumerator<Diagnotics> GetEnumerator() => _diagnotics.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public void AddRange(DiagnoticBag diagnotics)
+        {
+            _diagnotics.AddRange(diagnotics._diagnotics);
+        }
 
         private void Report(TextSpan span, string message)
         {
@@ -30,9 +34,5 @@ namespace Compiler.CodeAnalysis
             Report(span, message);
         }
 
-        public void AddRange(DiagnoticBag diagnotics)
-        {
-            _diagnotics.AddRange(diagnotics._diagnotics);
-        }
     }
 }
