@@ -14,13 +14,14 @@ block: '{'stmts'}';
 parameters: bexpr | matrix_setters | String | getters;
 function: 'fun' rettype ('autograd')? ID'('(rettype ID (','rettype ID)*)?')'block;
 function_call: ID'('(parameters(','parameters)*)?')'
-            | rettype? ID '=' ID'('(parameters(','parameters)*)?')'
+            | rettype? ID '=' ID'.backwards'?'('(parameters(','parameters)*)?')'
             ;
 return_: 'return' expr;
 
 one_word_statements: 'continue' | 'break';
 
-print: 'print' '('?parameters(',' parameters)*')'?;
+print: 'print' '('parameters(',' parameters)*')';
+
 
 assignment: (valtype | 'string')? ID '=' bexpr(','ID '=' bexpr)*
             | valtype'['Inum','Inum']' ID

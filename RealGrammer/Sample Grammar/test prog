@@ -51,6 +51,6 @@ main {
     kage[2, 1] = 2;
     print kage[2,1];
     if (kage[2] == kage[1, 2]) {
-
+        
     }
 }
