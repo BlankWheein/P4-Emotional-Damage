@@ -101,6 +101,16 @@ echo:
 echo -------------------------------------         Minusintstring2       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/minus/Minusintstring2.java
 
+echo:
+echo:
+
+echo -------------------------------------         MinusFloatString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/MinusFloatString.java
+echo:
+echo:
+
+echo -------------------------------------         MinusDoubleString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/MinusDoubleString.java
 
 echo:
 echo:
@@ -171,9 +181,26 @@ echo:
 echo -------------------------------------         plusintstring2       ----------------------------------------------- : 0
 call grun MLgramma prog -diagnostics Tests/plus/plusintstring2.java
 
+echo:
+echo:
+
+echo -------------------------------------         PlusFloatDouble       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/PlusFloatDouble.java
+echo:
+echo:
+
+echo -------------------------------------         PlusFloatString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/PlusFloatString.java
 
 echo:
 echo:
+
+echo -------------------------------------         PlusDoubleString       ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/plus/PlusDoubleString.java
+
+echo:
+echo:
+
 
 echo -------------------------------------         ForLoop Tests       ----------------------------------------------- : 3
 call grun MLgramma prog -diagnostics Tests/syntax/ForLoopTests.java
@@ -181,7 +208,15 @@ call grun MLgramma prog -diagnostics Tests/syntax/ForLoopTests.java
 
 
 
+echo -------------------------------------         times      ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/gange/valTimes.java
 
+
+cho:
+echo:
+
+echo -------------------------------------         dividere      ----------------------------------------------- : 0
+call grun MLgramma prog -diagnostics Tests/Dividere/dividere.java
 
 
 
