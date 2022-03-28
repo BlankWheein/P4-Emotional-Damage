@@ -105,12 +105,12 @@ echo:
 echo:
 
 echo -------------------------------------         MinusFloatString       ----------------------------------------------- : 0
-call grun MLgramma prog -diagnostics Tests/plus/MinusFloatString.java
+call grun MLgramma prog -diagnostics Tests/minus/MinusFloatString.java
 echo:
 echo:
 
 echo -------------------------------------         MinusDoubleString       ----------------------------------------------- : 0
-call grun MLgramma prog -diagnostics Tests/plus/MinusDoubleString.java
+call grun MLgramma prog -diagnostics Tests/minus/MinusDoubleString.java
 
 echo:
 echo:
@@ -212,7 +212,7 @@ echo -------------------------------------         times      ------------------
 call grun MLgramma prog -diagnostics Tests/gange/valTimes.java
 
 
-cho:
+echo:
 echo:
 
 echo -------------------------------------         dividere      ----------------------------------------------- : 0
