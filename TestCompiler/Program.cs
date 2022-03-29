@@ -126,7 +126,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
 
-    public override object VisitSelective(SelectiveContext context) // IF STATEMENT
+    public override object VisitSelective(SelectiveContext context)
     {
         foreach (var bxepr in context.bexpr())
             VisitBexpr(bxepr);
@@ -138,7 +138,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         return (object)true;
     }
 
-    public override object VisitIterative(IterativeContext context) // IF STATEMENT
+    public override object VisitIterative(IterativeContext context)
     {
         if (context.assignment() != null)
             VisitAssignment(context.assignment());

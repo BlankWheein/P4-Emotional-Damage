@@ -50,6 +50,8 @@ public class SymbolTable
     public void Free()
     {
         Symbols.Clear();
+        foreach (string symbol in __defaults)
+            Insert("keyword", symbol);
     }
     public int Insert(string type, string name, string? value=null)
     {
