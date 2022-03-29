@@ -15,10 +15,13 @@ expr : '(' expr ')'
     | val
     ;
 textstring: '"' .*? '"';
-selective: 'if''('bexpr')''{'stmts'}'
-    ('elif''('bexpr')''{'stmts'}')*
-    ('else''{'stmts'}')? 
+selective: ifstatement'('bexpr')''{'stmts'}'
+    (elifstatement'('bexpr')''{'stmts'}')*
+    (elsestatement'{'stmts'}')? 
     ;
+ifstatement: 'if';
+elifstatement: 'elif';
+elsestatement: 'else';
 iterative: 'for''('assignment';'bexpr';'exprs')''{'stmts'}';
 bexpr :
         bexpr ('>' | '<')'='? bexpr

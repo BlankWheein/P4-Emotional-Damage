@@ -132,6 +132,42 @@ public partial class TestGrammarBaseListener : ITestGrammarListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSelective([NotNull] TestGrammarParser.SelectiveContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.ifstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfstatement([NotNull] TestGrammarParser.IfstatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.ifstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfstatement([NotNull] TestGrammarParser.IfstatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.elifstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElifstatement([NotNull] TestGrammarParser.ElifstatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.elifstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElifstatement([NotNull] TestGrammarParser.ElifstatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.elsestatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElsestatement([NotNull] TestGrammarParser.ElsestatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.elsestatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElsestatement([NotNull] TestGrammarParser.ElsestatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.iterative"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

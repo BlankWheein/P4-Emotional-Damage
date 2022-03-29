@@ -80,6 +80,24 @@ public interface ITestGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSelective([NotNull] TestGrammarParser.SelectiveContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.ifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfstatement([NotNull] TestGrammarParser.IfstatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.elifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElifstatement([NotNull] TestGrammarParser.ElifstatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.elsestatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElsestatement([NotNull] TestGrammarParser.ElsestatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestGrammarParser.iterative"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -111,6 +111,36 @@ public interface ITestGrammarListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSelective([NotNull] TestGrammarParser.SelectiveContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.ifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfstatement([NotNull] TestGrammarParser.IfstatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.ifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfstatement([NotNull] TestGrammarParser.IfstatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.elifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElifstatement([NotNull] TestGrammarParser.ElifstatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.elifstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElifstatement([NotNull] TestGrammarParser.ElifstatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.elsestatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElsestatement([NotNull] TestGrammarParser.ElsestatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.elsestatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElsestatement([NotNull] TestGrammarParser.ElsestatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.iterative"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
