@@ -10,10 +10,32 @@ public class SymbolTable
     public SymbolTable? Parent { get => _parent; set { _parent = value; } }
     public SymbolTable? Current { get => _current; set { _current = value; } }
 
-    List<SymbolTable> Children = new();
-    List<Symbol> Symbols = new();
+    public override string ToString()
+    {
+        string res = "";
+        foreach (Symbol s in Symbols.FindAll(p => __defaults.All(o => o != p.Name)))
+        {
+            res += $"'{s.Type}' '{s.Name}''{s.Value}'";
+            if (Symbols.FindAll(p => __defaults.All(o => o != p.Name)).Last() != s)
+            {
+                res += " // ";
+            }
+        }
+        if (res == "")
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Red;
+            res = "Scope not used";
+        }
+        return res;
+    }
+    public List<SymbolTable> Children = new();
+    public List<Symbol> Symbols = new();
     private List<string> _diagnostics = new();
     public List<string> Diagnostics => GetDiagnostics();
+    public SymbolTable? ExitScope()
+    {
+        return Parent;
+    }
 
     private List<string> GetDiagnostics()
     {
@@ -100,7 +122,10 @@ public class SymbolTable
     public Symbol? Lookup(string Name)
     {
         if (Name == null)
+        {
             _diagnostics.Add($"Name was null '{Name}'");
+            return null;
+        }
         Symbol? symbol = null;
         SymbolTable? target = this;
         while (target != null)

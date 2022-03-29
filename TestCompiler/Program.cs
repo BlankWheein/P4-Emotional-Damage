@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static TestGrammarParser;
 
@@ -12,7 +13,7 @@ internal static class Program
         {
             try
             {
-                string input = "";
+                string? input = "";
                 StringBuilder text = new StringBuilder();
                 Console.WriteLine("> Input source code: ");
 
@@ -20,6 +21,13 @@ internal static class Program
                 while ((input = Console.ReadLine()) != "")
                 {
                     text.AppendLine(input);
+                }
+                if (text.Length == 0)
+                {
+                string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;}if (1){int dkawp = 2;int kdwa = 3;if (1){if (2){int kage = 3;}}}";
+                    Console.WriteLine(testLine);
+                    Console.WriteLine();
+                    text.AppendLine(testLine);
                 }
 
                 AntlrInputStream inputStream = new AntlrInputStream(text.ToString());
@@ -29,10 +37,16 @@ internal static class Program
                 ProgContext progContext = speakParser.prog();
                 BasicVisitor visitor = new BasicVisitor();
                 visitor.Visit(progContext);
+                Console.ForegroundColor = ConsoleColor.Red;
                 foreach (string s in visitor.Scope.Diagnostics)
                 {
                     Console.WriteLine(s);
                 }
+                Console.ResetColor();
+                Console.WriteLine("Printing Scope Tree:");
+                Console.ForegroundColor= ConsoleColor.Green;
+                visitor.Print();
+                Console.ResetColor();
                 Console.WriteLine() ;
             
             }
@@ -43,29 +57,44 @@ internal static class Program
         }
     }
 }
-public class Symbol
-{
-    public string? Name { get; set; }
-    public string? Value { get; set; }
-    public string? Type { get; set; }
-    public int Id { get; set; }
-    public Symbol(int Id, string name)
-    {
-        this.Name = name;
-        this.Id = Id;
-    }
-    public Symbol()
-    {
 
+public partial class BasicVisitor : TestGrammarBaseVisitor<object>
+{
+    private SymbolTable _scope = new();
+    public SymbolTable Scope { get => _scope; set
+        {
+            if (value != null)
+                _scope = value;
+        }
+    }
+    public void Print()
+    {
+        PrintScope(Scope);
+    }
+    private void PrintScope(SymbolTable table,string indent=" ")
+    {
+        PrintSymbolTable(table, indent);
+        foreach(var s in table.Children)
+            PrintScope(s, indent + "   ");
+    }
+    //"├──"
+    //"│"
+    //"└──"
+    private void PrintSymbolTable(SymbolTable s, string indent)
+    {
+        if ((s.Parent != null && s.Parent.Children.Count == 0) || s?.Parent?.Children.Last() == s || s.Parent == null)
+        {
+            Console.Write(indent + "└──");
+        } else
+        {
+            Console.Write (indent + "├──");
+        }
+        Console.WriteLine(s);
+        Console.ForegroundColor = ConsoleColor.Green;
     }
 }
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
-    public SymbolTable Scope = new();
-}
-public partial class BasicVisitor : TestGrammarBaseVisitor<object>
-{
-    public List<Line> Lines = new();
     public override object VisitPrint(TestGrammarParser.PrintContext context)
     {
         TextstringContext opinion;
@@ -74,13 +103,11 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
             if (opinion != null)
             {
                 var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
-                Lines.Add(line);
                 return line;
             } else
             {
                 opinion2 = context.bexpr();
                 var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
-                Lines.Add(line);
                 return line;
             }
     }
@@ -134,7 +161,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         foreach (var stmt in context.stmts())
             VisitStmts(stmt);
         //Scope.Free();
-        Scope = Scope.Parent;
+        Scope = Scope.ExitScope();
         return (object)true;
     }
 
@@ -149,7 +176,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         Scope = Scope.Allocate();
         VisitStmts(context.stmts());
         //Scope.Free();
-        Scope = Scope.Parent;
+        Scope = Scope.ExitScope();
         return true;
     }
 
@@ -199,11 +226,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
     }
 }
 
-public abstract class Line
-{
-    public string? Text { get; internal set; }
-}
-public class AssignmentLine : Line
+public class AssignmentLine
 {
     public string? ValType { get; set; }
     public string? Expr { get; set; }
@@ -211,7 +234,7 @@ public class AssignmentLine : Line
     public new string Text { get => $"{ValType} {Id} = {Expr}"; }
 }
 
-public class SpeakLine : Line
+public class SpeakLine
 {
     public new string Text { get; internal set; }
 }
