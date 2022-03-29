@@ -1,6 +1,8 @@
 ﻿using Antlr4.Runtime;
+using System;
+using System.Collections.Generic;
 using System.Text;
-using TestCompiler;
+using static TestGrammarParser;
 
 internal static class Program
 {
@@ -14,7 +16,7 @@ internal static class Program
             Console.WriteLine("Input the chat.");
 
             // to type the EOF character and end the input: use CTRL+D, then press <enter>
-            while ((input = Console.ReadLine()) != "u0004")
+            while ((input = Console.ReadLine()) != "EOF")
             {
                 text.AppendLine(input);
             }
@@ -23,12 +25,12 @@ internal static class Program
             TestGrammarLexer speakLexer = new TestGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(speakLexer);
             TestGrammarParser speakParser = new TestGrammarParser(commonTokenStream);
-            TestGrammarParser.PrintContext progContext = speakParser.print();
+            TestGrammarParser.StmtsContext progContext = speakParser.stmts();
             BasicSpeakVisitor visitor = new BasicSpeakVisitor();
             visitor.Visit(progContext);
             foreach (var line in visitor.Lines)
             {
-                Console.WriteLine("{0} has said {1}", line.Person, line.Text);
+                Console.WriteLine("PRINT ({0});", line.Text);
             }
         }
         catch (Exception ex)
@@ -36,4 +38,32 @@ internal static class Program
             Console.WriteLine("Error: " + ex);
         }
     }
+}
+
+public class BasicSpeakVisitor : TestGrammarBaseVisitor<object>
+{
+    public List<SpeakLine> Lines = new List<SpeakLine>();
+    public override object VisitPrint(TestGrammarParser.PrintContext context)
+    {
+        TextstringContext opinion;
+        BexprContext opinion2;
+            opinion = context.textstring();
+            if (opinion != null)
+            {
+                var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
+                Lines.Add(line);
+                return line;
+            } else
+            {
+                opinion2 = context.bexpr();
+                var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
+                Lines.Add(line);
+                return line;
+            }
+    }
+}
+
+public class SpeakLine
+{
+    public string Text { get; internal set; }
 }
