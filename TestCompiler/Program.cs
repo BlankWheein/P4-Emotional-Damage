@@ -77,9 +77,6 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         foreach(var s in table.Children)
             PrintScope(s, indent + "   ");
     }
-    //"├──"
-    //"│"
-    //"└──"
     private void PrintSymbolTable(SymbolTable s, string indent)
     {
         if ((s.Parent != null && s.Parent.Children.Count == 0) || s?.Parent?.Children.Last() == s || s.Parent == null)
