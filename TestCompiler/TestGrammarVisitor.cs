@@ -116,6 +116,12 @@ public interface ITestGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitValtype([NotNull] TestGrammarParser.ValtypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitId([NotNull] TestGrammarParser.IdContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestGrammarParser.num"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

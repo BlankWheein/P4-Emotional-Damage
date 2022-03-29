@@ -204,6 +204,18 @@ public partial class TestGrammarBaseListener : ITestGrammarListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitValtype([NotNull] TestGrammarParser.ValtypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.id"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterId([NotNull] TestGrammarParser.IdContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.id"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitId([NotNull] TestGrammarParser.IdContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.num"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

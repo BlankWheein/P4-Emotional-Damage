@@ -171,6 +171,16 @@ public interface ITestGrammarListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitValtype([NotNull] TestGrammarParser.ValtypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterId([NotNull] TestGrammarParser.IdContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitId([NotNull] TestGrammarParser.IdContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.num"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

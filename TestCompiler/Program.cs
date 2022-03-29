@@ -25,13 +25,14 @@ internal static class Program
             TestGrammarLexer speakLexer = new TestGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(speakLexer);
             TestGrammarParser speakParser = new TestGrammarParser(commonTokenStream);
-            TestGrammarParser.StmtsContext progContext = speakParser.stmts();
+            ProgContext progContext = speakParser.prog();
             BasicSpeakVisitor visitor = new BasicSpeakVisitor();
             visitor.Visit(progContext);
             foreach (var line in visitor.Lines)
             {
-                Console.WriteLine("PRINT ({0});", line.Text);
+                Console.WriteLine($"PRINT ({line.Text});");
             }
+            
         }
         catch (Exception ex)
         {
@@ -40,9 +41,9 @@ internal static class Program
     }
 }
 
-public class BasicSpeakVisitor : TestGrammarBaseVisitor<object>
+public partial class BasicSpeakVisitor : TestGrammarBaseVisitor<object>
 {
-    public List<SpeakLine> Lines = new List<SpeakLine>();
+    public List<Line> Lines = new();
     public override object VisitPrint(TestGrammarParser.PrintContext context)
     {
         TextstringContext opinion;
@@ -63,7 +64,43 @@ public class BasicSpeakVisitor : TestGrammarBaseVisitor<object>
     }
 }
 
-public class SpeakLine
+public partial class BasicSpeakVisitor : TestGrammarBaseVisitor<object>
 {
-    public string Text { get; internal set; }
+
+    public override object VisitAssignment(AssignmentContext context)
+    {
+        ValtypeContext valtype = context.valtype();
+        ExprContext expr = context.expr();
+        IdContext id = context.id();
+        AssignmentLine line = new() { ValType = valtype.GetText().Trim('"'), Expr = expr.GetText().Trim('"'), Id = id.GetText().Trim('"') };
+        var test = line.ValType.ToString() switch
+        {
+            "int" => int.TryParse(line.Expr.ToString(), out int result),
+            _ => (object)false,
+        };
+        if ((bool)test == false)
+        {
+            throw new Exception("TypeError");
+        }
+        Lines.Add(line);
+
+        return line;
+
+    }
+}
+public abstract class Line
+{
+    public string? Text { get; internal set; }
+}
+public class AssignmentLine : Line
+{
+    public string ValType { get; set; }
+    public string Expr { get; set; }
+    public string Id { get; set; }
+    public new string Text { get => $"{ValType} {Id} = {Expr}"; }
+}
+
+public class SpeakLine : Line
+{
+    public new string Text { get; internal set; }
 }

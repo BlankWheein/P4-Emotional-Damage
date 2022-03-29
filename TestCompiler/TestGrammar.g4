@@ -2,8 +2,8 @@
 
 prog : stmts EOF;
 stmts : (stmt stmts)?;
-stmt : (assignment | print)';' ;
-assignment: valtype? ID '=' expr;
+stmt : ((assignment | print)';') | (selective | iterative) ;
+assignment: valtype? id '=' expr;
 exprs: expr(','exprs)?;
 expr : '(' expr ')'
     | 'sqrt' expr
@@ -28,13 +28,13 @@ bexpr :
       ;
 print: 'print' (textstring | bexpr);
 dummy: 'dummy';
-val: ID
+val: id
     | ('+' | '-'?) num;
 
 valtype: 'int'
         | 'float'
         | 'double';
-
+id: ID;
 num: Inum|Fnum|Dnum ;
 Inum: [0-9]+ ;
 Fnum: [0-9]+('.')[0-9]*;
