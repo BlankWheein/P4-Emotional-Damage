@@ -154,9 +154,9 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
     {
          var Result = line?.ValType?.ToString() switch
         {
-            "if" => VisitIfstatement(selective),
-            "elif" => VisitElifstatement(selective),
-            "else" => VisitIfstatement(selective),
+            "if" => VisitIfstatement(ifstatement),
+            "elif" => VisitElifstatement(elifstatement),
+            "else" => VisitIfstatement(elsestatement),
             _ => (object)false,
         };
         return (object)true;
