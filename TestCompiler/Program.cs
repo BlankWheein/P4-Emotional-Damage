@@ -202,11 +202,11 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         if (context == null) { return (object)true; }
         if (context.assignment() != null)
             VisitAssignment(context.assignment());
-        if (context.print() != null)
+        else if (context.print() != null)
             VisitPrint(context.print());
-        if (context.selective() != null)
+        else if (context.selective() != null)
             VisitSelective(context.selective());
-        if (context.iterative() != null)
+        else if (context.iterative() != null)
             VisitIterative(context.iterative());
         return (object)true;
 
