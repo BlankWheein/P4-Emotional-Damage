@@ -139,7 +139,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
             Scope.Insert(line.ValType, line.Id, line.Expr);
         else
         {
-            Scope.SetAttribute(line?.Id, line?.Expr);
+            //Scope.SetAttribute(line?.Id, line?.Expr);
         }
 
         return line;

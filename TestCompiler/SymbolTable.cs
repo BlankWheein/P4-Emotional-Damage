@@ -30,6 +30,14 @@ public class SymbolTable
     }
     public List<SymbolTable> Children = new();
     public List<Symbol> Symbols = new();
+    public IEnumerable<Symbol> NonDefaultSymbols
+    {
+        get
+        {
+            foreach (Symbol symbol in Symbols.FindAll(p => __defaults.All(o => o != p.Name)))
+                yield return symbol;
+        }
+    }
     private List<string> _diagnostics = new();
     public List<string> Diagnostics => GetDiagnostics();
     public SymbolTable? ExitScope()
