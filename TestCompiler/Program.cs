@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,24 +98,30 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         Console.WriteLine(s);
         Console.ForegroundColor = ConsoleColor.Green;
     }
-}
+
+        public override object VisitErrorNode(IErrorNode node)
+        {
+            return base.VisitErrorNode(node);
+        }
+    }
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
     public override object VisitPrint(TestGrammarParser.PrintContext context)
     {
         TextstringContext opinion;
         BexprContext opinion2;
-            opinion = context.textstring();
-            if (opinion != null)
-            {
-                var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
-                return line;
-            } else
-            {
-                opinion2 = context.bexpr();
-                var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
-                return line;
-            }
+        opinion = context.textstring();
+        if (opinion != null)
+        {
+            var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
+            return line;
+        } else
+        {
+            opinion2 = context.bexpr();
+                VisitBexpr(opinion2);
+            var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
+            return line;
+        }
     }
 }
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>

@@ -154,12 +154,31 @@ public class SymbolTable
     public override bool Equals(object? obj)
     {
         bool def = true;
-        SymbolTable table = obj as SymbolTable;
-        foreach (var s in table.Children)
+        SymbolTable? table = obj as SymbolTable;
+        if (table == null) 
+            return false;
+        
+        def &= CheckList(table);
+        try
         {
-            def &= Equals(s);
+            for (int i = 0; i < table.Children.Count; i++)
+                def &= table.Children[i].Equals(Children[i]);
+            for (int i = 0; i < Children.Count; i++)
+                def &= Children[i].Equals(table.Children[i]);
         }
-        bool result = def && Symbols.ToString() == table.Symbols.ToString();
-        return result;
+        catch (System.Exception)
+        {
+            return false;
+        }
+        return def;
+    }
+    private bool CheckList(SymbolTable table)
+    {
+        if (table.NonDefaultSymbols.ToList().Count == NonDefaultSymbols.ToList().Count && NonDefaultSymbols.ToList().Count > 0)
+            return NonDefaultSymbols.All(o => table.NonDefaultSymbols.Any(p => o.Equals(p)))
+                && table.NonDefaultSymbols.All(o => NonDefaultSymbols.Any(p => o.Equals(p)));
+        else if (table.NonDefaultSymbols.ToList().Count == NonDefaultSymbols.ToList().Count)
+            return true;
+        return false;
     }
 }
