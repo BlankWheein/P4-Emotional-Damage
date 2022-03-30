@@ -152,6 +152,17 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 
     public override object VisitSelective(SelectiveContext context)
     {
+         var Result = line?.ValType?.ToString() switch
+        {
+            "if" => VisitIfstatement(selective),
+            "elif" => VisitElifstatement(selective),
+            "else" => VisitIfstatement(selective),
+            _ => (object)false,
+        };
+        return (object)true;
+    }
+    public override object VisitIfstatement(IfstatementContext context)
+    {
         foreach (var bxepr in context.bexpr())
             VisitBexpr(bxepr);
         Scope = Scope.Allocate();
@@ -161,6 +172,27 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         Scope = Scope.ExitScope();
         return (object)true;
     }
+    public override object VisitElifstatement(ElifstatementContext context)
+    {
+        foreach (var bxepr in context.bexpr())
+            VisitBexpr(bxepr);
+        Scope = Scope.Allocate();
+        foreach (var stmt in context.stmts())
+            VisitStmts(stmt);
+        //Scope.Free();
+        Scope = Scope.ExitScope();
+        return (object)true;
+    }
+    public override object VisitElsestatement(ElsestatementContext context)
+    {
+        Scope = Scope.Allocate();
+        foreach (var stmt in context.stmts())
+            VisitStmts(stmt);
+        //Scope.Free();
+        Scope = Scope.ExitScope();
+        return (object)true;
+    }
+
 
     public override object VisitIterative(IterativeContext context)
     {
