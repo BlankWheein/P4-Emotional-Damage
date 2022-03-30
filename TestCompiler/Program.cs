@@ -24,7 +24,10 @@ internal static class Program
                 }
                 if (text.Length == 0)
                 {
-                string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;}if (1){int dkawp = 2;int kdwa = 3;if (1){if (2){int kage = 3;}}}";
+                    //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;}if (1){int dkawp = 2;int kdwa = 3;if (1){if (2){int kage = 3;}}}";
+                    //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;} elif(1) {kage = 2; int test = 4;}elif(1) {kage = 6; int test2 = 4;} else {int kage = 2;}";
+                    //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;} elif(1) {kage = 2; int test = 4;}elif(1) {kage = 6; int test2 = 4;}";
+                    string testLine = "int kage = 3;if (1){kage2 = 4; int test = 3;}";
                     Console.WriteLine(testLine);
                     Console.WriteLine();
                     text.AppendLine(testLine);
@@ -154,46 +157,36 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
     {
        
         Scope = Scope.Allocate();
-        context.selective()?.ToString() switch
+        IfstatementContext ifstatement = context.ifstatement();
+        var elifstatement = context.elifstatement();
+        ElsestatementContext elsestatement = context.elsestatement();
+
+        if (ifstatement != null)
         {
-            "if" => VisitIfstatement(ifstatement),
-            "elif" => VisitElifstatement(elifstatement),
-            "else" => VisitIfstatement(elsestatement),
-            _ => (object)false,
-        };
+            Scope = Scope?.Allocate();
+            VisitBexpr(context.bexpr().First());
+            VisitStmts(context.stmts().First());
+            Scope = Scope?.Parent;
+        }
+        if (elifstatement.Length != 0)
+        {
+            for (int i = 1; i < elifstatement.Length + 1; i++)
+            {
+            Scope = Scope?.Allocate();
+                VisitBexpr(context.bexpr()[i]);
+                VisitStmts(context.stmts()[i]);
+            Scope = Scope?.Parent;
+            }
+        }
+        if (elsestatement != null)
+        {
+            Scope = Scope?.Allocate();
+            VisitStmts(context.stmts().Last());
+            Scope = Scope?.Parent;
+        }
         return (object)true;
     }
-    public override object VisitIfstatement(IfstatementContext context)
-    {
-        foreach (var bxepr in context.bexpr())
-            VisitBexpr(bxepr);
-        Scope = Scope.Allocate();
-        foreach (var stmt in context.stmts())
-            VisitStmts(stmt);
-        //Scope.Free();
-        Scope = Scope.ExitScope();
-        return (object)true;
-    }
-    public override object VisitElifstatement(ElifstatementContext context)
-    {
-        foreach (var bxepr in context.bexpr())
-            VisitBexpr(bxepr);
-        Scope = Scope.Allocate();
-        foreach (var stmt in context.stmts())
-            VisitStmts(stmt);
-        //Scope.Free();
-        Scope = Scope.ExitScope();
-        return (object)true;
-    }
-    public override object VisitElsestatement(ElsestatementContext context)
-    {
-        Scope = Scope.Allocate();
-        foreach (var stmt in context.stmts())
-            VisitStmts(stmt);
-        //Scope.Free();
-        Scope = Scope.ExitScope();
-        return (object)true;
-    }
+    
 
 
     public override object VisitIterative(IterativeContext context)
