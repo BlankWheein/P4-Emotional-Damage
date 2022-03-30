@@ -152,8 +152,9 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 
     public override object VisitSelective(SelectiveContext context)
     {
-        System.Console.WriteLine(context.ToString());
-        context.ToString() switch
+       
+        Scope = Scope.Allocate();
+        context.selective()?.ToString() switch
         {
             "if" => VisitIfstatement(ifstatement),
             "elif" => VisitElifstatement(elifstatement),
