@@ -1,0 +1,6 @@
+
+
+
+function void kage(int[n, m] M, int[m, n] M2) {
+    if (n == 3)
+}

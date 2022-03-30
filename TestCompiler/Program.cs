@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static TestGrammarParser;
+namespace TestCompiler {
 
 internal static class Program
 {
@@ -209,7 +210,6 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         else if (context.iterative() != null)
             VisitIterative(context.iterative());
         return (object)true;
-
     }
 
 
@@ -287,4 +287,5 @@ public class AssignmentLine
 public class SpeakLine
 {
     public new string Text { get; internal set; }
+}
 }

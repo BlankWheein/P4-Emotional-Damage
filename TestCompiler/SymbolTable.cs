@@ -151,5 +151,15 @@ public class SymbolTable
             _diagnostics.Add($"Symbol was not found '{Name}'");
         return symbol;
     }
-
+    public override bool Equals(object? obj)
+    {
+        bool def = true;
+        SymbolTable table = obj as SymbolTable;
+        foreach (var s in table.Children)
+        {
+            def &= Equals(s);
+        }
+        bool result = def && Symbols.ToString() == table.Symbols.ToString();
+        return result;
+    }
 }
