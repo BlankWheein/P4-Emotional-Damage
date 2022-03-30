@@ -156,7 +156,6 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
     public override object VisitSelective(SelectiveContext context)
     {
        
-        Scope = Scope.Allocate();
         IfstatementContext ifstatement = context.ifstatement();
         var elifstatement = context.elifstatement();
         ElsestatementContext elsestatement = context.elsestatement();
