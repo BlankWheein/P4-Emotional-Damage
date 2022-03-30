@@ -141,7 +141,7 @@ public class SymbolTable
             symbol = target?.Symbols?.FirstOrDefault(p => p.Name == Name);
             if (symbol == null)
             {
-                target = Parent;
+                target = target?.Parent;
             } else
             {
                 break;

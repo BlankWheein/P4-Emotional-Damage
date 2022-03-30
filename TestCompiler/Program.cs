@@ -27,18 +27,19 @@ internal static class Program
                     //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;}if (1){int dkawp = 2;int kdwa = 3;if (1){if (2){int kage = 3;}}}";
                     //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;} elif(1) {kage = 2; int test = 4;}elif(1) {kage = 6; int test2 = 4;} else {int kage = 2;}";
                     //string testLine = "int kage = 2;if (1){int kage = 2;int akwd = 2;} elif(1) {kage = 2; int test = 4;}elif(1) {kage = 6; int test2 = 4;}";
-                    string testLine = "int kage = 3;if (1){kage2 = 4; int test = 3;}";
+                    string testLine = "int kage = 3;if (1){kage = 4; int test = 3;}";
                     Console.WriteLine(testLine);
                     Console.WriteLine();
                     text.AppendLine(testLine);
                 }
 
-                AntlrInputStream inputStream = new AntlrInputStream(text.ToString());
-                TestGrammarLexer speakLexer = new TestGrammarLexer(inputStream);
-                CommonTokenStream commonTokenStream = new CommonTokenStream(speakLexer);
-                TestGrammarParser speakParser = new TestGrammarParser(commonTokenStream);
+                AntlrInputStream inputStream = new(text.ToString());
+                TestGrammarLexer speakLexer = new(inputStream);
+                CommonTokenStream commonTokenStream = new(speakLexer);
+                TestGrammarParser speakParser = new(commonTokenStream);
                 ProgContext progContext = speakParser.prog();
-                BasicVisitor visitor = new BasicVisitor();
+                BasicVisitor visitor = new();
+                Console.ResetColor();
                 visitor.Visit(progContext);
                 Console.ForegroundColor = ConsoleColor.Red;
                 foreach (string s in visitor.Scope.Diagnostics)
@@ -46,11 +47,14 @@ internal static class Program
                     Console.WriteLine(s);
                 }
                 Console.ResetColor();
-                Console.WriteLine("Printing Scope Tree:");
-                Console.ForegroundColor= ConsoleColor.Green;
-                visitor.Print();
-                Console.ResetColor();
-                Console.WriteLine() ;
+                if (visitor.Scope.Diagnostics.Count == 0)
+                {
+                    Console.WriteLine("Printing Scope Tree:");
+                    Console.ForegroundColor= ConsoleColor.Green;
+                    visitor.Print();
+                    Console.ResetColor();
+                    Console.WriteLine() ;
+                }
             
             }
             catch (Exception ex)
@@ -162,30 +166,53 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 
         if (ifstatement != null)
         {
-            Scope = Scope?.Allocate();
+            Scope = Scope.Allocate();
             VisitBexpr(context.bexpr().First());
             VisitStmts(context.stmts().First());
-            Scope = Scope?.Parent;
+            Scope = Scope.Parent;
         }
         if (elifstatement.Length != 0)
         {
             for (int i = 1; i < elifstatement.Length + 1; i++)
             {
-            Scope = Scope?.Allocate();
+                Scope = Scope.Allocate();
                 VisitBexpr(context.bexpr()[i]);
                 VisitStmts(context.stmts()[i]);
-            Scope = Scope?.Parent;
+                Scope = Scope.Parent;
             }
         }
         if (elsestatement != null)
         {
-            Scope = Scope?.Allocate();
+            Scope = Scope.Allocate();
             VisitStmts(context.stmts().Last());
-            Scope = Scope?.Parent;
+            Scope = Scope.Parent;
         }
         return (object)true;
     }
-    
+
+    public override object VisitStmts(StmtsContext context)
+    {
+        if (context == null) { return (object)true; }
+        VisitStmt(context.stmt());
+        VisitStmts(context.stmts());
+        return (object)true;
+    }
+    public override object VisitStmt(StmtContext context)
+    {
+        if (context == null) { return (object)true; }
+        if (context.assignment() != null)
+            VisitAssignment(context.assignment());
+        if (context.print() != null)
+            VisitPrint(context.print());
+        if (context.selective() != null)
+            VisitSelective(context.selective());
+        if (context.iterative() != null)
+            VisitIterative(context.iterative());
+        return (object)true;
+
+    }
+
+
 
 
     public override object VisitIterative(IterativeContext context)
