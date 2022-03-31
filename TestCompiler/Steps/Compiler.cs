@@ -22,31 +22,33 @@ namespace TestCompiler.Steps
             CommonTokenStream commonTokenStream = new(speakLexer);
             TestGrammarParser speakParser = new(commonTokenStream);
             ProgContext progContext = speakParser.prog();
-            Console.ForegroundColor = ConsoleColor.White;
-            BasicVisitor visitor = new BasicVisitor();
-            CodeGenerator codeGenerator = new(null);
-
-            visitor.Visit(progContext);
-            Console.ForegroundColor = ConsoleColor.Red;
-            foreach (var s in visitor.Diagnostics)
+            lock (Console.Out)
             {
-                Console.WriteLine(s);
+                Console.ForegroundColor = ConsoleColor.White;
+                BasicVisitor visitor = new BasicVisitor();
+                CodeGenerator codeGenerator = new(null);
+
+                visitor.Visit(progContext);
+                Console.ForegroundColor = ConsoleColor.Red;
+                foreach (var s in visitor.Diagnostics)
+                {
+                    Console.WriteLine(s);
+                }
+                visitor.Dispose();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Printing Scope Tree:");
+                Console.ForegroundColor = ConsoleColor.Green;
+                visitor.Print();
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+
+
+                codeGenerator.Scope = visitor.Scope;
+                codeGenerator.Visit(progContext);
+                Console.ForegroundColor = ConsoleColor.Red;
+                codeGenerator.Dispose();
             }
-            visitor.Dispose();
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Printing Scope Tree:");
-            Console.ForegroundColor= ConsoleColor.Green;
-            visitor.Print();
-            Console.ResetColor();
-            Console.WriteLine() ;
-            Console.ForegroundColor = ConsoleColor.White;
-
-
-            codeGenerator.Scope = visitor.Scope;
-            codeGenerator.Visit(progContext);
-            Console.ForegroundColor = ConsoleColor.Red;
-            codeGenerator.Dispose();
-
         }
 
     }

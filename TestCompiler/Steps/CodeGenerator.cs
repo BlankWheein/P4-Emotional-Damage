@@ -15,7 +15,7 @@ namespace TestCompiler.Steps
         public class CodeGenerator : TestGrammarBaseVisitor<object>, IDisposable, ICompilerStep
         {
 
-        private string _path = @"../../../CompiledFiles/test.cs";
+        private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         public SymbolTable? Scope { get; set; }
 
@@ -102,13 +102,8 @@ namespace TestCompiler.Steps
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
-            AddText("using System;");
-            AddText("namespace Test {");
-            Increment();
-            AddText("internal static partial class Program {");
-            Increment();
-            AddText("public static void Main() {");
-            Increment();
+
+            AddText("Console.ForegroundColor = ConsoleColor.DarkYellow;");
             this.Scope = Scope;
         }
         #endregion
@@ -125,18 +120,23 @@ namespace TestCompiler.Steps
         }
         public void Dispose()
         {
-            Decrement();
-            AddText("}");
-            Decrement();
-            AddText("}");
-            Decrement();
-            AddText("}");
             _fs.Close();
             Process p = new Process();
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.WorkingDirectory = @"../../../CompiledFiles/";
-            p.StartInfo.Arguments = "/C csc test.cs";
-            p.Start();
+            lock (Console.Out)
+            {
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.WorkingDirectory = @"../../../../Target/";
+                p.StartInfo.Arguments = "/C dotnet build";
+                p.Start();
+            }
+           lock (Console.Out)
+            {
+                p = new Process();
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.WorkingDirectory = @"../../../../Target/";
+                p.StartInfo.Arguments = "/C dotnet run";
+                p.Start();
+            }
         }
 
         public override object VisitErrorNode(IErrorNode node)
