@@ -17,6 +17,7 @@ namespace TestCompiler
             {
                 string? input = "";
                 StringBuilder text = new StringBuilder();
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("> Input source code: ");
 
                 while ((input = Console.ReadLine()) != "")

@@ -22,7 +22,7 @@ namespace TestCompiler.Steps
             CommonTokenStream commonTokenStream = new(speakLexer);
             TestGrammarParser speakParser = new(commonTokenStream);
             ProgContext progContext = speakParser.prog();
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.White;
             BasicVisitor visitor = new BasicVisitor();
             CodeGenerator codeGenerator = new(null);
 
@@ -33,25 +33,18 @@ namespace TestCompiler.Steps
                 Console.WriteLine(s);
             }
             visitor.Dispose();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Printing Scope Tree:");
+            Console.ForegroundColor= ConsoleColor.Green;
+            visitor.Print();
             Console.ResetColor();
+            Console.WriteLine() ;
+            Console.ForegroundColor = ConsoleColor.White;
 
-            if (visitor.Scope.Diagnostics.Count == 0)
-            {
-                Console.WriteLine("Printing Scope Tree:");
-                Console.ForegroundColor= ConsoleColor.Green;
-                visitor.Print();
-                Console.ResetColor();
-                Console.WriteLine() ;
-            }
-            Console.ResetColor();
 
             codeGenerator.Scope = visitor.Scope;
             codeGenerator.Visit(progContext);
             Console.ForegroundColor = ConsoleColor.Red;
-            foreach (var s in codeGenerator.Diagnostics)
-            {
-                Console.WriteLine(s);
-            }
             codeGenerator.Dispose();
 
         }
