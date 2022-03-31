@@ -1,16 +1,15 @@
 ﻿using Antlr4.Runtime.Tree;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TestCompiler.Exceptions;
 using TestCompiler.Steps;
 using static TestGrammarParser;
 namespace TestCompiler.Steps
 {
-    public partial class BasicVisitor : TestGrammarBaseVisitor<object>
+    public partial class BasicVisitor : TestGrammarBaseVisitor<object>, ICompilerStep
 {
         private SymbolTable _scope = new();
-        private CodeGenerator _generator;
-        public CodeGenerator Generator => _generator;
         public SymbolTable Scope
         {
             get => _scope; set
@@ -19,10 +18,9 @@ namespace TestCompiler.Steps
                     _scope = value;
             }
         }
-        public BasicVisitor() :base()
-        {
-            _generator = new();
-        }
+
+        public IEnumerable<Exception> Diagnostics => Scope.Diagnostics;
+
         public void Print()
         {
             PrintScope(Scope);
@@ -59,7 +57,6 @@ namespace TestCompiler.Steps
             if (opinion != null)
             {
                 var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
-                Generator.Parse(context, opinion);
                 return line;
             }
             else
@@ -67,7 +64,6 @@ namespace TestCompiler.Steps
                 opinion2 = context.bexpr();
                 VisitBexpr(opinion2);
                 var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
-                Generator.Parse(context, opinion2);
                 return line;
             }
         }
@@ -110,12 +106,10 @@ namespace TestCompiler.Steps
                 } else
                 {
                     Scope.Insert(line?.ValType, line?.Id, line.Expr);
-                    Generator.Parse(context, valtype);
                 }
             }
             else
             {
-                Generator.Parse(context);
                 //Scope.SetAttribute(line?.Id, line?.Expr);
             }
             if (expr != null)
@@ -180,9 +174,7 @@ namespace TestCompiler.Steps
         {
             Scope = Scope.Allocate();
             VisitBexpr(context.bexpr().First());
-            Generator.Parse(context, ifstatement);
             VisitStmts(context.stmts().First());
-            Generator.Parse("end");
             Scope = Scope.Parent;
         }
         if (elifstatement.Length != 0)
@@ -191,18 +183,14 @@ namespace TestCompiler.Steps
             {
                 Scope = Scope.Allocate();
                 VisitBexpr(context.bexpr()[i]);
-                Generator.Parse(context, context.elifstatement()[i-1], context.bexpr()[i]);
                 VisitStmts(context.stmts()[i]);
-                Generator.Parse("end");
                 Scope = Scope.Parent;
             }
         }
         if (elsestatement != null)
         {
             Scope = Scope.Allocate();
-            Generator.Parse(context, elsestatement);
             VisitStmts(context.stmts().Last());
-            Generator.Parse("end");
             Scope = Scope.Parent;
             }
         return (object)true;
@@ -210,10 +198,10 @@ namespace TestCompiler.Steps
 
     public override object VisitStmts(StmtsContext context)
     {
-        if (context == null) { return (object)true; }
+        if (context == null) { return true; }
         VisitStmt(context.stmt());
         VisitStmts(context.stmts());
-        return (object)true;
+        return true;
     }
     public override object VisitStmt(StmtContext context)
     {
@@ -241,9 +229,7 @@ namespace TestCompiler.Steps
             Scope.AddDiagnostic(new IterativeAssignmentUndefined($"Assignment was null", context, context.forassignment()));
         VisitBexpr(context.bexpr());
         VisitExpr(context.expr());
-        Generator.Parse(context);
         VisitStmts(context.stmts());
-        Generator.Parse("end");
         //Scope.Free();
         Scope = Scope.ExitScope();
         return true;
@@ -304,5 +290,10 @@ namespace TestCompiler.Steps
         }
         return false;
     }
-}
+
+        public void Dispose()
+        {
+            
+        }
+    }
 }

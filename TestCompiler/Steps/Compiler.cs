@@ -9,7 +9,6 @@ namespace TestCompiler.Steps
     public class Compiler
     {
         private readonly StringBuilder __source;
-        private List<ICompilerStep> Steps = new List<ICompilerStep>();
 
         public Compiler(StringBuilder source)
         {
@@ -23,15 +22,19 @@ namespace TestCompiler.Steps
             CommonTokenStream commonTokenStream = new(speakLexer);
             TestGrammarParser speakParser = new(commonTokenStream);
             ProgContext progContext = speakParser.prog();
-            BasicVisitor visitor = new();
             Console.ResetColor();
+            BasicVisitor visitor = new BasicVisitor();
+            CodeGenerator codeGenerator = new(null);
+
             visitor.Visit(progContext);
             Console.ForegroundColor = ConsoleColor.Red;
-            foreach (var s in visitor.Scope.Diagnostics)
+            foreach (var s in visitor.Diagnostics)
             {
                 Console.WriteLine(s);
             }
+            visitor.Dispose();
             Console.ResetColor();
+
             if (visitor.Scope.Diagnostics.Count == 0)
             {
                 Console.WriteLine("Printing Scope Tree:");
@@ -40,7 +43,17 @@ namespace TestCompiler.Steps
                 Console.ResetColor();
                 Console.WriteLine() ;
             }
-            visitor.Generator.Dispose();
+            Console.ResetColor();
+
+            codeGenerator.Scope = visitor.Scope;
+            codeGenerator.Visit(progContext);
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (var s in codeGenerator.Diagnostics)
+            {
+                Console.WriteLine(s);
+            }
+            codeGenerator.Dispose();
+
         }
 
     }

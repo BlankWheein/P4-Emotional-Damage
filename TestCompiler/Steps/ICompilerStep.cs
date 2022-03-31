@@ -1,10 +1,15 @@
 ﻿using Antlr4.Runtime.Tree;
+using System;
+using System.Collections.Generic;
 using static TestGrammarParser;
 
 namespace TestCompiler.Steps
 {
-    public interface ICompilerStep
+    public interface ICompilerStep : IDisposable
     {
+        IEnumerable<Exception> Diagnostics { get; }
+        SymbolTable? Scope { get; set; }
+
         public abstract object VisitErrorNode(IErrorNode node);
         public abstract object VisitPrint(TestGrammarParser.PrintContext context);
         public abstract object VisitAssignment(AssignmentContext context);
