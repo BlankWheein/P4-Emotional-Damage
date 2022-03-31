@@ -71,6 +71,16 @@ public interface ITestGrammarListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignment([NotNull] TestGrammarParser.AssignmentContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.forassignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForassignment([NotNull] TestGrammarParser.ForassignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.forassignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForassignment([NotNull] TestGrammarParser.ForassignmentContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.exprs"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -90,16 +100,6 @@ public interface ITestGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpr([NotNull] TestGrammarParser.ExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterTextstring([NotNull] TestGrammarParser.TextstringContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitTextstring([NotNull] TestGrammarParser.TextstringContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.selective"/>.
 	/// </summary>
@@ -160,6 +160,16 @@ public interface ITestGrammarListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBexpr([NotNull] TestGrammarParser.BexprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTextstring([NotNull] TestGrammarParser.TextstringContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTextstring([NotNull] TestGrammarParser.TextstringContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.print"/>.
 	/// </summary>

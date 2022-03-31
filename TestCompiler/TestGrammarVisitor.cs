@@ -56,6 +56,12 @@ public interface ITestGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignment([NotNull] TestGrammarParser.AssignmentContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.forassignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForassignment([NotNull] TestGrammarParser.ForassignmentContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestGrammarParser.exprs"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -67,12 +73,6 @@ public interface ITestGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitExpr([NotNull] TestGrammarParser.ExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTextstring([NotNull] TestGrammarParser.TextstringContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestGrammarParser.selective"/>.
 	/// </summary>
@@ -109,6 +109,12 @@ public interface ITestGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBexpr([NotNull] TestGrammarParser.BexprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTextstring([NotNull] TestGrammarParser.TextstringContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestGrammarParser.print"/>.
 	/// </summary>

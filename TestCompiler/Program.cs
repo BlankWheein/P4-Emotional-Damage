@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TestCompiler.Exceptions;
+using TestCompiler.Generator;
 using static TestGrammarParser;
-namespace TestCompiler {
+namespace TestCompiler
+{
 
-internal static class Program
+    internal static partial class Program
 {
     public static void Main()
     {
@@ -58,12 +60,14 @@ internal static class Program
                     Console.ResetColor();
                     Console.WriteLine() ;
                 }
+                    visitor.Generator.Dispose();
             
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex);
             }
+            
         }
     }
 }
@@ -71,12 +75,15 @@ internal static class Program
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
     private SymbolTable _scope = new();
+    private CodeGenerator _generator = new();
     public SymbolTable Scope { get => _scope; set
         {
             if (value != null)
                 _scope = value;
         }
     }
+    public CodeGenerator Generator => _generator;
+
     public void Print()
     {
         PrintScope(Scope);
@@ -115,12 +122,14 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         if (opinion != null)
         {
             var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
+            Generator.Parse(context, opinion);
             return line;
         } else
         {
             opinion2 = context.bexpr();
                 VisitBexpr(opinion2);
             var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
+            Generator.Parse(context, opinion2);
             return line;
         }
     }
@@ -134,6 +143,16 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         ExprContext expr = context.expr();
         IdContext id = context.id();
         AssignmentLine line = new() { ValType = valtype?.GetText()?.Trim('"'), Expr = expr?.GetText()?.Trim('"'), Id = id?.GetText()?.Trim('"') };
+        if (valtype?.GetText()?.Trim('"') != null)
+        {
+            Scope.Insert(line?.ValType, line?.Id, line.Expr);
+            Generator.Parse(context, valtype);
+        }
+        else
+        {
+            Generator.Parse(context);
+            //Scope.SetAttribute(line?.Id, line?.Expr);
+        }
         if (expr != null)
             VisitExpr(expr);
         if (line.ValType == null)
@@ -158,17 +177,56 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
                     _ => 0,
                 };
             }
-        if (valtype?.GetText()?.Trim('"') != null)
-            Scope.Insert(line.ValType, line.Id, line.Expr);
-        else
-        {
-            //Scope.SetAttribute(line?.Id, line?.Expr);
-        }
+        
 
-        return line;
+            return line;
 
     }
-}
+
+        public override object VisitForassignment(ForassignmentContext context)
+        {
+            ValtypeContext valtype = context.valtype();
+            ExprContext expr = context.expr();
+            IdContext id = context.id();
+            AssignmentLine line = new() { ValType = valtype?.GetText()?.Trim('"'), Expr = expr?.GetText()?.Trim('"'), Id = id?.GetText()?.Trim('"') };
+            if (expr != null)
+                VisitExpr(expr);
+            if (line.ValType == null)
+            {
+                var _symbol = Scope.Lookup(line?.Id);
+                line.ValType = _symbol?.Type;
+            }
+            var Result = line?.ValType?.ToString() switch
+            {
+                "int" => int.TryParse(line?.Expr?.ToString(), out int intResult),
+                "double" => double.TryParse(line?.Expr?.ToString(), out double doubleResult),
+                "float" => float.TryParse(line?.Expr?.ToString(), out float floatResult),
+                _ => (object)false,
+            };
+            if ((bool)Result == false)
+            {
+                _ = line?.ValType?.ToString() switch
+                {
+                    "int" => Scope.AddDiagnostic(new IntDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    "double" => Scope.AddDiagnostic(new DoubleDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    "float" => Scope.AddDiagnostic(new FloatDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    _ => 0,
+                };
+            }
+
+            if (valtype?.GetText()?.Trim('"') != null)
+            {
+                Scope.Insert(line?.ValType, line?.Id, line.Expr);
+            }
+            else
+            {
+                //Scope.SetAttribute(line?.Id, line?.Expr);
+            }
+
+            return line;
+
+        }
+    }
 
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
@@ -184,7 +242,9 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         {
             Scope = Scope.Allocate();
             VisitBexpr(context.bexpr().First());
+            Generator.Parse(context, ifstatement);
             VisitStmts(context.stmts().First());
+            Generator.Parse("end");
             Scope = Scope.Parent;
         }
         if (elifstatement.Length != 0)
@@ -193,16 +253,20 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
             {
                 Scope = Scope.Allocate();
                 VisitBexpr(context.bexpr()[i]);
+                Generator.Parse(context, context.elifstatement()[i-1], context.bexpr()[i]);
                 VisitStmts(context.stmts()[i]);
+                Generator.Parse("end");
                 Scope = Scope.Parent;
             }
         }
         if (elsestatement != null)
         {
             Scope = Scope.Allocate();
+            Generator.Parse(context, elsestatement);
             VisitStmts(context.stmts().Last());
+            Generator.Parse("end");
             Scope = Scope.Parent;
-        }
+            }
         return (object)true;
     }
 
@@ -232,14 +296,16 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 
     public override object VisitIterative(IterativeContext context)
     {
-        if (context.assignment() != null)
-            VisitAssignment(context.assignment());
-        else
-            Scope.AddDiagnostic(new IterativeAssignmentUndefined($"Assignment was null", context, context.assignment()));
-        VisitBexpr(context.bexpr());
-        VisitExprs(context.exprs());
         Scope = Scope.Allocate();
+        if (context.forassignment() != null)
+            VisitForassignment(context.forassignment());
+        else
+            Scope.AddDiagnostic(new IterativeAssignmentUndefined($"Assignment was null", context, context.forassignment()));
+        VisitBexpr(context.bexpr());
+        VisitExpr(context.expr());
+        Generator.Parse(context);
         VisitStmts(context.stmts());
+        Generator.Parse("end");
         //Scope.Free();
         Scope = Scope.ExitScope();
         return true;
@@ -262,9 +328,14 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
     public override object VisitExpr(ExprContext context)
     {
         if (context.expr().Length == 2)
-            foreach (var t in context.expr())
-                VisitExpr(t);
-        else if (context.expr().Length == 1)
+            {
+                foreach (var t in context.expr())
+                {
+                    VisitExpr(t);
+                }
+            }
+
+            else if (context.expr().Length == 1)
             foreach (var t in context.expr())
                 VisitExpr(t);
         else

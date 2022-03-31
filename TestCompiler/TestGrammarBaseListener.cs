@@ -84,6 +84,18 @@ public partial class TestGrammarBaseListener : ITestGrammarListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignment([NotNull] TestGrammarParser.AssignmentContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.forassignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForassignment([NotNull] TestGrammarParser.ForassignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.forassignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForassignment([NotNull] TestGrammarParser.ForassignmentContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.exprs"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -107,18 +119,6 @@ public partial class TestGrammarBaseListener : ITestGrammarListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpr([NotNull] TestGrammarParser.ExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTextstring([NotNull] TestGrammarParser.TextstringContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTextstring([NotNull] TestGrammarParser.TextstringContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.selective"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -191,6 +191,18 @@ public partial class TestGrammarBaseListener : ITestGrammarListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBexpr([NotNull] TestGrammarParser.BexprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTextstring([NotNull] TestGrammarParser.TextstringContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TestGrammarParser.textstring"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTextstring([NotNull] TestGrammarParser.TextstringContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestGrammarParser.print"/>.
 	/// <para>The default implementation does nothing.</para>

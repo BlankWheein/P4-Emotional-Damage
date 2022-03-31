@@ -2,8 +2,9 @@
 
 prog : stmts EOF;
 stmts : (stmt stmts)?;
-stmt : ((assignment | print)';') | (selective | iterative) ;
+stmt : ((assignment | forassignment | print)';') | (selective | iterative) ;
 assignment: valtype? id '=' expr;
+forassignment: valtype? id '=' expr;
 exprs: expr(','exprs)?;
 expr : '(' expr ')'
     | 'sqrt' expr
@@ -14,7 +15,6 @@ expr : '(' expr ')'
     | expr'--'
     | val
     ;
-textstring: '"' .*? '"';
 selective: ifstatement'('bexpr')''{'stmts'}'
     (elifstatement'('bexpr')''{'stmts'}')*
     (elsestatement'{'stmts'}')? 
@@ -22,13 +22,14 @@ selective: ifstatement'('bexpr')''{'stmts'}'
 ifstatement: 'if';
 elifstatement: 'elif';
 elsestatement: 'else';
-iterative: 'for''('assignment';'bexpr';'exprs')''{'stmts'}';
+iterative: 'for''('forassignment';'bexpr';'expr')''{'stmts'}';
 bexpr :
         bexpr ('>' | '<')'='? bexpr
       | bexpr ('!' | '=')'=' bexpr
       | '!'?expr
       | '!''('bexpr')'
       ;
+textstring: '"' .*? '"';
 print: 'print' (textstring | bexpr);
 dummy: 'dummy';
 val: id
