@@ -264,18 +264,24 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 
         return false;
     }
+     
     public override object VisitVal(ValContext context)
     {
 
         if (context.num() != null)
         {
-            return true;
+            string Value = context.num().GetText().Trim('"');
+                    if (int.TryParse(Value, out int result)
+                    || double.TryParse(Value, out double result2)
+                    || float.TryParse(Value, out float result3))
+                    return true;
+                else
+                    Scope.AddDiagnostic($"Could not parse '{Value}'");
         }
 
         if (context.id() != null)
         {
-            if (Scope.Lookup(context.id().GetText().Trim('"').ToString()) == null)
-            {
+            if (Scope.Lookup(context.id().GetText().Trim('"').ToString()) == null) {
                 Scope.AddDiagnostic($"Id was not found '{context.id().GetText().Trim('"')}'");
             }
         }
