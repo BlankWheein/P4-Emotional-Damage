@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 namespace TestCompiler.Generator
 {
@@ -123,6 +124,11 @@ namespace TestCompiler.Generator
             AddText("}");
 
             _fs.Close();
+            Process p = new Process();
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.WorkingDirectory = @"../../../CompiledFiles/";
+            p.StartInfo.Arguments = "/C csc test.cs";
+            p.Start();
         }
     }
 }
