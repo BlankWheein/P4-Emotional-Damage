@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class SymbolTable
@@ -38,26 +39,27 @@ public class SymbolTable
                 yield return symbol;
         }
     }
-    private List<string> _diagnostics = new();
-    public List<string> Diagnostics => GetDiagnostics();
+    private List<Exception> _diagnostics = new();
+    public List<Exception> Diagnostics => GetDiagnostics();
     public SymbolTable? ExitScope()
     {
         return Parent;
     }
 
-    private List<string> GetDiagnostics()
+    private List<Exception> GetDiagnostics()
     {
-        List<string> diag = new();
-        foreach(string item in _diagnostics)
+        List<Exception> diag = new();
+        foreach(Exception item in _diagnostics)
             diag.Add(item);
         foreach(SymbolTable t in Children)
-            foreach (string item in t.Diagnostics)
+            foreach (var item in t.Diagnostics)
                 diag.Add(item);
         return diag;
     }
-    public void AddDiagnostic(string Diag)
+    public int AddDiagnostic(Exception Diag)
     {
         _diagnostics.Add(Diag);
+        return 0;
     }
 
     public SymbolTable(SymbolTable symbolTable) : this()
@@ -91,7 +93,7 @@ public class SymbolTable
     public int Insert(Symbol s)
     {
         if (Symbols.Any(p => p.Name == s.Name))
-            _diagnostics.Add($"Symbol was already defined '{s.Name}'");
+            _diagnostics.Add(new Exception($"Symbol was already defined '{s.Name}'"));
         Symbols.Add(s);
         return s.Id;
     }
@@ -99,9 +101,9 @@ public class SymbolTable
     public void SetAttribute(string? Name, string? Value)
     {
         if (Name == null)
-            _diagnostics.Add($"Name was null '{Name}'");
+            _diagnostics.Add(new Exception($"Name was null '{Name}'"));
         if (Value == null)
-            _diagnostics.Add($"Value was null '{Value}'");
+            _diagnostics.Add(new Exception($"Value was null '{Value}'"));
 
         Symbol? symbol = null;
         SymbolTable? target = this;
@@ -119,7 +121,7 @@ public class SymbolTable
             }
         }
         if (symbol == null)
-            _diagnostics.Add($"Symbol was not found '{Name}'");
+            _diagnostics.Add(new Exception($"Symbol was not found '{Name}'"));
     }
 
     public Symbol? GetSymbol(string Name)
@@ -131,7 +133,7 @@ public class SymbolTable
     {
         if (Name == null)
         {
-            _diagnostics.Add($"Name was null '{Name}'");
+            _diagnostics.Add(new Exception($"Name was null '{Name}'"));
             return null;
         }
         Symbol? symbol = null;
@@ -147,8 +149,6 @@ public class SymbolTable
                 break;
             }
         }
-        if (symbol == null)
-            _diagnostics.Add($"Symbol was not found '{Name}'");
         return symbol;
     }
     public override bool Equals(object? obj)

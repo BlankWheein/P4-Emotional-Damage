@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TestCompiler.Exceptions;
 using static TestGrammarParser;
 namespace TestCompiler {
 
@@ -44,7 +45,7 @@ internal static class Program
                 Console.ResetColor();
                 visitor.Visit(progContext);
                 Console.ForegroundColor = ConsoleColor.Red;
-                foreach (string s in visitor.Scope.Diagnostics)
+                foreach (var s in visitor.Scope.Diagnostics)
                 {
                     Console.WriteLine(s);
                 }
@@ -126,10 +127,10 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 }
 public partial class BasicVisitor : TestGrammarBaseVisitor<object>
 {
-
+    
     public override object VisitAssignment(AssignmentContext context)
     {
-        ValtypeContext valtype = context.valtype();
+        ValtypeContext valtype = context.valtype(); 
         ExprContext expr = context.expr();
         IdContext id = context.id();
         AssignmentLine line = new() { ValType = valtype?.GetText()?.Trim('"'), Expr = expr?.GetText()?.Trim('"'), Id = id?.GetText()?.Trim('"') };
@@ -140,16 +141,23 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
             var _symbol = Scope.Lookup(line?.Id);
             line.ValType = _symbol?.Type;
         }
-        
         var Result = line?.ValType?.ToString() switch
         {
-            "int" => int.TryParse(line?.Expr?.ToString(), out int result),
-            "double" => double.TryParse(line?.Expr?.ToString(), out double result),
-            "float" => float.TryParse(line?.Expr?.ToString(), out float result),
+            "int" => int.TryParse(line?.Expr?.ToString(), out int intResult),
+            "double" => double.TryParse(line?.Expr?.ToString(), out double doubleResult),
+            "float" => float.TryParse(line?.Expr?.ToString(), out float floatResult),
             _ => (object)false,
         };
-        if ((bool)Result == false)
-            Scope.AddDiagnostic($"Could not parse '{line?.Id}'");
+            if ((bool)Result == false)
+            {
+                _ = line?.ValType?.ToString() switch
+                {
+                    "int" => Scope.AddDiagnostic(new IntDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    "double" => Scope.AddDiagnostic(new DoubleDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    "float" => Scope.AddDiagnostic(new FloatDeclarationException($"Could not parse '{line?.Id}'", context, id)),
+                    _ => 0,
+                };
+            }
         if (valtype?.GetText()?.Trim('"') != null)
             Scope.Insert(line.ValType, line.Id, line.Expr);
         else
@@ -216,7 +224,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
             VisitSelective(context.selective());
         else if (context.iterative() != null)
             VisitIterative(context.iterative());
-        return (object)true;
+        return true;
     }
 
 
@@ -227,7 +235,7 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
         if (context.assignment() != null)
             VisitAssignment(context.assignment());
         else
-            Scope.AddDiagnostic($"Assignment was null");
+            Scope.AddDiagnostic(new IterativeAssignmentUndefined($"Assignment was null", context, context.assignment()));
         VisitBexpr(context.bexpr());
         VisitExprs(context.exprs());
         Scope = Scope.Allocate();
@@ -276,13 +284,13 @@ public partial class BasicVisitor : TestGrammarBaseVisitor<object>
                     || float.TryParse(Value, out float result3))
                     return true;
                 else
-                    Scope.AddDiagnostic($"Could not parse '{Value}'");
+                    Scope.AddDiagnostic(new NumberDeclarationException($"Could not parse '{context.num().GetText().Trim('"')}'", context, context.num()));
         }
 
         if (context.id() != null)
         {
             if (Scope.Lookup(context.id().GetText().Trim('"').ToString()) == null) {
-                Scope.AddDiagnostic($"Id was not found '{context.id().GetText().Trim('"')}'");
+                Scope.AddDiagnostic(new IdNotFoundException($"Id was not found '{context.id().GetText().Trim('"')}'", context, context.id()));
             }
         }
         return false;
