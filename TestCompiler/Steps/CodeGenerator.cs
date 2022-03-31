@@ -5,15 +5,18 @@ using System.Text;
 using System;
 using System.Linq;
 using System.Diagnostics;
+using Antlr4.Runtime.Tree;
 
-namespace TestCompiler.Generator
+namespace TestCompiler.Steps
 {
 
-        public class CodeGenerator : IDisposable
+        public class CodeGenerator : IDisposable, ICompilerStep
         {
         private string _path = @"../../../CompiledFiles/test.cs";
         private FileStream _fs;
         public string Indent = "";
+
+
         public void Increment()
             {
                 Indent += "    ";
@@ -129,6 +132,61 @@ namespace TestCompiler.Generator
             p.StartInfo.WorkingDirectory = @"../../../CompiledFiles/";
             p.StartInfo.Arguments = "/C csc test.cs";
             p.Start();
+        }
+
+        object ICompilerStep.VisitErrorNode(IErrorNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitPrint(PrintContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitAssignment(AssignmentContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitForassignment(ForassignmentContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitSelective(SelectiveContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitStmts(StmtsContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitStmt(StmtContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitIterative(IterativeContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitBexpr(BexprContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitExpr(ExprContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        object ICompilerStep.VisitVal(ValContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }
