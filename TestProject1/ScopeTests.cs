@@ -184,6 +184,23 @@ namespace TestProject1
             bool result = scope.Equals(visitor.Scope);
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void ForLoopScopes()
+        {
+            TestGrammarParser parser = Setup("for(int i = 0; i < 10; i++){int kage = 2;}");
+            TestGrammarParser.ProgContext progContext = parser.prog();
+            BasicVisitor visitor = new();
+            visitor.Visit(progContext);
+            SymbolTable scope = new();
+            scope.Insert("int", "i", "0");
+            scope.Allocate();
+            scope.Children[0].Insert("int", "kage", "2");
+            bool result = scope.Equals(visitor.Scope); 
+            Assert.IsTrue(result);
+        }
+
+
         [TestMethod]
         public void Stmts()
         {
