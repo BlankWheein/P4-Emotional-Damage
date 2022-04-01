@@ -1,4 +1,5 @@
 int kage = 2;
-int test = 3;
-print kage;
-print test;
+float abe = 3.2;
+double abekat = 3.2;
+float irri = 3.;
+double irr = 2.;
