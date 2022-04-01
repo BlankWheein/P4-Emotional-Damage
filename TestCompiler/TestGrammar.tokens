@@ -33,6 +33,7 @@ Dnum=32
 ID=33
 WHITESPACE=34
 NEWLINE=35
+W=36
 ';'=1
 '='=2
 ','=3

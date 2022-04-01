@@ -1,6 +1,7 @@
 using Antlr4.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestCompiler;
+using TestCompiler.Steps;
 
 namespace TestProject1
 {

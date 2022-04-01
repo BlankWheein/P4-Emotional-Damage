@@ -7,78 +7,35 @@ using System.Text;
 using System.Threading.Tasks;
 using TestCompiler;
 using TestCompiler.Exceptions;
+using TestCompiler.Steps;
 
 namespace TestProject1
 {
     [TestClass]
     public class TypeCheckerTests
     {
-        private TestGrammarParser Setup(string text)
+        private Compiler Setup(string text)
         {
-            AntlrInputStream inputStream = new(text.ToString());
-            TestGrammarLexer speakLexer = new(inputStream);
-            CommonTokenStream commonTokenStream = new(speakLexer);
-            TestGrammarParser speakParser = new(commonTokenStream);
-            return speakParser;
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(text);
+            return new Compiler(builder);
+        }
+
+        [TestMethod]
+        public void Hej()
+        {
+            Compiler compiler = Setup("int kage = 2; float test = kage;");
+            compiler.TestVisitor();
+
+            Assert.AreEqual(1, compiler.BasicVisitor.Scope.Diagnostics.Count);
         }
         [TestMethod]
-        public void IntAssignment()
+        public void He2j()
         {
-            TestGrammarParser parser = Setup("int kage = 2;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(0, visitor.Scope.Diagnostics.Count);
-        }
-        [TestMethod]
-        public void IntAssignment2()
-        {
-            TestGrammarParser parser = Setup("int kage = 2.;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(1, visitor.Scope.Diagnostics.Count);
-            Assert.IsTrue(visitor.Scope.Diagnostics[0] is IntDeclarationException);
-        }
-        [TestMethod]
-        public void FloatAssignment()
-        {
-            TestGrammarParser parser = Setup("float kage = 2;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(0, visitor.Scope.Diagnostics.Count);
-        }
-        [TestMethod]
-        public void FloatAssignment2()
-        {
-            TestGrammarParser parser = Setup("float kage = dwa;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(2, visitor.Scope.Diagnostics.Count);
-            Assert.IsTrue(visitor.Scope.Diagnostics[0] is IdNotFoundException);
-            Assert.IsTrue(visitor.Scope.Diagnostics[1] is FloatDeclarationException);
-        }
-        [TestMethod]
-        public void DoubleAssignment()
-        {
-            TestGrammarParser parser = Setup("double kage = 2;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(0, visitor.Scope.Diagnostics.Count);
-        }
-        [TestMethod]
-        public void DoubleAssignment2()
-        {
-            TestGrammarParser parser = Setup("double kage = dwa;");
-            TestGrammarParser.ProgContext progContext = parser.prog();
-            BasicVisitor visitor = new();
-            visitor.Visit(progContext);
-            Assert.AreEqual(2, visitor.Scope.Diagnostics.Count);
-            Assert.IsTrue(visitor.Scope.Diagnostics[0] is IdNotFoundException);
-            Assert.IsTrue(visitor.Scope.Diagnostics[1] is DoubleDeclarationException);
+            Compiler compiler = Setup("int kage = 2; int test = kage;");
+            compiler.TestVisitor();
+
+            Assert.AreEqual(0, compiler.BasicVisitor.Scope.Diagnostics.Count);
         }
     }
 }
