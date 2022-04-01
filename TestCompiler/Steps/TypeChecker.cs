@@ -1,4 +1,5 @@
-﻿using static TestGrammarParser;
+﻿using TestCompiler.Exceptions;
+using static TestGrammarParser;
 
 namespace TestCompiler.Steps
 {
@@ -16,27 +17,11 @@ namespace TestCompiler.Steps
                 || int.TryParse(context.val().GetText(), out int _) 
                 || float.TryParse(context.val().GetText(), out float _);
         }
-        private string GetExprText(ExprContext ctx, string res = "")
-        {
-            ExprContext[] expr = ctx.expr();
-            ValContext val = ctx.val();
-            if (expr.Length != 0)
-            {
-                foreach (var s in ctx.expr())
-                {
-                    res += GetExprText(s, res);
-                }
-            } else
-            {
-                res += ctx.val().GetText();
-            }
-            return res;
-        }
         public void EvalutateExpr(ExprContext context, string target)
         {
             if (_evaluateExpr(context, target) == false)
             {
-                Parent.Scope.AddDiagnostic(new System.Exception($"Could not parse Type '{target}' onexpr '{context.GetText()}'"));
+                Parent.Scope.AddDiagnostic(new TypeErrorException($"Could not parse Type '{target}' onexpr '{context.GetText()}' on line ", context));
             }
         }
         private bool _evaluateExpr(ExprContext context, string? target)
