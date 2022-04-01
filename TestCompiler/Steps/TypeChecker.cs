@@ -36,7 +36,7 @@ namespace TestCompiler.Steps
         {
             if (_evaluateExpr(context, target) == false)
             {
-                Parent.Scope.AddDiagnostic(new System.Exception($"Could not parse Type '{target}' onexpr '{GetExprText(context)}'"));
+                Parent.Scope.AddDiagnostic(new System.Exception($"Could not parse Type '{target}' onexpr '{context.GetText()}'"));
             }
         }
         private bool _evaluateExpr(ExprContext context, string? target)
