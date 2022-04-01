@@ -18,6 +18,11 @@ namespace TestCompiler.Steps
                     _scope = value;
             }
         }
+        public BasicVisitor()
+        {
+            this.TypeChecker = new(this);
+        }
+        public TypeChecker TypeChecker { get; set; }
 
         public IEnumerable<Exception> Diagnostics => Scope.Diagnostics;
 
@@ -79,6 +84,10 @@ namespace TestCompiler.Steps
                 var _symbol = Scope.Lookup(line?.Id);
                 line.ValType = _symbol?.Type;
             }
+            if (expr != null && line.ValType != null)
+            {
+                TypeChecker.EvalutateExpr(expr, line.ValType);
+            }
 
             if (valtype?.GetText()?.Trim('"') != null)
             {
@@ -114,6 +123,7 @@ namespace TestCompiler.Steps
                 var _symbol = Scope.Lookup(line?.Id);
                 line.ValType = _symbol?.Type;
             }
+            
             var Result = line?.ValType?.ToString() switch
             {
                 "int" => int.TryParse(line?.Expr?.ToString(), out int intResult),
