@@ -58,7 +58,15 @@ namespace TestCompiler.Steps
         }
         public void Parse(AssignmentContext context)
         {
-            AddText($"{context.id().GetText()} = {context.expr().GetText()};");
+            string exprstring = context.expr().GetText();
+            string expr = Scope.Lookup(context.id().GetText()).Type switch
+            {
+                "double" => $"(double)({exprstring})",
+                "float" => $"(float)({exprstring})",
+                "int" => $"(int)({exprstring})",
+                _ => "NotDefined",
+            };
+            AddText($"{context.id().GetText()} = {expr};");
         }
         #endregion
         #region Selective
