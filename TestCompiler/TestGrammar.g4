@@ -41,8 +41,8 @@ valtype: 'int'
 id: ID;
 num: Inum|Fnum|Dnum ;
 Inum: [0-9]+ ;
-Fnum: [0-9]+('.')[0-9]*;
-Dnum: [0-9]+('.')[0-9]*;
+Fnum: [0-9]+('.')[0-9]+;
+Dnum: [0-9]+('.')[0-9]+;
 ID : [a-zA-Z_][a-zA-Z0-9_]*;
 WHITESPACE          : [' '\t\r\n]+ -> skip ;
 NEWLINE             : ('\r'?'\n')+ ;
