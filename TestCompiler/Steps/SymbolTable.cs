@@ -144,13 +144,9 @@ namespace TestCompiler.Steps
             {
                 symbol = target?.Symbols?.FirstOrDefault(p => p.Name == Name);
                 if (symbol == null)
-                {
                     target = target?.Parent;
-                }
                 else
-                {
                     break;
-                }
             }
             return symbol;
         }

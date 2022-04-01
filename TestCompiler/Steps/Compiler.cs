@@ -25,15 +25,13 @@ namespace TestCompiler.Steps
             lock (Console.Out)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                BasicVisitor visitor = new BasicVisitor();
+                BasicVisitor visitor = new();
                 CodeGenerator codeGenerator = new(null);
 
                 visitor.Visit(progContext);
                 Console.ForegroundColor = ConsoleColor.Red;
                 foreach (var s in visitor.Diagnostics)
-                {
                     Console.WriteLine(s);
-                }
                 visitor.Dispose();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Printing Scope Tree:");
@@ -43,10 +41,8 @@ namespace TestCompiler.Steps
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
 
-
                 codeGenerator.Scope = visitor.Scope;
                 codeGenerator.Visit(progContext);
-                Console.ForegroundColor = ConsoleColor.Red;
                 codeGenerator.Dispose();
             }
         }
