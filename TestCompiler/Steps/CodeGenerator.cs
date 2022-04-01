@@ -129,15 +129,10 @@ namespace TestCompiler.Steps
                 p.StartInfo.Arguments = "/C dotnet build";
                 p.Start();
             }
-           lock (Console.Out)
-            {
-                p = new Process();
-                p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.WorkingDirectory = @"../../../../Target/";
-                p.StartInfo.Arguments = "/C dotnet run";
-                p.Start();
-            }
+            p.Dispose();
         }
+
+        
 
         public override object VisitErrorNode(IErrorNode node)
         {

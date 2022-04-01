@@ -4,7 +4,6 @@ if (1==1) {
     int kage2 = 2;
     int akwd = 2;
     Console.WriteLine(kage);
-    Test();
 }
 if (1==1) {
     int dkawp = 2;
@@ -17,7 +16,4 @@ if (1==1) {
         }
     }
 }
-void Test()
-{
-    Console.WriteLine("HelloThere");
-}
+Console.WriteLine("HelloThere");
