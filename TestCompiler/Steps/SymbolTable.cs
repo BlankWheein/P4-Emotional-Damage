@@ -165,7 +165,7 @@ namespace TestCompiler.Steps
                 for (int i = 0; i < Children.Count; i++)
                     def &= Children[i].Equals(table.Children[i]);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return false;
             }

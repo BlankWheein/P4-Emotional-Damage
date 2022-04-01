@@ -32,11 +32,11 @@ namespace TestCompiler.Steps
                 Console.ForegroundColor = ConsoleColor.Red;
                 foreach (var s in visitor.Diagnostics)
                     Console.WriteLine(s);
-                visitor.Dispose();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Printing Scope Tree:");
                 Console.ForegroundColor = ConsoleColor.Green;
                 visitor.Print();
+                visitor.Dispose();
                 Console.ResetColor();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;

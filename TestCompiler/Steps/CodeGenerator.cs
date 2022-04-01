@@ -19,7 +19,7 @@ namespace TestCompiler.Steps
         private FileStream _fs;
         public SymbolTable? Scope { get; set; }
 
-        public IEnumerable<Exception> Diagnostics => Scope.Diagnostics;
+        public IEnumerable<Exception> Diagnostics => Scope?.Diagnostics;
         #region Indent
         public string Indent = "";
 
@@ -103,7 +103,7 @@ namespace TestCompiler.Steps
                 File.Delete(_path);
             _fs = File.Create(_path);
 
-            AddText("Console.ForegroundColor = ConsoleColor.DarkYellow;");
+            AddText("Console.ForegroundColor = ConsoleColor.DarkYellow;", indent:false);
             this.Scope = Scope;
         }
         #endregion
@@ -232,10 +232,6 @@ namespace TestCompiler.Steps
 
         public override object VisitIterative(IterativeContext context)
         {
-            if (context.forassignment() != null)
-            {
-                //VisitForassignment(context.forassignment());
-            }
             VisitBexpr(context.bexpr());
             VisitExpr(context.expr());
             Parse(context);

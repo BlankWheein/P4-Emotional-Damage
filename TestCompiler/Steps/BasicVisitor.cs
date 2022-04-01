@@ -7,7 +7,7 @@ using TestCompiler.Steps;
 using static TestGrammarParser;
 namespace TestCompiler.Steps
 {
-    public partial class BasicVisitor : TestGrammarBaseVisitor<object>, ICompilerStep
+    public class BasicVisitor : TestGrammarBaseVisitor<object>, ICompilerStep
 {
         private SymbolTable _scope = new();
         public SymbolTable Scope
@@ -74,28 +74,10 @@ namespace TestCompiler.Steps
             ExprContext expr = context.expr();
             IdContext id = context.id();
             AssignmentLine line = new() { ValType = valtype?.GetText()?.Trim('"'), Expr = expr?.GetText()?.Trim('"'), Id = id?.GetText()?.Trim('"') };
-            if (line.ValType == null)
+            if (valtype == null)
             {
                 var _symbol = Scope.Lookup(line?.Id);
                 line.ValType = _symbol?.Type;
-            }
-            var Result = line?.ValType?.ToString() switch
-            {
-                "int" => int.TryParse(line?.Expr?.ToString(), out int intResult),
-                "double" => double.TryParse(line?.Expr?.ToString(), out double doubleResult),
-                "float" => float.TryParse(line?.Expr?.ToString(), out float floatResult),
-                _ => (object)false,
-            };
-
-            if ((bool)Result == false)
-            {
-                _ = line?.ValType?.ToString() switch
-                {
-                    "int" => Scope.AddDiagnostic(new IntDeclarationException($"Could not parse '{line?.Id}'", context, id)),
-                    "double" => Scope.AddDiagnostic(new DoubleDeclarationException($"Could not parse '{line?.Id}'", context, id)),
-                    "float" => Scope.AddDiagnostic(new FloatDeclarationException($"Could not parse '{line?.Id}'", context, id)),
-                    _ => 0,
-                };
             }
 
             if (valtype?.GetText()?.Trim('"') != null)
@@ -175,7 +157,7 @@ namespace TestCompiler.Steps
             Scope = Scope.Allocate();
             VisitBexpr(context.bexpr().First());
             VisitStmts(context.stmts().First());
-            Scope = Scope.Parent;
+            Scope = Scope.ExitScope();
         }
         if (elifstatement.Length != 0)
         {
@@ -184,16 +166,16 @@ namespace TestCompiler.Steps
                 Scope = Scope.Allocate();
                 VisitBexpr(context.bexpr()[i]);
                 VisitStmts(context.stmts()[i]);
-                Scope = Scope.Parent;
+                Scope = Scope.ExitScope();
             }
         }
         if (elsestatement != null)
         {
             Scope = Scope.Allocate();
             VisitStmts(context.stmts().Last());
-            Scope = Scope.Parent;
+            Scope = Scope.ExitScope();
             }
-        return (object)true;
+        return true;
     }
 
     public override object VisitStmts(StmtsContext context)
@@ -205,7 +187,7 @@ namespace TestCompiler.Steps
     }
     public override object VisitStmt(StmtContext context)
     {
-        if (context == null) { return (object)true; }
+        if (context == null) { return true; }
         if (context.assignment() != null)
             VisitAssignment(context.assignment());
         else if (context.print() != null)
@@ -230,36 +212,23 @@ namespace TestCompiler.Steps
         VisitBexpr(context.bexpr());
         VisitExpr(context.expr());
         VisitStmts(context.stmts());
-        //Scope.Free();
         Scope = Scope.ExitScope();
         return true;
     }
 
     public override object VisitBexpr(BexprContext context)
     {
-
-        if (context.bexpr().Length == 2)
-            foreach (var t in context.bexpr())
+        if (context.bexpr() != null)
+        foreach (BexprContext t in context.bexpr())
                 VisitBexpr(t);
-        else if (context.bexpr().Length == 1)
-            foreach (var t in context.bexpr())
-                VisitBexpr(t);
-        else
+        if (context.expr() != null)
             VisitExpr(context.expr());
 
         return false;
     }
     public override object VisitExpr(ExprContext context)
     {
-        if (context.expr().Length == 2)
-            {
-                foreach (var t in context.expr())
-                {
-                    VisitExpr(t);
-                }
-            }
-
-            else if (context.expr().Length == 1)
+        if (context.expr() != null)
             foreach (var t in context.expr())
                 VisitExpr(t);
         else
