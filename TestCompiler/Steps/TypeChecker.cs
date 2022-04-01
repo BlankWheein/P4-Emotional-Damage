@@ -39,11 +39,12 @@ namespace TestCompiler.Steps
                 Parent.Scope.AddDiagnostic(new System.Exception($"Could not parse Type '{target}' onexpr '{GetExprText(context)}'"));
             }
         }
-        private bool _evaluateExpr(ExprContext context, string target)
+        private bool _evaluateExpr(ExprContext context, string? target)
         {
             bool def = true;
             if (context.val() != null)
             {
+                if (context.val().num() != null)
                 def &= target switch
                 {
                     "int" => int.TryParse(context.val().GetText(), out int _),
@@ -51,6 +52,10 @@ namespace TestCompiler.Steps
                     "float" => EvaluateExprFloatDouble(context),
                     _ => false,
                 };
+                else
+                {
+                    def &= target == Parent?.Scope?.Lookup(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
+                }
                 return def;
             } else
             {
