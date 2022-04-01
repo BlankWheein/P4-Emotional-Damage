@@ -1,4 +1,0 @@
-int kage = 2;
-int test = 3;
-print kage;
-print test;
