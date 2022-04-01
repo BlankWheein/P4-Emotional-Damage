@@ -46,7 +46,18 @@ namespace TestCompiler.Steps
         #region Assignment
         public void Parse(AssignmentContext context, ValtypeContext type)
         {
-            AddText($"{type.GetText()} {context.id().GetText()} = {context.expr().GetText()};");
+            string end = "";
+            string expr = context.expr().GetText();
+            if (expr.Last().Equals('.'))
+                expr += "0";
+
+            if (context.valtype().GetText() == "double")
+                end += "d;";
+            else if (context.valtype().GetText() == "float")
+                end += "f;";
+            else
+                end += ";";
+            AddText($"{type.GetText()} {context.id().GetText()} = {expr}{end}");
         }
         public void Parse(AssignmentContext context)
         {
