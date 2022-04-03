@@ -145,7 +145,12 @@ namespace TestCompiler.Steps
                 p.StartInfo.Arguments = "/C dotnet build";
                 p.Start();
             }
+            while (p.HasExited == false)
+            {
+
+            }
             p.Dispose();
+
         }
 
         
