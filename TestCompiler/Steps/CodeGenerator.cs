@@ -30,7 +30,7 @@ namespace TestCompiler.Steps
             }
         public void Decrement()
         {
-            Indent = Indent.Substring(0, Indent.Length - 4);
+            Indent = Indent[0..^4];
         }
         #endregion
         #region Print
