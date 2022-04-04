@@ -23,6 +23,7 @@ namespace TestProject1
             TestGrammarParser.ProgContext progContext = parser.prog();
             BasicVisitor visitor = new();
             visitor.Visit(progContext);
+
             SymbolTable scope = new SymbolTable();
             scope.Insert("int", "kage", "2");
             Assert.IsTrue(scope.Equals(visitor.Scope));

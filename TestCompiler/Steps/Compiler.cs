@@ -31,6 +31,7 @@ namespace TestCompiler.Steps
             CommonTokenStream commonTokenStream = new(speakLexer);
             TestGrammarParser speakParser = new(commonTokenStream);
             ProgContext progContext = speakParser.prog();
+            
             lock (Console.Out)
             {
                 Console.ForegroundColor = ConsoleColor.White;

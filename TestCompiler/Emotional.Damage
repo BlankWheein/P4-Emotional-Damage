@@ -1,5 +1,13 @@
 int kage = 2;
-float abe = 3.2;
-double abekat = 3.2;
-float irri = 3.;
-double irr = 2.;
+if (kage == 2) {
+	kage = 3;
+} else {
+	kage = 4;
+}
+
+
+kage = kage * 3;
+
+if (kage == 12) {
+
+}

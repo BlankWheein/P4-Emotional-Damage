@@ -59,7 +59,7 @@ namespace TestCompiler.Steps
         public void Parse(AssignmentContext context)
         {
             string exprstring = context.expr().GetText();
-            string expr = Scope.Lookup(context.id().GetText()).Type switch
+            string expr = Scope?.Lookup(context.id().GetText())?.Type switch
             {
                 "double" => $"(double)({exprstring})",
                 "float" => $"(float)({exprstring})",
@@ -137,7 +137,7 @@ namespace TestCompiler.Steps
         public void Dispose()
         {
             _fs.Close();
-            Process p = new Process();
+            Process p = new();
             lock (Console.Out)
             {
                 p.StartInfo.FileName = "cmd.exe";

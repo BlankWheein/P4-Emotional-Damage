@@ -159,7 +159,7 @@ namespace TestCompiler.Steps
     {
        
         IfstatementContext ifstatement = context.ifstatement();
-        var elifstatement = context.elifstatement();
+        ElifstatementContext[] elifstatement = context.elifstatement();
         ElsestatementContext elsestatement = context.elsestatement();
 
         if (ifstatement != null)
