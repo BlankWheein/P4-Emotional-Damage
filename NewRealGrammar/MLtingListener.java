@@ -57,6 +57,16 @@ public interface MLtingListener extends ParseTreeListener {
 	 */
 	void exitPrint(MLtingParser.PrintContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLtingParser#println}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintln(MLtingParser.PrintlnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLtingParser#println}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintln(MLtingParser.PrintlnContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLtingParser#returnstmt}.
 	 * @param ctx the parse tree
 	 */
