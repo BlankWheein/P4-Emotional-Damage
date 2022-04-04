@@ -87,6 +87,18 @@ public class MLtingBaseListener implements MLtingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGradfunc(MLtingParser.GradfuncContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGradfunc(MLtingParser.GradfuncContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRettype(MLtingParser.RettypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -586,6 +598,30 @@ public class MLtingBaseListener implements MLtingListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVal(MLtingParser.ValContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunccall(MLtingParser.FunccallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunccall(MLtingParser.FunccallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGradfunccall(MLtingParser.GradfunccallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGradfunccall(MLtingParser.GradfunccallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

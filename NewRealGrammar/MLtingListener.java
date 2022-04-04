@@ -67,6 +67,16 @@ public interface MLtingListener extends ParseTreeListener {
 	 */
 	void exitFunc(MLtingParser.FuncContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLtingParser#gradfunc}.
+	 * @param ctx the parse tree
+	 */
+	void enterGradfunc(MLtingParser.GradfuncContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLtingParser#gradfunc}.
+	 * @param ctx the parse tree
+	 */
+	void exitGradfunc(MLtingParser.GradfuncContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLtingParser#rettype}.
 	 * @param ctx the parse tree
 	 */
@@ -486,6 +496,26 @@ public interface MLtingListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVal(MLtingParser.ValContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLtingParser#funccall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunccall(MLtingParser.FunccallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLtingParser#funccall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunccall(MLtingParser.FunccallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MLtingParser#gradfunccall}.
+	 * @param ctx the parse tree
+	 */
+	void enterGradfunccall(MLtingParser.GradfunccallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLtingParser#gradfunccall}.
+	 * @param ctx the parse tree
+	 */
+	void exitGradfunccall(MLtingParser.GradfunccallContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MLtingParser#id}.
 	 * @param ctx the parse tree
