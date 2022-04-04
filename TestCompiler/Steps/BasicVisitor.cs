@@ -61,15 +61,13 @@ namespace TestCompiler.Steps
             opinion = context.textstring();
             if (opinion != null)
             {
-                var line = new SpeakLine() { Text = opinion.GetText().Trim('"') };
-                return line;
+                return true;
             }
             else
             {
                 opinion2 = context.bexpr();
                 VisitBexpr(opinion2);
-                var line = new SpeakLine() { Text = opinion2.GetText().Trim('"') };
-                return line;
+                return true;
             }
         }
 
