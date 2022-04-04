@@ -159,6 +159,18 @@ public class MLtingBaseListener implements MLtingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrparameter(MLtingParser.ArrparameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrparameter(MLtingParser.ArrparameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIntdcl(MLtingParser.IntdclContext ctx) { }
 	/**
 	 * {@inheritDoc}

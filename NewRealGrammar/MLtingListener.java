@@ -127,6 +127,16 @@ public interface MLtingListener extends ParseTreeListener {
 	 */
 	void exitMatrixparameter(MLtingParser.MatrixparameterContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MLtingParser#arrparameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrparameter(MLtingParser.ArrparameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MLtingParser#arrparameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrparameter(MLtingParser.ArrparameterContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MLtingParser#intdcl}.
 	 * @param ctx the parse tree
 	 */

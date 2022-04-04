@@ -5,14 +5,15 @@ stmts: stmt stmts?;
 block: '{'stmts'}';
 stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | funccall | gradfunccall | returnstmt)';') | ( iterative | selective | func | gradfunc);
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
-returnstmt: 'return' bexpr;
+returnstmt: 'return' val;
 
 func: 'func' rettype id'('parameters?')' block;
 gradfunc: 'autograd' func;
 rettype: numtypes | 'string' | 'void' | numtypes'['num']' | numtypes'['num','num']';
 parameters: parameter (','parameters)?;
-parameter: (numtypes | 'string'| matrixparameter) id;
+parameter: (numtypes | 'string'| matrixparameter | arrparameter) id;
 matrixparameter: numtypes'['(val)','(val)']';
+arrparameter: numtypes'['(val)']';
 
 intdcl: 'int' id '=' numexpr;
 doubledcl: 'double' id '=' numexpr;
