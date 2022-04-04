@@ -1,12 +1,7 @@
 Console.ForegroundColor = ConsoleColor.DarkYellow;
-int kage = (int)(2);
-if (kage==2) {
-    kage = (int)(3);
-}
-else {
-    kage = (int)(4);
-    int test = 2;
-}
-kage = (int)(kage*3);
-if (kage==12) {
+
+for (float i = 0.0f; i < 1.2; i++)
+{
+    System.Console.WriteLine(i);
+    i++;
 }
