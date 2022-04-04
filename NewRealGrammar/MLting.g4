@@ -1,12 +1,13 @@
 grammar MLting;
 
 prog: stmts EOF;
-stmts: (stmt stmts)?;
+stmts: stmt stmts?;
 block: '{'stmts'}';
-stmt: ((numassign | boolassign | arrassign | matrixassign | unaryoperator | print | funccall | gradfunccall)';') | ( iterative | selective | func | gradfunc);
-print: 'print''('STRING_CONSTANT | bexpr')';
+stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | funccall | gradfunccall | returnstmt)';') | ( iterative | selective | func | gradfunc);
+print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
+returnstmt: 'return' bexpr;
 
-func: 'func' rettype id'('parameters')' block;
+func: 'func' rettype id'('parameters?')' block;
 gradfunc: 'autograd' func;
 rettype: numtypes | 'string' | 'void' | numtypes'['num']' | numtypes'['num','num']';
 parameters: parameter (','parameters)?;
@@ -24,9 +25,9 @@ arrupdate: (id '=' (numexpr | arrexpr)) | id'['val']' '=' numexpr;
 arrassign: intarrdcl | floatarrdcl | doublearrdcl | arrupdate;
 
 matrixassign: intmatrixdcl | floatmatrixdcl | doublematrixdcl | matrixupdate;
-intmatrixdcl: 'int''['val','val']' id ('=' val)?;
-doublematrixdcl: 'double''['val','val']' id ('=' val)?;
-floatmatrixdcl: 'float''['val','val']' id ('=' val)?;
+intmatrixdcl: 'int''['val','val']' id ('=' matrixarrexpr)?;
+doublematrixdcl: 'double''['val','val']' id ('=' matrixarrexpr)?;
+floatmatrixdcl: 'float''['val','val']' id ('=' matrixarrexpr)?;
 matrixupdate: (id '=' (numexpr | matrixarrexpr))
             | id'['val','val']' '=' numexpr
             | id'['val',' '*' ']' '=' numexpr
@@ -38,6 +39,7 @@ matrixarrexpr: id '.' id
       | matrixtranspose'('id')'
       | matrixinverse'('id')'
       | 'toMatrix''('id')'
+      | val
       ;
 arrexpr: 'toArray''('id')';
 matrixtranspose: 'T';
@@ -109,7 +111,7 @@ fragment UNICODE : 'u' HEX HEX HEX HEX ;
 fragment HEX : [0-9a-fA-F] ;
 
 Inum: [0-9]+ ;
-Fnum: [0-9]+('.')[0-9]*;
-Dnum: [0-9]+('.')[0-9]*;
+Fnum: [0-9]+('.')[0-9]+;
+Dnum: [0-9]+('.')[0-9]+;
 ID : [a-zA-Z_][a-zA-Z0-9_]*;
 WS: [ \n\t\r]+ -> channel(HIDDEN);
