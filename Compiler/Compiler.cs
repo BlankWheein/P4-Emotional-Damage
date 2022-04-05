@@ -4,7 +4,7 @@ using static EmotionalDamageParser;
 
 namespace Compiler
 {
-    class Compiler
+    public class Wrapper
     {
         private readonly StringBuilder __source;
         private readonly ProgContext __context;
@@ -14,7 +14,7 @@ namespace Compiler
         private readonly CommonTokenStream __lexerStream;
         private ScopeTypeChecker _scopeTypeChecker;
         private CodeGenerator _codeGenerator;
-        public Compiler(StringBuilder __source)
+        public Wrapper(StringBuilder __source)
         {
             this.__source = __source;
             __stream = new(__source.ToString());

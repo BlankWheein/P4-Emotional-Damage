@@ -1,14 +1,14 @@
 ﻿
 
+using Compiler;
 using System.Diagnostics;
 using System.Text;
-
 StringBuilder text = new();
 string readText = File.ReadAllText("../../../Emotional.Damage");
 Console.WriteLine(readText);
 text.AppendLine(readText);
-compiler = new(text);
-compiler.Compile();
+Wrapper wrapper = new(text);
+wrapper.Compile();
 Process p = new();
 lock (Console.Out)
 {
