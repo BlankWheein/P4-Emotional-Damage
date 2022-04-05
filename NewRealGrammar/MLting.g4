@@ -7,18 +7,17 @@ stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | prin
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
 returnstmt: 'return' val;
-
-func: 'func' rettype id'('parameters?')' block;
-gradfunc: 'autograd' func;
-rettype: numtypes | 'string' | 'void' | numtypes'['num']' | numtypes'['num','num']';
+func: rettype id'('parameters?')' block;
+gradfunc: 'autograd' rettype id'('parameters?')' block;
+rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
 parameters: parameter (','parameters)?;
 parameter: (numtypes | 'string'| matrixparameter | arrparameter) id;
 matrixparameter: numtypes'['(val)','(val)']';
 arrparameter: numtypes'['(val)']';
 
-intdcl: 'int' id '=' numexpr;
-doubledcl: 'double' id '=' numexpr;
-floatdcl: 'float' id '=' numexpr;
+intdcl: 'int' id ('=' numexpr)?;
+doubledcl: 'double' id ('=' numexpr)?;
+floatdcl: 'float' id ('=' numexpr)?;
 
 intarrdcl: 'int''['val']' id ('=' val)?;
 doublearrdcl: 'double''['val']' id ('=' val)?;
@@ -27,9 +26,9 @@ arrupdate: (id '=' (numexpr | arrexpr)) | id'['val']' '=' numexpr;
 arrassign: intarrdcl | floatarrdcl | doublearrdcl | arrupdate;
 
 matrixassign: intmatrixdcl | floatmatrixdcl | doublematrixdcl | matrixupdate;
-intmatrixdcl: 'int''['val','val']' id ('=' matrixarrexpr)?;
-doublematrixdcl: 'double''['val','val']' id ('=' matrixarrexpr)?;
-floatmatrixdcl: 'float''['val','val']' id ('=' matrixarrexpr)?;
+intmatrixdcl: 'int''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
+doublematrixdcl: 'double''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
+floatmatrixdcl: 'float''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
 matrixupdate: (id '=' (numexpr | matrixarrexpr))
             | id'['val','val']' '=' numexpr
             | id'['val',' '*' ']' '=' numexpr
@@ -42,7 +41,7 @@ matrixarrexpr: id '.' id
       | matrixinverse'('id')'
       | 'toMatrix''('id')'
       | val
-      ;
+      ; 
 arrexpr: 'toArray''('id')';
 matrixtranspose: 'T';
 matrixinverse: '~';
@@ -65,7 +64,7 @@ elifstmt: 'elif''('bexpr')'block;
 elsestmt: 'else'block;
 
 iterative: forstmt | whilestmt;
-forstmt: 'for''('intdcl';'bexpr';'unaryoperator')'block;
+forstmt: 'for''('intdcl?';'bexpr';'unaryoperator')'block;
 whilestmt: 'while''('bexpr')'block;
 
 random: 'rand''('val','val')';
@@ -103,6 +102,7 @@ val: id
       ;
 funccall: id'('(id (','id)*)?')';
 gradfunccall: id'('(id (','id)*)?')''.backwards';
+
 id: ID;
 num: Inum | Fnum | Dnum;
 numtypes: 'int' | 'float' | 'double';

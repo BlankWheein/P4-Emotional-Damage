@@ -1,33 +1,44 @@
 int m = 2;
 int n = 3;
-func void Hej() {
+void Hej() {
     print("Hello World");
 }
 
-func int[2, 2] Test(int[2, 1] x, int[1, 2] y) {
+int[m, n] Test(int[m, n] x, int[n, m] y) {
     int[2, 2] xy = x . y;
     return xy;
 }
 
-func int[2, 2] Test2() {
+int[2, 2] Test2() {
     int[2, 2] x = 2;
     int[2, 2] xy = ~(x);
     return xy;
 }
 
-func void Test3(int[m, n] x, int[n, m] y) {
+void Test3(int[m, n] x, int[n, m] y) {
     println("Hejsa");
 }
 
-func void Test4(int[m] x, int[m] y) {
+void Test4(int[m] x, int[m] y) {
     println("Hejsa");
 }
 
-autograd func void Test5(float x, double y, string test) {
+autograd void Test5(float x, double y, string test) {
     println("Hejsa");
 }
 
-func void Main() {
+void Test6() {
+    int kage;
+    if (1 == 2 OR 2 == 2) {
+        kage = 3;
+    } elif (1 == 1 AND 2 == 2) {
+        kage = 5;
+    } else {
+        kage = 69;
+    }
+}
+
+void Main() {
     Hej();
     int[2, 1] x = 1;
     int[1, 2] y = 68;
