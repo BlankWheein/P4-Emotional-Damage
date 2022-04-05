@@ -38,7 +38,8 @@ void Test6() {
     }
 }
 
-void Main() {
+void Main() 
+{
     Hej();
     int[2, 1] x = 1;
     int[1, 2] y = 68;
