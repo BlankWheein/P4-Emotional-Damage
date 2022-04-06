@@ -181,16 +181,6 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIntdcl([NotNull] EmotionalDamageParser.IntdclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doubledcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDoubledcl([NotNull] EmotionalDamageParser.DoubledclContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doubledcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDoubledcl([NotNull] EmotionalDamageParser.DoubledclContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -210,16 +200,6 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doublearrdcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDoublearrdcl([NotNull] EmotionalDamageParser.DoublearrdclContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doublearrdcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDoublearrdcl([NotNull] EmotionalDamageParser.DoublearrdclContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
 	/// </summary>
@@ -270,16 +250,6 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doublematrixdcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDoublematrixdcl([NotNull] EmotionalDamageParser.DoublematrixdclContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doublematrixdcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDoublematrixdcl([NotNull] EmotionalDamageParser.DoublematrixdclContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
 	/// </summary>

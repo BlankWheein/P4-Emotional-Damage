@@ -216,18 +216,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIntdcl([NotNull] EmotionalDamageParser.IntdclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doubledcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDoubledcl([NotNull] EmotionalDamageParser.DoubledclContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doubledcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDoubledcl([NotNull] EmotionalDamageParser.DoubledclContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -251,18 +239,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doublearrdcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDoublearrdcl([NotNull] EmotionalDamageParser.DoublearrdclContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doublearrdcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDoublearrdcl([NotNull] EmotionalDamageParser.DoublearrdclContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -323,18 +299,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.doublematrixdcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDoublematrixdcl([NotNull] EmotionalDamageParser.DoublematrixdclContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.doublematrixdcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDoublematrixdcl([NotNull] EmotionalDamageParser.DoublematrixdclContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
 	/// <para>The default implementation does nothing.</para>
