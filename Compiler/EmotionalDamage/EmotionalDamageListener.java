@@ -157,16 +157,6 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitIntdcl(EmotionalDamageParser.IntdclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link EmotionalDamageParser#doubledcl}.
-	 * @param ctx the parse tree
-	 */
-	void enterDoubledcl(EmotionalDamageParser.DoubledclContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link EmotionalDamageParser#doubledcl}.
-	 * @param ctx the parse tree
-	 */
-	void exitDoubledcl(EmotionalDamageParser.DoubledclContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link EmotionalDamageParser#floatdcl}.
 	 * @param ctx the parse tree
 	 */
@@ -186,16 +176,6 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntarrdcl(EmotionalDamageParser.IntarrdclContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link EmotionalDamageParser#doublearrdcl}.
-	 * @param ctx the parse tree
-	 */
-	void enterDoublearrdcl(EmotionalDamageParser.DoublearrdclContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link EmotionalDamageParser#doublearrdcl}.
-	 * @param ctx the parse tree
-	 */
-	void exitDoublearrdcl(EmotionalDamageParser.DoublearrdclContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link EmotionalDamageParser#floatarrdcl}.
 	 * @param ctx the parse tree
@@ -246,16 +226,6 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntmatrixdcl(EmotionalDamageParser.IntmatrixdclContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link EmotionalDamageParser#doublematrixdcl}.
-	 * @param ctx the parse tree
-	 */
-	void enterDoublematrixdcl(EmotionalDamageParser.DoublematrixdclContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link EmotionalDamageParser#doublematrixdcl}.
-	 * @param ctx the parse tree
-	 */
-	void exitDoublematrixdcl(EmotionalDamageParser.DoublematrixdclContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link EmotionalDamageParser#floatmatrixdcl}.
 	 * @param ctx the parse tree

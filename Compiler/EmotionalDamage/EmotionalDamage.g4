@@ -16,18 +16,15 @@ matrixparameter: numtypes'['(val)','(val)']';
 arrparameter: numtypes'['(val)']';
 
 intdcl: 'int' id ('=' numexpr)?;
-doubledcl: 'double' id ('=' numexpr)?;
 floatdcl: 'float' id ('=' numexpr)?;
 
 intarrdcl: 'int''['val']' id ('=' val)?;
-doublearrdcl: 'double''['val']' id ('=' val)?;
 floatarrdcl: 'float''['val']' id ('=' val)?;
 arrupdate: (id '=' (numexpr | arrexpr)) | id'['val']' '=' numexpr;
-arrassign: intarrdcl | floatarrdcl | doublearrdcl | arrupdate;
+arrassign: intarrdcl | floatarrdcl | arrupdate;
 
-matrixassign: intmatrixdcl | floatmatrixdcl | doublematrixdcl | matrixupdate;
+matrixassign: intmatrixdcl | floatmatrixdcl | matrixupdate;
 intmatrixdcl: 'int''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
-doublematrixdcl: 'double''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
 floatmatrixdcl: 'float''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
 matrixupdate: (id '=' (numexpr | matrixarrexpr))
             | id'['val','val']' '=' numexpr
@@ -46,7 +43,7 @@ arrexpr: 'toArray''('id')';
 matrixtranspose: 'T';
 matrixinverse: '~';
 
-numassign: intdcl | doubledcl | floatdcl
+numassign: intdcl | floatdcl
         | numupdate
         ;
 numupdate: id '=' numexpr;
@@ -105,7 +102,7 @@ gradfunccall: id'('(id (','id)*)?')''.backwards';
 
 id: ID;
 num: Inum | Fnum | Dnum;
-numtypes: 'int' | 'float' | 'double';
+numtypes: 'int' | 'float';
 
 STRING_CONSTANT: '"' ( ESC | ~('"' | '\\') )* '"';
 fragment ESC : '\\' (["\\/bfnrt] | UNICODE) ;

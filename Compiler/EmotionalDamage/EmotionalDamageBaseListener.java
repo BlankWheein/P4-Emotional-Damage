@@ -195,18 +195,6 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDoubledcl(EmotionalDamageParser.DoubledclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDoubledcl(EmotionalDamageParser.DoubledclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFloatdcl(EmotionalDamageParser.FloatdclContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -226,18 +214,6 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntarrdcl(EmotionalDamageParser.IntarrdclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDoublearrdcl(EmotionalDamageParser.DoublearrdclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDoublearrdcl(EmotionalDamageParser.DoublearrdclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -298,18 +274,6 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntmatrixdcl(EmotionalDamageParser.IntmatrixdclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDoublematrixdcl(EmotionalDamageParser.DoublematrixdclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDoublematrixdcl(EmotionalDamageParser.DoublematrixdclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
