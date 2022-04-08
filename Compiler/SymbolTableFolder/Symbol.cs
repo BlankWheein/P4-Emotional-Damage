@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Compiler.SymbolTableFolder
 {
-    class Symbol
+    public class Symbol
     {
         public Symbol(string iD, SymbolType type=SymbolType.Reserved, bool isInitialized=false)
         {

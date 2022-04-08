@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Compiler.SymbolTableFolder
 {
-    class SymbolTable
+    public class SymbolTable
     {
         public SymbolTable(RootSymbolTable? root, SymbolTable? parent)
         {
