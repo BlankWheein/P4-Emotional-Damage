@@ -10,7 +10,7 @@ namespace Compiler.SymbolTableFolder
     {
         public RootSymbolTable()
         {
-            Root = null;
+            Root = this;
             Parent = null;
             Current = this;
         }
@@ -23,7 +23,7 @@ namespace Compiler.SymbolTableFolder
         /// </summary>
         public void Allocate()
         {
-            SymbolTable symbolTable = new();
+            SymbolTable symbolTable = new(this,Current);
             Current.Children.Add(symbolTable);
             Current = symbolTable;
         }

@@ -10,7 +10,7 @@ namespace UnitTests
         {
             var Root = new RootSymbolTable();
             Symbol symbol = new("hej");
-            Root.Insert(symbol);
+            Root.Current.Insert(symbol);
 
             Assert.IsTrue(Root.Diagnostics.Count == 1);
             Assert.IsTrue(Root.Symbols.Count == 0);

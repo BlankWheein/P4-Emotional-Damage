@@ -12,7 +12,7 @@ namespace UnitTests
             scope.Current.Insert(0, "kage", false);
 
             Assert.AreEqual(1, scope.Current.Symbols.Count);
-            Assert.AreEqual("kage", scope.Current.Symbols[0].ID);
+            Assert.AreEqual("kage", scope.Current.Symbols[0].Id);
         }
         [TestMethod]
         public void Insert_Symbol_Exit_Scope_Expected_Symbol_Not_Found()
@@ -23,6 +23,17 @@ namespace UnitTests
             scope.ExitScope();
             var kage = scope.LookUp("kage");
             Assert.AreEqual(null, kage);
+        }
+
+        [TestMethod]
+        public void LookUp_Symbol_Is_In_Any_Table_Expected_Equal_True()
+        {
+            var scope = new RootSymbolTable();
+            scope.Current.Insert(0, "test", false);
+            scope.Allocate();
+            Symbol? actual = scope.Current.LookUp("test");
+
+            Assert.AreEqual(actual?.Id, "test");
         }
     }
 }

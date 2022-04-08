@@ -44,7 +44,7 @@ namespace Compiler.SymbolTableFolder
         /// <returns>Symbol if found, else null</returns>
         private Symbol? LookUpHelper(string id)
         {
-            Symbol? symbol = Symbols.FirstOrDefault(o => id == o.ID);
+            Symbol? symbol = Symbols.FirstOrDefault(o => id == o.Id);
             if (symbol == null)
                 return Parent?.LookUpHelper(id);
             return symbol;
@@ -60,7 +60,7 @@ namespace Compiler.SymbolTableFolder
         /// <param name="symbol"></param>
         private void InsertHelper(Symbol symbol)
         {
-            if (LookUpHelper(symbol.ID) == null && ReservedKeywords.All(o=>o.ID!=symbol.ID))
+            if (ReservedKeywords.All(o=>o.Id!=symbol.Id) && LookUpHelper(symbol.Id) == null)
                 Symbols.Add(symbol);
             else 
                 Diagnostics.Add(new Exception(symbol?.ToString()));

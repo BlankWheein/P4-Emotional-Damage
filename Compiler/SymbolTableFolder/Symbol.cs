@@ -8,16 +8,16 @@ namespace Compiler.SymbolTableFolder
 {
     public class Symbol
     {
-        public Symbol(string iD, SymbolType type=SymbolType.Reserved, bool isInitialized=false)
+        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false)
         {
             Type = type;
-            ID = iD;
+            Id = id;
             IsInitialized = isInitialized;
             
         }
 
         public SymbolType Type { get; set; }
-        public string ID { get; set; }
+        public string Id { get; set; }
         public bool IsInitialized { get; set; }
 
 
