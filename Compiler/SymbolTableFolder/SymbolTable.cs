@@ -8,16 +8,21 @@ namespace Compiler.SymbolTableFolder
 {
     class SymbolTable
     {
-        public SymbolTable(RootSymbolTable root, SymbolTable? parent)
+        public SymbolTable(RootSymbolTable? root, SymbolTable? parent)
         {
             Parent = parent;
             Root = root;
         }
 
+        public SymbolTable()
+        {
+
+        }
+
         public List<Symbol> Symbols { get; set; } = new();
-        public SymbolTable? Parent { get; }
+        public SymbolTable? Parent { get; set; }
         public List<SymbolTable> Children { get; set; } = new();
-        public RootSymbolTable Root { get; }
+        public RootSymbolTable? Root { get; set; }
         public List<Exception> Diagnostics { get; set; }   //for errors and warnings
 
         /// <summary>
