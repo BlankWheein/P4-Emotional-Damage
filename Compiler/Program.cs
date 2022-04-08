@@ -23,8 +23,6 @@ p.Dispose();*/
 using Compiler.SymbolTableFolder;
 
 RootSymbolTable root = new();
-SymbolTable symbol = new(root,null);
-symbol.Insert(SymbolType.Int, "hej", false);
-symbol.SetInitialized("hej");
+root.Current.Insert(SymbolType.Int,"hj",false);
 
 Console.WriteLine();

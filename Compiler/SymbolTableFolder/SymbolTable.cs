@@ -18,12 +18,12 @@ namespace Compiler.SymbolTableFolder
         {
 
         }
-        public List<Symbol> ReservedKeywords { get; set; } = new() { };
+        public List<Symbol> ReservedKeywords { get; set; } = new() { new Symbol("hej")};
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable? Root { get; set; }
-        public List<Exception> Diagnostics { get; set; }   //for errors and warnings
+        public List<Exception> Diagnostics { get; set; } = new();   //for errors and warnings
 
         /// <summary>
         /// Look for a symbol
@@ -60,10 +60,10 @@ namespace Compiler.SymbolTableFolder
         /// <param name="symbol"></param>
         private void InsertHelper(Symbol symbol)
         {
-            if (LookUpHelper(symbol.ID) == null && !ReservedKeywords.Any(o=>o.ID==symbol.ID))
+            if (LookUpHelper(symbol.ID) == null && ReservedKeywords.All(o=>o.ID!=symbol.ID))
                 Symbols.Add(symbol);
             else 
-                Diagnostics.Add(new Exception(symbol.ToString()));
+                Diagnostics.Add(new Exception(symbol?.ToString()));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Compiler.SymbolTableFolder
         /// <param name="is_initialized"></param>
         public void Insert(SymbolType type, string id, bool is_initialized)
         {
-            Symbol symbol = new() { ID = id, Type = type, IsInitialized = is_initialized };
+            Symbol symbol = new(id, type, is_initialized);
             InsertHelper(symbol);
         }
    
