@@ -1,4 +1,4 @@
-﻿namespace Compiler
+﻿namespace Compiler.Phases
 {
     public class CodeGenerator : EmotionalDamageBaseVisitor<object>
     {
