@@ -8,14 +8,14 @@ namespace Compiler.SymbolTableFolder
 {
     class SymbolTable
     {
-        public SymbolTable(RootSymbolTable root, SymbolTable parent)
+        public SymbolTable(RootSymbolTable root, SymbolTable? parent)
         {
             Parent = parent;
             Root = root;
         }
 
         public List<Symbol> Symbols { get; set; } = new();
-        public SymbolTable Parent { get; }
+        public SymbolTable? Parent { get; }
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable Root { get; }
         public List<Exception> Diagnostics { get; set; }   //for errors and warnings
@@ -74,7 +74,14 @@ namespace Compiler.SymbolTableFolder
             InsertHelper(symbol);
 
         }
+   
+        public void SetInitialized(string id)
+        {
+            Symbol? symbol = LookUp(id);
+            if(symbol!=null)
+                symbol.IsInitialized = true;
 
+        }
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 
-using Compiler;
+/*using Compiler;
 using System.Diagnostics;
 using System.Text;
 StringBuilder text = new();
@@ -18,4 +18,13 @@ lock (Console.Out)
     p.StartInfo.Arguments = "/C dotnet run";
     p.Start();
 }
-p.Dispose();
+p.Dispose();*/
+
+using Compiler.SymbolTableFolder;
+
+RootSymbolTable root = new();
+SymbolTable symbol = new(root,null);
+symbol.Insert(SymbolType.Int, "hej", false);
+symbol.SetInitialized("hej");
+
+Console.WriteLine();
