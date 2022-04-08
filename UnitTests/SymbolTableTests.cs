@@ -6,7 +6,7 @@ namespace UnitTests
     public partial class SymbolTableTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Insert_Symbol_Expected_Count_Is_1_AND_ID_Is_Equal()
         {
             var scope = new RootSymbolTable();
             scope.Current.Insert(0, "kage", false);
@@ -15,7 +15,7 @@ namespace UnitTests
             Assert.AreEqual("kage", scope.Current.Symbols[0].ID);
         }
         [TestMethod]
-        public void TestMethod2()
+        public void Insert_Symbol_Exit_Scope_Expected_Symbol_Not_Found()
         {
             var scope = new RootSymbolTable();
             scope.Allocate();
