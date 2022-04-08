@@ -10,7 +10,7 @@ namespace UnitTests
         {
             var Root = new RootSymbolTable();
             Symbol symbol = new("hej");
-            Root.Current.Insert(symbol);
+            Root.Insert(symbol);
 
             Assert.IsTrue(Root.Diagnostics.Count == 1);
             Assert.IsTrue(Root.Symbols.Count == 0);
@@ -26,22 +26,6 @@ namespace UnitTests
 
             Assert.IsTrue(Root.Symbols.Count == 1);
             Assert.IsTrue(Root.Diagnostics.Count == 1);
-        }
-
-
-        [TestMethod]
-        public void Allocate_3_SymbolTables_Expected_Equal_Count()
-        {
-            var Root = new RootSymbolTable();
-            Symbol symbol = new("a");
-            Root.Allocate();
-
-            SymbolTable table1 = Root.Current;
-            Root.Allocate();
-            SymbolTable table2 = Root.Current;
-            table2.Insert(symbol);
-
-            Assert.AreEqual(table2.Symbols.Count, Root.Children[0].Children[0].Symbols.Count);
         }
     }
 }

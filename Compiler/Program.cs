@@ -23,6 +23,11 @@ p.Dispose();*/
 using Compiler.SymbolTableFolder;
 
 RootSymbolTable root = new();
-root.Current.Insert(SymbolType.Int,"hj",false);
+root.Insert(SymbolType.Int,"hj",false);
+root.Insert(SymbolType.Int,"hj",false);
+root.Allocate();
+root.Insert(SymbolType.Int,"hej",false);
+root.Insert(SymbolType.Int,"j",false);
+root.Insert(SymbolType.Int,"j2",false);
 
 Console.WriteLine();

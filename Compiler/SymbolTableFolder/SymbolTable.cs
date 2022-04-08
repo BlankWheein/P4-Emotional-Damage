@@ -8,22 +8,24 @@ namespace Compiler.SymbolTableFolder
 {
     public class SymbolTable
     {
-        public SymbolTable(RootSymbolTable? root, SymbolTable? parent)
+        public SymbolTable(SymbolTable? parent, RootSymbolTable roottable)
         {
             Parent = parent;
-            Root = root;
+            Root = parent?.Root;
+            Diagnostics = roottable?.Diagnostics;
         }
 
         public SymbolTable()
         {
 
         }
+        
         public List<Symbol> ReservedKeywords { get; set; } = new() { new Symbol("hej")};
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable? Root { get; set; }
-        public List<Exception> Diagnostics { get; set; } = new();   //for errors and warnings
+        public List<Exception> Diagnostics { get; set; }   //for errors and warnings
 
         /// <summary>
         /// Look for a symbol
