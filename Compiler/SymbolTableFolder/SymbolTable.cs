@@ -18,7 +18,7 @@ namespace Compiler.SymbolTableFolder
         {
 
         }
-
+        public List<Symbol> ReservedKeywords { get; set; } = new() { };
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }
         public List<SymbolTable> Children { get; set; } = new();
@@ -53,7 +53,6 @@ namespace Compiler.SymbolTableFolder
         public void Insert(Symbol symbol)
         {
             InsertHelper(symbol);
-
         }
         /// <summary>
         /// Inserts a symbol in a symbol table
@@ -61,7 +60,7 @@ namespace Compiler.SymbolTableFolder
         /// <param name="symbol"></param>
         private void InsertHelper(Symbol symbol)
         {
-            if (LookUpHelper(symbol.ID) == null)
+            if (LookUpHelper(symbol.ID) == null && !ReservedKeywords.Any(o=>o.ID==symbol.ID))
                 Symbols.Add(symbol);
             else 
                 Diagnostics.Add(new Exception(symbol.ToString()));
@@ -77,16 +76,19 @@ namespace Compiler.SymbolTableFolder
         {
             Symbol symbol = new() { ID = id, Type = type, IsInitialized = is_initialized };
             InsertHelper(symbol);
-
         }
    
+        /// <summary>
+        /// Set a symbol with id <paramref name="id"/> to initialized
+        /// </summary>
+        /// <param name="id"></param>
         public void SetInitialized(string id)
         {
-            Symbol? symbol = LookUp(id);
-            if(symbol!=null)
+            Symbol? symbol = LookUpHelper(id);
+            if (symbol != null)
                 symbol.IsInitialized = true;
-
+            else
+                Diagnostics.Add(new Exception(id));
         }
-
     }
 }
