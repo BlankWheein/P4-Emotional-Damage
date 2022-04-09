@@ -6,26 +6,23 @@ using System.Threading.Tasks;
 
 namespace Compiler.SymbolTableFolder
 {
-    public class SymbolTable
+    internal sealed class SymbolTable : IDisposable
     {
-        public SymbolTable(SymbolTable? parent, RootSymbolTable roottable)
+        private readonly bool _testing;
+        public SymbolTable(SymbolTable? parent, RootSymbolTable roottable, bool Testing=false)
         {
             Parent = parent;
+            _testing = Testing;
             Root = parent?.Root;
-            Diagnostics = roottable?.Diagnostics;
+            Diagnostics = roottable.Diagnostics;
+            ReservedSymbols = roottable.ReservedSymbols;
         }
-
-        public SymbolTable()
-        {
-
-        }
-        
-        public List<Symbol> ReservedKeywords { get; set; } = new() { new Symbol("hej")};
+        public List<Symbol> ReservedSymbols { get; }
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable? Root { get; set; }
-        public List<Exception> Diagnostics { get; set; }   //for errors and warnings
+        public List<Exception> Diagnostics { get; set; }
 
         /// <summary>
         /// Look for a symbol
@@ -52,22 +49,6 @@ namespace Compiler.SymbolTableFolder
             return symbol;
         }
 
-        public void Insert(Symbol symbol)
-        {
-            InsertHelper(symbol);
-        }
-        /// <summary>
-        /// Inserts a symbol in a symbol table
-        /// </summary>
-        /// <param name="symbol"></param>
-        private void InsertHelper(Symbol symbol)
-        {
-            if (ReservedKeywords.All(o=>o.Id!=symbol.Id) && LookUpHelper(symbol.Id) == null)
-                Symbols.Add(symbol);
-            else 
-                Diagnostics.Add(new Exception(symbol?.ToString()));
-        }
-
         /// <summary>
         /// Inserts a symbol in a symbol table based on symbol attributes
         /// </summary>
@@ -77,9 +58,21 @@ namespace Compiler.SymbolTableFolder
         public void Insert(SymbolType type, string id, bool is_initialized)
         {
             Symbol symbol = new(id, type, is_initialized);
-            InsertHelper(symbol);
+            Insert(symbol);
         }
    
+        /// <summary>
+        /// Inserts a symbol in a symbol table
+        /// </summary>
+        /// <param name="symbol"></param>
+        public void Insert(Symbol symbol)
+        {
+            if (ReservedSymbols.All(o=>o.Id!=symbol.Id) && LookUpHelper(symbol.Id) == null)
+                Symbols.Add(symbol);
+            else 
+                Diagnostics.Add(new Exception(symbol?.ToString()));
+        }
+
         /// <summary>
         /// Set a symbol with id <paramref name="id"/> to initialized
         /// </summary>
@@ -91,6 +84,12 @@ namespace Compiler.SymbolTableFolder
                 symbol.IsInitialized = true;
             else
                 Diagnostics.Add(new Exception(id));
+        }
+
+        public void Dispose()
+        {
+            Symbols.Clear();
+
         }
     }
 }
