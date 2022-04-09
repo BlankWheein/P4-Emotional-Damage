@@ -9,17 +9,17 @@ namespace UnitTests
         public void Insert_Symbol_Expected_Count_Is_1_AND_ID_Is_Equal()
         {
             var scope = new RootSymbolTable();
-            scope.Current.Insert(0, "kage", false);
+            scope.Insert(0, "kage", false);
 
-            Assert.AreEqual(1, scope.Current.Symbols.Count);
-            Assert.AreEqual("kage", scope.Current.Symbols[0].Id);
+            Assert.AreEqual(1, scope.Symbols.Count);
+            Assert.AreEqual("kage", scope.Symbols[0].Id);
         }
         [TestMethod]
         public void Insert_Symbol_Exit_Scope_Expected_Symbol_Not_Found()
         {
             var scope = new RootSymbolTable();
             scope.Allocate();
-            scope.Current.Insert(0, "kage", false);
+            scope.Insert(0, "kage", false);
             scope.ExitScope();
             var kage = scope.LookUp("kage");
             Assert.AreEqual(null, kage);
@@ -29,9 +29,9 @@ namespace UnitTests
         public void LookUp_Symbol_Is_In_Any_Table_Expected_Equal_True()
         {
             var scope = new RootSymbolTable();
-            scope.Current.Insert(0, "test", false);
+            scope.Insert(0, "test", false);
             scope.Allocate();
-            Symbol? actual = scope.Current.LookUp("test");
+            Symbol? actual = scope.LookUp("test");
 
             Assert.AreEqual(actual?.Id, "test");
         }
