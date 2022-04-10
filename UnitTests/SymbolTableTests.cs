@@ -35,5 +35,17 @@ namespace UnitTests
 
             Assert.AreEqual(actual?.Id, "test");
         }
+
+
+        [TestMethod]
+        public void LookUp_Symbol_Is_not_In_Any_Table_Expected_Equal_True()
+        {
+            var scope = new RootSymbolTable();
+            scope.Insert(0, "test", false);
+            scope.Allocate();
+            Symbol? actual = scope.LookUp("test2");
+
+            Assert.AreEqual(actual, null);
+        }
     }
-}
+}   
