@@ -174,8 +174,10 @@ namespace Compiler
         public override object VisitMatrixparameter(MatrixparameterContext context)
         {
             VisitNumtypes(context.numtypes());
-            VisitVal(context.val());
-            VisitVal(context.val());
+            foreach(var v in context.val())
+            {
+                VisitVal(v);
+            }
             return false;
         }
           public override object VisitArrparameter(ArrparameterContext context)
@@ -285,7 +287,7 @@ namespace Compiler
             }
             return false;
         }
-        public static object VisitMatrixupdate(MatrixupdateContext context){
+        public override object VisitMatrixupdate(MatrixupdateContext context){
             VisitId(context.id());
             if(context.val() != null){
                 foreach(var v in context.val()){
@@ -296,7 +298,7 @@ namespace Compiler
                 VisitNumexpr(context.numexpr());
             }
             else if(context.matrixarrexpr() != null){
-                VisitMatrixarrexpr(context.matrixarre());
+                VisitMatrixarrexpr(context.matrixarrexpr());
             }
             return false;
         }
