@@ -3,7 +3,8 @@ grammar EmotionalDamage;
 prog: stmts EOF;
 stmts: stmt stmts?;
 block: '{'stmts'}';
-stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') | ( iterative | selective | func | gradfunc);
+stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') 
+     | ( iterative | selective | func | gradfunc);
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
 returnstmt: 'return' val;
@@ -20,7 +21,8 @@ floatdcl: 'float' id ('=' numexpr)?;
 
 intarrdcl: 'int''['val']' id ('=' val)?;
 floatarrdcl: 'float''['val']' id ('=' val)?;
-arrupdate: (id '=' (numexpr | arrexpr)) | id'['val']' '=' numexpr;
+arrupdate: (id '=' (numexpr | arrexpr)) 
+            | id'['val']' '=' numexpr;
 arrassign: intarrdcl | floatarrdcl | arrupdate;
 
 matrixassign: intmatrixdcl | floatmatrixdcl | matrixupdate;

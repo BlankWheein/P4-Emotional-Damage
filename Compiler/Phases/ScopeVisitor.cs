@@ -171,6 +171,138 @@ namespace Compiler
             VisitId(context.id());
             return false;
         }
+        public override object VisitMatrixparameter(MatrixparameterContext context)
+        {
+            VisitNumtypes(context.numtypes());
+            VisitVal(context.val());
+            VisitVal(context.val());
+            return false;
+        }
+          public override object VisitArrparameter(ArrparameterContext context)
+        {
+            VisitNumtypes(context.numtypes());
+            VisitVal(context.val());
+            return false;
+        }
+        public override object VisitIntdcl(IntdclContext context)
+        {
+            VisitId(context.id());
+            if (context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public override object VisitFloatdcl(FloatdclContext context)
+        {
+            VisitId(context.id());
+            if (context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public override object VisitIntarrdcl(IntarrdclContext context)
+        {
+            VisitId(context.id());
+            if(context.val() != null){
+                foreach (var v in context.val())
+                {
+                    VisitVal(v);
+                }
+            }
+            return false;
+        }
+        public override object VisitFloatarrdcl(FloatarrdclContext context){
+            VisitId(context.id());
+            if(context.val() != null){
+                foreach (var v in context.val())
+                {
+                    VisitVal(v);
+                }
+            }
+            return false;
+        }
+        public override object VisitArrupdate(ArrupdateContext context){
+            VisitId(context.id());
+            if(context.val() != null){
+                VisitVal(context.val());
+            }
+            if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            else if(context.arrexpr() != null){
+                VisitArrexpr(context.arrexpr());
+            }
+            return false;
+        }
+        public override object VisitArrassign(ArrassignContext context)
+        {
+            if (context.intarrdcl() != null){
+                VisitIntarrdcl(context.intarrdcl());
+            }
+            else if(context.floatarrdcl() != null){
+                VisitFloatarrdcl(context.floatarrdcl());
+            }
+            else if(context.arrupdate() != null){
+                VisitArrupdate(context.arrupdate());
+            }
+            return false;
+        }
+        public override object VisitMatrixassign(MatrixassignContext context){
+            if (context.intmatrixdcl() != null){
+                VisitIntmatrixdcl(context.intmatrixdcl());
+            }
+            else if(context.floatmatrixdcl() != null){
+                VisitFloatmatrixdcl(context.floatmatrixdcl());
+            }
+            else if(context.matrixupdate() != null){
+                VisitMatrixupdate(context.matrixupdate());
+            }
+            return false;
+        }
+        public override object VisitIntmatrixdcl(IntmatrixdclContext context){
+            foreach(var v in context.val()){
+                VisitVal(v);
+            }
+            VisitId(context.id());
+            if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarrexpr());
+            }
+            else if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public override object VisitFloatmatrixdcl(FloatmatrixdclContext context){
+            foreach(var v in context.val()){
+                VisitVal(v);
+            }
+            VisitId(context.id());
+            if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarrexpr());
+            }
+            else if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public static object VisitMatrixupdate(MatrixupdateContext context){
+            VisitId(context.id());
+            if(context.val() != null){
+                foreach(var v in context.val()){
+                    VisitVal(v);
+                }
+            }
+            if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            else if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarre());
+            }
+            return false;
+        }
+        public override object VisitMatrixarrexpr(MatrixarrexprContext context){
+            
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
