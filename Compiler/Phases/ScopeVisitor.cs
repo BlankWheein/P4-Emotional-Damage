@@ -3,9 +3,6 @@ using Compiler.SymbolTableFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-//int x = 23;
-//bool b = false;
-//int y = x + 1 * (x/2);
 
 namespace Compiler
 {
@@ -18,8 +15,8 @@ namespace Compiler
                     _scope = value;
             }
         }
-        public ScopeVisitor(RootSymbolTable scope){
-            this.Scope = scope;
+        public ScopeVisitor(){
+            this.Scope = new RootSymbolTable();
         }
         public override object VisitStmts(StmtsContext context)
         {
@@ -157,6 +154,19 @@ namespace Compiler
             else if (context.parameter() != null){
                 VisitParameter(context.parameter());
             }
+            return false;
+        }
+        public override object VisitParameter(ParameterContext context){
+            if(context.numtypes() != null){
+                VisitNumtypes(context.numtypes());
+            }
+            else if(context.matrixparameter() != null){
+                VisitMatrixparameter(context.matrixparameter());
+            }
+            else if(context.arrparameter() != null){
+                VisitArrparameter(context.arrparameter());
+            }
+            VisitId(context.id());
             return false;
         }
         public override object VisitNumexpr(NumexprContext context)
