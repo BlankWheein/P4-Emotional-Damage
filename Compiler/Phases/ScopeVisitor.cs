@@ -301,8 +301,48 @@ namespace Compiler
             return false;
         }
         public override object VisitMatrixarrexpr(MatrixarrexprContext context){
+            if(context.id() != null){
+                foreach (var i in context.id())
+                {
+                    VisitId(i);
+                }
+            }
+            if(context.val() != null){
+                VisitVal(context.val());
+            }
+            else if(context.matrixtranspose() != null){
+                VisitMatrixtranspose(context.matrixtranspose());
+            }
+            else if(context.matrixinverse() != null){
+                VisitMatrixinverse(context.matrixinverse());
+            }
+            return false;
             
         }
+        public override object VisitArrexpr(ArrexprContext context)
+        {
+            VisitId(context.id());
+            return false;
+        }
+        public override object VisitNumassign(NumassignContext context)
+        {
+            if (context.intdcl() != null){
+                VisitIntdcl(context.intdcl());
+            }
+            else if (context.floatdcl() != null){
+                VisitFloatdcl(context.floatdcl());
+            }
+            else if (context.numupdate() != null){
+                VisitNumupdate(context.numupdate());
+            }
+            return false;
+        }
+        public override object VisitNumupdate(NumupdateContext context){ 
+            VisitId(context.id());
+            VisitNumexpr(context.numexpr());    
+            return false; 
+        }
+        
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
