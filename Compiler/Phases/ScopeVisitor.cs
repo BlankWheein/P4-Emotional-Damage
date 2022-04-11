@@ -344,7 +344,26 @@ namespace Compiler
             VisitNumexpr(context.numexpr());    
             return false; 
         }
-        
+        public override object VisitBoolassign(BoolassignContext context){
+            if (context.booldcl() != null){
+                VisitBooldcl(context.booldcl());
+            }
+            else if (context.boolupdate() != null){
+                VisitBoolupdate(context.boolupdate());
+            }
+            return false;
+        }
+        public override object VisitBoolupdate(BoolupdateContext context)
+        {
+            VisitId(context.id());
+            if(context.bexpr() != null){
+                VisitBexpr(context.bexpr());
+            }
+            else if(context.boolval() != null){
+                VisitBoolval(context.boolval());
+            }
+            return false;
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
