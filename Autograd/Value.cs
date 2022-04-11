@@ -2,11 +2,14 @@
 {
     public class Value : IParameter
     {
-        public IEnumerable<Value> Children { get; }
+        public static int counter = 1;
         public float data;
+        public int Id;
         public string _op;
         public Action? _backwards;
-        public HashSet<Value> _prev;
+        public List<Value> prev;
+        public List<Value> topo = new();
+        public List<Value> visited = new();
         public float grad { get; set; }
 
         public Value(float data, IEnumerable<Value>? _children = null, string _op = "")
@@ -15,80 +18,93 @@
                 _children = new List<Value>();
             grad = 0;
             this.data = data;
-            Children = _children;
             this._op = _op;
+            Id = counter++;
             _backwards = null;
-            _prev = new HashSet<Value>(Children);
+            prev = new();
+            foreach (var child in _children.Reverse())
+                prev.Add(child);
         }
         public static Value operator +(Value self, float other) => self + new Value(other);
         public static Value operator +(Value self, int other) => self + new Value(other);
 
-        public static Value operator +(float self, Value other) => other + new Value(self);
-        public static Value operator +(int self, Value other) => other + new Value(self);
-        public static Value operator +(Value self, Value other)
+        public static Value operator +(float self, Value other) => new Value(self) + other;
+        public static Value operator +(int self, Value other) => new Value(self) + other;
+        public static Value operator + (Value self, Value other)
         {
-            Value? _out = new(self.data + other.data, new List<Value>() { self, other }, "+");
+            return self.Plus(other);
+        }
+        public Value Plus(Value other)
+        {
+            Value _out = new(this.data + other.data, new List<Value>() { this, other }, "+");
             _out._backwards = () =>
             {
-                self.grad += _out.grad;
+                this.grad += _out.grad;
                 other.grad += _out.grad;
             };
             return _out;
+
         }
-        public static Value operator *(Value self, float other) => self * new Value(other);
-        public static Value operator *(float self, Value other) => other * new Value(self);
-        public static Value operator *(Value self, int other) => self * new Value(other);
-        public static Value operator *(int self, Value other) => other * new Value(self);
-        public static Value operator *(Value self, Value other)
+
+        public static Value operator * (Value self, float other) => self * new Value(other);
+        public static Value operator * (Value self, int other) => self * new Value(other);
+        public static Value operator * (float self, Value other) => new Value(self) * other;
+        public static Value operator * (int self, Value other) => new Value(self) * other;
+        public static Value operator * (Value self, Value other)
         {
-            Value? _out = new(self.data * other.data, new List<Value>() { self, other }, "*");
+            return self.Times(other);
+        }
+        public Value Times( Value other)
+        {
+            Value? _out = new(data * other.data, new List<Value>() { this, other }, "*");
             _out._backwards = () =>
             {
-                self.grad += other.data * _out.grad;
-                other.grad += self.data * _out.grad;
+                this.grad += other.data * _out.grad;
+                other.grad += this.data * _out.grad;
             };
             return _out;
         }
 
-        public Value Pow(int v) => Pow(new Value(v));
-        public Value Pow(float v) => Pow(new Value(v));
-        public Value Pow(Value other)
+        public Value Pow(int v) => Pow((float)v);
+        public Value Pow(float other)
         {
-            Value? _out = new((float)Math.Pow(data, other.data), new List<Value>() { this }, $"**{other}");
+            Value? _out = new((float)Math.Pow(data, other), new List<Value>() { this }, $"**{other}");
             _out._backwards = () =>
             {
-                grad += other.data * MathF.Pow(data, other.data - 1) * _out.grad;
+                this.grad += (other * MathF.Pow(this.data, other -1.0f)) * _out.grad + 0.0f;
             };
+
             return _out;
         }
         public Value relu()
         {
-            Value? _out = new Value(data < 0 ? 0 : this.data, new List<Value>() { this }, "ReLU");
+            Value? _out;
+            if (data < 0)
+                _out = new(0, new List<Value>() { this }, "ReLU");
+            else
+                _out = new(data, new List<Value>() { this }, "ReLU");
             _out._backwards = () =>
             {
                 if (_out.data > 0)
-                {
-                    grad += _out.data * _out.grad;
-                }
+                    this.grad += _out.grad;
             };
             return _out;
         }
+        
+        public void build_topo(Value v)
+        {
+            if (!visited.Contains(v))
+            {
+                visited.Add(v);
+                foreach (Value child in v.prev)
+                    build_topo(child);
+                topo.Add(v);
+            }
+        }
         public void backward()
         {
-            var topo = new List<Value>();
-            var visited = new HashSet<Value>();
-            void build_topo(Value v)
-            {
-                if (!visited.Contains(v))
-                {
-                    visited.Add(v);
-                    foreach(var child in v._prev)
-                        build_topo(child);
-                    topo.Add(v);
-                }
-            }
             build_topo(this);
-            grad = 1;
+            grad = 1.0f;
             foreach (var v in topo.Reverse<Value>())
                 if (v?._backwards != null)
                     v?._backwards();
@@ -96,25 +112,24 @@
 
         public static Value operator -(Value self)
         {
-            return new Value(-self.data);
+            return self * (-1);
         }
-        public static Value operator -(Value self, Value other)
+
+        public static Value operator - (Value self, Value other)
         {
-            return self + -other;
+            return self + (-other);
         }
-        
-        public static Value operator / (Value self, Value other)
+
+
+        public static Value operator / (Value self, float other)
         {
-            return other * self.Pow(-1);
+            return self * new Value(other).Pow(-1);
         }
-        public static Value operator /(Value self, float other)
+        public static Value operator / (float self, Value other)
         {
-            return new Value(other) * self.Pow(-1);
+            return new Value(self) * other.Pow(-1);
         }
-        public static Value operator /(float self, Value other)
-        {
-            return other * new Value(self).Pow(-1);
-        }
+
         public override string ToString()
         {
             return $"Value(data={data}, grad={grad})";
