@@ -21,7 +21,7 @@ namespace Compiler
         public ScopeVisitor(RootSymbolTable scope){
             this.Scope = scope;
         }
-        public override object VisitStmts([NotNull] StmtsContext context)
+        public override object VisitStmts(StmtsContext context)
         {
             if (context.stmts() != null){
                 VisitStmts(context.stmts());
@@ -36,7 +36,7 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitStmt([NotNull] StmtContext context){
+        public override object VisitStmt(StmtContext context){
             if(context.matrixassign() != null){
                 VisitMatrixassign(context.matrixassign());
             }
@@ -89,7 +89,7 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitPrint([NotNull] PrintContext context)
+        public override object VisitPrint(PrintContext context)
         {
             if(context.bexpr() != null){
                 VisitBexpr(context.bexpr());
@@ -99,7 +99,7 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitPrintln([NotNull] PrintlnContext context)
+        public override object VisitPrintln(PrintlnContext context)
         {
             if(context.bexpr() != null){
                 VisitBexpr(context.bexpr());
@@ -109,14 +109,14 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitReturnstmt([NotNull] ReturnstmtContext context)
+        public override object VisitReturnstmt(ReturnstmtContext context)
         {
             if(context.val() != null){
                 VisitVal(context.val());
             }
             return false;
         }
-        public override object VisitFunc([NotNull] FuncContext context)
+        public override object VisitFunc(FuncContext context)
         {
             VisitRettype(context.rettype());
             VisitId(context.id());
@@ -128,7 +128,7 @@ namespace Compiler
             VisitBlock(context.block());
             return false;
         }
-        public override object VisitGradfunc([NotNull] GradfuncContext context)
+        public override object VisitGradfunc(GradfuncContext context)
         {
             VisitRettype(context.rettype());
             VisitId(context.id());
@@ -140,7 +140,7 @@ namespace Compiler
             VisitBlock(context.block());
             return false;
         }
-        public override object VisitRettype([NotNull] RettypeContext context)
+        public override object VisitRettype(RettypeContext context)
         {
             if (context.numtypes() != null){
                 VisitNumtypes(context.numtypes());
@@ -152,7 +152,7 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitParameters([NotNull] ParameterContext context){
+        public override object VisitParameters(ParameterContext context){
             
             if (context.parameters() != null){
                 foreach(var p in context.parameters()){
@@ -164,7 +164,7 @@ namespace Compiler
             }
             return false;
         }
-        public override object VisitNumexpr([NotNull] NumexprContext context)
+        public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
                 foreach(var n in context.numexpr()){
