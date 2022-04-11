@@ -1,9 +1,10 @@
-﻿namespace Compiler
+﻿using static EmotionalDamageParser;
+namespace Compiler
 {
     public class ScopeTypeChecker : EmotionalDamageBaseVisitor<object>
     {
         public ScopeTypeChecker(){
-            
+
         }
         private bool EvaluateNumexpr(NumexprContext context){
             return int.TryParse(context.val().GetText(), out int _) 
@@ -13,7 +14,7 @@
         {
             if (_evaluateNumexpr(context, target) == false)
             {
-                Scope.AddDiagnostic(new TypeErrorException($"Could not parse Type '{target}' onexpr '{context.GetText()}' on line ", context));
+                base.Scope.AddDiagnostic(new Exception($"Could not parse Type '{target}' onexpr '{context.GetText()}' on line ", context));
             }
         }
         private bool _evaluateNumexpr(NumexprContext context, string? target)
@@ -30,7 +31,7 @@
                 };
                 else
                 {
-                    def &= target == Scope?.Lookup(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
+                    def &= target == base.Scope?.Lookup(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
                 }
                 return def;
             } else
