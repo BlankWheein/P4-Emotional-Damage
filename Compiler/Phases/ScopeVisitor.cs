@@ -19,11 +19,19 @@ namespace Compiler
         {
             if (context.stmts() != null){
                 foreach (var s in context.stmts()){
+    
                     VisitStmts(s);
                 }
                 return false;
             }
             VisitStmt(context.stmt());
+            return false;
+        }
+        public override object VisitBlock([NotNull] BlockContext context)
+        {
+            if(context.stmts() != null){
+                VisitStmts(context.stmts());
+            }
             return false;
         }
         public override object VisitStmt([NotNull] StmtContext context){
@@ -58,16 +66,24 @@ namespace Compiler
                 VisitReturnstmt(context.returnstmt());
             }
             else if(context.iterative()!=null){
+                Scope.Root.Allocate();
                 VisitIterative(context.iterative());
+                Scope.Root.ExitScope();
             }
             else if(context.selective() != null){
+                Scope.Root.Allocate();
                 VisitSelective(context.selective());
+                Scope.Root.ExitScope();
             }
             else if(context.func() != null){
+                Scope.Root.Allocate();
                 VisitFunc(context.func());
+                Scope.Root.ExitScope();
             }
             else if(context.gradfunc() != null){
+                Scope.Root.Allocate();
                 VisitGradfunc(context.gradfunc());
+                Scope.Root.ExitScope();
             }
             return false;
         }
@@ -95,6 +111,42 @@ namespace Compiler
         {
             if(context.val() != null){
                 VisitVal(context.val());
+            }
+            return false;
+        }
+        public override object VisitFunc([NotNull] FuncContext context)
+        {
+            VisitRettype(context.rettype());
+            VisitId(context.id());
+            if(context.parameters() != null){
+                foreach(var p in context.parameters()){
+                    VisitParameter(context.parameters());
+                }
+            }
+            VisitBlock(context.block());
+            return false;
+        }
+        public override object VisitGradfunc([NotNull] GradfuncContext context)
+        {
+            VisitRettype(context.rettype());
+            VisitId(context.id());
+            if(context.parameters() != null){
+                foreach(var p in context.parameters()){
+                    VisitParameter(context.parameters());
+                }
+            }
+            VisitBlock(context.block());
+            return false;
+        }
+        public override object VisitRettype([NotNull] RettypeContext context)
+        {
+            if (context.numtypes() != null){
+                VisitNumtypes(context.numtypes());
+                if(context.val() != null){
+                    foreach(var p in context.val()){
+                        VisitVal(context.val());
+                    }
+                }
             }
             return false;
         }
