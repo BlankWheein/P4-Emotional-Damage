@@ -300,7 +300,9 @@ namespace Compiler
             }
             return false;
         }
-        
+        public override object VisitMatrixarrexpr(MatrixarrexprContext context){
+            
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
