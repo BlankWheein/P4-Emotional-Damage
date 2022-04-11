@@ -259,6 +259,47 @@ namespace Compiler
             }
             return false;
         }
+        public override object VisitIntmatrixdcl(IntmatrixdclContext context){
+            foreach(var v in context.val()){
+                VisitVal(v);
+            }
+            VisitId(context.id());
+            if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarrexpr());
+            }
+            else if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public override object VisitFloatmatrixdcl(FloatmatrixdclContext context){
+            foreach(var v in context.val()){
+                VisitVal(v);
+            }
+            VisitId(context.id());
+            if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarrexpr());
+            }
+            else if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            return false;
+        }
+        public static object VisitMatrixupdate(MatrixupdateContext context){
+            VisitId(context.id());
+            if(context.val() != null){
+                foreach(var v in context.val()){
+                    VisitVal(v);
+                }
+            }
+            if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            else if(context.matrixarrexpr() != null){
+                VisitMatrixarrexpr(context.matrixarre());
+            }
+            return false;
+        }
         
         public override object VisitNumexpr(NumexprContext context)
         {
