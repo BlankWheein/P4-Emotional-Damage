@@ -8,6 +8,7 @@ namespace Compiler
 {
     public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
     {
+        public List<Exception> Diagnostics {get; set; }
         private RootSymbolTable _scope = new();
         public RootSymbolTable Scope {get => _scope; set
             {
@@ -17,6 +18,7 @@ namespace Compiler
         }
         public ScopeVisitor(){
             this.Scope = new RootSymbolTable();
+            Diagnostics = Scope.Diagnostics;
         }
         public override object VisitStmts(StmtsContext context)
         {
