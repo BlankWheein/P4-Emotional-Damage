@@ -153,9 +153,9 @@ namespace Compiler
             if (context.parameters() != null){
                     VisitParameters(context.parameters());
             }
-            else if (context.parameter() != null){
+            
                 VisitParameter(context.parameter());
-            }
+            
             return false;
         }
         public override object VisitParameter(ParameterContext context){
