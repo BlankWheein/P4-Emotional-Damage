@@ -406,6 +406,15 @@ namespace Compiler
             VisitBlock(context.block());
             return false;
         }
+        public override object VisitIterative(IterativeContext context){ 
+            if(context.forstmt() != null){
+                VisitForstmt(context.forstmt());
+            }
+            else if(context.whilestmt() != null){
+                VisitWhilestmt(context.whilestmt());
+            }
+            return false; 
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
