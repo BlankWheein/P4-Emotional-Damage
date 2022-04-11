@@ -11,29 +11,25 @@ namespace Compiler
 {
     public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
     {
-        private SymbolTable _scope = new();
-        public SymbolTable Scope {get => _scope; set
+        private RootSymbolTable _scope = new();
+        public RootSymbolTable Scope {get => _scope; set
             {
                 if (value != null)
                     _scope = value;
             }
         }
-        public ScopeVisitor(SymbolTable scope){
+        public ScopeVisitor(RootSymbolTable scope){
             this.Scope = scope;
         }
         public override object VisitStmts([NotNull] StmtsContext context)
         {
             if (context.stmts() != null){
-                foreach (var s in context.stmts()){
-    
-                    VisitStmts(s);
-                }
-                return false;
+                VisitStmts(context.stmts());
             }
             VisitStmt(context.stmt());
             return false;
         }
-        public override object VisitBlock([NotNull] BlockContext context)
+        public override object VisitBlock(BlockContext context)
         {
             if(context.stmts() != null){
                 VisitStmts(context.stmts());
@@ -72,24 +68,24 @@ namespace Compiler
                 VisitReturnstmt(context.returnstmt());
             }
             else if(context.iterative()!=null){
-                Scope.Root.Allocate();
+                Scope.Allocate();
                 VisitIterative(context.iterative());
-                Scope.Root.ExitScope();
+                Scope.ExitScope();
             }
             else if(context.selective() != null){
-                Scope.Root.Allocate();
+                Scope.Allocate();
                 VisitSelective(context.selective());
-                Scope.Root.ExitScope();
+                Scope.ExitScope();
             }
             else if(context.func() != null){
-                Scope.Root.Allocate();
+                Scope.Allocate();
                 VisitFunc(context.func());
-                Scope.Root.ExitScope();
+                Scope.ExitScope();
             }
             else if(context.gradfunc() != null){
-                Scope.Root.Allocate();
+                Scope.Allocate();
                 VisitGradfunc(context.gradfunc());
-                Scope.Root.ExitScope();
+                Scope.ExitScope();
             }
             return false;
         }
