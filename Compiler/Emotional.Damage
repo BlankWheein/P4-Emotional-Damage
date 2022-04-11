@@ -1,0 +1,6 @@
+﻿void kage(int kage) {
+	int[5] kage2 = kage;
+	float ice2 = ice;
+
+	print("Din mor");
+}
