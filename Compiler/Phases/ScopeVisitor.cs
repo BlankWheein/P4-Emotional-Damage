@@ -11,7 +11,13 @@ namespace Compiler
 {
     public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
     {
-        public SymbolTable Scope { get; set; }
+        private SymbolTable _scope = new();
+        public SymbolTable Scope {get => _scope; set
+            {
+                if (value != null)
+                    _scope = value;
+            }
+        }
         public ScopeVisitor(SymbolTable scope){
             this.Scope = scope;
         }
@@ -147,6 +153,18 @@ namespace Compiler
                         VisitVal(context.val());
                     }
                 }
+            }
+            return false;
+        }
+        public override object VisitParameters([NotNull] ParameterContext context){
+            
+            if (context.parameters() != null){
+                foreach(var p in context.parameters()){
+                    VisitParameters(p);
+                }
+            }
+            else if (context.parameter() != null){
+                VisitParameter(context.parameter());
             }
             return false;
         }
