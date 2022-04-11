@@ -375,6 +375,18 @@ namespace Compiler
             }
             return false;
         }
+        public override object VisitSelective(SelectiveContext context){
+            VisitIfstmt(context.ifstmt());
+            if(context.elifstmt() != null){
+                foreach(var e in context.elifstmt()){
+                    VisitElifstmt(e);
+                }
+            }
+            else if(context.elsestmt() != null){
+                VisitElsestmt(context.elsestmt());
+            }
+            return false;
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
