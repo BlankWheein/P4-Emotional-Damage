@@ -121,9 +121,8 @@ namespace Compiler
             VisitRettype(context.rettype());
             VisitId(context.id());
             if(context.parameters() != null){
-                foreach(var p in context.parameters()){
-                    VisitParameter(context.parameters());
-                }
+               
+              VisitParameters(context.parameters());  
             }
             VisitBlock(context.block());
             return false;
@@ -133,9 +132,7 @@ namespace Compiler
             VisitRettype(context.rettype());
             VisitId(context.id());
             if(context.parameters() != null){
-                foreach(var p in context.parameters()){
-                    VisitParameter(context.parameters());
-                }
+                VisitParameters(context.parameters());
             }
             VisitBlock(context.block());
             return false;
@@ -146,18 +143,16 @@ namespace Compiler
                 VisitNumtypes(context.numtypes());
                 if(context.val() != null){
                     foreach(var p in context.val()){
-                        VisitVal(context.val());
+                        VisitVal(p);
                     }
                 }
             }
             return false;
         }
-        public override object VisitParameters(ParameterContext context){
+        public override object VisitParameters(ParametersContext context){
             
             if (context.parameters() != null){
-                foreach(var p in context.parameters()){
-                    VisitParameters(p);
-                }
+                    VisitParameters(context.parameters());
             }
             else if (context.parameter() != null){
                 VisitParameter(context.parameter());
