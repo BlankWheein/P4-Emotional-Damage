@@ -72,9 +72,7 @@ namespace Compiler
                 Scope.ExitScope();
             }
             else if(context.selective() != null){
-                Scope.Allocate();
                 VisitSelective(context.selective());
-                Scope.ExitScope();
             }
             else if(context.func() != null){
                 Scope.Allocate();
@@ -180,7 +178,7 @@ namespace Compiler
             }
             return false;
         }
-          public override object VisitArrparameter(ArrparameterContext context)
+        public override object VisitArrparameter(ArrparameterContext context)
         {
             VisitNumtypes(context.numtypes());
             VisitVal(context.val());
@@ -376,15 +374,36 @@ namespace Compiler
             return false;
         }
         public override object VisitSelective(SelectiveContext context){
+            Scope.Allocate();
             VisitIfstmt(context.ifstmt());
+            Scope.ExitScope();
             if(context.elifstmt() != null){
                 foreach(var e in context.elifstmt()){
+                    Scope.Allocate();
                     VisitElifstmt(e);
+                    Scope.ExitScope();
                 }
             }
             else if(context.elsestmt() != null){
+                Scope.Allocate();
                 VisitElsestmt(context.elsestmt());
+                Scope.ExitScope();
             }
+            return false;
+        }
+        public override object VisitIfstmt(IfstmtContext context){
+            VisitBexpr(context.bexpr());
+            VisitBlock(context.block());
+            return false;
+        }
+        public override object VisitElifstmt(ElifstmtContext context){
+            VisitBexpr(context.bexpr());
+            VisitBlock(context.block());
+            return false;
+        }
+        public override object VisitElsestmt(ElsestmtContext context)
+        {
+            VisitBlock(context.block());
             return false;
         }
         public override object VisitNumexpr(NumexprContext context)
