@@ -364,6 +364,17 @@ namespace Compiler
             }
             return false;
         }
+        public override object VisitBooldcl(BooldclContext context)
+        {
+            VisitId(context.id());
+            if(context.bexpr() != null){
+                VisitBexpr(context.bexpr());
+            }
+            else if(context.boolval() != null){
+                VisitBoolval(context.boolval());
+            }
+            return false;
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
