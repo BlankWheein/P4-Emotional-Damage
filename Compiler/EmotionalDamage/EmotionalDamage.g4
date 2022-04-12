@@ -10,7 +10,7 @@ println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
 returnstmt: 'return' numexpr;
 func: rettype id'('parameters?')' block;
 gradfunc: 'autograd' id'('parameters?')' '{'numexpr'}';
-rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
+rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']' | 'Value';
 parameters: parameter (','parameters)?;
 parameter: (numtypes | 'string'| matrixparameter | arrparameter)':' id;
 matrixparameter: numtypes'['(val)','(val)']';
