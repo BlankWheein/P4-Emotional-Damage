@@ -55,7 +55,7 @@
         }
         public Value Times( Value other)
         {
-            Value? _out = new(data * other.data, new List<Value>() { this, other }, "*");
+            Value? _out = new(this.data * other.data, new List<Value>() { this, other }, "*");
             _out._backwards = () =>
             {
                 this.grad += other.data * _out.grad;
