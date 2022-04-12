@@ -28,6 +28,7 @@ namespace Compiler.SymbolTableFolder
         Float,
         Reserved,
         Void,
-        String
+        String,
+        Bool
     }
 }
