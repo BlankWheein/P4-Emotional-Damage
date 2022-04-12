@@ -10,13 +10,7 @@ namespace Compiler
     public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
     {
         public List<Exception> Diagnostics {get; set; }
-        private RootSymbolTable _scope = new();
-        public RootSymbolTable Scope {get => _scope; set
-            {
-                if (value != null)
-                    _scope = value;
-            }
-        }
+        public RootSymbolTable Scope {get; set; }
         public ScopeVisitor(){
             this.Scope = new RootSymbolTable();
             Diagnostics = Scope.Diagnostics;
@@ -68,22 +62,16 @@ namespace Compiler
                 VisitReturnstmt(context.returnstmt());
             }
             else if(context.iterative()!=null){
-                Scope.Allocate();
                 VisitIterative(context.iterative());
-                Scope.ExitScope();
             }
             else if(context.selective() != null){
                 VisitSelective(context.selective());
             }
             else if(context.func() != null){
-                Scope.Allocate();
                 VisitFunc(context.func());
-                Scope.ExitScope();
             }
             else if(context.gradfunc() != null){
-                Scope.Allocate();
                 VisitGradfunc(context.gradfunc());
-                Scope.ExitScope();
             }
             return false;
         }
@@ -116,6 +104,7 @@ namespace Compiler
         }
         public override object VisitFunc(FuncContext context)
         {
+            Scope.Allocate();
             VisitRettype(context.rettype());
             VisitId(context.id());
             if(context.parameters() != null){
@@ -123,16 +112,32 @@ namespace Compiler
               VisitParameters(context.parameters());  
             }
             VisitBlock(context.block());
+            Scope.ExitScope();
             return false;
         }
         public override object VisitGradfunc(GradfuncContext context)
         {
+            var id = context.id();
+            var s = SymbolType.Reserved;
+            switch (context.rettype().GetText())
+            {
+                case "void":
+                    s = SymbolType.Void; break;
+                case "string":
+                    s = SymbolType.String; break;
+                case "int":
+                    s = SymbolType.Int; break;
+                case "float":
+                    s = SymbolType.Float; break;
+                default: break;
+            }
+            Scope.Allocate();
             VisitRettype(context.rettype());
-            VisitId(context.id());
             if(context.parameters() != null){
                 VisitParameters(context.parameters());
             }
             VisitBlock(context.block());
+            Scope.ExitScope();
             return false;
         }
         public override object VisitRettype(RettypeContext context)
@@ -261,15 +266,23 @@ namespace Compiler
             return false;
         }
         public override object VisitIntmatrixdcl(IntmatrixdclContext context){
+            var id = context.id().GetText();
+            var s = SymbolType.Int;
+            bool isInitialized = false;
             foreach(var v in context.val()){
                 VisitVal(v);
             }
             VisitId(context.id());
             if(context.matrixarrexpr() != null){
                 VisitMatrixarrexpr(context.matrixarrexpr());
+                isInitialized = true;
             }
             else if(context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
+                isInitialized = true;
+            }
+            if(Scope.LookUp(id) == null){
+                Scope.Insert(s, id, isInitialized);
             }
             return false;
         }
@@ -415,18 +428,22 @@ namespace Compiler
         }
         public override object VisitForstmt(ForstmtContext context)
         {
+            Scope.Allocate();
             if(context.intdcl() != null){
                 VisitIntdcl(context.intdcl());
             }
             VisitBexpr(context.bexpr());
             VisitUnaryoperator(context.unaryoperator());
             VisitBlock(context.block());
+            Scope.ExitScope();
             return false;
         }
         public override object VisitWhilestmt(WhilestmtContext context)
         {
+            Scope.Allocate();
             VisitBexpr(context.bexpr());
             VisitBlock(context.block());
+            Scope.ExitScope();
             return false;
         }
         public override object VisitRandom(RandomContext context)

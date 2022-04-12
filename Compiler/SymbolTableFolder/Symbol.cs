@@ -26,6 +26,8 @@ namespace Compiler.SymbolTableFolder
     {
         Int,
         Float,
-        Reserved
+        Reserved,
+        Void,
+        String
     }
 }
