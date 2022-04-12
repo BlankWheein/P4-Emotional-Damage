@@ -80,18 +80,12 @@ namespace Compiler
             if(context.bexpr() != null){
                 VisitBexpr(context.bexpr());
             }
-            else{
-                context.STRING_CONSTANT();
-            }
             return false;
         }
         public override object VisitPrintln(PrintlnContext context)
         {
             if(context.bexpr() != null){
                 VisitBexpr(context.bexpr());
-            }
-            else{
-                context.STRING_CONSTANT();
             }
             return false;
         }
@@ -157,9 +151,7 @@ namespace Compiler
             if (context.parameters() != null){
                     VisitParameters(context.parameters());
             }
-            
-                VisitParameter(context.parameter());
-            
+            VisitParameter(context.parameter());
             return false;
         }
         public override object VisitParameter(ParameterContext context){

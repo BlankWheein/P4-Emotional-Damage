@@ -1,4 +1,4 @@
-﻿void kage(int kage, float[5, 5] kage2, int[2] kage45) {
+﻿autograd float kage(int kage, float[5, 5] kage2, int[2] kage45) {
 	int[5] kage2 = kage;
 	float ice2 = ice;
 
