@@ -120,7 +120,6 @@ namespace Compiler
             }
             Scope.Allocate();
             VisitRettype(context.rettype());
-            VisitId(context.id());
             if(context.parameters() != null){
                
               VisitParameters(context.parameters());  
@@ -212,7 +211,7 @@ namespace Compiler
         }
         public override object VisitIntdcl(IntdclContext context)
         {
-            VisitId(context.id());
+            var id =context.id().GetText();
             if (context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
             }
