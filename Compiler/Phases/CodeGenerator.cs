@@ -91,6 +91,30 @@ namespace Compiler.Phases
 
             return false;
         }
-        
+
+        public override object VisitGraddcl([NotNull] GraddclContext context)
+        {
+            var id = context.gradfunccall().id();
+
+            string s = $"Value {context.id().GetText()} = {id.First().GetText()}(";
+
+            if (id.Length == 1)
+                s += $");";
+            else if (id.Length == 2)
+                s += $"{id.Last()});";
+            else
+            {
+                for(int i = 1; i < id.Length-1; i++)
+                {
+                    s += $"{id[i]}, ";
+                }
+                s = s[0..^2];
+                s += $");";
+            }
+
+            AddStmt(s);
+
+            return false;
+        }
     }
 }

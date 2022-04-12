@@ -2,3 +2,5 @@
 autograd kage(int:x, int:y) {
 	x * 2 + 3 + y
 }
+
+Value k = kage(2,4);
