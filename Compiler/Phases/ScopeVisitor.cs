@@ -212,8 +212,14 @@ namespace Compiler
         public override object VisitIntdcl(IntdclContext context)
         {
             var id =context.id().GetText();
+            var s = SymbolType.Int;
+            bool isInitialized = false;
             if (context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
+                isInitialized = true;
+            }
+            if (Scope.LookUp(id) == null){
+                Scope.Insert(s, id,isInitialized);
             }
             return false;
         }
