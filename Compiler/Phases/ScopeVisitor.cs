@@ -463,6 +463,42 @@ namespace Compiler
             }
             return false;
         }
-
+        public override object VisitUnaryoperator(UnaryoperatorContext context)
+        {
+            VisitId(context.id());
+            return false;
+        }
+        public override object VisitVal(ValContext context){
+            if(context.num() != null){
+                VisitNum(context.num());
+            }
+            else if(context.id() != null){
+                VisitId(context.id());
+                if(context.val() != null){
+                    foreach (var v in context.val()){
+                        VisitVal(v);
+                    }
+                }
+            }
+            else if(context.funccall() != null){
+                VisitFunccall(context.funccall());
+            }
+            else if(context.gradfunccall() != null){
+                VisitGradfunccall(context.gradfunccall());
+            }
+            return false;
+        }
+        public override object VisitFunccall(FunccallContext context){ 
+            foreach(var i in context.id()){
+                VisitId(i);
+            }
+            return false;
+        }
+        public override object VisitGradfunccall(GradfunccallContext context){ 
+            foreach(var i in context.id()){
+                VisitId(i);
+            }
+            return false;
+        }
     }
 }
