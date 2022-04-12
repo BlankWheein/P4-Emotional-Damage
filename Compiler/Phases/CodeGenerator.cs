@@ -57,5 +57,11 @@ namespace Compiler.Phases
             AddStmt(ting);
             return false;
         }
+        public override object VisitGradfunc([NotNull] GradfuncContext context)
+        {
+            string text = $"Value {context.id().GetText()}({context.parameters().GetText()}) {{ }}";
+            AddStmt(text);
+            return false;
+        }
     }
 }

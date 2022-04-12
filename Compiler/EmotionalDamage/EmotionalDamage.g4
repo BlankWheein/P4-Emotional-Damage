@@ -7,7 +7,7 @@ stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | prin
      | ( iterative | selective | func | gradfunc);
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
-returnstmt: 'return' val;
+returnstmt: 'return' numexpr;
 func: rettype id'('parameters?')' block;
 gradfunc: 'autograd' id'('parameters?')' block;
 rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
