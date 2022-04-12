@@ -418,7 +418,18 @@ namespace Compiler
         }
         public override object VisitForstmt(ForstmtContext context)
         {
-            
+            if(context.intdcl() != null){
+                VisitIntdcl(context.intdcl());
+            }
+            VisitBexpr(context.bexpr());
+            VisitUnaryoperator(context.unaryoperator());
+            VisitBlock(context.block());
+            return false;
+        }
+        public override object VisitWhilestmt(WhilestmtContext context)
+        {
+            VisitBexpr(context.bexpr());
+            VisitBlock(context.block());
             return false;
         }
         public override object VisitNumexpr(NumexprContext context)
