@@ -15,7 +15,7 @@ parameters: parameter (','parameters)?;
 parameter: (numtypes | 'string'| matrixparameter | arrparameter)':' id;
 matrixparameter: numtypes'['(val)','(val)']';
 arrparameter: numtypes'['(val)']';
-
+graddcl: 'Value' id '=' gradfunccall;
 intdcl: 'int' id ('=' numexpr)?;
 floatdcl: 'float' id ('=' numexpr)?;
 
@@ -97,7 +97,7 @@ val: id
       | gradfunccall
       ;
 funccall: id'('(id (','id)*)?')';
-gradfunccall: id'('(id (','id)*)?')''.backwards';
+gradfunccall: id'('(id (','id)*)?')';
 
 id: ID;
 num: Inum | Fnum | Dnum;

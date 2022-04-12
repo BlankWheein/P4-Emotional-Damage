@@ -116,6 +116,12 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
