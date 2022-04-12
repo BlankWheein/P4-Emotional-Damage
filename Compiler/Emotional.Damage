@@ -6,5 +6,7 @@ int x = 2;
 int y = 4;
 
 Value k = kage(x, y);
-Value k3 = kage(x, 2);
-Value k2 = kage(y, x);
+
+println(k.Result.data);
+println("{k.Grad[0].grad} - {k.Grad[0].data}");
+println("{k.Grad[1].grad} - {k.Grad[1].data}");

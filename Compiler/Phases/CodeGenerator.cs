@@ -53,6 +53,35 @@ namespace Compiler.Phases
         {
             Stmts.Add(() => AddText(v, newline, indent));
         }
+        public override object VisitPrintln([NotNull] PrintlnContext context)
+        {
+            string text = "Console.WriteLine(";
+            if (context.STRING_CONSTANT() != null)
+            {
+                text += "$";
+                text += context.STRING_CONSTANT().GetText();
+            }
+            else
+                text += context.bexpr().GetText();
+            text += ");";
+            AddStmt(text);
+
+            return base.VisitPrintln(context);
+        }
+        public override object VisitPrint([NotNull] PrintContext context)
+        {
+            string text = "Console.Write(";
+            if (context.STRING_CONSTANT() != null)
+            {
+                text += "$";
+                text += context.STRING_CONSTANT().GetText();
+            }
+            else
+                text += context.bexpr().GetText();
+            text += ");";
+            AddStmt(text);
+            return base.VisitPrint(context);
+        }
         public override object VisitIntdcl([NotNull] IntdclContext context)
         {
             string ting = context.numexpr() == null ? $"int {context.id().GetText()};" : $"int {context.id().GetText()} = {context.numexpr().GetText()};";
@@ -61,7 +90,7 @@ namespace Compiler.Phases
         }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
         {
-            string text = $"IEnumerable<Value> {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
+            string text = $"ValueContainer {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
             AddStmt(text, newline: false);
             AddStmt(" {", indent: false);
             Increment();
@@ -74,18 +103,22 @@ namespace Compiler.Phases
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
-                {
-                    res = res.Replace(p.ToString(), $"_{p}");
-                }
+                    res = res.Replace(p.ToString(), $" _{p} ");
+                else if (!char.IsDigit(p))
+                    res = res.Replace(p.ToString(), $" {p} ");
             });
+            res = res.Replace("  ", " ");
             AddStmt("Value _res = " + res + ";");
             AddStmt("_res.backward();");
-            AddStmt("yield return _res;");
+            string ValContainer = $"return new ValueContainer(_res, new List<Value>() {{ ";
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
-                    AddStmt($"yield return _{p};");
+                    ValContainer += $"_{p}, ";
             });
+            ValContainer = ValContainer[0..^2];
+            ValContainer += " });";
+            AddStmt(ValContainer);
             Decrement();
             AddStmt("}");
 
@@ -95,7 +128,6 @@ namespace Compiler.Phases
         public override object VisitGraddcl([NotNull] GraddclContext context)
         {
             var val = context.gradfunccall().val();
-
             string s = $"var {context.id().GetText()} = {context.gradfunccall().id().GetText()}(";
             for(int i = 0; i < val.Length; i++)
                 s += $"{val[i].GetText()}, ";

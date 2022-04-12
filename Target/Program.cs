@@ -1,16 +1,15 @@
 using AutoGrad;
 
-IEnumerable<Value> kage(int x,int y) {
+ValueContainer kage(int x,int y) {
     Value _x = new(x);
     Value _y = new(y);
-    Value _res = _x*2/10+_y*5;
+    Value _res =  _x  * 2 / 10 + _y  * 5;
     _res.backward();
-    yield return _res;
-    yield return _x;
-    yield return _y;
+    return new ValueContainer(_res, new List<Value>() { _x, _y });
 }
 int x = 2;
 int y = 4;
 var k = kage(x, y);
-var k3 = kage(x, 2);
-var k2 = kage(y, x);
+Console.WriteLine(k.Result.data);
+Console.WriteLine($"{k.Grad[0].grad} - {k.Grad[0].data}");
+Console.WriteLine($"{k.Grad[1].grad} - {k.Grad[1].data}");

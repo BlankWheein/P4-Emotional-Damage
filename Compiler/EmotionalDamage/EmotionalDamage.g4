@@ -95,6 +95,8 @@ val: id
       | id'.len'
       | funccall
       | gradfunccall
+      | id'.''Result.data'
+      | id'.Grad''['val']'('.data' | '.grad')+
       ;
 funccall: id'('(id (','id)*)?')';
 gradfunccall: id'('(val (','val)*)?')';
