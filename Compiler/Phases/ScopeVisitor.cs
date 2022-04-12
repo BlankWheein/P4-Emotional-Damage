@@ -3,6 +3,7 @@ using Compiler.SymbolTableFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Antlr4.Runtime.Misc;
 
 namespace Compiler
 {
@@ -414,6 +415,11 @@ namespace Compiler
                 VisitWhilestmt(context.whilestmt());
             }
             return false; 
+        }
+        public override object VisitForstmt(ForstmtContext context)
+        {
+            
+            return false;
         }
         public override object VisitNumexpr(NumexprContext context)
         {
