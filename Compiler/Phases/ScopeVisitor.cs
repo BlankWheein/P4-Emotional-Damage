@@ -98,20 +98,36 @@ namespace Compiler
         }
         public override object VisitFunc(FuncContext context)
         {
+            var id = context.id().GetText();
+            var s = SymbolType.Reserved;
+            switch (context.rettype().GetText())
+            {
+                case "void":
+                    s = SymbolType.Void; break;
+                case "string":
+                    s = SymbolType.String; break;
+                case "int":
+                    s = SymbolType.Int; break;
+                case "float":
+                    s = SymbolType.Float; break;
+                default: break;
+            }
             Scope.Allocate();
             VisitRettype(context.rettype());
-            VisitId(context.id());
             if(context.parameters() != null){
                
               VisitParameters(context.parameters());  
             }
             VisitBlock(context.block());
             Scope.ExitScope();
+            if(Scope.LookUp(id) == null){
+                Scope.Insert(s, id, true);
+            }
             return false;
         }
         public override object VisitGradfunc(GradfuncContext context)
         {
-            var id = context.id();
+            var id = context.id().GetText();
             var s = SymbolType.Reserved;
             switch (context.rettype().GetText())
             {
@@ -132,6 +148,9 @@ namespace Compiler
             }
             VisitBlock(context.block());
             Scope.ExitScope();
+            if(Scope.LookUp(id) == null){
+                Scope.Insert(s, id, true);
+            }
             return false;
         }
         public override object VisitRettype(RettypeContext context)
@@ -184,9 +203,15 @@ namespace Compiler
         }
         public override object VisitIntdcl(IntdclContext context)
         {
-            VisitId(context.id());
+            var id =context.id().GetText();
+            var s = SymbolType.Int;
+            bool isInitialized = false;
             if (context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
+                isInitialized = true;
+            }
+            if (Scope.LookUp(id) == null){
+                Scope.Insert(s, id,isInitialized);
             }
             return false;
         }
