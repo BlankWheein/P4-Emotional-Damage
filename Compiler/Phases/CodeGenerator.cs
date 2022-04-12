@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Misc;
 using Compiler.SymbolTableFolder;
 using System.Text;
+using System.Linq;
 using static EmotionalDamageParser;
 
 namespace Compiler.Phases
@@ -16,16 +17,17 @@ namespace Compiler.Phases
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
+            AddStmt("using AutoGrad;\n");
         }
         #region Indent
         public string Indent = "";
         public void Increment()
         {
-            Indent += "    ";
+            Stmts.Add(() => Indent += "    ");
         }
         public void Decrement()
         {
-            Indent = Indent[0..^4];
+            Stmts.Add(() => Indent = Indent[0..^4]);
         }
         #endregion
 
@@ -59,19 +61,29 @@ namespace Compiler.Phases
         }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
         {
-            string text = $"Value{context.id().GetText()}({context.parameters().GetText()})";
+            string text = $"Value {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
             AddStmt(text, newline: false);
             AddStmt(" {", indent: false);
             Increment();
-            VisitBlock(context.block());
-            AddStmt("}");
+            string expr = "return (";
+            context.numexpr().GetText().ToList().ForEach(p =>
+            {
+                if (char.IsLetter(p))
+                {
+                    expr += $"new Value({p})";
+                } else
+                {
+                    expr += p;
+                }
+                expr += " ";
+            });
+            expr = expr[0..^1];
+            AddStmt(expr + ").backward();");
             Decrement();
+            AddStmt("}");
 
             return false;
         }
-        public void VisitGradBlock()
-        {
-
-        }
+        
     }
 }
