@@ -308,10 +308,7 @@ namespace Compiler
                     VisitId(i);
                 }
             }
-            if(context.val() != null){
-                VisitVal(context.val());
-            }
-            else if(context.matrixtranspose() != null){
+            if(context.matrixtranspose() != null){
                 VisitMatrixtranspose(context.matrixtranspose());
             }
             else if(context.matrixinverse() != null){

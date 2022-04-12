@@ -34,12 +34,9 @@ matrixupdate: (id '=' (numexpr | matrixarrexpr))
             | id'[' '*' ','val']' '=' numexpr
             ;
 matrixarrexpr: id '.' id
-      | id '*' val
-      | id ('+' | '-') val
       | matrixtranspose'('id')'
       | matrixinverse'('id')'
       | 'toMatrix''('id')'
-      | val
       ; 
 arrexpr: 'toArray''('id')';
 matrixtranspose: 'T';
