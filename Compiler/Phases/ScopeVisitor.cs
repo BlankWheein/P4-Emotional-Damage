@@ -112,6 +112,9 @@ namespace Compiler
                     s = SymbolType.Float; break;
                 default: break;
             }
+            if(Scope.LookUp(id) == null){
+                Scope.Insert(s, id, true);
+            }
             Scope.Allocate();
             VisitRettype(context.rettype());
             if(context.parameters() != null){
@@ -120,9 +123,6 @@ namespace Compiler
             }
             VisitBlock(context.block());
             Scope.ExitScope();
-            if(Scope.LookUp(id) == null){
-                Scope.Insert(s, id, true);
-            }
             return false;
         }
         public override object VisitGradfunc(GradfuncContext context)
@@ -211,7 +211,7 @@ namespace Compiler
                 isInitialized = true;
             }
             if (Scope.LookUp(id) == null){
-                Scope.Insert(s, id,isInitialized);
+                Scope.Insert(s, id, isInitialized);
             }
             return false;
         }
