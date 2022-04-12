@@ -9,7 +9,7 @@ print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
 returnstmt: 'return' val;
 func: rettype id'('parameters?')' block;
-gradfunc: 'autograd' rettype id'('parameters?')' block;
+gradfunc: 'autograd' id'('parameters?')' block;
 rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
 parameters: parameter (','parameters)?;
 parameter: (numtypes | 'string'| matrixparameter | arrparameter) id;
