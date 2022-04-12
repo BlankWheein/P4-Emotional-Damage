@@ -8,20 +8,19 @@
         public string _op;
         public Action? _backwards;
         public List<Value> prev;
-        public List<Value> topo = new();
-        public List<Value> visited = new();
+        public List<Value> topo;
+        public List<Value> visited;
         public float grad { get; set; }
 
         public Value(float data, IEnumerable<Value>? _children = null, string _op = "")
         {
-            if (_children == null)
-                _children = new List<Value>();
             grad = 0;
             this.data = data;
             this._op = _op;
             Id = counter++;
             _backwards = null;
             prev = new();
+            if(_children != null)
             foreach (var child in _children.Reverse())
                 prev.Add(child);
         }
@@ -68,21 +67,17 @@
         public Value Pow(int v) => Pow((float)v);
         public Value Pow(float other)
         {
-            Value? _out = new((float)Math.Pow(data, other), new List<Value>() { this }, $"**{other}");
+            Value? _out = new(MathF.Pow(data, other), new List<Value>() { this }, $"**{other}");
             _out._backwards = () =>
             {
-                this.grad += (other * MathF.Pow(this.data, other -1.0f)) * _out.grad + 0.0f;
+                this.grad += (other * MathF.Pow(this.data, other -1.0f)) * _out.grad;
             };
 
             return _out;
         }
         public Value relu()
         {
-            Value? _out;
-            if (data < 0)
-                _out = new(0, new List<Value>() { this }, "ReLU");
-            else
-                _out = new(data, new List<Value>() { this }, "ReLU");
+            Value? _out = new(data < 0 ? 0 : data, new List<Value>() { this }, "ReLU");
             _out._backwards = () =>
             {
                 if (_out.data > 0)
@@ -91,21 +86,24 @@
             return _out;
         }
         
-        public void build_topo(Value v)
-        {
-            if (!visited.Contains(v))
-            {
-                visited.Add(v);
-                foreach (Value child in v.prev)
-                    build_topo(child);
-                topo.Add(v);
-            }
-        }
+        
         public void backward()
         {
+            topo = new();
+            visited = new();
+            void build_topo(Value v)
+            {
+                if (!visited.Contains(v))
+                {
+                    visited.Add(v);
+                    foreach (Value child in v.prev)
+                        build_topo(child);
+                    topo.Add(v);
+                }
+            }
             build_topo(this);
             grad = 1.0f;
-            foreach (var v in topo.Reverse<Value>())
+            foreach (Value v in topo.Reverse<Value>())
                 if (v?._backwards != null)
                     v?._backwards();
         }
