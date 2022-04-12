@@ -545,9 +545,9 @@ namespace Compiler
             return false;
         }
         public override object VisitGradfunccall(GradfunccallContext context){ 
-            foreach(var i in context.id()){
-                VisitId(i);
-            }
+            //foreach(var i in context.id()){
+            //    VisitId(i);
+            //}
             return false;
         }
     }

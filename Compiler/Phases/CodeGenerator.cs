@@ -94,26 +94,15 @@ namespace Compiler.Phases
 
         public override object VisitGraddcl([NotNull] GraddclContext context)
         {
-            var id = context.gradfunccall().id();
+            var val = context.gradfunccall().val();
 
-            string s = $"Value {context.id().GetText()} = {id.First().GetText()}(";
-
-            if (id.Length == 1)
-                s += $");";
-            else if (id.Length == 2)
-                s += $"{id.Last()});";
-            else
-            {
-                for(int i = 1; i < id.Length-1; i++)
-                {
-                    s += $"{id[i]}, ";
-                }
-                s = s[0..^2];
-                s += $");";
-            }
-
+            string s = $"var {context.id().GetText()} = {context.gradfunccall().id().GetText()}(";
+            for(int i = 0; i < val.Length; i++)
+                s += $"{val[i].GetText()}, ";
+            if (val.Length > 0)
+            s = s[0..^2];
+            s += ");";
             AddStmt(s);
-
             return false;
         }
     }

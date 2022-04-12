@@ -4252,11 +4252,14 @@ public partial class EmotionalDamageParser : Parser {
 	}
 
 	public partial class GradfunccallContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public IdContext[] id() {
-			return GetRuleContexts<IdContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public IdContext id() {
+			return GetRuleContext<IdContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public IdContext id(int i) {
-			return GetRuleContext<IdContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public ValContext[] val() {
+			return GetRuleContexts<ValContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ValContext val(int i) {
+			return GetRuleContext<ValContext>(i);
 		}
 		public GradfunccallContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4296,10 +4299,10 @@ public partial class EmotionalDamageParser : Parser {
 			State = 590;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==ID) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__36) | (1L << Inum) | (1L << Fnum) | (1L << Dnum) | (1L << ID))) != 0)) {
 				{
 				State = 582;
-				id();
+				val();
 				State = 587;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
@@ -4309,7 +4312,7 @@ public partial class EmotionalDamageParser : Parser {
 					State = 583;
 					Match(T__13);
 					State = 584;
-					id();
+					val();
 					}
 					}
 					State = 589;
@@ -5014,8 +5017,8 @@ public partial class EmotionalDamageParser : Parser {
 		'\x243', '\x244', '\x3', '\x2', '\x2', '\x2', '\x244', '\x245', '\a', 
 		'\b', '\x2', '\x2', '\x245', 'g', '\x3', '\x2', '\x2', '\x2', '\x246', 
 		'\x247', '\x5', 'j', '\x36', '\x2', '\x247', '\x250', '\a', '\a', '\x2', 
-		'\x2', '\x248', '\x24D', '\x5', 'j', '\x36', '\x2', '\x249', '\x24A', 
-		'\a', '\x10', '\x2', '\x2', '\x24A', '\x24C', '\x5', 'j', '\x36', '\x2', 
+		'\x2', '\x248', '\x24D', '\x5', '\x64', '\x33', '\x2', '\x249', '\x24A', 
+		'\a', '\x10', '\x2', '\x2', '\x24A', '\x24C', '\x5', '\x64', '\x33', '\x2', 
 		'\x24B', '\x249', '\x3', '\x2', '\x2', '\x2', '\x24C', '\x24F', '\x3', 
 		'\x2', '\x2', '\x2', '\x24D', '\x24B', '\x3', '\x2', '\x2', '\x2', '\x24D', 
 		'\x24E', '\x3', '\x2', '\x2', '\x2', '\x24E', '\x251', '\x3', '\x2', '\x2', 
