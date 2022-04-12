@@ -129,20 +129,7 @@ namespace Compiler
         {
             var id = context.id().GetText();
             var s = SymbolType.Reserved;
-            switch (context.rettype().GetText())
-            {
-                case "void":
-                    s = SymbolType.Void; break;
-                case "string":
-                    s = SymbolType.String; break;
-                case "int":
-                    s = SymbolType.Int; break;
-                case "float":
-                    s = SymbolType.Float; break;
-                default: break;
-            }
             Scope.Allocate();
-            VisitRettype(context.rettype());
             if(context.parameters() != null){
                 VisitParameters(context.parameters());
             }
@@ -217,31 +204,46 @@ namespace Compiler
         }
         public override object VisitFloatdcl(FloatdclContext context)
         {
-            VisitId(context.id());
+            var id = context.id().GetText();
+            var s = SymbolType.Float;
+            bool isInitialized = false;
             if (context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
+                isInitialized = true;
             }
+            if (Scope.LookUp(id) == null)
+                Scope.Insert(s, id, isInitialized);
             return false;
         }
         public override object VisitIntarrdcl(IntarrdclContext context)
         {
-            VisitId(context.id());
-            if(context.val() != null){
+            var id = context.id().GetText();
+            var s = SymbolType.Int;
+            bool isInitialized = false;
+            if (context.val() != null){
                 foreach (var v in context.val())
                 {
                     VisitVal(v);
                 }
+                isInitialized = true;
             }
+            if (Scope.LookUp(id) == null)
+                Scope.Insert(s, id, isInitialized);
             return false;
         }
         public override object VisitFloatarrdcl(FloatarrdclContext context){
-            VisitId(context.id());
-            if(context.val() != null){
+            var id = context.id().GetText();
+            var s = SymbolType.Float;
+            bool isInitialized = false;
+            if (context.val() != null){
                 foreach (var v in context.val())
                 {
                     VisitVal(v);
                 }
+                isInitialized = true;
             }
+            if (Scope.LookUp(id) == null)
+                Scope.Insert(s, id, isInitialized);
             return false;
         }
         public override object VisitArrupdate(ArrupdateContext context){
@@ -304,16 +306,22 @@ namespace Compiler
             return false;
         }
         public override object VisitFloatmatrixdcl(FloatmatrixdclContext context){
+            var id = context.id().GetText();
+            var f = SymbolType.Float;
+            bool isInitialized = false;
             foreach(var v in context.val()){
                 VisitVal(v);
             }
-            VisitId(context.id());
             if(context.matrixarrexpr() != null){
                 VisitMatrixarrexpr(context.matrixarrexpr());
+                isInitialized = true;
             }
             else if(context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
+                isInitialized = true;
             }
+            if (Scope.LookUp(id) == null)
+                Scope.Insert(f, id, isInitialized);
             return false;
         }
         public override object VisitMatrixupdate(MatrixupdateContext context){
@@ -381,24 +389,35 @@ namespace Compiler
         }
         public override object VisitBoolupdate(BoolupdateContext context)
         {
-            VisitId(context.id());
-            if(context.bexpr() != null){
-                VisitBexpr(context.bexpr());
-            }
-            else if(context.boolval() != null){
-                VisitBoolval(context.boolval());
+            var id = context.id().GetText();
+            if (Scope.LookUp(id) != null)
+            {
+                if (context.bexpr() != null)
+                {
+                    VisitBexpr(context.bexpr());
+                }
+                else if (context.boolval() != null)
+                {
+                    VisitBoolval(context.boolval());
+                }
             }
             return false;
         }
         public override object VisitBooldcl(BooldclContext context)
         {
-            VisitId(context.id());
-            if(context.bexpr() != null){
+            var id = context.id().GetText();
+            var s = SymbolType.Bool;
+            bool isInitialized = false;
+            if (context.bexpr() != null){
                 VisitBexpr(context.bexpr());
+                isInitialized = true;
             }
             else if(context.boolval() != null){
                 VisitBoolval(context.boolval());
+                isInitialized = true;
             }
+            if (Scope.LookUp(id) == null)
+                Scope.Insert(s, id, isInitialized);
             return false;
         }
         public override object VisitSelective(SelectiveContext context){
