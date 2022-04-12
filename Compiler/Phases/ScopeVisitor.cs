@@ -432,6 +432,14 @@ namespace Compiler
             VisitBlock(context.block());
             return false;
         }
+        public override object VisitRandom(RandomContext context)
+        {
+            foreach (var item in context.val())
+            {
+                VisitVal(item);
+            }
+            return false;
+        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){
@@ -441,6 +449,18 @@ namespace Compiler
                 return false;
             }
             VisitVal(context.val());
+            return false;
+        }
+        public override object VisitBexpr(BexprContext context){ 
+            if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
+            }
+            if(context.bexpr() != null){
+                foreach (var b in context.bexpr())
+                {
+                    VisitBexpr(b);
+                }
+            }
             return false;
         }
 
