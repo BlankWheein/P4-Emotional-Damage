@@ -293,11 +293,11 @@ namespace Compiler
                     VisitVal(v);
                 }
             }
-            if(context.numexpr() != null){
-                VisitNumexpr(context.numexpr());
-            }
-            else if(context.matrixarrexpr() != null){
+            if(context.matrixarrexpr() != null){
                 VisitMatrixarrexpr(context.matrixarrexpr());
+            }
+            else if(context.numexpr() != null){
+                VisitNumexpr(context.numexpr());
             }
             return false;
         }
