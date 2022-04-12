@@ -72,7 +72,7 @@ public partial class EmotionalDamageLexer : Lexer {
 
 	private static readonly string[] _LiteralNames = {
 		null, "'{'", "'}'", "';'", "'print'", "'('", "')'", "'println'", "'return'", 
-		"'autograd'", "'string'", "'void'", "'['", "']'", "','", "' '", "'int'", 
+		"'autograd'", "'string'", "'void'", "'['", "']'", "','", "':'", "'int'", 
 		"'='", "'float'", "'*'", "'.'", "'toMatrix'", "'toArray'", "'T'", "'~'", 
 		"'bool'", "'true'", "'false'", "'if'", "'elif'", "'else'", "'for'", "'while'", 
 		"'rand'", "'/'", "'+'", "'-'", "'>'", "'<'", "'!'", "'AND'", "'OR'", "'sqrt'", 
@@ -303,7 +303,7 @@ public partial class EmotionalDamageLexer : Lexer {
 		'\xAD', '\xAE', '\a', ']', '\x2', '\x2', '\xAE', '\x1A', '\x3', '\x2', 
 		'\x2', '\x2', '\xAF', '\xB0', '\a', '_', '\x2', '\x2', '\xB0', '\x1C', 
 		'\x3', '\x2', '\x2', '\x2', '\xB1', '\xB2', '\a', '.', '\x2', '\x2', '\xB2', 
-		'\x1E', '\x3', '\x2', '\x2', '\x2', '\xB3', '\xB4', '\a', '\"', '\x2', 
+		'\x1E', '\x3', '\x2', '\x2', '\x2', '\xB3', '\xB4', '\a', '<', '\x2', 
 		'\x2', '\xB4', ' ', '\x3', '\x2', '\x2', '\x2', '\xB5', '\xB6', '\a', 
 		'k', '\x2', '\x2', '\xB6', '\xB7', '\a', 'p', '\x2', '\x2', '\xB7', '\xB8', 
 		'\a', 'v', '\x2', '\x2', '\xB8', '\"', '\x3', '\x2', '\x2', '\x2', '\xB9', 

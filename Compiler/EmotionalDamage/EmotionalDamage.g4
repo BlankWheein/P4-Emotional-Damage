@@ -12,7 +12,7 @@ func: rettype id'('parameters?')' block;
 gradfunc: 'autograd' id'('parameters?')' block;
 rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
 parameters: parameter (','parameters)?;
-parameter: (numtypes | 'string'| matrixparameter | arrparameter)' '? id;
+parameter: (numtypes | 'string'| matrixparameter | arrparameter)':' id;
 matrixparameter: numtypes'['(val)','(val)']';
 arrparameter: numtypes'['(val)']';
 
