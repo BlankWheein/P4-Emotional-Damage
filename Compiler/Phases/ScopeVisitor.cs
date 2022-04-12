@@ -91,9 +91,9 @@ namespace Compiler
         }
         public override object VisitReturnstmt(ReturnstmtContext context)
         {
-            if(context.val() != null){
-                VisitVal(context.val());
-            }
+            //if(context.val() != null){
+            //    VisitVal(context.val());
+            //}
             return false;
         }
         public override object VisitFunc(FuncContext context)
