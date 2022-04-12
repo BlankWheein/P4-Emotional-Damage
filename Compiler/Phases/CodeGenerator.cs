@@ -65,12 +65,11 @@ namespace Compiler.Phases
             AddStmt(text, newline: false);
             AddStmt(" {", indent: false);
             Increment();
-            string expr = "";
             string res = context.numexpr().GetText();
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
-                    expr += $"Value _{p} = new({p});\n";
+                    AddStmt($"Value _{p} = new({p});");
             });
             context.numexpr().GetText().ToList().ForEach(p =>
             {
@@ -79,15 +78,14 @@ namespace Compiler.Phases
                     res = res.Replace(p.ToString(), $"_{p}");
                 }
             });
-            expr += "Value _res = " + res + ";" + "\n";
-            expr += "_res.backward();" + "\n";
-            expr += "yield return _res;\n";
+            AddStmt("Value _res = " + res + ";");
+            AddStmt("_res.backward();");
+            AddStmt("yield return _res;");
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
-                    expr += $"yield return _{p};\n";
+                    AddStmt($"yield return _{p};");
             });
-            AddStmt(expr);
             Decrement();
             AddStmt("}");
 

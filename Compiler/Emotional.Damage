@@ -1,5 +1,4 @@
-﻿autograd float kage(int kage, float[5, 5] kage2, int[2] kage45) {
-	int[5] kage2 = kage;
-	float ice2 = ice;
-
+﻿
+autograd kage(int:x, int:y) {
+	x * 2 + 3 + y
 }
