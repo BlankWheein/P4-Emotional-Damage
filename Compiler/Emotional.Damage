@@ -2,7 +2,9 @@
 autograd kage(int:x, int:y) {
 	x * 2 / 10 + y * 5
 }
+int x = 2;
+int y = 4;
 
-Value k = kage(2);
-Value k3 = kage(4, 2);
-Value k2 = kage();
+Value k = kage(x, y);
+Value k3 = kage(x, 2);
+Value k2 = kage(y, x);

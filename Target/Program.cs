@@ -9,6 +9,8 @@ IEnumerable<Value> kage(int x,int y) {
     yield return _x;
     yield return _y;
 }
-var k = kage(2);
-var k3 = kage(4, 2);
-var k2 = kage();
+int x = 2;
+int y = 4;
+var k = kage(x, y);
+var k3 = kage(x, 2);
+var k2 = kage(y, x);
