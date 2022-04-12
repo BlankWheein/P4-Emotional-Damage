@@ -59,9 +59,19 @@ namespace Compiler.Phases
         }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
         {
-            string text = $"Value {context.id().GetText()}({context.parameters().GetText()}) {{ }}";
-            AddStmt(text);
+            string text = $"Value{context.id().GetText()}({context.parameters().GetText()})";
+            AddStmt(text, newline: false);
+            AddStmt(" {", indent: false);
+            Increment();
+            VisitBlock(context.block());
+            AddStmt("}");
+            Decrement();
+
             return false;
+        }
+        public void VisitGradBlock()
+        {
+
         }
     }
 }
