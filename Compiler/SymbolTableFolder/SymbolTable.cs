@@ -36,6 +36,14 @@ namespace Compiler.SymbolTableFolder
                 Diagnostics.Add(new Exception(id));
             return symbol;
         }
+
+        public Symbol? LookUpExsting(string id)
+        {
+            Symbol? symbol = LookUpHelper(id);
+            if (symbol != null)
+                Diagnostics.Add(new Exception(id + "already exsits"));
+            return symbol;
+        }
         /// <summary>
         /// To lookup <paramref name="id"/> in a symbol table. If it cannot be found it will look in the parent table.
         /// </summary>

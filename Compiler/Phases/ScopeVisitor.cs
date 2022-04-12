@@ -112,7 +112,7 @@ namespace Compiler
                     s = SymbolType.Float; break;
                 default: break;
             }
-            if(Scope.LookUp(id) == null){
+            if(Scope.LookUpExsting(id) == null){
                 Scope.Insert(s, id, true);
             }
             Scope.Allocate();
@@ -135,7 +135,7 @@ namespace Compiler
             }
             VisitBlock(context.block());
             Scope.ExitScope();
-            if(Scope.LookUp(id) == null){
+            if(Scope.LookUpExsting(id) == null){
                 Scope.Insert(s, id, true);
             }
             return false;
@@ -190,14 +190,14 @@ namespace Compiler
         }
         public override object VisitIntdcl(IntdclContext context)
         {
-            var id =context.id().GetText();
+            var id = context.id().GetText();
             var s = SymbolType.Int;
             bool isInitialized = false;
             if (context.numexpr() != null){
                 VisitNumexpr(context.numexpr());
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null){
+            if (Scope.LookUpExsting(id) == null){
                 Scope.Insert(s, id, isInitialized);
             }
             return false;
@@ -211,7 +211,7 @@ namespace Compiler
                 VisitNumexpr(context.numexpr());
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, isInitialized);
             return false;
         }
@@ -227,7 +227,7 @@ namespace Compiler
                 }
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, isInitialized);
             return false;
         }
@@ -242,7 +242,7 @@ namespace Compiler
                 }
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, isInitialized);
             return false;
         }
@@ -300,7 +300,7 @@ namespace Compiler
                 VisitNumexpr(context.numexpr());
                 isInitialized = true;
             }
-            if(Scope.LookUp(id) == null){
+            if(Scope.LookUpExsting(id) == null){
                 Scope.Insert(s, id, isInitialized);
             }
             return false;
@@ -320,7 +320,7 @@ namespace Compiler
                 VisitNumexpr(context.numexpr());
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(f, id, isInitialized);
             return false;
         }
@@ -390,7 +390,7 @@ namespace Compiler
         public override object VisitBoolupdate(BoolupdateContext context)
         {
             var id = context.id().GetText();
-            if (Scope.LookUp(id) != null)
+            if (Scope.LookUpExsting(id) != null)
             {
                 if (context.bexpr() != null)
                 {
@@ -416,7 +416,7 @@ namespace Compiler
                 VisitBoolval(context.boolval());
                 isInitialized = true;
             }
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, isInitialized);
             return false;
         }

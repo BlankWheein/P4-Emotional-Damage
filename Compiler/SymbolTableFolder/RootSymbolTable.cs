@@ -43,6 +43,7 @@ namespace Compiler.SymbolTableFolder
         public void Insert(Symbol s) => Current?.Insert(s);
         public void Insert(SymbolType type, string id, bool isInitialized) => Current?.Insert(type, id, isInitialized); 
         public Symbol? LookUp(string id) => Current?.LookUp(id);
+        public Symbol? LookUpExsting(string id) => Current?.LookUpExsting(id);
         public void SetInitialized(string id) => Current.SetInitialized(id);
         
     }
