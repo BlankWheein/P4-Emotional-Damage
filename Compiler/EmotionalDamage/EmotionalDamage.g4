@@ -3,7 +3,7 @@ grammar EmotionalDamage;
 prog: stmts EOF;
 stmts: stmt stmts?;
 block: '{'stmts'}';
-stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') 
+stmt: ((matrixassign | numassign | boolassign | arrassign | graddcl | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') 
      | ( iterative | selective | func | gradfunc);
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
