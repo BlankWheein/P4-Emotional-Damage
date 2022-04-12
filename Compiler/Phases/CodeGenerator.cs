@@ -61,24 +61,33 @@ namespace Compiler.Phases
         }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
         {
-            string text = $"Value {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
+            string text = $"IEnumerable<Value> {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
             AddStmt(text, newline: false);
             AddStmt(" {", indent: false);
             Increment();
-            string expr = "return (";
+            string expr = "";
+            string res = context.numexpr().GetText();
+            context.numexpr().GetText().ToList().ForEach(p =>
+            {
+                if (char.IsLetter(p))
+                    expr += $"Value _{p} = new({p});\n";
+            });
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
                 {
-                    expr += $"new Value({p})";
-                } else
-                {
-                    expr += p;
+                    res = res.Replace(p.ToString(), $"_{p}");
                 }
-                expr += " ";
             });
-            expr = expr[0..^1];
-            AddStmt(expr + ").backward();");
+            expr += "Value _res = " + res + ";" + "\n";
+            expr += "_res.backward();" + "\n";
+            expr += "yield return _res;\n";
+            context.numexpr().GetText().ToList().ForEach(p =>
+            {
+                if (char.IsLetter(p))
+                    expr += $"yield return _{p};\n";
+            });
+            AddStmt(expr);
             Decrement();
             AddStmt("}");
 

@@ -127,17 +127,17 @@ namespace Compiler
         }
         public override object VisitGradfunc(GradfuncContext context)
         {
-            var id = context.id().GetText();
-            var s = SymbolType.Reserved;
-            Scope.Allocate();
-            if(context.parameters() != null){
-                VisitParameters(context.parameters());
-            }
-            VisitBlock(context.block());
-            Scope.ExitScope();
-            if(Scope.LookUpExsting(id) == null){
-                Scope.Insert(s, id, true);
-            }
+            //var id = context.id().GetText();
+            //var s = SymbolType.Reserved;
+            //Scope.Allocate();
+            //if(context.parameters() != null){
+            //    VisitParameters(context.parameters());
+            //}
+            //VisitBlock(context.block());
+            //Scope.ExitScope();
+            //if(Scope.LookUpExsting(id) == null){
+            //    Scope.Insert(s, id, true);
+            //}
             return false;
         }
         public override object VisitRettype(RettypeContext context)
