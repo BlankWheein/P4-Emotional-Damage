@@ -1,3 +1,6 @@
 ﻿float[3] kage = 4;
 
 kage[3] = 2;
+
+bool bar = false;
+bool af = 2 == 1;
