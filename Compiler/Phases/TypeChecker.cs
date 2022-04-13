@@ -19,39 +19,12 @@ namespace Compiler.Phases
             Parent = parent;
         }
 
+        public  void EvaluateMatrixDimensions()
+        {
+            
+            Parent.Scope.Diagnostics.Add(new Exception("wrong matrix dimensions"));
 
-
-        //public bool EvaluatePositiveMatrixDimensionsHelper(MatrixassignContext context)
-        //{
-        //    IntmatrixdclContext dclContext = context.intmatrixdcl();
-        //    IntmatrixdclContext dclContext = context.floatmatrixdcl();
-        //    IntmatrixdclContext dclContext = context.intmatrixdcl();
-        //    bool isValid=false;
-        //    if (dclContext != null)
-        //    {
-        //        foreach(ValContext v in dclContext.val())
-        //        {
-
-        //            if (v.num != null)
-        //            {
-        //                if (v.num().Fnum != null)
-        //                {
-        //                    isValid = int.TryParse(v.num().Fnum().GetText(), out int x) && x > 0;
-        //                }
-        //                else if(v.num().Inum != null)
-        //                {
-        //                    isValid = int.TryParse(v.num().Inum().GetText(), out int x) && x > 0; 
-        //                }
-
-        //            }
-        //            if (v.id != null)
-        //            {
-
-        //            }
-        //        }
-        //    }
-
-        //}
+        }
         public override object VisitIntmatrixdcl([NotNull] IntmatrixdclContext context)
         {
             bool isValid = true;
@@ -63,7 +36,7 @@ namespace Compiler.Phases
                 }
                 else if (v.id != null)
                 {
-                    isValid = Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type==SymbolType.PositiveInt;
+                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type==SymbolType.PositiveInt;
                     
                 }
 
@@ -73,12 +46,38 @@ namespace Compiler.Phases
         }
         public override object VisitFloatmatrixdcl([NotNull] FloatmatrixdclContext context)
         {
-            return false;
+            bool isValid = true;
+            context.val().ToList().ForEach(v =>
+            {
+                if (v.num != null)
+                {
+                    isValid &= int.TryParse(v.GetText(), out int x) && x > 0;
+                }
+                else if (v.id != null)
+                {
+                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type == SymbolType.PositiveInt;
+
+                }
+
+            });
+            return isValid;
 
         }
         public override object VisitMatrixupdate([NotNull] MatrixupdateContext context)
         {
-            return false;
+            bool isValid = true;
+            context.val().ToList().ForEach(v =>
+            {
+                if (v.num != null)
+                {
+                    isValid &= int.TryParse(v.GetText(), out int x) && x > 0;
+                }
+                else if (v.id != null)
+                {
+                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type == SymbolType.PositiveInt;
+                }
+            });
+            return isValid;
         }
 
 
