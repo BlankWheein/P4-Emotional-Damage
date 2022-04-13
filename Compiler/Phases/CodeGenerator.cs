@@ -231,5 +231,20 @@ namespace Compiler.Phases
             AddStmt(s);
             return false;
         }
+
+        public override object VisitArrupdate([NotNull] ArrupdateContext context)
+        {
+            // HUSK at ændr type når scope er færdigt
+            // OG implementer id = numexpr | arrexpr
+            string str = "";
+            var content = context.numexpr().GetText();
+            for (int i = 0; i < int.Parse(context.val().GetText()); i++)
+                str += $"{content}, ";
+            str = str[0..^2];
+
+
+            AddStmt($"{context.id().GetText()} = new float[{context.val().GetText()}] {{ {str} }};");
+            return false;
+        }
     }
 }
