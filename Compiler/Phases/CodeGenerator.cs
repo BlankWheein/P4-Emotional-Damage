@@ -203,7 +203,7 @@ namespace Compiler.Phases
             res = res.Replace("  ", " ");
             AddStmt("Value _res = " + res + ";");
             AddStmt("_res.backward();");
-            string ValContainer = $"return new Value[{count + 1}] {{ ";
+            string ValContainer = $"return new Value[{count+1}] {{ ";
             ValContainer += "_res, ";
             context.numexpr().GetText().ToList().ForEach(p =>
             {
@@ -218,18 +218,20 @@ namespace Compiler.Phases
 
             return false;
         }
+
         public override object VisitGraddcl([NotNull] GraddclContext context)
         {
             var val = context.gradfunccall().val();
             string s = $"var {context.id().GetText()} = {context.gradfunccall().id().GetText()}(";
-            for (int i = 0; i < val.Length; i++)
+            for(int i = 0; i < val.Length; i++)
                 s += $"{val[i].GetText()}, ";
             if (val.Length > 0)
-                s = s[0..^2];
+            s = s[0..^2];
             s += ");";
             AddStmt(s);
             return false;
         }
+
         public override object VisitIntarrdcl([NotNull] IntarrdclContext context)
         {
             var size_array = context.val().First().GetText();
@@ -252,9 +254,20 @@ namespace Compiler.Phases
             AddStmt($"float[] {context.id().GetText()} = new float[{size_array}] {{ {content} }};");
             return false;
         }
+
+        public override object VisitArrupdate([NotNull] ArrupdateContext context)
+        {
+            // HUSK at ændr type når scope er færdigt
+            // OG implementer id = numexpr | arrexpr
+            string str = "";
+            var content = context.numexpr().GetText();
+            for (int i = 0; i < int.Parse(context.val().GetText()); i++)
+                str += $"{content}, ";
+            str = str[0..^2];
+
+
+            AddStmt($"{context.id().GetText()} = new float[{context.val().GetText()}] {{ {str} }};");
+            return false;
+        }
     }
-
-    
-
-            
 }
