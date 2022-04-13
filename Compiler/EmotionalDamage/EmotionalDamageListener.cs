@@ -171,6 +171,16 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGraddcl([NotNull] EmotionalDamageParser.GraddclContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

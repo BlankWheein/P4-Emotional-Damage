@@ -3,24 +3,26 @@ grammar EmotionalDamage;
 prog: stmts EOF;
 stmts: stmt stmts?;
 block: '{'stmts'}';
-stmt: ((matrixassign | numassign | boolassign | arrassign | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') | ( iterative | selective | func | gradfunc);
+stmt: ((matrixassign | numassign | boolassign | arrassign | graddcl | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') 
+     | ( iterative | selective | func | gradfunc);
 print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
 println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
-returnstmt: 'return' val;
+returnstmt: 'return' numexpr;
 func: rettype id'('parameters?')' block;
-gradfunc: 'autograd' rettype id'('parameters?')' block;
-rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']';
+gradfunc: 'autograd' id'('parameters?')' '{'numexpr'}';
+rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']' | 'Value';
 parameters: parameter (','parameters)?;
-parameter: (numtypes | 'string'| matrixparameter | arrparameter) id;
+parameter: (numtypes | 'string'| matrixparameter | arrparameter)':' id;
 matrixparameter: numtypes'['(val)','(val)']';
 arrparameter: numtypes'['(val)']';
-
+graddcl: 'Value' id '=' gradfunccall;
 intdcl: 'int' id ('=' numexpr)?;
 floatdcl: 'float' id ('=' numexpr)?;
 
 intarrdcl: 'int''['val']' id ('=' val)?;
 floatarrdcl: 'float''['val']' id ('=' val)?;
-arrupdate: (id '=' (numexpr | arrexpr)) | id'['val']' '=' numexpr;
+arrupdate: (id '=' (numexpr | arrexpr)) 
+            | id'['val']' '=' numexpr;
 arrassign: intarrdcl | floatarrdcl | arrupdate;
 
 matrixassign: intmatrixdcl | floatmatrixdcl | matrixupdate;
@@ -32,12 +34,9 @@ matrixupdate: (id '=' (numexpr | matrixarrexpr))
             | id'[' '*' ','val']' '=' numexpr
             ;
 matrixarrexpr: id '.' id
-      | id '*' val
-      | id ('+' | '-') val
       | matrixtranspose'('id')'
       | matrixinverse'('id')'
       | 'toMatrix''('id')'
-      | val
       ; 
 arrexpr: 'toArray''('id')';
 matrixtranspose: 'T';
@@ -89,7 +88,7 @@ unaryoperator: (id'++' | id'--');
 
 val: id 
       | '-'?num
-      | id'['val']'
+      | id'['val']'('.data' | '.grad')?
       | id'['val','val']'
       | id'.row'
       | id'.col'
@@ -98,7 +97,7 @@ val: id
       | gradfunccall
       ;
 funccall: id'('(id (','id)*)?')';
-gradfunccall: id'('(id (','id)*)?')''.backwards';
+gradfunccall: id'('(val (','val)*)?')';
 
 id: ID;
 num: Inum | Fnum | Dnum;

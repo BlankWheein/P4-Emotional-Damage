@@ -204,6 +204,18 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGraddcl([NotNull] EmotionalDamageParser.GraddclContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
