@@ -10,8 +10,12 @@ float kagda2 = x * 4;
 float kagda3 = 2 * y;
 float kagda4 = x * y;
 
-int kage2(int x) {
+void kage2(int:x) {
 	println(x);
+}
+int kage3(int:x) {
+	println(x);
+	return 3;
 }
 
 if (2 == 1) {

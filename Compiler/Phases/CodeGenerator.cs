@@ -164,12 +164,17 @@ namespace Compiler.Phases
         public override object VisitFunc([NotNull] FuncContext context)
         {
             BlockContext block = context.block();
-            string text = $"{context.rettype().GetText()} {context.id().GetText()} ( {context.parameters().GetText()}) {{";
+            string text = $"{context.rettype().GetText()} {context.id().GetText()} ( {context.parameters().GetText().Replace(":", " ")}) {{";
             AddStmt(text);
             Increment();
             VisitBlock(block);
             Decrement();
             AddStmt("}");
+            return false;
+        }
+        public override object VisitReturnstmt([NotNull] ReturnstmtContext context)
+        {
+            AddStmt($"return {context.numexpr().GetText()};");
             return false;
         }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
