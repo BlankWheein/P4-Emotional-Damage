@@ -208,8 +208,17 @@ namespace Compiler
             return false;
         }
 
-        public void Dispose()
+        public void Dispose(RootSymbolTable current)
         {
+            /* i am thinking it needs to 
+            clear the symbols or variables decarled 
+            within the scope, Something like this*/
+            current.Symbols.Clear(); 
+            /*so we an example would be that a function x takes a parameter y,
+            and with in x a variable g is defined. When this method is called
+            the local name variable g is removed form the symbol table, how ever y 
+            is not, it could also be that it just sets the local variables to
+            be unInitialized, not sure how much space and memory this would save*/
             throw new NotImplementedException();
         }
     }
