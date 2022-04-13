@@ -269,5 +269,16 @@ namespace Compiler.Phases
             AddStmt($"{context.id().GetText()} = new float[{context.val().GetText()}] {{ {str} }};");
             return false;
         }
+
+        public override object VisitBooldcl([NotNull] BooldclContext context)
+        {
+            string? content = context.bexpr()?.GetText();
+            if(content == null) 
+                content = context.boolval().GetText();
+
+            AddStmt($"bool {context.id().GetText()} = {content};");
+            return false;
+        }
+
     }
 }
