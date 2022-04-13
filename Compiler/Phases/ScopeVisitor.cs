@@ -374,8 +374,11 @@ namespace Compiler
             return false;
         }
         public override object VisitNumupdate(NumupdateContext context){ 
-            VisitId(context.id());
-            VisitNumexpr(context.numexpr());    
+            var id = context.id().GetText();
+            if (Scope.LookUp(id)?.IsInitialized == true){
+                
+                VisitNumexpr(context.numexpr());    
+            }
             return false; 
         }
         public override object VisitBoolassign(BoolassignContext context){
@@ -515,7 +518,11 @@ namespace Compiler
         }
         public override object VisitUnaryoperator(UnaryoperatorContext context)
         {
-            VisitId(context.id());
+            if(context.id() != null){
+                if(Scope.LookUp(context.id().GetText())?.IsInitialized == true){
+                    VisitId(context.id());
+                }
+            }
             return false;
         }
         public override object VisitVal(ValContext context){
