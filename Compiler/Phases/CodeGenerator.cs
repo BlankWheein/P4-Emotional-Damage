@@ -234,21 +234,22 @@ namespace Compiler.Phases
         {
             var size_array = context.val().First().GetText();
             var content = "";
-            for(int i = 1; i < context.val().Length; i++)
-                content += context.val()[i].GetText();
-            
-            AddStmt($"var {context.id().GetText()} = new int[{size_array}] = {{ {content} }}");
+            for (int i = 0; i < int.Parse(size_array); i++)
+                content += context.val().Last().GetText() + ", ";
+            content = content[0..^2];
+            AddStmt($"int[] {context.id().GetText()} = new int[{size_array}] {{ {content} }};");
             return false;
         }
 
-        public override object VisitFloatarrdcl([NotNull] IntarrdclContext context)
+        public override object VisitFloatarrdcl([NotNull] FloatarrdclContext context)
         {
             var size_array = context.val().First().GetText();
             var content = "";
-            for(int i = 1; i < context.val().Length; i++)
-                content += context.val()[i].GetText();
-            
-            AddStmt($"var {context.id().GetText()} = new float[{size_array}] = {{ {content} }}");
+            for (int i = 0; i < int.Parse(size_array); i++)
+                content += context.val().Last().GetText() + ", ";
+            content = content[0..^2];
+
+            AddStmt($"float[] {context.id().GetText()} = new float[{size_array}] {{ {content} }};");
             return false;
         }
     }
