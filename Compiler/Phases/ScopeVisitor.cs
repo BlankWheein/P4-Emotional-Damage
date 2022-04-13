@@ -117,7 +117,6 @@ namespace Compiler
             foreach(var v in context.val()){
                 VisitVal(v);
             }
-            VisitId(context.id());
             if(context.matrixarrexpr() != null){
                 VisitMatrixarrexpr(context.matrixarrexpr());
                 isInitialized = true;
