@@ -66,11 +66,11 @@ whilestmt: 'while''('bexpr')'block;
 random: randomtype'rand';
 randomtype: 'F' | 'I';
 numexpr: '('numexpr')'
+    | random
     | sqrt numexpr
     | numexpr (mod | power) numexpr
     | numexpr ('*' | '/') numexpr
     | numexpr ('+' | '-') numexpr
-    | random
     | val
     ;
 bexpr :

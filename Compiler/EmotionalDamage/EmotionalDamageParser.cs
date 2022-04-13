@@ -3477,11 +3477,11 @@ public partial class EmotionalDamageParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public NumexprContext numexpr(int i) {
 			return GetRuleContext<NumexprContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public SqrtContext sqrt() {
-			return GetRuleContext<SqrtContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public RandomContext random() {
 			return GetRuleContext<RandomContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SqrtContext sqrt() {
+			return GetRuleContext<SqrtContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ValContext val() {
 			return GetRuleContext<ValContext>(0);
@@ -3545,19 +3545,19 @@ public partial class EmotionalDamageParser : Parser {
 				Match(T__5);
 				}
 				break;
-			case T__44:
-				{
-				State = 467;
-				sqrt();
-				State = 468;
-				numexpr(6);
-				}
-				break;
 			case T__34:
 			case T__35:
 				{
-				State = 470;
+				State = 467;
 				random();
+				}
+				break;
+			case T__44:
+				{
+				State = 468;
+				sqrt();
+				State = 469;
+				numexpr(5);
 				}
 				break;
 			case T__38:
@@ -3591,7 +3591,7 @@ public partial class EmotionalDamageParser : Parser {
 						_localctx = new NumexprContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_numexpr);
 						State = 474;
-						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
+						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
 						State = 477;
 						ErrorHandler.Sync(this);
 						switch (TokenStream.LA(1)) {
@@ -3611,7 +3611,7 @@ public partial class EmotionalDamageParser : Parser {
 							throw new NoViableAltException(this);
 						}
 						State = 479;
-						numexpr(6);
+						numexpr(5);
 						}
 						break;
 					case 2:
@@ -3619,7 +3619,7 @@ public partial class EmotionalDamageParser : Parser {
 						_localctx = new NumexprContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_numexpr);
 						State = 481;
-						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
+						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
 						State = 482;
 						_la = TokenStream.LA(1);
 						if ( !(_la==T__19 || _la==T__36) ) {
@@ -3630,7 +3630,7 @@ public partial class EmotionalDamageParser : Parser {
 						    Consume();
 						}
 						State = 483;
-						numexpr(5);
+						numexpr(4);
 						}
 						break;
 					case 3:
@@ -3638,7 +3638,7 @@ public partial class EmotionalDamageParser : Parser {
 						_localctx = new NumexprContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_numexpr);
 						State = 484;
-						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
+						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
 						State = 485;
 						_la = TokenStream.LA(1);
 						if ( !(_la==T__37 || _la==T__38) ) {
@@ -3649,7 +3649,7 @@ public partial class EmotionalDamageParser : Parser {
 						    Consume();
 						}
 						State = 486;
-						numexpr(4);
+						numexpr(3);
 						}
 						break;
 					}
@@ -4573,9 +4573,9 @@ public partial class EmotionalDamageParser : Parser {
 	}
 	private bool numexpr_sempred(NumexprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return Precpred(Context, 5);
-		case 1: return Precpred(Context, 4);
-		case 2: return Precpred(Context, 3);
+		case 0: return Precpred(Context, 4);
+		case 1: return Precpred(Context, 3);
+		case 2: return Precpred(Context, 2);
 		}
 		return true;
 	}
@@ -5001,21 +5001,21 @@ public partial class EmotionalDamageParser : Parser {
 		'\x1D1', '\b', '.', '\x1', '\x2', '\x1D1', '\x1D2', '\a', '\a', '\x2', 
 		'\x2', '\x1D2', '\x1D3', '\x5', 'Z', '.', '\x2', '\x1D3', '\x1D4', '\a', 
 		'\b', '\x2', '\x2', '\x1D4', '\x1DB', '\x3', '\x2', '\x2', '\x2', '\x1D5', 
-		'\x1D6', '\x5', '^', '\x30', '\x2', '\x1D6', '\x1D7', '\x5', 'Z', '.', 
-		'\b', '\x1D7', '\x1DB', '\x3', '\x2', '\x2', '\x2', '\x1D8', '\x1DB', 
-		'\x5', 'V', ',', '\x2', '\x1D9', '\x1DB', '\x5', '\x66', '\x34', '\x2', 
-		'\x1DA', '\x1D0', '\x3', '\x2', '\x2', '\x2', '\x1DA', '\x1D5', '\x3', 
-		'\x2', '\x2', '\x2', '\x1DA', '\x1D8', '\x3', '\x2', '\x2', '\x2', '\x1DA', 
-		'\x1D9', '\x3', '\x2', '\x2', '\x2', '\x1DB', '\x1EB', '\x3', '\x2', '\x2', 
-		'\x2', '\x1DC', '\x1DF', '\f', '\a', '\x2', '\x2', '\x1DD', '\x1E0', '\x5', 
+		'\x1DB', '\x5', 'V', ',', '\x2', '\x1D6', '\x1D7', '\x5', '^', '\x30', 
+		'\x2', '\x1D7', '\x1D8', '\x5', 'Z', '.', '\a', '\x1D8', '\x1DB', '\x3', 
+		'\x2', '\x2', '\x2', '\x1D9', '\x1DB', '\x5', '\x66', '\x34', '\x2', '\x1DA', 
+		'\x1D0', '\x3', '\x2', '\x2', '\x2', '\x1DA', '\x1D5', '\x3', '\x2', '\x2', 
+		'\x2', '\x1DA', '\x1D6', '\x3', '\x2', '\x2', '\x2', '\x1DA', '\x1D9', 
+		'\x3', '\x2', '\x2', '\x2', '\x1DB', '\x1EB', '\x3', '\x2', '\x2', '\x2', 
+		'\x1DC', '\x1DF', '\f', '\x6', '\x2', '\x2', '\x1DD', '\x1E0', '\x5', 
 		'\x62', '\x32', '\x2', '\x1DE', '\x1E0', '\x5', '`', '\x31', '\x2', '\x1DF', 
 		'\x1DD', '\x3', '\x2', '\x2', '\x2', '\x1DF', '\x1DE', '\x3', '\x2', '\x2', 
 		'\x2', '\x1E0', '\x1E1', '\x3', '\x2', '\x2', '\x2', '\x1E1', '\x1E2', 
-		'\x5', 'Z', '.', '\b', '\x1E2', '\x1EA', '\x3', '\x2', '\x2', '\x2', '\x1E3', 
-		'\x1E4', '\f', '\x6', '\x2', '\x2', '\x1E4', '\x1E5', '\t', '\x4', '\x2', 
-		'\x2', '\x1E5', '\x1EA', '\x5', 'Z', '.', '\a', '\x1E6', '\x1E7', '\f', 
-		'\x5', '\x2', '\x2', '\x1E7', '\x1E8', '\t', '\x5', '\x2', '\x2', '\x1E8', 
-		'\x1EA', '\x5', 'Z', '.', '\x6', '\x1E9', '\x1DC', '\x3', '\x2', '\x2', 
+		'\x5', 'Z', '.', '\a', '\x1E2', '\x1EA', '\x3', '\x2', '\x2', '\x2', '\x1E3', 
+		'\x1E4', '\f', '\x5', '\x2', '\x2', '\x1E4', '\x1E5', '\t', '\x4', '\x2', 
+		'\x2', '\x1E5', '\x1EA', '\x5', 'Z', '.', '\x6', '\x1E6', '\x1E7', '\f', 
+		'\x4', '\x2', '\x2', '\x1E7', '\x1E8', '\t', '\x5', '\x2', '\x2', '\x1E8', 
+		'\x1EA', '\x5', 'Z', '.', '\x5', '\x1E9', '\x1DC', '\x3', '\x2', '\x2', 
 		'\x2', '\x1E9', '\x1E3', '\x3', '\x2', '\x2', '\x2', '\x1E9', '\x1E6', 
 		'\x3', '\x2', '\x2', '\x2', '\x1EA', '\x1ED', '\x3', '\x2', '\x2', '\x2', 
 		'\x1EB', '\x1E9', '\x3', '\x2', '\x2', '\x2', '\x1EB', '\x1EC', '\x3', 

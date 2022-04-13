@@ -161,7 +161,7 @@ namespace Compiler.Phases
             var t = context.numexpr();
             var r = t.random();
             string ting = context.numexpr() == null ? $"float {context.id().GetText()};" : $"float {context.id().GetText()} = {expr};";
-            if (context.numexpr()?.random() != null && context.numexpr()?.random().GetText() == "Frand")
+            if (context.numexpr()?.random()?.GetText() == "Frand")
                 ting = $"float {context.id().GetText()} = (float)random.NextDouble();";
             AddStmt(ting);
             return false;
