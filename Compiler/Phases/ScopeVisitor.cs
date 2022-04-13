@@ -173,20 +173,17 @@ namespace Compiler
         public override object VisitSelective(SelectiveContext context){
             Scope.Allocate();
             VisitIfstmt(context.ifstmt());
-            Dispose();
             Scope.ExitScope();
             if(context.elifstmt() != null){
                 foreach(var e in context.elifstmt()){
                     Scope.Allocate();
                     VisitElifstmt(e);
-                    Dispose();
                     Scope.ExitScope();
                 }
             }
             else if(context.elsestmt() != null){
                 Scope.Allocate();
                 VisitElsestmt(context.elsestmt());
-                Dispose();
                 Scope.ExitScope();
             }
             return false;
@@ -213,6 +210,15 @@ namespace Compiler
             Dispose();
             Scope.ExitScope();
             return false;
+        }
+
+        public override object VisitNumupdate(NumupdateContext context)
+        {
+            if(Scope.LookUp(context.id().GetText()) == null){
+                System.Console.WriteLine("here: A");
+                return false;
+            }
+            return base.VisitNumupdate(context);
         }
 
         public void Dispose()
