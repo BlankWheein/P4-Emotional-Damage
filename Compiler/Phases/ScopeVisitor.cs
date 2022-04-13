@@ -7,7 +7,7 @@ using Antlr4.Runtime.Misc;
 
 namespace Compiler
 {
-    public class ScopeVisitor : EmotionalDamageBaseVisitor<object>, IDisposable
+    public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
     {
         public List<Exception> Diagnostics {get; set; }
         public RootSymbolTable Scope {get; set; }
@@ -213,13 +213,10 @@ namespace Compiler
             /* i am thinking it needs to 
             clear the symbols or variables decarled 
             within the scope, Something like this*/
-            current.Symbols.Clear(); 
+            Scope.Dispose(); 
             /*so we an example would be that a function x takes a parameter y,
             and with in x a variable g is defined. When this method is called
-            the local name variable g is removed form the symbol table, how ever y 
-            is not, it could also be that it just sets the local variables to
-            be unInitialized, not sure how much space and memory this would save*/
-            throw new NotImplementedException();
+            the local name variable g is removed form the symbol table.*/
         }
     }
 }
