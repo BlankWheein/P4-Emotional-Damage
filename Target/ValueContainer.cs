@@ -3,12 +3,12 @@ namespace AutoGrad
 {
     public class ValueContainer
     {
-        public ValueContainer(Value result, List<Value> grad)
+        public ValueContainer(Value result, Value[] grad)
         {
             Result = result;
             Grad = grad;
         }
         public Value Result { get; set; }
-        public List<Value> Grad { get; set; }
+        public Value[] Grad { get; set; }
     }
 }

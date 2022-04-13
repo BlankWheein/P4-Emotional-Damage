@@ -88,15 +88,13 @@ unaryoperator: (id'++' | id'--');
 
 val: id 
       | '-'?num
-      | id'['val']'
+      | id'['val']'('.data' | '.grad')?
       | id'['val','val']'
       | id'.row'
       | id'.col'
       | id'.len'
       | funccall
       | gradfunccall
-      | id'.''Result.data'
-      | id'.Grad''['val']'('.data' | '.grad')+
       ;
 funccall: id'('(id (','id)*)?')';
 gradfunccall: id'('(val (','val)*)?')';

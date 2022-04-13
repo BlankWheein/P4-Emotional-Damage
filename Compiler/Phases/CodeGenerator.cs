@@ -53,6 +53,33 @@ namespace Compiler.Phases
         {
             Stmts.Add(() => AddText(v, newline, indent));
         }
+        public override object VisitIfstmt([NotNull] IfstmtContext context)
+        {
+            AddStmt($"if ({context.bexpr().GetText()}) {{");
+            Increment();
+            VisitBlock(context.block());
+            Decrement();
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitElifstmt([NotNull] ElifstmtContext context)
+        {
+            AddStmt($"else if ({context.bexpr().GetText()}) {{");
+            Increment();
+            VisitBlock(context.block());
+            Decrement();
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitElsestmt([NotNull] ElsestmtContext context)
+        {
+            AddStmt($"else {{");
+            Increment();
+            VisitBlock(context.block());
+            Decrement();
+            AddStmt("}");
+            return false;
+        }
         public override object VisitPrintln([NotNull] PrintlnContext context)
         {
             string text = "Console.WriteLine(";
@@ -88,9 +115,67 @@ namespace Compiler.Phases
             AddStmt(ting);
             return false;
         }
+        public override object VisitForstmt([NotNull] ForstmtContext context)
+        {
+            string text = "for (";
+            if (context.intdcl() != null)
+                text += $"int {context.intdcl().id().GetText()} = {context.intdcl().numexpr().GetText()}";
+            text += ";";
+            text += context.bexpr().GetText() + ";";
+            text += context.unaryoperator().GetText() + ")";
+            AddStmt(text + "{");
+            Increment();
+            VisitBlock(context.block());
+            Decrement();
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitWhilestmt([NotNull] WhilestmtContext context)
+        {
+
+            AddStmt($"while ({context.bexpr().GetText()}) {{");
+            Increment();
+            VisitBlock(context.block());
+            Decrement();
+            AddStmt("}");
+            return base.VisitWhilestmt(context);
+        }
+        public override object VisitFloatdcl([NotNull] FloatdclContext context)
+        {
+            string expr = context.numexpr().GetText();
+            char prev = 'x';
+            for (int i = 0; i < expr.Length; i++)
+            {
+                char c = expr[i];
+                if (i == expr.Length - 1 && char.IsDigit(c))
+                    expr += "f";
+                if (char.IsDigit(c) || char.IsLetter(c))
+                {
+                    prev = c;
+                    continue;
+                };
+                if (char.IsSymbol(c) || char.IsDigit(prev))
+                    expr = expr.Replace($"{prev}{c}", $"{prev}f {c} ");
+            }
+            string ting = context.numexpr() == null ? $"float {context.id().GetText()};" : $"float {context.id().GetText()} = {expr};";
+            AddStmt(ting);
+            return false;
+        }
+        public override object VisitFunc([NotNull] FuncContext context)
+        {
+            BlockContext block = context.block();
+            string text = $"{context.rettype().GetText()} {context.id().GetText()} ( {context.parameters().GetText()}) {{";
+            AddStmt(text);
+            Increment();
+            VisitBlock(block);
+            Decrement();
+            AddStmt("}");
+            return false;
+        }
         public override object VisitGradfunc([NotNull] GradfuncContext context)
         {
-            string text = $"ValueContainer {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
+            string text = $"Value[] {context.id().GetText()}({context.parameters().GetText().Replace(":", " ")})";
+            int count = 0;
             AddStmt(text, newline: false);
             AddStmt(" {", indent: false);
             Increment();
@@ -103,21 +188,25 @@ namespace Compiler.Phases
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
+                {
                     res = res.Replace(p.ToString(), $" _{p} ");
+                    count++;
+                }
                 else if (!char.IsDigit(p))
                     res = res.Replace(p.ToString(), $" {p} ");
             });
             res = res.Replace("  ", " ");
             AddStmt("Value _res = " + res + ";");
             AddStmt("_res.backward();");
-            string ValContainer = $"return new ValueContainer(_res, new List<Value>() {{ ";
+            string ValContainer = $"return new Value[{count+1}] {{ ";
+            ValContainer += "_res, ";
             context.numexpr().GetText().ToList().ForEach(p =>
             {
                 if (char.IsLetter(p))
                     ValContainer += $"_{p}, ";
             });
             ValContainer = ValContainer[0..^2];
-            ValContainer += " });";
+            ValContainer += " };";
             AddStmt(ValContainer);
             Decrement();
             AddStmt("}");

@@ -4,9 +4,33 @@ autograd kage(int:x, int:y) {
 }
 int x = 2;
 int y = 4;
+int i = 0;
+float kagda = 2 * 4;
+float kagda2 = x * 4;
+float kagda3 = 2 * y;
+float kagda4 = x * y;
 
+int kage2(int x) {
+	println(x);
+}
+
+if (2 == 1) {
+	println("1");
+} elif (2 == 3) {
+	println("2");
+} elif (4 == 3) {
+	println("3");
+} else {
+	println("4");
+}
+
+
+while (1 == 2) {
+	println("1");
+}
 Value k = kage(x, y);
 
-println(k.Result.data);
-println("{k.Grad[0].grad} - {k.Grad[0].data}");
-println("{k.Grad[1].grad} - {k.Grad[1].data}");
+println(k[0].data);
+println("{k[1].grad} - {k[1].data}");
+println("{k[2].grad} - {k[2].data}");
+
