@@ -29,6 +29,7 @@ namespace Compiler.SymbolTableFolder
         Reserved,
         Void,
         String,
-        Bool
+        Bool,
+        PositiveInt
     }
 }
