@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Compiler.SymbolTableFolder
 {
-    public sealed class RootSymbolTable
+    public sealed class RootSymbolTable: IDisposable
     {
         private readonly bool _testing;
         private SymbolTable Root { get; set; }
@@ -45,6 +45,10 @@ namespace Compiler.SymbolTableFolder
         public Symbol? LookUp(string id) => Current?.LookUp(id);
         public Symbol? LookUpExsting(string id) => Current?.LookUpExsting(id);
         public void SetInitialized(string id) => Current.SetInitialized(id);
-        
+
+        public void Dispose()
+        {
+            Current.Dispose();
+        }
     }
 }

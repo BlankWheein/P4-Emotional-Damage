@@ -7,7 +7,7 @@ using Antlr4.Runtime.Misc;
 
 namespace Compiler
 {
-    public class ScopeVisitor : EmotionalDamageBaseVisitor<object>
+    public class ScopeVisitor : EmotionalDamageBaseVisitor<object>, IDisposable
     {
         public List<Exception> Diagnostics {get; set; }
         public RootSymbolTable Scope {get; set; }
@@ -38,6 +38,7 @@ namespace Compiler
               VisitParameters(context.parameters());  
             }
             VisitBlock(context.block());
+            Dispose();
             Scope.ExitScope();
             return false;
         }
@@ -49,6 +50,7 @@ namespace Compiler
             if (context.parameters() != null)
                 VisitParameters(context.parameters());
             VisitNumexpr(context.numexpr());
+            Dispose();
             Scope.ExitScope();
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, true);
@@ -171,17 +173,20 @@ namespace Compiler
         public override object VisitSelective(SelectiveContext context){
             Scope.Allocate();
             VisitIfstmt(context.ifstmt());
+            Dispose();
             Scope.ExitScope();
             if(context.elifstmt() != null){
                 foreach(var e in context.elifstmt()){
                     Scope.Allocate();
                     VisitElifstmt(e);
+                    Dispose();
                     Scope.ExitScope();
                 }
             }
             else if(context.elsestmt() != null){
                 Scope.Allocate();
                 VisitElsestmt(context.elsestmt());
+                Dispose();
                 Scope.ExitScope();
             }
             return false;
@@ -196,6 +201,7 @@ namespace Compiler
             VisitBexpr(context.bexpr());
             VisitUnaryoperator(context.unaryoperator());
             VisitBlock(context.block());
+            Dispose();
             Scope.ExitScope();
             return false;
         }
@@ -204,11 +210,12 @@ namespace Compiler
             Scope.Allocate();
             VisitBexpr(context.bexpr());
             VisitBlock(context.block());
+            Dispose();
             Scope.ExitScope();
             return false;
         }
 
-        public void Dispose(RootSymbolTable current)
+        public void Dispose()
         {
             /* i am thinking it needs to 
             clear the symbols or variables decarled 
