@@ -482,14 +482,6 @@ namespace Compiler
             Scope.ExitScope();
             return false;
         }
-        public override object VisitRandom(RandomContext context)
-        {
-            foreach (var item in context.val())
-            {
-                VisitVal(item);
-            }
-            return false;
-        }
         public override object VisitNumexpr(NumexprContext context)
         {
             if (context.numexpr() != null){

@@ -552,6 +552,18 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRandom([NotNull] EmotionalDamageParser.RandomContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.randomtype"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRandomtype([NotNull] EmotionalDamageParser.RandomtypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.randomtype"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRandomtype([NotNull] EmotionalDamageParser.RandomtypeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

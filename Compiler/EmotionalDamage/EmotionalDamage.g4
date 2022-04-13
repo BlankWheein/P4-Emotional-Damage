@@ -63,7 +63,8 @@ iterative: forstmt | whilestmt;
 forstmt: 'for''('intdcl?';'bexpr';'unaryoperator')'block;
 whilestmt: 'while''('bexpr')'block;
 
-random: 'rand''('val','val')';
+random: randomtype'rand';
+randomtype: 'F' | 'I';
 numexpr: '('numexpr')'
     | sqrt numexpr
     | numexpr (mod | power) numexpr

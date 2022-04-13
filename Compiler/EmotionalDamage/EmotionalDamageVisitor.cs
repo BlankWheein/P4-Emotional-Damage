@@ -290,6 +290,12 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitRandom([NotNull] EmotionalDamageParser.RandomContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.randomtype"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRandomtype([NotNull] EmotionalDamageParser.RandomtypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

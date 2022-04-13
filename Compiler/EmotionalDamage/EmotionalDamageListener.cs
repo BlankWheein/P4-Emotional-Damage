@@ -461,6 +461,16 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitRandom([NotNull] EmotionalDamageParser.RandomContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.randomtype"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRandomtype([NotNull] EmotionalDamageParser.RandomtypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.randomtype"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRandomtype([NotNull] EmotionalDamageParser.RandomtypeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

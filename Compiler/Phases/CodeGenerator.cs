@@ -17,7 +17,8 @@ namespace Compiler.Phases
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
-            AddStmt("using AutoGrad;\n");
+            AddStmt("using AutoGrad;");
+            AddStmt("Random random = new();\n");
         }
         #region Indent
         public string Indent = "";
@@ -157,7 +158,11 @@ namespace Compiler.Phases
                 if (char.IsSymbol(c) || char.IsDigit(prev))
                     expr = expr.Replace($"{prev}{c}", $"{prev}f {c} ");
             }
+            var t = context.numexpr();
+            var r = t.random();
             string ting = context.numexpr() == null ? $"float {context.id().GetText()};" : $"float {context.id().GetText()} = {expr};";
+            if (context.numexpr()?.random() != null && context.numexpr()?.random().GetText() == "Frand")
+                ting = $"float {context.id().GetText()} = (float)random.NextDouble();";
             AddStmt(ting);
             return false;
         }
