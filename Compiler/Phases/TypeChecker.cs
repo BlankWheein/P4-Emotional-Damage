@@ -19,6 +19,74 @@ namespace Compiler.Phases
             Parent = parent;
         }
 
+
+        public override object VisitIntarrdcl([NotNull] IntarrdclContext context)
+        {
+            bool isValid = true;
+
+            if (context.val(0).num != null)
+            {
+                isValid &= int.TryParse(context.val(0).GetText(), out int x) && x > 0;
+            }
+            else if (context.val(0).id != null)
+            {
+                isValid &= Parent?.Scope?.LookUp(context.val(0).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
+            }
+
+            if (context.val(1).num != null)
+            {
+                isValid &= int.TryParse(context.val(1).GetText(), out int _);
+            }
+            else if (context.val(1).id != null)
+            {
+                isValid &= (Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Int
+                || Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt);
+
+            }
+
+            return isValid;
+        }
+
+        public override object VisitFloatarrdcl([NotNull] FloatarrdclContext context)
+        {
+            bool isValid = true;
+
+            if (context.val(0).num != null)
+            {
+                isValid &= int.TryParse(context.val(0).GetText(), out int x) && x > 0;
+            }
+            else if (context.val(0).id != null)
+            {
+                isValid &= Parent?.Scope?.LookUp(context.val(0).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
+            }
+
+            if (context.val(1).num != null)
+            {
+                isValid &= float.TryParse(context.val(1).GetText(), out float _);
+            }
+            else if (context.val(1).id != null)
+            {
+                isValid &= Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Float;
+
+            }
+            return isValid;
+        }
+
+        public override object VisitArrupdate([NotNull] ArrupdateContext context)
+        {
+            bool isValid = true;
+
+            if (context.val().num != null)
+            {
+                isValid &= int.TryParse(context.val().GetText(), out int x) && x > 0;
+            }
+            else if (context.val().id != null)
+            {
+                isValid &= Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
+            }
+            return isValid;
+        }
+
         /// <summary>
         /// Check if matrix dimensions are positive integers
         /// </summary>
@@ -35,7 +103,7 @@ namespace Compiler.Phases
                 }
                 else if (v.id != null)
                 {
-                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type==SymbolType.PositiveInt;
+                    isValid &= Parent?.Scope?.LookUp(v.id().GetText().Trim('"'))?.Type==SymbolType.PositiveInt;
                     
                 }
 
@@ -54,7 +122,7 @@ namespace Compiler.Phases
                 }
                 else if (v.id != null)
                 {
-                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type == SymbolType.PositiveInt;
+                    isValid &= Parent?.Scope?.LookUp(v.id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
 
                 }
 
