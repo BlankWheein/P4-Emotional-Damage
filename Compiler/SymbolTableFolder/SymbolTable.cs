@@ -33,7 +33,7 @@ namespace Compiler.SymbolTableFolder
         {
             Symbol? symbol = LookUpHelper(id);
             if (symbol == null)
-                Diagnostics.Add(new Exception(id));
+                Diagnostics.Add(new Exception(id + " does not exist in current scope."));
             return symbol;
         }
 
@@ -78,7 +78,7 @@ namespace Compiler.SymbolTableFolder
             if (ReservedSymbols.All(o=>o.Id!=symbol.Id) && LookUpHelper(symbol.Id) == null)
                 Symbols.Add(symbol);
             else 
-                Diagnostics.Add(new Exception(symbol?.ToString()));
+                Diagnostics.Add(new Exception(symbol?.ToString() + " is either a resvered key word, or does not exist in current scope."));
         }
 
         /// <summary>
