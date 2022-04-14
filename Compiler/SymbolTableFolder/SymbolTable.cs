@@ -41,7 +41,7 @@ namespace Compiler.SymbolTableFolder
         {
             Symbol? symbol = LookUpHelper(id);
             if (symbol != null)
-                Diagnostics.Add(new Exception(id + "already exsits"));
+                Diagnostics.Add(new Exception(id + " already exsits"));
             return symbol;
         }
         /// <summary>

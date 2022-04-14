@@ -227,6 +227,15 @@ namespace Compiler
             }
             return base.VisitVal(context);
         }
+        public override object VisitFunccall(FunccallContext context)
+        {
+            foreach(var i in context.id()){
+                if(Scope.LookUp(i.GetText()) == null){ 
+                    return false;
+                }
+            }
+            return base.VisitFunccall(context);
+        }
         public void Dispose()
         {
             /* i am thinking it needs to 
