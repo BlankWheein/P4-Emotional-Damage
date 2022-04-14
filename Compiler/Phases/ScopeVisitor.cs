@@ -38,7 +38,6 @@ namespace Compiler
               VisitParameters(context.parameters());  
             }
             VisitBlock(context.block());
-            Dispose();
             Scope.ExitScope();
             return false;
         }
@@ -50,7 +49,6 @@ namespace Compiler
             if (context.parameters() != null)
                 VisitParameters(context.parameters());
             VisitNumexpr(context.numexpr());
-            Dispose();
             Scope.ExitScope();
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(s, id, true);
@@ -198,7 +196,6 @@ namespace Compiler
             VisitBexpr(context.bexpr());
             VisitUnaryoperator(context.unaryoperator());
             VisitBlock(context.block());
-            Dispose();
             Scope.ExitScope();
             return false;
         }
@@ -207,7 +204,6 @@ namespace Compiler
             Scope.Allocate();
             VisitBexpr(context.bexpr());
             VisitBlock(context.block());
-            Dispose();
             Scope.ExitScope();
             return false;
         }
@@ -238,8 +234,7 @@ namespace Compiler
         }
         public void Dispose()
         {
-            /* i am thinking it needs to 
-            clear the symbols or variables decarled 
+            /* clears the symbols or variables decarled 
             within the scope, Something like this*/
             Scope.Dispose(); 
             /*so we an example would be that a function x takes a parameter y,
