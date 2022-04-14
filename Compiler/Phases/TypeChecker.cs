@@ -102,7 +102,7 @@ namespace Compiler.Phases
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override object VisitArrupdate([NotNull] ArrupdateContext context)
+       /* public override object VisitArrupdate([NotNull] ArrupdateContext context)
         {
             bool isValid = true;
 
@@ -120,7 +120,7 @@ namespace Compiler.Phases
                 Diagnostics.Add(new Exception("Arrupdate: dimensions should be positive ints"));
             }
             return isValid;
-        }
+        }*/
 
         /// <summary>
         /// Check if matrix dimensions are positive integers
