@@ -19,12 +19,11 @@ namespace Compiler.Phases
             Parent = parent;
         }
 
-        public  void EvaluateMatrixDimensions()
-        {
-            
-            Parent.Scope.Diagnostics.Add(new Exception("wrong matrix dimensions"));
-
-        }
+        /// <summary>
+        /// Check if matrix dimensions are positive integers
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override object VisitIntmatrixdcl([NotNull] IntmatrixdclContext context)
         {
             bool isValid = true;
@@ -83,28 +82,26 @@ namespace Compiler.Phases
 
 
 
-
-
-
-
         public bool EvaluateNumExprHelper(NumexprContext context, SymbolType type)
         {
             bool isDef = true;
             if (context.val() != null)
             {
-                /* if (context.val().num() != null)
-                 {
-                     isDef &= type switch //check if number is int or float. If not, isDef will be false
-                     {
-                         SymbolType.Int => int.TryParse(context.val().GetText(), out int _),
-                         SymbolType.Float=> float.TryParse(context.val().GetText(), out float _),
-                         _ => false,
-                     };
+                if (context.val().num() != null)
+                {
+                    isDef &= type switch //check if number is int or float. If not, isDef will be false
+                    {
+                        SymbolType.Int => int.TryParse(context.val().GetText(), out int _),
+                        SymbolType.PositiveInt => int.TryParse(context.val().GetText(), out int _),
+                        SymbolType.Float => float.TryParse(context.val().GetText(), out float _),
+                        _ => false,
+                    };
 
-                 }
-                 else*/
-                isDef &= type == Parent?.Scope?.LookUp(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
-
+                }
+                else
+                {
+                    isDef &= type == Parent?.Scope?.LookUp(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
+                }
             }
             else
             {
