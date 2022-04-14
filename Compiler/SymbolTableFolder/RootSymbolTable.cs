@@ -12,7 +12,7 @@ namespace Compiler.SymbolTableFolder
         private SymbolTable Root { get; set; }
         private SymbolTable Current { get; set; }
         public List<Symbol> Symbols { get => Current.Symbols; }
-        public List<Symbol> ReservedSymbols { get; } = new() { new Symbol("hej") };
+        public List<Symbol> ReservedSymbols { get; } = new() { new Symbol("TestingReservedKeyword") };
         public RootSymbolTable(bool Testing=false)
         {
             Root = new SymbolTable(null, this, _testing);

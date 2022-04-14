@@ -9,7 +9,7 @@ namespace UnitTests
         public void Insert_Symbol_ID_Is_Reserved_Keyword_Expected_Diagnostics_Count_Is_1()
         {
             var Root = new RootSymbolTable();
-            Symbol symbol = new("hej");
+            Symbol symbol = new("TestingReservedKeyword");
             Root.Insert(symbol);
 
             Assert.IsTrue(Root.Diagnostics.Count == 1);
