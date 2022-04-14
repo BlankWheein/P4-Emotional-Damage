@@ -143,6 +143,7 @@ namespace Compiler.Phases
                 }
 
             });
+            //this is not finished
             if (context.numexpr() != null)
             {
                 isValid&=EvaluateNumExprHelper(context.numexpr(), SymbolType.Int);
@@ -171,6 +172,10 @@ namespace Compiler.Phases
                 }
 
             });
+            if (context.numexpr() != null)
+            {
+                isValid &= EvaluateNumExprHelper(context.numexpr(), SymbolType.Float);
+            }
             if (isValid == false)
             {
                 Diagnostics.Add(new Exception("FloatMatrixdcl: Dimensions should be positive ints, and values floats or float matrices"));
@@ -178,6 +183,7 @@ namespace Compiler.Phases
             return isValid;
 
         }
+        /*
         public override object VisitMatrixupdate([NotNull] MatrixupdateContext context)
         {
             bool isValid = true;
@@ -194,7 +200,7 @@ namespace Compiler.Phases
             });
             return isValid;
         }
-
+        */
 
 
 
@@ -216,7 +222,17 @@ namespace Compiler.Phases
                 }
                 else if (context.val().id() != null)
                 {
-                    isDef &= type == Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type;
+                    if (type != SymbolType.Float)
+                    {
+                        isDef &= type == Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type;
+                    }
+                    else //int values can also be assigned to floats
+                    {
+                        isDef &= (Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type== SymbolType.Float
+                            || Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type == SymbolType.Int
+                            || Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt
+                            );
+                    }
                 }
             }
             else
