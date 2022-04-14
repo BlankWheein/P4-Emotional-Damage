@@ -1,8 +1,3 @@
-﻿
-autograd void kage(int x, int kik) {
-print("DASdf");
-}
 
-
-
+﻿int[3] kage = 1,2,3,4;
 
