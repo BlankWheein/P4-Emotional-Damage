@@ -215,7 +215,6 @@ namespace Compiler
         public override object VisitNumupdate(NumupdateContext context)
         {
             if(Scope.LookUp(context.id().GetText()) == null){
-                System.Console.WriteLine("here: A");
                 return false;
             }
             return base.VisitNumupdate(context);

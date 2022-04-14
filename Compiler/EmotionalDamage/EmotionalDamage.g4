@@ -21,14 +21,14 @@ floatdcl: 'float' id ('=' numexpr)?;
 
 intarrdcl: 'int''['val']' id ('=' val)?;
 floatarrdcl: 'float''['val']' id ('=' val)?;
-arrupdate: (id '=' (numexpr | arrexpr)) 
+arrupdate: (id'[''*'']' '=' (numexpr | arrexpr)) 
             | id'['val']' '=' numexpr;
 arrassign: intarrdcl | floatarrdcl | arrupdate;
 
 matrixassign: intmatrixdcl | floatmatrixdcl | matrixupdate;
 intmatrixdcl: 'int''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
 floatmatrixdcl: 'float''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
-matrixupdate: (id '=' (numexpr | matrixarrexpr))
+matrixupdate: (id'[''*'',''*'']' '=' (numexpr | matrixarrexpr))
             | id'['val','val']' '=' numexpr
             | id'['val',' '*' ']' '=' numexpr
             | id'[' '*' ','val']' '=' numexpr
