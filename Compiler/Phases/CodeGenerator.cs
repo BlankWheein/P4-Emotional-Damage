@@ -280,5 +280,10 @@ namespace Compiler.Phases
             return false;
         }
 
+        public override object VisitBoolupdate([NotNull] BoolupdateContext context)
+        {
+            AddStmt($"{context.id().GetText()} = {context.boolval().GetText()};");
+            return false;
+        }
     }
 }

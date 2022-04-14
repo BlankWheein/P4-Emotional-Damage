@@ -4,3 +4,4 @@ kage[3] = 2;
 
 bool bar = false;
 bool af = 2 == 1;
+bar = true;
