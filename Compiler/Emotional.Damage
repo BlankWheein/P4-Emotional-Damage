@@ -1,6 +1,1 @@
-﻿int a=-5;
-
-int[3] kage=a;
-
-
-kage[3]=5.5;
+﻿int [5, 5] kage = 2;

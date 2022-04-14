@@ -132,17 +132,22 @@ namespace Compiler.Phases
             bool isValid = true;
             context.val().ToList().ForEach(v =>
             {
-                if (v.num != null)
+                if (v.num() != null)
                 {
                     isValid &= int.TryParse(v.GetText(), out int x) && x > 0;
                 }
-                else if (v.id != null)
+                else if (v.id() != null)
                 {
                     isValid &= Parent?.Scope?.LookUp(v.id().GetText().Trim('"'))?.Type==SymbolType.PositiveInt;
                     
                 }
 
             });
+
+            if (isValid == false)
+            {
+                Diagnostics.Add(new Exception("IntMatrixdcl: Dimensions should be positive ints, and values ints"));
+            }
             return isValid;
 
         }
@@ -151,11 +156,11 @@ namespace Compiler.Phases
             bool isValid = true;
             context.val().ToList().ForEach(v =>
             {
-                if (v.num != null)
+                if (v.num() != null)
                 {
                     isValid &= int.TryParse(v.GetText(), out int x) && x > 0;
                 }
-                else if (v.id != null)
+                else if (v.id() != null)
                 {
                     isValid &= Parent?.Scope?.LookUp(v.id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
 
@@ -170,13 +175,13 @@ namespace Compiler.Phases
             bool isValid = true;
             context.val().ToList().ForEach(v =>
             {
-                if (v.num != null)
+                if (v.num() != null)
                 {
                     isValid &= int.TryParse(v.GetText(), out int x) && x > 0;
                 }
-                else if (v.id != null)
+                else if (v.id() != null)
                 {
-                    isValid &= Parent?.Scope?.LookUp(v?.id()?.GetText()?.Trim('"'))?.Type == SymbolType.PositiveInt;
+                    isValid &= Parent?.Scope?.LookUp(v.id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
                 }
             });
             return isValid;
@@ -201,9 +206,9 @@ namespace Compiler.Phases
                     };
 
                 }
-                else
+                else if (context.val().id() != null)
                 {
-                    isDef &= type == Parent?.Scope?.LookUp(context?.val()?.id()?.GetText()?.Trim('"'))?.Type;
+                    isDef &= type == Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type;
                 }
             }
             else
