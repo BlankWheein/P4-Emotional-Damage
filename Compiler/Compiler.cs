@@ -32,9 +32,9 @@ namespace Compiler
         public void Compile()
         {
             _scopeTypeChecker.Visit(__context);
-            Console.ForegroundColor = ConsoleColor.Red;
+            /*Console.ForegroundColor = ConsoleColor.Red;
             foreach (var s in _scopeTypeChecker.Diagnostics)
-                Console.WriteLine(s);
+                Console.WriteLine(s);*/
 
             //Console.ForegroundColor = ConsoleColor.White;
             //Console.WriteLine("Printing Scope Tree:");
@@ -51,6 +51,7 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (var s in _typeChecker.Diagnostics)
                 Console.WriteLine(s);
+            Console.ResetColor();
         }
 
     }

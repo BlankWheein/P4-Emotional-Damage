@@ -143,10 +143,14 @@ namespace Compiler.Phases
                 }
 
             });
+            if (context.numexpr() != null)
+            {
+                isValid&=EvaluateNumExprHelper(context.numexpr(), SymbolType.Int);
+            }
 
             if (isValid == false)
             {
-                Diagnostics.Add(new Exception("IntMatrixdcl: Dimensions should be positive ints, and values ints"));
+                Diagnostics.Add(new Exception("IntMatrixdcl: Dimensions should be positive ints, and values ints or int matrices"));
             }
             return isValid;
 
@@ -167,6 +171,10 @@ namespace Compiler.Phases
                 }
 
             });
+            if (isValid == false)
+            {
+                Diagnostics.Add(new Exception("FloatMatrixdcl: Dimensions should be positive ints, and values floats or float matrices"));
+            }
             return isValid;
 
         }
