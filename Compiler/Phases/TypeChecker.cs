@@ -20,6 +20,11 @@ namespace Compiler.Phases
         }
 
 
+        /// <summary>
+        /// check if dimensions are positive integers, and values are integers
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override object VisitIntarrdcl([NotNull] IntarrdclContext context)
         {
             bool isValid = true;
@@ -47,6 +52,11 @@ namespace Compiler.Phases
             return isValid;
         }
 
+        /// <summary>
+        ///  check if dimensions are positive integers, and values are floats
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override object VisitFloatarrdcl([NotNull] FloatarrdclContext context)
         {
             bool isValid = true;
@@ -72,6 +82,11 @@ namespace Compiler.Phases
             return isValid;
         }
 
+        /// <summary>
+        /// Check if dimensions are positive integers
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override object VisitArrupdate([NotNull] ArrupdateContext context)
         {
             bool isValid = true;
