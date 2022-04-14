@@ -219,7 +219,14 @@ namespace Compiler
             }
             return base.VisitNumupdate(context);
         }
-
+        public override object VisitVal(ValContext context){ 
+            if(context.id() != null){
+                if(Scope.LookUp(context.id().GetText()) == null){
+                    return false;
+                }
+            }
+            return base.VisitVal(context);
+        }
         public void Dispose()
         {
             /* i am thinking it needs to 
