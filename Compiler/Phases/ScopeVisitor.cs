@@ -223,6 +223,9 @@ namespace Compiler
             }
             return base.VisitVal(context);
         }
+        // calling a gradfunction inters VisitFunccall, 
+        //instead of VisitGradfunccall, 
+        //this can be a problem if we want to optimize
         public override object VisitFunccall(FunccallContext context)
         {
             foreach(var i in context.id()){
