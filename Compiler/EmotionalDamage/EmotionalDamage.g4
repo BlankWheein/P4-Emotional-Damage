@@ -97,7 +97,7 @@ val: id
       | gradfunccall
       ;
 funccall: id'('(id (','id)*)?')';
-gradfunccall: 'g_'id'('(val (','val)*)?')';
+gradfunccall: id'('(val (','val)*)?')';
 
 id: ID;
 num: Inum | Fnum | Dnum;
