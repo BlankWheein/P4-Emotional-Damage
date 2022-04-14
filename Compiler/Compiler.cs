@@ -14,6 +14,7 @@ namespace Compiler
         private readonly AntlrInputStream __stream;
         private readonly CommonTokenStream __lexerStream;
         private ScopeVisitor _scopeTypeChecker;
+        private TypeChecker _typeChecker;
         private CodeGenerator _codeGenerator;
         public Wrapper(StringBuilder __source)
         {
@@ -25,6 +26,7 @@ namespace Compiler
             __context = __parser.prog();
 
             _scopeTypeChecker = new();
+            _typeChecker = new(_scopeTypeChecker);
             _codeGenerator = new();
         }
         public void Compile()
@@ -33,6 +35,7 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (var s in _scopeTypeChecker.Diagnostics)
                 Console.WriteLine(s);
+
             //Console.ForegroundColor = ConsoleColor.White;
             //Console.WriteLine("Printing Scope Tree:");
             //Console.ForegroundColor = ConsoleColor.Green;
@@ -43,6 +46,11 @@ namespace Compiler
             //_codeGenerator.Scope = _scopeTypeChecker.Scope;
             //_codeGenerator.Visit(__context);
             //_codeGenerator.Dispose();
+
+            _typeChecker.Visit(__context);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            foreach (var s in _typeChecker.Diagnostics)
+                Console.WriteLine(s);
         }
 
     }

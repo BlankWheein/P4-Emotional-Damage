@@ -13,7 +13,7 @@ namespace Compiler.Phases
         //typecasting
         //typechecking, correct type, and compatible operations
         public ScopeVisitor Parent { get; }
-
+        public List<Exception> Diagnostics { get; set; } = new();
         public TypeChecker(ScopeVisitor parent)
         {
             Parent = parent;
@@ -29,26 +29,32 @@ namespace Compiler.Phases
         {
             bool isValid = true;
 
-            if (context.val(0).num != null)
+            //checks if the dimensions are positive ints
+            if (context.val(0).num() != null)
             {
                 isValid &= int.TryParse(context.val(0).GetText(), out int x) && x > 0;
             }
-            else if (context.val(0).id != null)
+            else if (context.val(0).id() != null)
             {
                 isValid &= Parent?.Scope?.LookUp(context.val(0).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
             }
 
-            if (context.val(1).num != null)
+            //checks if the values are ints
+            if (context.val(1).num() != null)
             {
                 isValid &= int.TryParse(context.val(1).GetText(), out int _);
             }
-            else if (context.val(1).id != null)
+            else if (context.val(1).id() != null)
             {
-                isValid &= (Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Int
+                isValid = isValid &&
+                    (Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Int
                 || Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt);
 
             }
-
+            if (isValid == false)
+            {
+                Diagnostics.Add(new Exception("Intarrdcl: Dimensions should be positive ints, and values ints"));
+            }
             return isValid;
         }
 
@@ -61,23 +67,32 @@ namespace Compiler.Phases
         {
             bool isValid = true;
 
-            if (context.val(0).num != null)
+            //checks if the dimensions are positive ints
+            if (context.val(0).num() != null)
             {
                 isValid &= int.TryParse(context.val(0).GetText(), out int x) && x > 0;
             }
-            else if (context.val(0).id != null)
+            else if (context.val(0).id() != null)
             {
                 isValid &= Parent?.Scope?.LookUp(context.val(0).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
             }
 
-            if (context.val(1).num != null)
+            //checks if values are floats, or int(that can be typecasted to floats)
+            if (context.val(1).num() != null)
             {
                 isValid &= float.TryParse(context.val(1).GetText(), out float _);
             }
-            else if (context.val(1).id != null)
+            else if (context.val(1).id() != null)
             {
-                isValid &= Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Float;
+                isValid = isValid &&
+                    (Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Int
+                || Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt
+                || Parent?.Scope?.LookUp(context.val(1).id().GetText().Trim('"'))?.Type == SymbolType.Float);
+            }
 
+            if (isValid == false)
+            {
+                Diagnostics.Add(new Exception("Floatarrdcl: Dimensions should be positive ints, and values floats"));
             }
             return isValid;
         }
@@ -91,13 +106,18 @@ namespace Compiler.Phases
         {
             bool isValid = true;
 
-            if (context.val().num != null)
+            if (context.val().num() != null)
             {
                 isValid &= int.TryParse(context.val().GetText(), out int x) && x > 0;
             }
-            else if (context.val().id != null)
+            else if (context.val().id() != null)
             {
                 isValid &= Parent?.Scope?.LookUp(context.val().id().GetText().Trim('"'))?.Type == SymbolType.PositiveInt;
+            }
+
+            if (isValid == false)
+            {
+                Diagnostics.Add(new Exception("Arrupdate: dimensions should be positive ints"));
             }
             return isValid;
         }
