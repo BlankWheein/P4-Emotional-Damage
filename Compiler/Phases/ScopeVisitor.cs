@@ -236,6 +236,15 @@ namespace Compiler
             }
             return base.VisitFunccall(context);
         }
+
+        public override object VisitGradfunccall(GradfunccallContext context)
+        {
+            if (Scope.LookUp(context.id().GetText()) == null)
+            {
+                return false;
+            }
+            return base.VisitGradfunccall(context);
+        }
         public void Dispose()
         {
             /* i am thinking it needs to 
