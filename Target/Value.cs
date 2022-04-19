@@ -129,6 +129,10 @@ namespace AutoGrad
         {
             return self * new Value(other).Pow(-1);
         }
+        public static Value operator /(Value self, Value other)
+        {
+            return self * new Value(other.data).Pow(-1);
+        }
         public static Value operator / (float self, Value other)
         {
             return new Value(self) * other.Pow(-1);
