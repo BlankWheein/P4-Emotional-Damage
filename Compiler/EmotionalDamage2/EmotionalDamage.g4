@@ -7,7 +7,7 @@ print: 'print' | 'println';
 types: 'int'('['Inum']')?('['Inum']')? | 'float'('['Inum']')?('['Inum']')? | 'bool' | 'string';
 returntype: types | 'void';
 dcl :
-      returntype IDENTIFIER '(' (types IDENTIFIER)? ')' '{'stmts'}' #FuncDcl
+      returntype IDENTIFIER '(' ((types IDENTIFIER) (',' types IDENTIFIER)* )? ')' '{'stmts'}' #FuncDcl
     | numtype'['Inum']''['Inum']' IDENTIFIER';' #MatrixDeclaration
     | ( numtype | 'string' )'['Inum']' IDENTIFIER';' #ArrayDeclaration
     | numtype IDENTIFIER '=' expr';' #NumDcl
