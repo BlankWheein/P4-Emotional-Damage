@@ -100,6 +100,12 @@ namespace Compiler.Phases
             }
             return false;
         }
+        public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
+        {
+            foreach (var s in context.IDENTIFIER())
+                Scope.LookUpExsting(s.GetText());
+            return base.VisitFuncStmt(context);
+        }
         #endregion
         #region Declarations
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
@@ -163,6 +169,7 @@ namespace Compiler.Phases
             Scope.LookUp(id);
             return base.VisitReturnStmt(context);
         }
+        #endregion
         #region Assigns
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
@@ -231,7 +238,6 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new Exception($"{m?.Id} is not a matrix"));
             return base.VisitTransposeMatrixStmt(context);
         }
-        #endregion
         #endregion
     }
 }
