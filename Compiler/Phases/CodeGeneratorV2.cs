@@ -146,15 +146,15 @@ namespace Compiler.Phases
             AddStmt($"{id} = {boolstr};");
             return false;
         }
-        //public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
-        //{
-        //    var id = context.IDENTIFIER()[0].GetText();
-        //    var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
-        //    var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
-        //    var exprstring = context.expr().GetText();
+        public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER()[0].GetText();
+            var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
+            var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
+            var exprstring = context.expr().GetText();
 
-        //    return false;
-        //}
+            return false;
+        }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
             var id = context.IDENTIFIER()[0].GetText();
