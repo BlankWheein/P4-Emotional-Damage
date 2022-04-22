@@ -1,25 +1,31 @@
 using AutoGrad;
 
-bool a = 
-1>2;
-bool b = 
-1<2;
-bool c = 
-1>=2;
-bool d = 
-1<=2;
-bool e = 
-1==2;
-bool f = 
-1!=2;
-bool g = 
+int kage = 
+2;
+float kage2 = 
+;
+==Console.WriteLine(kage); 
+
+Console.WriteLine("Kage"); 
+
+==2int kage3 = 
+2*
+6+
+3/
+4;
+float kage4 = 
+Math.Sqrt(
+25)
+;
+==2==2Console.WriteLine("kage"); 
+
+0<10Console.WriteLine(i); 
+
+int fkage(int fkage, int x) { intz=x+y;returnz; };
+Console.WriteLine("{kage}"); 
+
+>1int[] m = new int[5]m;];
+int[5][5] m2;
+!=00<0<5bool t = 
 true
 ;
-bool h = 
-false
-;
-bool i = 
-4*
-2<7/
-8+
-9;

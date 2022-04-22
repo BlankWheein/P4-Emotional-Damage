@@ -261,53 +261,53 @@ namespace Compiler.Phases
         #region Bexpr
         public override object VisitGreater([NotNull] EmotionalDamageParser.GreaterContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($">");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
 
             return false;
         }
 
         public override object VisitSmaller([NotNull] EmotionalDamageParser.SmallerContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($"<");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
 
             return false;
         }
 
         public override object VisitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($">=");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
 
             return false;
         }
 
         public override object VisitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($"<=");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
 
             return false;
         }
 
         public override object VisitEquals([NotNull] EmotionalDamageParser.EqualsContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($"==");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
             return false;
         }
 
         public override object VisitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context)
         {
-            Visit(context.bexpr(0));
+            Visit(context.expr(0));
             AddStmt2($"!=");
-            Visit(context.bexpr(1));
+            Visit(context.expr(1));
             return false;
         }
 
@@ -318,11 +318,6 @@ namespace Compiler.Phases
             return false;
         }
 
-        public override object VisitBoolExpr([NotNull] EmotionalDamageParser.BoolExprContext context)
-        {
-            Visit(context.expr());
-            return false;
-        }
 
         #endregion
     }
