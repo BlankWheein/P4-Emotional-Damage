@@ -181,13 +181,14 @@ namespace Compiler.Phases
         
         public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
         {
-            AddStmt($"Math.Sqrt(");
+            AddStmt2($"Math.Sqrt(");
             Visit(context.expr());
-            AddStmt(")");
+            AddStmt2(")");
 
             return false;
         }
 
+        //this c# method is for doubles oops
      /*   public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
         {
         
@@ -203,7 +204,7 @@ namespace Compiler.Phases
         {
 
             Visit(context.expr(0));
-            AddStmt($"%");
+            AddStmt2($"%");
             Visit(context.expr(1));
 
             return false;
@@ -213,7 +214,7 @@ namespace Compiler.Phases
         {
 
             Visit(context.expr(0));
-            AddStmt($"*");
+            AddStmt2($"*");
             Visit(context.expr(1));
 
             return false;
@@ -222,7 +223,7 @@ namespace Compiler.Phases
         {
 
             Visit(context.expr(0));
-            AddStmt($"/");
+            AddStmt2($"/");
             Visit(context.expr(1));
 
             return false;
@@ -232,7 +233,7 @@ namespace Compiler.Phases
         {
            
             Visit(context.expr(0));
-            AddStmt($"+");
+            AddStmt2($"+");
             Visit(context.expr(1));
 
             return false;
@@ -242,7 +243,7 @@ namespace Compiler.Phases
         {
         
             Visit(context.expr(0));
-            AddStmt($"-");
+            AddStmt2($"-");
             Visit(context.expr(1));
 
             return false;

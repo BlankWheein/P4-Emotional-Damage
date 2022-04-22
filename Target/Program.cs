@@ -1,4 +1,4 @@
 using AutoGrad;
 
 int a = 
-Math.Pow(2,4);
+2+4/9*Math.Sqrt(8);
