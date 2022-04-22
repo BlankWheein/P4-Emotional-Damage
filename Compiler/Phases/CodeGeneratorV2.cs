@@ -114,6 +114,8 @@ namespace Compiler.Phases
             var bexpr = context.bexpr().GetText();
 
             AddStmt($"bool {id} = {bexpr}");
+            return false;
+        }
         public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context.expr() == null ? context.STRING_CONSTANT().GetText() : context.expr().GetText();
