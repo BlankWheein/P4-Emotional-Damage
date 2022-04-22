@@ -247,6 +247,18 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitTransposeMatrixStmt(EmotionalDamageParser.TransposeMatrixStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code FuncStmt}
+	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncStmt(EmotionalDamageParser.FuncStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FuncStmt}
+	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncStmt(EmotionalDamageParser.FuncStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
 	 * @param ctx the parse tree
@@ -270,18 +282,6 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitForStmt(EmotionalDamageParser.ForStmtContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FuncCall}
-	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCall(EmotionalDamageParser.FuncCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FuncCall}
-	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCall(EmotionalDamageParser.FuncCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Selective}
 	 * labeled alternative in {@link EmotionalDamageParser#stmt}.
@@ -421,6 +421,30 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitGradientExpr(EmotionalDamageParser.GradientExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code FuncCall}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncCall(EmotionalDamageParser.FuncCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FuncCall}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncCall(EmotionalDamageParser.FuncCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumArrValue}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumArrValue(EmotionalDamageParser.NumArrValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumArrValue}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumArrValue(EmotionalDamageParser.NumArrValueContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code PlusExpr}
 	 * labeled alternative in {@link EmotionalDamageParser#expr}.
 	 * @param ctx the parse tree
@@ -433,17 +457,29 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitPlusExpr(EmotionalDamageParser.PlusExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NumArrMatrixValue}
+	 * Enter a parse tree produced by the {@code NumValue}
 	 * labeled alternative in {@link EmotionalDamageParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx);
+	void enterNumValue(EmotionalDamageParser.NumValueContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NumArrMatrixValue}
+	 * Exit a parse tree produced by the {@code NumValue}
 	 * labeled alternative in {@link EmotionalDamageParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx);
+	void exitNumValue(EmotionalDamageParser.NumValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumMatrixValue}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumMatrixValue(EmotionalDamageParser.NumMatrixValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumMatrixValue}
+	 * labeled alternative in {@link EmotionalDamageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumMatrixValue(EmotionalDamageParser.NumMatrixValueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code SqrtExpr}
 	 * labeled alternative in {@link EmotionalDamageParser#expr}.
@@ -517,66 +553,6 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitMinusExpr(EmotionalDamageParser.MinusExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code BoolExpr}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolExpr(EmotionalDamageParser.BoolExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BoolExpr}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolExpr(EmotionalDamageParser.BoolExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Equals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterEquals(EmotionalDamageParser.EqualsContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Equals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitEquals(EmotionalDamageParser.EqualsContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code GreaterEquals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code GreaterEquals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code BoolValue}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolValue(EmotionalDamageParser.BoolValueContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BoolValue}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolValue(EmotionalDamageParser.BoolValueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code SmallerEquals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code SmallerEquals}
-	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Greater}
 	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
 	 * @param ctx the parse tree
@@ -601,6 +577,42 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 */
 	void exitSmaller(EmotionalDamageParser.SmallerContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code GreaterEquals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code GreaterEquals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SmallerEquals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SmallerEquals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Equals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEquals(EmotionalDamageParser.EqualsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Equals}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEquals(EmotionalDamageParser.EqualsContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code NotEquals}
 	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
 	 * @param ctx the parse tree
@@ -612,4 +624,16 @@ public interface EmotionalDamageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNotEquals(EmotionalDamageParser.NotEqualsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BoolValue}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolValue(EmotionalDamageParser.BoolValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolValue}
+	 * labeled alternative in {@link EmotionalDamageParser#bexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolValue(EmotionalDamageParser.BoolValueContext ctx);
 }

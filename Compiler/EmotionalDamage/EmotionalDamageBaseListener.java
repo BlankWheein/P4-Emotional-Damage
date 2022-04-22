@@ -267,6 +267,18 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFuncStmt(EmotionalDamageParser.FuncStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncStmt(EmotionalDamageParser.FuncStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWhileStmt(EmotionalDamageParser.WhileStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -286,18 +298,6 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitForStmt(EmotionalDamageParser.ForStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -447,6 +447,30 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumArrValue(EmotionalDamageParser.NumArrValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumArrValue(EmotionalDamageParser.NumArrValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPlusExpr(EmotionalDamageParser.PlusExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -459,13 +483,25 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx) { }
+	@Override public void enterNumValue(EmotionalDamageParser.NumValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx) { }
+	@Override public void exitNumValue(EmotionalDamageParser.NumValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumMatrixValue(EmotionalDamageParser.NumMatrixValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumMatrixValue(EmotionalDamageParser.NumMatrixValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -543,66 +579,6 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBoolExpr(EmotionalDamageParser.BoolExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolExpr(EmotionalDamageParser.BoolExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEquals(EmotionalDamageParser.EqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEquals(EmotionalDamageParser.EqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterGreater(EmotionalDamageParser.GreaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -627,6 +603,42 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEquals(EmotionalDamageParser.EqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEquals(EmotionalDamageParser.EqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNotEquals(EmotionalDamageParser.NotEqualsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -634,6 +646,18 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNotEquals(EmotionalDamageParser.NotEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

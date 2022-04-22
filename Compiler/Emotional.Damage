@@ -1,11 +1,41 @@
-﻿bool a = 1 > 2;
-bool b = 1 < 2;
-bool c = 1 >= 2;
-bool d = 1 <= 2;
-bool e = 1 == 2;
-bool f = 1 != 2;
-bool g = true;
-bool h = false;
+﻿int kage = 2;
+float kage2 = 6.9;
+if (kage == kage) {
+    println(kage);
+    println("Kage");
+}
+elif(kage == 2) {
+    int kage3 = 2 * 6 + 3 / 4;
+    float kage4 = sqrt(2 ** 5);
+}
+elif (kage == 2) {
+    while (kage == 2) {
+        print("kage");
+    }
+}
+else {
+    for (int i = 0; i < 10; i++) {
+        print(i);
+    }
+}
 
-bool i = 4*2<7/8+9;
+int fkage(int x, int y) {
+    int z = x + y;
+    return z;
+}
 
+print("{kage}");
+
+if (kage > 1) {
+    int[5] m;
+    int[5][5] m2;
+    if (kage != 0) {
+        for (int i = 0; i < m2.row; i++) {
+            for (int j = 0; j < m2.col; j++) {
+                m2[i][j] = 5;
+            }
+        }
+    }
+}
+
+bool t = true;

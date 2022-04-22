@@ -9,13 +9,13 @@ namespace Compiler.SymbolTableFolder
     public sealed class RootSymbolTable
     {
         private readonly bool _testing;
-        private SymbolTable Root { get; set; }
-        private SymbolTable Current { get; set; }
+        public SymbolTable Root { get; set; }
+        internal SymbolTable Current { get; set; }
         public List<Symbol> Symbols { get => Current.Symbols; }
         public List<Symbol> ReservedSymbols { get; } = new() { new Symbol("hej") };
         public RootSymbolTable(bool Testing=false)
         {
-            Root = new SymbolTable(null, this, _testing);
+            Root = new SymbolTable(null, this, _testing, type: "Global");
             Current = Root;
             _testing = Testing;
         }
@@ -24,9 +24,9 @@ namespace Compiler.SymbolTableFolder
         /// <summary>
         /// Creating a new symbol table and entering its scope
         /// </summary>
-        public void Allocate()
+        public void Allocate(string Type = "NotDefined")
         {
-            SymbolTable symbolTable = new(Current, this, _testing);
+            SymbolTable symbolTable = new(Current, this, _testing, type: Type);
             Current.Children.Add(symbolTable);
             Current = symbolTable;
         }
@@ -35,7 +35,7 @@ namespace Compiler.SymbolTableFolder
         /// </summary>
         public void ExitScope()
         {
-            if (!_testing)
+            if (_testing)
                 Current.Dispose();
             Current = Current?.Parent;
         }
@@ -48,7 +48,15 @@ namespace Compiler.SymbolTableFolder
 
         internal void AddDiagnostic(Exception exception)
         {
-            throw new NotImplementedException();
+            Diagnostics.Add(exception);
+        }
+        public override bool Equals(object? obj)
+        {
+            return Root.Equals((obj as RootSymbolTable)?.Root);
+        }
+        public override string ToString()
+        {
+            return Root.ToString();
         }
     }
 }
