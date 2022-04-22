@@ -16,7 +16,7 @@ dcl :
     ;
 
 stmt: 
-      print '(' (STRING_CONSTANT | expr) ')'';' #printStmt
+      print '(' ('$'?STRING_CONSTANT | expr) ')'';' #printStmt
     | 'return' IDENTIFIER ';' #ReturnStmt
     | IDENTIFIER '=' expr';' #NumAssignStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt

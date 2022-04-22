@@ -24,6 +24,8 @@ int fkage(int x, int y) {
     return z;
 }
 
+print("{kage}");
+
 if (kage > 1) {
     int[5] m;
     int[5][5] m2;
