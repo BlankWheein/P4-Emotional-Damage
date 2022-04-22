@@ -58,22 +58,28 @@ namespace Compiler.Phases
         {
             var returntype = context.returntype().GetText();
             var id = context.IDENTIFIER().First().GetText();
-            var stmts = context.stmts().GetText();
+            var stmts = context.stmts();
             string parameters = "";
             
             for (int i = 0; i < context.types().Length; i++)
-                parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i].GetText()}, ";
+                parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
 
             if(parameters != "") parameters = parameters[0..^2];
 
-            AddStmt($"{returntype} {id}({parameters}) {{ {stmts} }};");
+            AddStmt($"{returntype} {id} ({parameters}) {{");
+            Increment();
+            VisitStmts(stmts);
+            Decrement();
+            AddStmt("}");
             return false;
         }
+
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
         {
             var inum = context.Inum();
             var id = context.IDENTIFIER().GetText();
-            AddStmt($"{context.numtype().GetText()}[{inum[0].GetText()}][{inum[1].GetText()}] {id};");
+            var numtype = context.numtype().GetText();
+            AddStmt($"{numtype}[,] {id} = new {numtype}[{inum[0].GetText()}, {inum[1].GetText()}];");
             return false;
         }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
@@ -81,8 +87,10 @@ namespace Compiler.Phases
             var text = context.GetText().Split(' ');
 
             var type = text[0].Split('[')[0];
-            var arr_size = text[0].Split('[')[1].Trim(']');
+            var arr_size = text[0].Split('[')[1];
             var id = context.IDENTIFIER().GetText();
+
+            arr_size = arr_size.Substring(0, arr_size.IndexOf("]")); // removes every char after "]", including the character
 
             AddStmt($"{type}[] {id} = new {type}[{arr_size}];");
             return false;
@@ -93,7 +101,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr = context.expr().GetText();
 
-            AddStmt($"{numtype} {id} = {expr}");
+            AddStmt($"{numtype} {id} = {expr};");
             return false;
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
@@ -101,7 +109,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var string_constant = context.STRING_CONSTANT().GetText();
 
-            AddStmt($"string {id} = {string_constant}");
+            AddStmt($"string {id} = {string_constant};");
             return false;
         }
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
@@ -109,7 +117,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var bexpr = context.bexpr().GetText();
 
-            AddStmt($"bool {id} = {bexpr}");
+            AddStmt($"bool {id} = {bexpr};");
             return false;
         }
         public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
