@@ -106,5 +106,12 @@ namespace Compiler.Phases
             AddStmt($"{id} = {exprstring};");
             return false;
         }
+        public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var boolstr = context.bexpr().GetText();
+            AddStmt($"{id} = {boolstr};");
+            return false;
+        }
     }
 }
