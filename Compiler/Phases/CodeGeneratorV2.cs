@@ -167,5 +167,13 @@ namespace Compiler.Phases
             AddStmt($"{id}--");
             return false;
         }
+        public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
+        {
+            var bexpr = context.bexpr().GetText();
+            AddStmt($"while{bexpr}"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
     }   
 }
