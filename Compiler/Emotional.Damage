@@ -1,12 +1,2 @@
 ﻿
-int wallah (int dinmor, int dinfar){
-  1 + 2;
-}
-
-int[2][3] intest;
-int[5] ad;
-float[3] ad2;
-string[4] ad3;
-int af = 2 + 2;
-string str = "1241qwesjfidfnhsdi";
-bool hallo = true;
+int a= 2**4;

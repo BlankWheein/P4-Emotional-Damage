@@ -19,6 +19,7 @@ namespace Compiler.Phases
                 File.Delete(_path);
             _fs = File.Create(_path);
             AddStmt("using AutoGrad;\n");
+
         }
         #region Indent
         public string Indent = "";
@@ -33,6 +34,10 @@ namespace Compiler.Phases
         #endregion
         public List<Action> Stmts { get; set; } = new();
         private void AddStmt(string v, bool newline = true, bool indent = true)
+        {
+            Stmts.Add(() => AddText(v, newline, indent));
+        }
+        private void AddStmt2(string v, bool newline = false, bool indent = true)
         {
             Stmts.Add(() => AddText(v, newline, indent));
         }
@@ -60,11 +65,11 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().First().GetText();
             var stmts = context.stmts().GetText();
             string parameters = "";
-            
+
             for (int i = 0; i < context.types().Length; i++)
                 parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i].GetText()}, ";
 
-            if(parameters != "") parameters = parameters[0..^2];
+            if (parameters != "") parameters = parameters[0..^2];
 
             AddStmt($"{returntype} {id}({parameters}) {{ {stmts} }};");
             return false;
@@ -91,9 +96,10 @@ namespace Compiler.Phases
         {
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
-            var expr = context.expr().GetText();
 
-            AddStmt($"{numtype} {id} = {expr}");
+            AddStmt($"{numtype} {id} = ");
+            Visit(context.expr());
+            AddStmt(";");
             return false;
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
@@ -107,12 +113,13 @@ namespace Compiler.Phases
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
         {
             var id = context.IDENTIFIER().GetText();
-            var bexpr = context.bexpr().GetText();
 
-            AddStmt($"bool {id} = {bexpr}");
+            AddStmt($"bool {id} = ");
+            Visit(context.bexpr());
+            AddStmt(";");
             return false;
         }
-        public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
+        public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context.expr() == null ? context.STRING_CONSTANT().GetText() : context.expr().GetText();
             AddStmt($"Console.WriteLine({printPart}); \n");
@@ -167,5 +174,88 @@ namespace Compiler.Phases
             AddStmt($"{id}--");
             return false;
         }
-    }   
+
+        
+        #region Expr
+
+        
+        public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
+        {
+            AddStmt($"Math.Sqrt(");
+            Visit(context.expr());
+            AddStmt(")");
+
+            return false;
+        }
+
+     /*   public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
+        {
+        
+            AddStmt2($"Math.Pow(");
+            Visit(context.expr(0));
+            AddStmt2(",");
+            Visit(context.expr(1));
+            AddStmt2(")");
+            return false;
+        }*/
+
+        public override object VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context)
+        {
+
+            Visit(context.expr(0));
+            AddStmt($"%");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context)
+        {
+
+            Visit(context.expr(0));
+            AddStmt($"*");
+            Visit(context.expr(1));
+
+            return false;
+        }
+        public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
+        {
+
+            Visit(context.expr(0));
+            AddStmt($"/");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context)
+        {
+           
+            Visit(context.expr(0));
+            AddStmt($"+");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context)
+        {
+        
+            Visit(context.expr(0));
+            AddStmt($"-");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context)
+        {
+            var inum = context.Inum().GetText();
+            AddStmt2($"{inum}");
+            return false;
+        }
+        #endregion
+
+
+    }
 }
