@@ -36,8 +36,8 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Printing Scope Tree:");
             Console.ForegroundColor = ConsoleColor.Green;
-            _scopeTypeChecker.Print();
-            _scopeTypeChecker.Dispose();
+            //_scopeTypeChecker.Print();
+            //_scopeTypeChecker.Dispose();
             Console.ResetColor();
 
             _codeGenerator.Visit(__context);

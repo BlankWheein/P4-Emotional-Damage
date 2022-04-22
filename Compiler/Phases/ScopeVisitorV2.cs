@@ -67,7 +67,7 @@ namespace Compiler.Phases
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            string type = context.numtype().GetText();
+            string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitNumDcl(context);
