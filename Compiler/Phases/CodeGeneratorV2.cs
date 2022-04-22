@@ -93,5 +93,11 @@ namespace Compiler.Phases
             AddStmt($"Console.WriteLine({printPart}); \n");
             return false;
         }
+        public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"return {id};");
+            return false;
+        }
     }
 }
