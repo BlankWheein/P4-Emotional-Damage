@@ -22,6 +22,21 @@ namespace Compiler.SymbolTableFolder
         public bool IsInitialized { get; set; }
         public int Row { get; }
         public int Col { get; }
+        public override string ToString()
+        {
+            if (Row == 0)
+                return $"{Type} {Id}";
+            else if (Row != 0 && Col == 0)
+                return $"{Type} {Id}[{Row}]";
+            else
+                return $"{Type} {Id}[{Row}][{Col}]";
+        }
+        public override bool Equals(object? obj)
+        {
+            Symbol? table = obj as Symbol;
+            if (table == null) return false;
+            return table.ToString() == ToString();
+        }
     }
     public enum SymbolType
     {
