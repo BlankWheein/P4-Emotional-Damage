@@ -152,5 +152,13 @@ namespace Compiler.Phases
 
             return false;
         }
+        public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER()[0].GetText();
+            var pos1 = context.Inum().GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum().GetText();
+            var exprstring = context.expr().GetText();
+            AddStmt($"{id}{pos1} = {exprstring};");
+            return false;
+        }
     }
 }
