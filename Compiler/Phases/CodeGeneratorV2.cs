@@ -101,6 +101,22 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr = context.expr().GetText();
 
+            if(numtype == "float")
+            {
+                bool active = false;
+                for (int i = 0; i < expr.Length; i++)
+                {
+                    char c = expr[i];
+                    if (char.IsDigit(c)) continue;
+                    if (c.Equals('.')) active = true;
+                    if (char.IsLetter(c)) active = false;
+                    if (active && char.IsSymbol(c)) {
+                        active = false;
+                        expr = expr.Insert(i, "f");
+                    }
+                }
+            }
+
             AddStmt($"{numtype} {id} = {expr};");
             return false;
         }
@@ -122,7 +138,7 @@ namespace Compiler.Phases
         }
         public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
         {
-            var printPart = context.expr() == null ? context.STRING_CONSTANT().GetText() : context.expr().GetText();
+            var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : context?.expr()?.GetText();
             AddStmt($"Console.WriteLine({printPart}); \n");
             return false;
         }
