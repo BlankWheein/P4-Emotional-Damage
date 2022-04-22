@@ -27,7 +27,6 @@ stmt:
     | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
     | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
-    | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
     | ifstmt elifstmt* elsestmt? #Selective
     ;
 
@@ -35,7 +34,9 @@ ifstmt: 'if' '('bexpr')' '{' stmts '}';
 elifstmt: 'elif' '('bexpr')' '{' stmts '}';
 elsestmt: 'else' '{' stmts '}';
 
-expr: '('expr')' #ParenExpr
+expr:
+     '('expr')' #ParenExpr
+    | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
     | 'sqrt' expr #SqrtExpr
     | expr '**' expr #PowExpr
     | expr '%' expr #ModExpr
