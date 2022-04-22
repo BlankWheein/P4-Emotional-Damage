@@ -1,1 +1,6 @@
-﻿int[3] kage = 1,2,3,4;
+﻿
+int wallah (int dinmor, int dinfar){
+  1 + 2;
+}
+
+int[2][3] intest;

@@ -57,21 +57,23 @@ namespace Compiler.Phases
         {
             var returntype = context.returntype().GetText();
             var id = context.IDENTIFIER().First().GetText();
-
+            var stmts = context.stmts().GetText();
             string parameters = "";
+            
             for (int i = 0; i < context.types().Length; i++)
-            {
                 parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i].GetText()}, ";
-            }
+
             if(parameters != "") parameters = parameters[0..^2];
 
-            AddStmt($"{returntype} {id}({parameters}) {{ {context.stmts()} }};");
+            AddStmt($"{returntype} {id}({parameters}) {{ {stmts} }};");
             return false;
         }
 
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
         {
-
+            var inum = context.Inum();
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"{context.numtype().GetText()}[{inum[0].GetText()}][{inum[1].GetText()}] {id};");
             return false;
         }
 
@@ -87,6 +89,32 @@ namespace Compiler.Phases
             return false;
         }
 
-        
+        public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
+        {
+            var numtype = context.numtype().GetText();
+            var id = context.IDENTIFIER().GetText();
+            var expr = context.expr().GetText();
+
+            AddStmt($"{numtype} {id} = {expr}");
+            return false;
+        }
+
+        public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var string_constant = context.STRING_CONSTANT().GetText();
+
+            AddStmt($"string {id} = {string_constant}");
+            return false;
+        }
+
+        public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var bexpr = context.bexpr().GetText();
+
+            AddStmt($"bool {id} = {bexpr}");
+            return false;
+        }
     }
 }
