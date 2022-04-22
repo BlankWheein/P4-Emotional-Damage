@@ -266,7 +266,7 @@ namespace Compiler.Phases
             return false;
         }
 
-        public override object VisitNumArrMatrixValue([NotNull] EmotionalDamageParser.NumArrMatrixValueContext context)
+        public override object VisitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context)
         {
             return false;
         }
