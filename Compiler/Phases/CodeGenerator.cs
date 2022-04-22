@@ -9,7 +9,7 @@ namespace Compiler.Phases
 {
     public class CodeGenerator : EmotionalDamageBaseVisitor<object>
     {
-        private string _path = @"../../../../Target/Program.cs";
+        private string _path = @"../Target/Program.cs";
         private FileStream _fs;
 
         public CodeGenerator()

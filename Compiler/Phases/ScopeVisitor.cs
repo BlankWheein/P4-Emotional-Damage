@@ -28,9 +28,6 @@ namespace Compiler
                 _ => SymbolType.NotDefined,
             };
             if (s == SymbolType.NotDefined) Scope.Diagnostics.Add(new Exception("Symbol was not defined"));
-            if(Scope.LookUpExsting(id) == null){
-                Scope.Insert(s, id, true);
-            }
             Scope.Allocate();
             VisitRettype(context.rettype());
             if(context.parameters() != null){
@@ -39,6 +36,9 @@ namespace Compiler
             }
             VisitBlock(context.block());
             Scope.ExitScope();
+            if(Scope.LookUpExsting(id) == null){
+                Scope.Insert(s, id, true);
+            }
             return false;
         }
         public override object VisitGradfunc(GradfuncContext context)
@@ -48,6 +48,7 @@ namespace Compiler
             Scope.Allocate();
             if (context.parameters() != null)
                 VisitParameters(context.parameters());
+
             VisitNumexpr(context.numexpr());
             Scope.ExitScope();
             if (Scope.LookUpExsting(id) == null)
