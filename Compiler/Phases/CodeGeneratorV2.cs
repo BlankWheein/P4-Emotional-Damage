@@ -318,7 +318,6 @@ namespace Compiler.Phases
             return false;
         }
 
-
         public override object VisitBoolExpr([NotNull] EmotionalDamageParser.BoolExprContext context)
         {
             Visit(context.expr());
