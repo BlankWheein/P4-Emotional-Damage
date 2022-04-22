@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:\Users\noobs\Documents\Github\P4-Emotional-Damage\Compiler\EmotionalDamage2\EmotionalDamage.g4 by ANTLR 4.8
+// Generated from c:\Users\noobs\Documents\Github\P4-Emotional-Damage\Compiler\EmotionalDamage\EmotionalDamage.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162

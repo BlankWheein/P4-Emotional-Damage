@@ -13,8 +13,8 @@ namespace Compiler
         private readonly EmotionalDamageParser __parser;
         private readonly AntlrInputStream __stream;
         private readonly CommonTokenStream __lexerStream;
-        private ScopeVisitor _scopeTypeChecker;
-        private CodeGenerator _codeGenerator;
+        private ScopeVisitorV2 _scopeTypeChecker;
+        private CodeGeneratorV2 _codeGenerator;
         public Wrapper(StringBuilder __source)
         {
             this.__source = __source;
@@ -29,16 +29,16 @@ namespace Compiler
         }
         public void Compile()
         {
-            //_scopeTypeChecker.Visit(__context);
-            //Console.ForegroundColor = ConsoleColor.Red;
-            //foreach (var s in _scopeTypeChecker.Diagnostics)
-            //    Console.WriteLine(s);
-            ////Console.ForegroundColor = ConsoleColor.White;
-            ////Console.WriteLine("Printing Scope Tree:");
-            ////Console.ForegroundColor = ConsoleColor.Green;
-            ////_scopeTypeChecker.Print();
-            ////_scopeTypeChecker.Dispose();
-            ////Console.ResetColor();
+            _scopeTypeChecker.Visit(__context);
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (var s in _scopeTypeChecker.Diagnostics)
+                Console.WriteLine(s);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Printing Scope Tree:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            _scopeTypeChecker.Print();
+            _scopeTypeChecker.Dispose();
+            Console.ResetColor();
 
             _codeGenerator.Visit(__context);
             _codeGenerator.Compile();
