@@ -39,25 +39,13 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlock(EmotionalDamageParser.BlockContext ctx) { }
+	@Override public void enterNumtype(EmotionalDamageParser.NumtypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlock(EmotionalDamageParser.BlockContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStmt(EmotionalDamageParser.StmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStmt(EmotionalDamageParser.StmtContext ctx) { }
+	@Override public void exitNumtype(EmotionalDamageParser.NumtypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -75,349 +63,241 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrintln(EmotionalDamageParser.PrintlnContext ctx) { }
+	@Override public void enterTypes(EmotionalDamageParser.TypesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrintln(EmotionalDamageParser.PrintlnContext ctx) { }
+	@Override public void exitTypes(EmotionalDamageParser.TypesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnstmt(EmotionalDamageParser.ReturnstmtContext ctx) { }
+	@Override public void enterReturntype(EmotionalDamageParser.ReturntypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturnstmt(EmotionalDamageParser.ReturnstmtContext ctx) { }
+	@Override public void exitReturntype(EmotionalDamageParser.ReturntypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunc(EmotionalDamageParser.FuncContext ctx) { }
+	@Override public void enterFuncDcl(EmotionalDamageParser.FuncDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunc(EmotionalDamageParser.FuncContext ctx) { }
+	@Override public void exitFuncDcl(EmotionalDamageParser.FuncDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGradfunc(EmotionalDamageParser.GradfuncContext ctx) { }
+	@Override public void enterMatrixDeclaration(EmotionalDamageParser.MatrixDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGradfunc(EmotionalDamageParser.GradfuncContext ctx) { }
+	@Override public void exitMatrixDeclaration(EmotionalDamageParser.MatrixDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRettype(EmotionalDamageParser.RettypeContext ctx) { }
+	@Override public void enterArrayDeclaration(EmotionalDamageParser.ArrayDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRettype(EmotionalDamageParser.RettypeContext ctx) { }
+	@Override public void exitArrayDeclaration(EmotionalDamageParser.ArrayDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameters(EmotionalDamageParser.ParametersContext ctx) { }
+	@Override public void enterNumDcl(EmotionalDamageParser.NumDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameters(EmotionalDamageParser.ParametersContext ctx) { }
+	@Override public void exitNumDcl(EmotionalDamageParser.NumDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameter(EmotionalDamageParser.ParameterContext ctx) { }
+	@Override public void enterStringDcl(EmotionalDamageParser.StringDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameter(EmotionalDamageParser.ParameterContext ctx) { }
+	@Override public void exitStringDcl(EmotionalDamageParser.StringDclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatrixparameter(EmotionalDamageParser.MatrixparameterContext ctx) { }
+	@Override public void enterBoolDeclaration(EmotionalDamageParser.BoolDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatrixparameter(EmotionalDamageParser.MatrixparameterContext ctx) { }
+	@Override public void exitBoolDeclaration(EmotionalDamageParser.BoolDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrparameter(EmotionalDamageParser.ArrparameterContext ctx) { }
+	@Override public void enterPrintStmt(EmotionalDamageParser.PrintStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrparameter(EmotionalDamageParser.ArrparameterContext ctx) { }
+	@Override public void exitPrintStmt(EmotionalDamageParser.PrintStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntdcl(EmotionalDamageParser.IntdclContext ctx) { }
+	@Override public void enterReturnStmt(EmotionalDamageParser.ReturnStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntdcl(EmotionalDamageParser.IntdclContext ctx) { }
+	@Override public void exitReturnStmt(EmotionalDamageParser.ReturnStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFloatdcl(EmotionalDamageParser.FloatdclContext ctx) { }
+	@Override public void enterNumAssignStmt(EmotionalDamageParser.NumAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFloatdcl(EmotionalDamageParser.FloatdclContext ctx) { }
+	@Override public void exitNumAssignStmt(EmotionalDamageParser.NumAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntarrdcl(EmotionalDamageParser.IntarrdclContext ctx) { }
+	@Override public void enterBoolAssignStmt(EmotionalDamageParser.BoolAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntarrdcl(EmotionalDamageParser.IntarrdclContext ctx) { }
+	@Override public void exitBoolAssignStmt(EmotionalDamageParser.BoolAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFloatarrdcl(EmotionalDamageParser.FloatarrdclContext ctx) { }
+	@Override public void enterMatrixElementAssignStmt(EmotionalDamageParser.MatrixElementAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFloatarrdcl(EmotionalDamageParser.FloatarrdclContext ctx) { }
+	@Override public void exitMatrixElementAssignStmt(EmotionalDamageParser.MatrixElementAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrupdate(EmotionalDamageParser.ArrupdateContext ctx) { }
+	@Override public void enterArrayElementAssignStmt(EmotionalDamageParser.ArrayElementAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrupdate(EmotionalDamageParser.ArrupdateContext ctx) { }
+	@Override public void exitArrayElementAssignStmt(EmotionalDamageParser.ArrayElementAssignStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrassign(EmotionalDamageParser.ArrassignContext ctx) { }
+	@Override public void enterUnaryPlus(EmotionalDamageParser.UnaryPlusContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrassign(EmotionalDamageParser.ArrassignContext ctx) { }
+	@Override public void exitUnaryPlus(EmotionalDamageParser.UnaryPlusContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatrixassign(EmotionalDamageParser.MatrixassignContext ctx) { }
+	@Override public void enterUnaryMinus(EmotionalDamageParser.UnaryMinusContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatrixassign(EmotionalDamageParser.MatrixassignContext ctx) { }
+	@Override public void exitUnaryMinus(EmotionalDamageParser.UnaryMinusContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntmatrixdcl(EmotionalDamageParser.IntmatrixdclContext ctx) { }
+	@Override public void enterTransposeMatrixStmt(EmotionalDamageParser.TransposeMatrixStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntmatrixdcl(EmotionalDamageParser.IntmatrixdclContext ctx) { }
+	@Override public void exitTransposeMatrixStmt(EmotionalDamageParser.TransposeMatrixStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFloatmatrixdcl(EmotionalDamageParser.FloatmatrixdclContext ctx) { }
+	@Override public void enterWhileStmt(EmotionalDamageParser.WhileStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFloatmatrixdcl(EmotionalDamageParser.FloatmatrixdclContext ctx) { }
+	@Override public void exitWhileStmt(EmotionalDamageParser.WhileStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatrixupdate(EmotionalDamageParser.MatrixupdateContext ctx) { }
+	@Override public void enterForStmt(EmotionalDamageParser.ForStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatrixupdate(EmotionalDamageParser.MatrixupdateContext ctx) { }
+	@Override public void exitForStmt(EmotionalDamageParser.ForStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatrixarrexpr(EmotionalDamageParser.MatrixarrexprContext ctx) { }
+	@Override public void enterFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatrixarrexpr(EmotionalDamageParser.MatrixarrexprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrexpr(EmotionalDamageParser.ArrexprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrexpr(EmotionalDamageParser.ArrexprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMatrixtranspose(EmotionalDamageParser.MatrixtransposeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMatrixtranspose(EmotionalDamageParser.MatrixtransposeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMatrixinverse(EmotionalDamageParser.MatrixinverseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMatrixinverse(EmotionalDamageParser.MatrixinverseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumassign(EmotionalDamageParser.NumassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumassign(EmotionalDamageParser.NumassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumupdate(EmotionalDamageParser.NumupdateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumupdate(EmotionalDamageParser.NumupdateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolassign(EmotionalDamageParser.BoolassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolassign(EmotionalDamageParser.BoolassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolupdate(EmotionalDamageParser.BoolupdateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolupdate(EmotionalDamageParser.BoolupdateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBooldcl(EmotionalDamageParser.BooldclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBooldcl(EmotionalDamageParser.BooldclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolval(EmotionalDamageParser.BoolvalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolval(EmotionalDamageParser.BoolvalContext ctx) { }
+	@Override public void exitFuncCall(EmotionalDamageParser.FuncCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -471,193 +351,289 @@ public class EmotionalDamageBaseListener implements EmotionalDamageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIterative(EmotionalDamageParser.IterativeContext ctx) { }
+	@Override public void enterRowid(EmotionalDamageParser.RowidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIterative(EmotionalDamageParser.IterativeContext ctx) { }
+	@Override public void exitRowid(EmotionalDamageParser.RowidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForstmt(EmotionalDamageParser.ForstmtContext ctx) { }
+	@Override public void enterLengthid(EmotionalDamageParser.LengthidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForstmt(EmotionalDamageParser.ForstmtContext ctx) { }
+	@Override public void exitLengthid(EmotionalDamageParser.LengthidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhilestmt(EmotionalDamageParser.WhilestmtContext ctx) { }
+	@Override public void enterIntVal(EmotionalDamageParser.IntValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhilestmt(EmotionalDamageParser.WhilestmtContext ctx) { }
+	@Override public void exitIntVal(EmotionalDamageParser.IntValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRandom(EmotionalDamageParser.RandomContext ctx) { }
+	@Override public void enterPowExpr(EmotionalDamageParser.PowExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRandom(EmotionalDamageParser.RandomContext ctx) { }
+	@Override public void exitPowExpr(EmotionalDamageParser.PowExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumexpr(EmotionalDamageParser.NumexprContext ctx) { }
+	@Override public void enterNegVal(EmotionalDamageParser.NegValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumexpr(EmotionalDamageParser.NumexprContext ctx) { }
+	@Override public void exitNegVal(EmotionalDamageParser.NegValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBexpr(EmotionalDamageParser.BexprContext ctx) { }
+	@Override public void enterFloatVal(EmotionalDamageParser.FloatValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBexpr(EmotionalDamageParser.BexprContext ctx) { }
+	@Override public void exitFloatVal(EmotionalDamageParser.FloatValContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSqrt(EmotionalDamageParser.SqrtContext ctx) { }
+	@Override public void enterDivideExpr(EmotionalDamageParser.DivideExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSqrt(EmotionalDamageParser.SqrtContext ctx) { }
+	@Override public void exitDivideExpr(EmotionalDamageParser.DivideExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPower(EmotionalDamageParser.PowerContext ctx) { }
+	@Override public void enterGradientExpr(EmotionalDamageParser.GradientExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPower(EmotionalDamageParser.PowerContext ctx) { }
+	@Override public void exitGradientExpr(EmotionalDamageParser.GradientExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMod(EmotionalDamageParser.ModContext ctx) { }
+	@Override public void enterPlusExpr(EmotionalDamageParser.PlusExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMod(EmotionalDamageParser.ModContext ctx) { }
+	@Override public void exitPlusExpr(EmotionalDamageParser.PlusExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnaryoperator(EmotionalDamageParser.UnaryoperatorContext ctx) { }
+	@Override public void enterNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnaryoperator(EmotionalDamageParser.UnaryoperatorContext ctx) { }
+	@Override public void exitNumArrMatrixValue(EmotionalDamageParser.NumArrMatrixValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVal(EmotionalDamageParser.ValContext ctx) { }
+	@Override public void enterSqrtExpr(EmotionalDamageParser.SqrtExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVal(EmotionalDamageParser.ValContext ctx) { }
+	@Override public void exitSqrtExpr(EmotionalDamageParser.SqrtExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunccall(EmotionalDamageParser.FunccallContext ctx) { }
+	@Override public void enterModExpr(EmotionalDamageParser.ModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunccall(EmotionalDamageParser.FunccallContext ctx) { }
+	@Override public void exitModExpr(EmotionalDamageParser.ModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGradfunccall(EmotionalDamageParser.GradfunccallContext ctx) { }
+	@Override public void enterParenExpr(EmotionalDamageParser.ParenExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGradfunccall(EmotionalDamageParser.GradfunccallContext ctx) { }
+	@Override public void exitParenExpr(EmotionalDamageParser.ParenExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterId(EmotionalDamageParser.IdContext ctx) { }
+	@Override public void enterTimesExpr(EmotionalDamageParser.TimesExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitId(EmotionalDamageParser.IdContext ctx) { }
+	@Override public void exitTimesExpr(EmotionalDamageParser.TimesExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNum(EmotionalDamageParser.NumContext ctx) { }
+	@Override public void enterColid(EmotionalDamageParser.ColidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNum(EmotionalDamageParser.NumContext ctx) { }
+	@Override public void exitColid(EmotionalDamageParser.ColidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumtypes(EmotionalDamageParser.NumtypesContext ctx) { }
+	@Override public void enterMinusExpr(EmotionalDamageParser.MinusExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumtypes(EmotionalDamageParser.NumtypesContext ctx) { }
+	@Override public void exitMinusExpr(EmotionalDamageParser.MinusExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolExpr(EmotionalDamageParser.BoolExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolExpr(EmotionalDamageParser.BoolExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEquals(EmotionalDamageParser.EqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEquals(EmotionalDamageParser.EqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGreaterEquals(EmotionalDamageParser.GreaterEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolValue(EmotionalDamageParser.BoolValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSmallerEquals(EmotionalDamageParser.SmallerEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGreater(EmotionalDamageParser.GreaterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGreater(EmotionalDamageParser.GreaterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSmaller(EmotionalDamageParser.SmallerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSmaller(EmotionalDamageParser.SmallerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNotEquals(EmotionalDamageParser.NotEqualsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotEquals(EmotionalDamageParser.NotEqualsContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

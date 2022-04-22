@@ -1,2 +1,2 @@
 @echo off
-java -jar antlr-4.9.3-complete.jar -Dlanguage=CSharp EmotionalDamage.g4 -visitor
+java -jar antlr-4.9.3.jar -Dlanguage=CSharp EmotionalDamage.g4 -visitor
