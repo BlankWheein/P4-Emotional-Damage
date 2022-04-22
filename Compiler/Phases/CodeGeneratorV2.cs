@@ -99,5 +99,12 @@ namespace Compiler.Phases
             AddStmt($"return {id};");
             return false;
         }
+        public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var exprstring = context.expr().GetText();
+            AddStmt($"{id} = {exprstring};");
+            return false;
+        }
     }
 }
