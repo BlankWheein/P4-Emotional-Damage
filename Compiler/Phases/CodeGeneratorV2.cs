@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +70,6 @@ namespace Compiler.Phases
             AddStmt($"{returntype} {id}({parameters}) {{ {stmts} }};");
             return false;
         }
-
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
         {
             var inum = context.Inum();
@@ -77,7 +77,6 @@ namespace Compiler.Phases
             AddStmt($"{context.numtype().GetText()}[{inum[0].GetText()}][{inum[1].GetText()}] {id};");
             return false;
         }
-
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             var text = context.GetText().Split(' ');
@@ -89,7 +88,6 @@ namespace Compiler.Phases
             AddStmt($"{type}[] {id} = new {type}[{arr_size}];");
             return false;
         }
-
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             var numtype = context.numtype().GetText();
@@ -99,7 +97,6 @@ namespace Compiler.Phases
             AddStmt($"{numtype} {id} = {expr}");
             return false;
         }
-
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {
             var id = context.IDENTIFIER().GetText();
@@ -108,7 +105,6 @@ namespace Compiler.Phases
             AddStmt($"string {id} = {string_constant}");
             return false;
         }
-
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
         {
             var id = context.IDENTIFIER().GetText();
