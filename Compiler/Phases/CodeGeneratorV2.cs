@@ -279,7 +279,42 @@ namespace Compiler.Phases
 
         public override object VisitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context)
         {
+            Visit(context.bexpr(0));
+            AddStmt2($">=");
+            Visit(context.bexpr(1));
 
+            return false;
+        }
+
+        public override object VisitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context)
+        {
+            Visit(context.bexpr(0));
+            AddStmt2($"<=");
+            Visit(context.bexpr(1));
+
+            return false;
+        }
+
+        public override object VisitEquals([NotNull] EmotionalDamageParser.EqualsContext context)
+        {
+            Visit(context.bexpr(0));
+            AddStmt2($"==");
+            Visit(context.bexpr(1));
+            return false;
+        }
+
+        public override object VisitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context)
+        {
+            Visit(context.bexpr(0));
+            AddStmt2($"!=");
+            Visit(context.bexpr(1));
+            return false;
+        }
+
+        public override object VisitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context)
+        {
+            var BoolVal = context.GetText();
+            AddStmt($"{BoolVal}");
             return false;
         }
 
