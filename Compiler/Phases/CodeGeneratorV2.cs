@@ -87,6 +87,11 @@ namespace Compiler.Phases
             return false;
         }
 
-        
+        public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
+        {
+            var printPart = context.expr() == null ? context.STRING_CONSTANT().GetText() : context.expr().GetText();
+            AddStmt($"Console.WriteLine({printPart}); \n");
+            return false;
+        }
     }
 }
