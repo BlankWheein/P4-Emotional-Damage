@@ -114,6 +114,30 @@ namespace Compiler.Phases
             var bexpr = context.bexpr().GetText();
 
             AddStmt($"bool {id} = {bexpr}");
+        public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
+        {
+            var printPart = context.expr() == null ? context.STRING_CONSTANT().GetText() : context.expr().GetText();
+            AddStmt($"Console.WriteLine({printPart}); \n");
+            return false;
+        }
+        public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"return {id};");
+            return false;
+        }
+        public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var exprstring = context.expr().GetText();
+            AddStmt($"{id} = {exprstring};");
+            return false;
+        }
+        public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var boolstr = context.bexpr().GetText();
+            AddStmt($"{id} = {boolstr};");
             return false;
         }
     }
