@@ -160,5 +160,17 @@ namespace Compiler.Phases
             AddStmt($"{id}{pos1} = {exprstring};");
             return false;
         }
-    }
+        public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"{id}++");
+            return false;
+        }
+        public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"{id}--");
+            return false;
+        }
+    }   
 }
