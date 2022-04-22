@@ -261,7 +261,30 @@ namespace Compiler.Phases
             return false;
         }
 
+        public override object VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context)
+        {
+            return false;
+        }
 
+        public override object VisitNumArrMatrixValue([NotNull] EmotionalDamageParser.NumArrMatrixValueContext context)
+        {
+            return false;
+        }
+
+        public override object VisitRowid([NotNull] EmotionalDamageParser.RowidContext context)
+        {
+            return false;
+        }
+
+        public override object VisitColid([NotNull] EmotionalDamageParser.ColidContext context)
+        {
+            return false;
+        }
+
+        public override object VisitLengthid([NotNull] EmotionalDamageParser.LengthidContext context)
+        {
+            return false;
+        }
 
         public override object VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context)
         {
