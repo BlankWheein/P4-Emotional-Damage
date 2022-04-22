@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antlr4.Runtime.Misc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,5 +52,41 @@ namespace Compiler.Phases
                 stmt();
             _fs.Close();
         }
+
+        public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
+        {
+            var returntype = context.returntype().GetText();
+            var id = context.IDENTIFIER().First().GetText();
+
+            string parameters = "";
+            for (int i = 0; i < context.types().Length; i++)
+            {
+                parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i].GetText()}, ";
+            }
+            if(parameters != "") parameters = parameters[0..^2];
+
+            AddStmt($"{returntype} {id}({parameters}) {{ {context.stmts()} }};");
+            return false;
+        }
+
+        public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
+        {
+
+            return false;
+        }
+
+        public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
+        {
+            var text = context.GetText().Split(' ');
+
+            var type = text[0].Split('[')[0];
+            var arr_size = text[0].Split('[')[1].Trim(']');
+            var id = context.IDENTIFIER().GetText();
+
+            AddStmt($"{type}[] {id} = new {type}[{arr_size}];");
+            return false;
+        }
+
+        
     }
 }
