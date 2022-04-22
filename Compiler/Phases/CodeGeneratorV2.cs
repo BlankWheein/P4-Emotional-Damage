@@ -175,5 +175,18 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
+        {
+            var id1 = context.IDENTIFIER()[0].GetText();
+            var exprstring = context.expr().GetText();
+            var bexpr = context.bexpr().GetText();
+            var text = context.GetText().Split(';');
+            var unaryoperator = text[2];
+            string result = unaryoperator.Contains("++") == true ? "++" : "--";
+            AddStmt($"for (int {id1} = {exprstring}; {bexpr}; {id1}{result})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
     }   
 }
