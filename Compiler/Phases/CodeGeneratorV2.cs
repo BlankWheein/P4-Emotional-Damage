@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Compiler.Classes;
 
 namespace Compiler.Phases
 {
@@ -140,6 +141,15 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var boolstr = context.bexpr().GetText();
             AddStmt($"{id} = {boolstr};");
+            return false;
+        }
+        public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER()[0].GetText();
+            var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
+            var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
+            var exprstring = context.expr().GetText();
+
             return false;
         }
     }
