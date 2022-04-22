@@ -257,5 +257,39 @@ namespace Compiler.Phases
         #endregion
 
 
+
+        #region Bexpr
+        public override object VisitGreater([NotNull] EmotionalDamageParser.GreaterContext context)
+        {
+            Visit(context.bexpr(0));
+            AddStmt2($">");
+            Visit(context.bexpr(1));
+
+            return false;
+        }
+
+        public override object VisitSmaller([NotNull] EmotionalDamageParser.SmallerContext context)
+        {
+            Visit(context.bexpr(0));
+            AddStmt2($"<");
+            Visit(context.bexpr(1));
+
+            return false;
+        }
+
+        public override object VisitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context)
+        {
+
+            return false;
+        }
+
+
+        public override object VisitBoolExpr([NotNull] EmotionalDamageParser.BoolExprContext context)
+        {
+            Visit(context.expr());
+            return false;
+        }
+
+        #endregion
     }
 }
