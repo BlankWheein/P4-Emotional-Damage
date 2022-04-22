@@ -21,10 +21,11 @@ stmt:
     | IDENTIFIER '=' expr';' #NumAssignStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt
     | IDENTIFIER '['(IDENTIFIER | Inum)']''['(IDENTIFIER | Inum)']' '=' expr';' #MatrixElementAssignStmt
-    | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' expr';' #ArrayElementAssignStmt
+    | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
     | IDENTIFIER'++'';' #UnaryPlus
     | IDENTIFIER'--'';' #UnaryMinus
     | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
+    | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
     | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
     | ifstmt elifstmt* elsestmt? #Selective
@@ -45,7 +46,9 @@ expr:
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
     | expr '\\\\' expr #GradientExpr
-    | IDENTIFIER('['(IDENTIFIER | Inum)']')?('['(IDENTIFIER | Inum)']')? #NumArrMatrixValue
+    | IDENTIFIER #NumValue
+    | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
+    | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue
     | IDENTIFIER'.row' #Rowid
     | IDENTIFIER'.col' #Colid
     | IDENTIFIER'.len' #Lengthid
@@ -55,14 +58,13 @@ expr:
     ;
 
 bexpr :
-        bexpr '>' bexpr #Greater
-      | bexpr '<' bexpr #Smaller
-      | bexpr '>=' bexpr #GreaterEquals
-      | bexpr '<=' bexpr #SmallerEquals
-      | bexpr '==' bexpr #Equals
-      | bexpr '!=' bexpr #NotEquals
+        expr '>' expr #Greater
+      | expr '<' expr #Smaller
+      | expr '>=' expr #GreaterEquals
+      | expr '<=' expr #SmallerEquals
+      | expr '==' expr #Equals
+      | expr '!=' expr #NotEquals
       | ('true' | 'false') #BoolValue
-      | expr #BoolExpr
       ;
 
     

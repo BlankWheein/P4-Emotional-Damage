@@ -318,6 +318,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>WhileStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -345,20 +359,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>FuncCall</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FuncCall</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Selective</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
@@ -522,6 +522,34 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>PlusExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -536,19 +564,33 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NumArrMatrixValue</c>
+	/// Enter a parse tree produced by the <c>NumValue</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumArrMatrixValue([NotNull] EmotionalDamageParser.NumArrMatrixValueContext context) { }
+	public virtual void EnterNumValue([NotNull] EmotionalDamageParser.NumValueContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>NumArrMatrixValue</c>
+	/// Exit a parse tree produced by the <c>NumValue</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumArrMatrixValue([NotNull] EmotionalDamageParser.NumArrMatrixValueContext context) { }
+	public virtual void ExitNumValue([NotNull] EmotionalDamageParser.NumValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>SqrtExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
@@ -634,76 +676,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>BoolExpr</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolExpr([NotNull] EmotionalDamageParser.BoolExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>BoolExpr</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolExpr([NotNull] EmotionalDamageParser.BoolExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>Equals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Equals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>GreaterEquals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>GreaterEquals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>BoolValue</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>BoolValue</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>SmallerEquals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>SmallerEquals</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>Greater</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -732,6 +704,48 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSmaller([NotNull] EmotionalDamageParser.SmallerContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>NotEquals</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -745,6 +759,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
