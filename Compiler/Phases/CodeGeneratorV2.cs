@@ -175,10 +175,22 @@ namespace Compiler.Phases
             return false;
         }
 
-        
+
         #region Expr
 
-        
+        public override object VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context)
+        {
+            AddStmt2("(");
+            Visit(context.expr());
+            AddStmt2(")");
+            return false;
+        }
+        public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
+        {
+            return base.VisitFuncCall(context);
+        }
+
+        //fejl her tror jeg
         public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
         {
             AddStmt2($"Math.Sqrt(");
@@ -249,10 +261,24 @@ namespace Compiler.Phases
             return false;
         }
 
+
+
+        public override object VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context)
+        {
+            AddStmt2("-");
+            Visit(context.expr());
+            return false;
+        }
         public override object VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context)
         {
             var inum = context.Inum().GetText();
             AddStmt2($"{inum}");
+            return false;
+        }
+        public override object VisitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context)
+        {
+            var fnum = context.Fnum().GetText();
+            AddStmt2($"{fnum}");
             return false;
         }
         #endregion
