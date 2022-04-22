@@ -63,9 +63,9 @@ namespace Compiler.SymbolTableFolder
         /// <param name="type"></param>
         /// <param name="id"></param>
         /// <param name="is_initialized"></param>
-        public void Insert(SymbolType type, string id, bool is_initialized)
+        public void Insert(SymbolType type, string id, bool is_initialized, int row, int col)
         {
-            Symbol symbol = new(id, type, is_initialized);
+            Symbol symbol = new(id, type, is_initialized, row, col);
             Insert(symbol);
         }
    

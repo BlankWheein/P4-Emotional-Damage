@@ -187,13 +187,6 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>FuncCall</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>Selective</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
@@ -274,6 +267,13 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>PlusExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
