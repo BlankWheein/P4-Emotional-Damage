@@ -61,6 +61,7 @@ namespace Compiler.Phases
             {
                 char c = input[i];
                 char next_c = input[i + 1];
+                char prev_c = i > 0 ? input[i - 1] : '0';
                 string[] _expr;
 
                 if (input.Length > 4 && input[..4] == "sqrt")
@@ -69,14 +70,29 @@ namespace Compiler.Phases
                 if (c.Equals('*') && next_c.Equals('*'))
                 {
                     _expr = input.Split("**");
-                    return $"MathF.Pow({_expr[0]}, {_expr[1]})";
+                    var _expr1 = _expr[0];
+                    var _expr2 = _expr[1];
+                    return $"MathF.Pow({CheckExpr(_expr1)}, {CheckExpr(_expr2)})";
                 }
 
                 string symbols = "%*/+-";
                 if (symbols.Contains(c))
                 {
                     _expr = input.Split(c);
-                    return $"{_expr[0]} {c} {_expr[1]}";
+                    var _expr1 = _expr[0];
+                    var _expr2 = _expr[1];
+                    return $"{CheckExpr(_expr1)} {c} {_expr[1]}";
+                }
+
+                if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
+                {
+                    string id = input.Split('.').First();
+                    switch (next_c)
+                    {
+                        case 'r': return $"{id}.Rows";
+                        case 'c': return $"{id}.Columns";
+                        case 'l': return $"{id}.Length";
+                    }
                 }
             }
 

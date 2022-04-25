@@ -16,3 +16,10 @@ mar.Values[1][1] = new Value(2);
 while(true){
 Console.WriteLine("hello");
 }
+int h = mar.Rows;
+int i = mar.Columns;
+int j = mon.Length;
+float k = MathF.Sqrt();
+float kage (float a, float b) {
+}
+kage();
