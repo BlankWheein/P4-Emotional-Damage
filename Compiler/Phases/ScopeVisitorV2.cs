@@ -7,7 +7,7 @@ namespace Compiler.Phases
     {
         public List<Exception> Diagnostics { get; set; }
         public RootSymbolTable Scope { get; set; }
-        public TypeChecker TypeChecker { get; set; };
+        public TypeChecker TypeChecker { get; set; }
         public ScopeVisitorV2() 
         {
             this.Scope = new RootSymbolTable();
