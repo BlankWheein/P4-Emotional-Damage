@@ -49,24 +49,36 @@ namespace Compiler.Phases
             if (bexpr == "true" || bexpr == "false") return true;
             var text = SplitOnOperatorsBexpr(bexpr);
             bool isValid = true;
-
-
+            bool left = ExprHelper(text[0], SymbolType.Float);
+            bool right = ExprHelper(text[1], SymbolType.Float);
+            if (left && !right || !left && right)
+                isValid = false;
+            
             return isValid;
         }
-        private bool ExprHelper(string expr, SymbolType type)
+        private bool ExprHelper(string expr, SymbolType? type = null)
         {
+            if (type == null)
+            {
+                Scope.AddDiagnostic(new("Type was null"));
+                return false;
+            }
             var _out = SplitOnOperatorsExpr(expr);
             bool res = true;
             _out.ForEach(p =>
             {
                 if (IsVariable.IsMatch(p))
                 {
-                    var symbol = Scope.LookUp(p);
-                    if (type == SymbolType.Int && symbol.Type != SymbolType.Int)
+                    Symbol symbol;
+                    if (p == "true" || p == "false")
+                        symbol = new("NotSet", SymbolType.Int);
+                    else
+                        symbol = Scope.LookUp(p);
+                    if (type == SymbolType.Int && (symbol.Type != SymbolType.Int || symbol.Type != SymbolType.Bool))
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
                     }
-                    else if (type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int)
+                    else if (type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int && symbol.Type != SymbolType.Bool)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float"));
                     }
@@ -77,7 +89,7 @@ namespace Compiler.Phases
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int"));
                     }
-                    else if (type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _)))
+                    else if (type == SymbolType.Float &&(!float.TryParse(p, out _) && !int.TryParse(p, out _)))
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float"));
                     }

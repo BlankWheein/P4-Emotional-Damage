@@ -1,3 +1,2 @@
-﻿float x1 = 0.3f;
-int x = 4 * 3 + x1;
-
+﻿int x = 2;
+int y = x + 3;

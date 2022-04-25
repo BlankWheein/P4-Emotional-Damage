@@ -62,8 +62,8 @@ bexpr :
       | expr '<' expr #Smaller
       | expr '>=' expr #GreaterEquals
       | expr '<=' expr #SmallerEquals
-      | expr '==' expr #Equals
-      | expr '!=' expr #NotEquals
+      | expr '==' (expr | 'true' | 'false') #Equals
+      | expr '!=' (expr | 'true' | 'false') #NotEquals
       | ('true' | 'false') #BoolValue
       ;
 
