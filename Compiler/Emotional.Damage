@@ -1,8 +1,28 @@
-﻿
-int a(int a, int b, int c){}
+﻿int a = 10;
+bool boo = false;
+int[5][5] coke;
+int[2] arr;
+
+print("Hello");
+print(10);
+
+return a;
+
+a = 15;
+
+boo = true;
+
+coke[0][0] = 10;
+
+a++;
+a--;
+
+while(boo){print("hello"); print("hello2"); print("hello3");}
+while(2 > 1){print("hello");}
 
 
-int b=2;
-int c=5;
-int d=55;
-int k=a(b,c,d);
+for (int i = 0; i < 10; i++){print("hello2");}
+
+if(1 > 2){print("ok");}
+elif(2 > 1){print("ok2");}
+else{print("ok3");}

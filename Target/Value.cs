@@ -11,83 +11,88 @@ namespace AutoGrad
         public List<Value> topo;
         public List<Value> visited;
         public float grad { get; set; }
+        public bool? CalculateGradient { get; }
 
-        public Value(float data, IEnumerable<Value>? _children = null, string _op = "")
+        public Value(float data, IEnumerable<Value>? _children = null, string _op = "", bool? CalculateGradient = null)
         {
+            if (CalculateGradient == null) throw new Exception();
             grad = 0;
             this.data = data;
             this._op = _op;
+            this.CalculateGradient = CalculateGradient;
             Id = counter++;
             _backwards = null;
             prev = new();
-            if(_children != null)
-            foreach (var child in _children.Reverse())
-                prev.Add(child);
+            if (_children != null)
+                foreach (var child in _children.Reverse())
+                    prev.Add(child);
         }
         public static Value operator +(Value self, float other) => self + new Value(other);
         public static Value operator +(Value self, int other) => self + new Value(other);
 
         public static Value operator +(float self, Value other) => new Value(self) + other;
         public static Value operator +(int self, Value other) => new Value(self) + other;
-        public static Value operator + (Value self, Value other)
+        public static Value operator +(Value self, Value other)
         {
             return self.Plus(other);
         }
         public Value Plus(Value other)
         {
-            Value _out = new(this.data + other.data, new List<Value>() { this, other }, "+");
-            _out._backwards = () =>
-            {
-                this.grad += _out.grad;
-                other.grad += _out.grad;
-            };
+            Value _out = new(this.data + other.data, new List<Value>() { this, other }, "+", CalculateGradient: CalculateGradient | other.CalculateGradient);
+            if (_out.CalculateGradient == true)
+                _out._backwards = () =>
+                {
+                    this.grad += _out.grad;
+                    other.grad += _out.grad;
+                };
             return _out;
 
         }
 
-        public static Value operator * (Value self, float other) => self * new Value(other);
-        public static Value operator * (Value self, int other) => self * new Value(other);
-        public static Value operator * (float self, Value other) => new Value(self) * other;
-        public static Value operator * (int self, Value other) => new Value(self) * other;
-        public static Value operator * (Value self, Value other)
+        public static Value operator *(Value self, float other) => self * new Value(other, CalculateGradient: self.CalculateGradient);
+        public static Value operator *(Value self, int other) => self * new Value(other, CalculateGradient: self.CalculateGradient);
+        public static Value operator *(float self, Value other) => new Value(self) * other;
+        public static Value operator *(int self, Value other) => new Value(self) * other;
+        public static Value operator *(Value self, Value other)
         {
             return self.Times(other);
         }
-        public Value Times( Value other)
+        public Value Times(Value other)
         {
-            Value? _out = new(this.data * other.data, new List<Value>() { this, other }, "*");
-            _out._backwards = () =>
-            {
-                this.grad += other.data * _out.grad;
-                other.grad += this.data * _out.grad;
-            };
+            Value? _out = new(this.data * other.data, new List<Value>() { this, other }, "*", CalculateGradient: CalculateGradient | other.CalculateGradient);
+            if (_out.CalculateGradient == true)
+                _out._backwards = () =>
+                {
+                    this.grad += other.data * _out.grad;
+                    other.grad += this.data * _out.grad;
+                };
             return _out;
         }
 
         public Value Pow(int v) => Pow((float)v);
         public Value Pow(float other)
         {
-            Value? _out = new(MathF.Pow(data, other), new List<Value>() { this }, $"**{other}");
-            _out._backwards = () =>
-            {
-                this.grad += (other * MathF.Pow(this.data, other -1.0f)) * _out.grad;
-            };
-
+            Value? _out = new(MathF.Pow(data, other), new List<Value>() { this }, $"**{other}", CalculateGradient: CalculateGradient);
+            if (CalculateGradient == true)
+                _out._backwards = () =>
+                {
+                    this.grad += (other * MathF.Pow(this.data, other - 1.0f)) * _out.grad;
+                };
             return _out;
         }
         public Value relu()
         {
-            Value? _out = new(data < 0 ? 0 : data, new List<Value>() { this }, "ReLU");
-            _out._backwards = () =>
-            {
-                if (_out.data > 0)
-                    this.grad += _out.grad;
-            };
+            Value? _out = new(data < 0 ? 0 : data, new List<Value>() { this }, "ReLU", CalculateGradient: CalculateGradient);
+            if (CalculateGradient == true)
+                _out._backwards = () =>
+                {
+                    if (_out.data > 0)
+                        this.grad += _out.grad;
+                };
             return _out;
         }
-        
-        
-        public Value backward()
+
+        public Value Backward()
         {
             topo = new();
             visited = new();
@@ -114,17 +119,21 @@ namespace AutoGrad
             return self * (-1);
         }
 
-        public static Value operator - (Value self, Value other)
+        public static Value operator -(Value self, Value other)
         {
             return self + (-other);
         }
 
 
-        public static Value operator / (Value self, float other)
+        public static Value operator /(Value self, float other)
         {
             return self * new Value(other).Pow(-1);
         }
-        public static Value operator / (float self, Value other)
+        public static Value operator /(Value self, Value other)
+        {
+            return self * new Value(other.data).Pow(-1);
+        }
+        public static Value operator /(float self, Value other)
         {
             return new Value(self) * other.Pow(-1);
         }
