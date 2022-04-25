@@ -16,10 +16,14 @@ namespace Compiler.Phases
 
         public RootSymbolTable Scope { get => ScopeVisitorV2.Scope; }
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
+        internal List<string> SplitOnOperators(string text)  => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
+
+        
     }
 }
