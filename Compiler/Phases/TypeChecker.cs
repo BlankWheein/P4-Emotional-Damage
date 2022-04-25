@@ -68,12 +68,12 @@ namespace Compiler.Phases
                 if (IsVariable.IsMatch(p))
                 {
                     var symbol = Scope.LookUp(p);
-                    if (Scope?.LookUp(id).Type == SymbolType.Int && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int")); return; }
-                    else if (Scope?.LookUp(id).Type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float")); return; }
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int")); }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float")); }
                 } else if (IsDigit.IsMatch(p))
                 {
-                    if (Scope?.LookUp(id).Type == SymbolType.Int && !int.TryParse(p, out _)) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int")); return; }
-                    else if (Scope?.LookUp(id).Type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _) )) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float")); return; }
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && !int.TryParse(p, out _)) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int")); }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _) )) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float")); }
                 }
             });
             return res;
