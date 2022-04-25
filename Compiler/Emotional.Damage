@@ -26,4 +26,3 @@ for (int i = 0; i < 10; i++){print("hello2");}
 if(1 > 2){print("ok");}
 elif(2 > 1){print("ok2");}
 else{print("ok3");}
-

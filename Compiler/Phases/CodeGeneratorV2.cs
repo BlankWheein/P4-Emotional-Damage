@@ -19,6 +19,7 @@ namespace Compiler.Phases
                 File.Delete(_path);
             _fs = File.Create(_path);
             AddStmt("using AutoGrad;\n");
+
         }
         #region Indent
         public string Indent = "";
@@ -33,6 +34,10 @@ namespace Compiler.Phases
         #endregion
         public List<Action> Stmts { get; set; } = new();
         private void AddStmt(string v, bool newline = true, bool indent = true)
+        {
+            Stmts.Add(() => AddText(v, newline, indent));
+        }
+        private void AddStmt2(string v, bool newline = false, bool indent = true)
         {
             Stmts.Add(() => AddText(v, newline, indent));
         }
@@ -60,11 +65,11 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().First().GetText();
             var stmts = context.stmts();
             string parameters = "";
-            
+
             for (int i = 0; i < context.types().Length; i++)
                 parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
 
-            if(parameters != "") parameters = parameters[0..^2];
+            if (parameters != "") parameters = parameters[0..^2];
 
             AddStmt($"{returntype} {id} ({parameters}) {{");
             Increment();
@@ -99,8 +104,6 @@ namespace Compiler.Phases
         {
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
-            var expr = context.expr().GetText();
-
             if(numtype == "float")
             {
                 bool active = false;
@@ -131,12 +134,13 @@ namespace Compiler.Phases
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
         {
             var id = context.IDENTIFIER().GetText();
-            var bexpr = context.bexpr().GetText();
 
-            AddStmt($"bool {id} = {bexpr};");
+            AddStmt($"bool {id} = ");
+            Visit(context.bexpr());
+            AddStmt(";");
             return false;
         }
-        public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
+        public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : context?.expr()?.GetText();
             AddStmt($"Console.WriteLine({printPart});");
@@ -258,5 +262,142 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
-    }   
+
+        #region Expr
+
+        public override object VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context)
+        {
+            AddStmt2("(");
+            Visit(context.expr());
+            AddStmt2(")");
+            return false;
+        }
+        public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
+        {
+
+            AddStmt2($"{context.IDENTIFIER(0).GetText()}(");
+            for(int i =1; i < context.IDENTIFIER().Length-1; i++)
+            {
+                AddStmt2($"{context.IDENTIFIER(i).GetText()},");
+            }
+
+            AddStmt2($"{context.IDENTIFIER().Last().GetText()})");
+
+            return false;
+        }
+
+        
+        public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
+        {
+            AddStmt2($"Math.Sqrt(");
+            Visit(context.expr());
+            AddStmt2(")");
+
+            return false;
+        }
+
+        //this c# method is for doubles oops. how do i fix this
+        public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
+        {
+            AddStmt2($"(int)Math.Pow(");
+            Visit(context.expr(0));
+            AddStmt2(",");
+            Visit(context.expr(1));
+            AddStmt2(")");
+            return false;
+        }
+
+        public override object VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context)
+        {
+            Visit(context.expr(0));
+            AddStmt2($"%");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context)
+        {
+
+            Visit(context.expr(0));
+            AddStmt2($"*");
+            Visit(context.expr(1));
+
+            return false;
+        }
+        public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
+        {
+
+            Visit(context.expr(0));
+            AddStmt2($"/");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context)
+        {
+           
+            Visit(context.expr(0));
+            AddStmt2($"+");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context)
+        {
+        
+            Visit(context.expr(0));
+            AddStmt2($"-");
+            Visit(context.expr(1));
+
+            return false;
+        }
+
+        public override object VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context)
+        {
+            return false;
+        }
+
+        public override object VisitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context)
+        {
+            return false;
+        }
+
+        public override object VisitRowid([NotNull] EmotionalDamageParser.RowidContext context)
+        {
+            return false;
+        }
+
+        public override object VisitColid([NotNull] EmotionalDamageParser.ColidContext context)
+        {
+            return false;
+        }
+
+        public override object VisitLengthid([NotNull] EmotionalDamageParser.LengthidContext context)
+        {
+            return false;
+        }
+
+        public override object VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context)
+        {
+            AddStmt2("-");
+            Visit(context.expr());
+            return false;
+        }
+        public override object VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context)
+        {
+            var inum = context.Inum().GetText();
+            AddStmt2($"{inum}");
+            return false;
+        }
+        public override object VisitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context)
+        {
+            var fnum = context.Fnum().GetText();
+            AddStmt2($"{fnum}");
+            return false;
+        }
+        #endregion
+    }
 }
