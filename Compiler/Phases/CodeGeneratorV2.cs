@@ -176,7 +176,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER()[0].GetText();
             var pos1 = context.Inum().GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum().GetText();
             var exprstring = context.expr().GetText();
-            AddStmt($"{id}{pos1} = {exprstring};");
+            AddStmt($"{id}[{pos1}] = {exprstring};");
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
@@ -215,6 +215,21 @@ namespace Compiler.Phases
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
             var id = context.IDENTIFIER().GetText();
             AddStmt($"{id} = {id}.Transpose()");
+            return false;
+        }
+        public override object VisitSelective([NotNull] EmotionalDamageParser.SelectiveContext context)
+        {
+            if(context.ifstmt() != null){
+                VisitIfstmt(context.ifstmt());
+            }
+            if (context.elifstmt() != null){
+                foreach (var i in context.elifstmt()){
+                    VisitElifstmt(i);
+                }
+            }
+            if(context.elsestmt() != null){
+                VisitElsestmt(context.elsestmt());
+            }
             return false;
         }
     }   
