@@ -97,7 +97,7 @@ namespace Compiler.Phases
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
 
-            AddStmt($"{numtype} {id} = ");
+            AddStmt2($"{numtype} {id} = ");
             Visit(context.expr());
             AddStmt(";");
             return false;
@@ -176,6 +176,8 @@ namespace Compiler.Phases
         }
 
 
+
+
         #region Expr
 
         public override object VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context)
@@ -187,10 +189,19 @@ namespace Compiler.Phases
         }
         public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
         {
-            return base.VisitFuncCall(context);
+
+            AddStmt2($"{context.IDENTIFIER(0).GetText()}(");
+            for(int i =1; i < context.IDENTIFIER().Length-1; i++)
+            {
+                AddStmt2($"{context.IDENTIFIER(i).GetText()},");
+            }
+
+            AddStmt2($"{context.IDENTIFIER().Last().GetText()})");
+
+            return false;
         }
 
-        //fejl her tror jeg
+        
         public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
         {
             AddStmt2($"Math.Sqrt(");
@@ -200,21 +211,19 @@ namespace Compiler.Phases
             return false;
         }
 
-        //this c# method is for doubles oops
-     /*   public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
+        //this c# method is for doubles oops. how do i fix this
+        public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
         {
-        
-            AddStmt2($"Math.Pow(");
+            AddStmt2($"(int)Math.Pow(");
             Visit(context.expr(0));
             AddStmt2(",");
             Visit(context.expr(1));
             AddStmt2(")");
             return false;
-        }*/
+        }
 
         public override object VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context)
         {
-
             Visit(context.expr(0));
             AddStmt2($"%");
             Visit(context.expr(1));
@@ -305,7 +314,5 @@ namespace Compiler.Phases
             return false;
         }
         #endregion
-
-
     }
 }
