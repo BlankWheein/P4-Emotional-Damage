@@ -1,115 +1,78 @@
 grammar EmotionalDamage;
 
 prog: stmts EOF;
-stmts: stmt stmts?;
-block: '{'stmts'}';
-stmt: ((matrixassign | numassign | boolassign | arrassign | graddcl | unaryoperator | print | println | funccall | gradfunccall | returnstmt)';') 
-     | ( iterative | selective | func | gradfunc);
-print: 'print' '(' (STRING_CONSTANT | bexpr) ')';
-println: 'println' '(' (STRING_CONSTANT | bexpr) ')';
-returnstmt: 'return' numexpr;
-func: rettype id'('parameters?')' block;
-gradfunc: 'autograd' id'('parameters?')' '{'numexpr'}';
-rettype: numtypes | 'string' | 'void' | numtypes'['val']' | numtypes'['val','val']' | 'Value';
-parameters: parameter (','parameters)?;
-parameter: (numtypes | 'string'| matrixparameter | arrparameter)':' id;
-matrixparameter: numtypes'['(val)','(val)']';
-arrparameter: numtypes'['(val)']';
-graddcl: 'Value' id '=' gradfunccall;
-intdcl: 'int' id ('=' numexpr)?;
-floatdcl: 'float' id ('=' numexpr)?;
-
-intarrdcl: 'int''['val']' id ('=' val)?;
-floatarrdcl: 'float''['val']' id ('=' val)?;
-arrupdate: (id '=' (numexpr | arrexpr)) 
-            | id'['val']' '=' numexpr;
-arrassign: intarrdcl | floatarrdcl | arrupdate;
-
-matrixassign: intmatrixdcl | floatmatrixdcl | matrixupdate;
-intmatrixdcl: 'int''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
-floatmatrixdcl: 'float''['val','val']' id ('=' (matrixarrexpr | numexpr))?;
-matrixupdate: (id '=' (numexpr | matrixarrexpr))
-            | id'['val','val']' '=' numexpr
-            | id'['val',' '*' ']' '=' numexpr
-            | id'[' '*' ','val']' '=' numexpr
-            ;
-matrixarrexpr: id '.' id
-      | matrixtranspose'('id')'
-      | matrixinverse'('id')'
-      | 'toMatrix''('id')'
-      ; 
-arrexpr: 'toArray''('id')';
-matrixtranspose: 'T';
-matrixinverse: '~';
-
-numassign: intdcl | floatdcl
-        | numupdate
-        ;
-numupdate: id '=' numexpr;
-
-boolassign: booldcl
-      | boolupdate
-      ;
-boolupdate: id '=' (bexpr | boolval);
-booldcl: 'bool' id '=' (bexpr | boolval);
-boolval: 'true' | 'false';
-
-selective: ifstmt elifstmt* elsestmt?;
-ifstmt: 'if''('bexpr')'block;
-elifstmt: 'elif''('bexpr')'block;
-elsestmt: 'else'block;
-
-iterative: forstmt | whilestmt;
-forstmt: 'for''('intdcl?';'bexpr';'unaryoperator')'block;
-whilestmt: 'while''('bexpr')'block;
-
-random: 'rand''('val','val')';
-numexpr: '('numexpr')'
-    | sqrt numexpr
-    | numexpr (mod | power) numexpr
-    | numexpr ('*' | '/') numexpr
-    | numexpr ('+' | '-') numexpr
-    | random
-    | val
+stmts: (dcl | stmt)*;
+numtype: 'int' | 'float';
+print: 'print' | 'println';
+types: 'int'('['Inum']')?('['Inum']')? | 'float'('['Inum']')?('['Inum']')? | 'bool' | 'string';
+returntype: types | 'void';
+dcl :
+      returntype IDENTIFIER '(' ((types IDENTIFIER) (',' types IDENTIFIER)* )? ')' '{'stmts'}' #FuncDcl
+    | numtype'['Inum']''['Inum']' IDENTIFIER';' #MatrixDeclaration
+    | ( numtype | 'string' )'['Inum']' IDENTIFIER';' #ArrayDeclaration
+    | numtype IDENTIFIER '=' expr';' #NumDcl
+    | 'string' IDENTIFIER '=' STRING_CONSTANT';' #StringDcl
+    | 'bool' IDENTIFIER '=' bexpr';' #BoolDeclaration
     ;
+
+stmt: 
+      print '(' ('$'?STRING_CONSTANT | expr) ')'';' #printStmt
+    | 'return' IDENTIFIER ';' #ReturnStmt
+    | IDENTIFIER '=' expr';' #NumAssignStmt
+    | IDENTIFIER '=' bexpr';' #BoolAssignStmt
+    | IDENTIFIER '['(IDENTIFIER | Inum)']''['(IDENTIFIER | Inum)']' '=' expr';' #MatrixElementAssignStmt
+    | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
+    | IDENTIFIER'++'';' #UnaryPlus
+    | IDENTIFIER'--'';' #UnaryMinus
+    | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
+    | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
+    | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
+    | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
+    | ifstmt elifstmt* elsestmt? #Selective
+    ;
+
+ifstmt: 'if' '('bexpr')' '{' stmts '}';
+elifstmt: 'elif' '('bexpr')' '{' stmts '}';
+elsestmt: 'else' '{' stmts '}';
+
+expr:
+     '('expr')' #ParenExpr
+    | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
+    | 'sqrt' expr #SqrtExpr
+    | expr '**' expr #PowExpr
+    | expr '%' expr #ModExpr
+    | expr '*' expr #TimesExpr
+    | expr '/' expr #DivideExpr
+    | expr '+' expr #PlusExpr
+    | expr '-' expr #MinusExpr
+    | expr '\\\\' expr #GradientExpr
+    | IDENTIFIER #NumValue
+    | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
+    | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue
+    | IDENTIFIER'.row' #Rowid
+    | IDENTIFIER'.col' #Colid
+    | IDENTIFIER'.len' #Lengthid
+    | '-'expr #NegVal
+    | Inum #IntVal
+    | Fnum #FloatVal
+    ;
+
 bexpr :
-        bexpr ('>' | '<')'='? bexpr
-      | bexpr ('!' | '=')'=' bexpr
-      | bexpr ('AND' | 'OR') bexpr
-      | '!''('bexpr')'
-      | '!'?numexpr
+        expr '>' expr #Greater
+      | expr '<' expr #Smaller
+      | expr '>=' expr #GreaterEquals
+      | expr '<=' expr #SmallerEquals
+      | expr '==' expr #Equals
+      | expr '!=' expr #NotEquals
+      | ('true' | 'false') #BoolValue
       ;
 
-sqrt: 'sqrt';
-power: '**';
-mod: '%';
-unaryoperator: (id'++' | id'--');
-
-
-val: id 
-      | '-'?num
-      | id'['val']'('.data' | '.grad')?
-      | id'['val','val']'
-      | id'.row'
-      | id'.col'
-      | id'.len'
-      | funccall
-      | gradfunccall
-      ;
-funccall: id'('(id (','id)*)?')';
-gradfunccall: id'('(val (','val)*)?')';
-
-id: ID;
-num: Inum | Fnum | Dnum;
-numtypes: 'int' | 'float';
-
+    
+Inum: [0-9]+ ;
+Fnum: [0-9]+('.')[0-9]+;
+IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 STRING_CONSTANT: '"' ( ESC | ~('"' | '\\') )* '"';
 fragment ESC : '\\' (["\\/bfnrt] | UNICODE) ;
 fragment UNICODE : 'u' HEX HEX HEX HEX ;
 fragment HEX : [0-9a-fA-F] ;
-
-Inum: [0-9]+ ;
-Fnum: [0-9]+('.')[0-9]+;
-Dnum: [0-9]+('.')[0-9]+;
-ID : [a-zA-Z_][a-zA-Z0-9_]*;
 WS: [ \n\t\r]+ -> channel(HIDDEN);

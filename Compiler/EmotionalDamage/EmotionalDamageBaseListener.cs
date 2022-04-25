@@ -60,29 +60,17 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStmts([NotNull] EmotionalDamageParser.StmtsContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.block"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numtype"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBlock([NotNull] EmotionalDamageParser.BlockContext context) { }
+	public virtual void EnterNumtype([NotNull] EmotionalDamageParser.NumtypeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.block"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numtype"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBlock([NotNull] EmotionalDamageParser.BlockContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStmt([NotNull] EmotionalDamageParser.StmtContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStmt([NotNull] EmotionalDamageParser.StmtContext context) { }
+	public virtual void ExitNumtype([NotNull] EmotionalDamageParser.NumtypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.print"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -96,373 +84,291 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPrint([NotNull] EmotionalDamageParser.PrintContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.println"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.types"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPrintln([NotNull] EmotionalDamageParser.PrintlnContext context) { }
+	public virtual void EnterTypes([NotNull] EmotionalDamageParser.TypesContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.println"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.types"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPrintln([NotNull] EmotionalDamageParser.PrintlnContext context) { }
+	public virtual void ExitTypes([NotNull] EmotionalDamageParser.TypesContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.returnstmt"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.returntype"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterReturnstmt([NotNull] EmotionalDamageParser.ReturnstmtContext context) { }
+	public virtual void EnterReturntype([NotNull] EmotionalDamageParser.ReturntypeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.returnstmt"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.returntype"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitReturnstmt([NotNull] EmotionalDamageParser.ReturnstmtContext context) { }
+	public virtual void ExitReturntype([NotNull] EmotionalDamageParser.ReturntypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.func"/>.
+	/// Enter a parse tree produced by the <c>FuncDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunc([NotNull] EmotionalDamageParser.FuncContext context) { }
+	public virtual void EnterFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.func"/>.
+	/// Exit a parse tree produced by the <c>FuncDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunc([NotNull] EmotionalDamageParser.FuncContext context) { }
+	public virtual void ExitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.gradfunc"/>.
+	/// Enter a parse tree produced by the <c>MatrixDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGradfunc([NotNull] EmotionalDamageParser.GradfuncContext context) { }
+	public virtual void EnterMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.gradfunc"/>.
+	/// Exit a parse tree produced by the <c>MatrixDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGradfunc([NotNull] EmotionalDamageParser.GradfuncContext context) { }
+	public virtual void ExitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.rettype"/>.
+	/// Enter a parse tree produced by the <c>ArrayDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRettype([NotNull] EmotionalDamageParser.RettypeContext context) { }
+	public virtual void EnterArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.rettype"/>.
+	/// Exit a parse tree produced by the <c>ArrayDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRettype([NotNull] EmotionalDamageParser.RettypeContext context) { }
+	public virtual void ExitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.parameters"/>.
+	/// Enter a parse tree produced by the <c>NumDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParameters([NotNull] EmotionalDamageParser.ParametersContext context) { }
+	public virtual void EnterNumDcl([NotNull] EmotionalDamageParser.NumDclContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.parameters"/>.
+	/// Exit a parse tree produced by the <c>NumDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParameters([NotNull] EmotionalDamageParser.ParametersContext context) { }
+	public virtual void ExitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.parameter"/>.
+	/// Enter a parse tree produced by the <c>StringDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParameter([NotNull] EmotionalDamageParser.ParameterContext context) { }
+	public virtual void EnterStringDcl([NotNull] EmotionalDamageParser.StringDclContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.parameter"/>.
+	/// Exit a parse tree produced by the <c>StringDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParameter([NotNull] EmotionalDamageParser.ParameterContext context) { }
+	public virtual void ExitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixparameter"/>.
+	/// Enter a parse tree produced by the <c>BoolDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixparameter([NotNull] EmotionalDamageParser.MatrixparameterContext context) { }
+	public virtual void EnterBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixparameter"/>.
+	/// Exit a parse tree produced by the <c>BoolDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixparameter([NotNull] EmotionalDamageParser.MatrixparameterContext context) { }
+	public virtual void ExitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrparameter"/>.
+	/// Enter a parse tree produced by the <c>printStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context) { }
+	public virtual void EnterPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrparameter"/>.
+	/// Exit a parse tree produced by the <c>printStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context) { }
+	public virtual void ExitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGraddcl([NotNull] EmotionalDamageParser.GraddclContext context) { }
+	public virtual void EnterReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context) { }
+	public virtual void ExitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
+	/// Enter a parse tree produced by the <c>NumAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIntdcl([NotNull] EmotionalDamageParser.IntdclContext context) { }
+	public virtual void EnterNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
+	/// Exit a parse tree produced by the <c>NumAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIntdcl([NotNull] EmotionalDamageParser.IntdclContext context) { }
+	public virtual void ExitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
+	/// Enter a parse tree produced by the <c>BoolAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFloatdcl([NotNull] EmotionalDamageParser.FloatdclContext context) { }
+	public virtual void EnterBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
+	/// Exit a parse tree produced by the <c>BoolAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFloatdcl([NotNull] EmotionalDamageParser.FloatdclContext context) { }
+	public virtual void ExitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intarrdcl"/>.
+	/// Enter a parse tree produced by the <c>MatrixElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context) { }
+	public virtual void EnterMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intarrdcl"/>.
+	/// Exit a parse tree produced by the <c>MatrixElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context) { }
+	public virtual void ExitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
+	/// Enter a parse tree produced by the <c>ArrayElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFloatarrdcl([NotNull] EmotionalDamageParser.FloatarrdclContext context) { }
+	public virtual void EnterArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
+	/// Exit a parse tree produced by the <c>ArrayElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFloatarrdcl([NotNull] EmotionalDamageParser.FloatarrdclContext context) { }
+	public virtual void ExitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrupdate"/>.
+	/// Enter a parse tree produced by the <c>UnaryPlus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArrupdate([NotNull] EmotionalDamageParser.ArrupdateContext context) { }
+	public virtual void EnterUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrupdate"/>.
+	/// Exit a parse tree produced by the <c>UnaryPlus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArrupdate([NotNull] EmotionalDamageParser.ArrupdateContext context) { }
+	public virtual void ExitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrassign"/>.
+	/// Enter a parse tree produced by the <c>UnaryMinus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArrassign([NotNull] EmotionalDamageParser.ArrassignContext context) { }
+	public virtual void EnterUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrassign"/>.
+	/// Exit a parse tree produced by the <c>UnaryMinus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArrassign([NotNull] EmotionalDamageParser.ArrassignContext context) { }
+	public virtual void ExitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixassign"/>.
+	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixassign([NotNull] EmotionalDamageParser.MatrixassignContext context) { }
+	public virtual void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixassign"/>.
+	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixassign([NotNull] EmotionalDamageParser.MatrixassignContext context) { }
+	public virtual void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intmatrixdcl"/>.
+	/// Enter a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context) { }
+	public virtual void EnterFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intmatrixdcl"/>.
+	/// Exit a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context) { }
+	public virtual void ExitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
+	/// Enter a parse tree produced by the <c>WhileStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFloatmatrixdcl([NotNull] EmotionalDamageParser.FloatmatrixdclContext context) { }
+	public virtual void EnterWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
+	/// Exit a parse tree produced by the <c>WhileStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFloatmatrixdcl([NotNull] EmotionalDamageParser.FloatmatrixdclContext context) { }
+	public virtual void ExitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixupdate"/>.
+	/// Enter a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixupdate([NotNull] EmotionalDamageParser.MatrixupdateContext context) { }
+	public virtual void EnterForStmt([NotNull] EmotionalDamageParser.ForStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixupdate"/>.
+	/// Exit a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixupdate([NotNull] EmotionalDamageParser.MatrixupdateContext context) { }
+	public virtual void ExitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixarrexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixarrexpr([NotNull] EmotionalDamageParser.MatrixarrexprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixarrexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixarrexpr([NotNull] EmotionalDamageParser.MatrixarrexprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArrexpr([NotNull] EmotionalDamageParser.ArrexprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArrexpr([NotNull] EmotionalDamageParser.ArrexprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixtranspose"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixtranspose([NotNull] EmotionalDamageParser.MatrixtransposeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixtranspose"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixtranspose([NotNull] EmotionalDamageParser.MatrixtransposeContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixinverse"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatrixinverse([NotNull] EmotionalDamageParser.MatrixinverseContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixinverse"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatrixinverse([NotNull] EmotionalDamageParser.MatrixinverseContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numassign"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumassign([NotNull] EmotionalDamageParser.NumassignContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numassign"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumassign([NotNull] EmotionalDamageParser.NumassignContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numupdate"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumupdate([NotNull] EmotionalDamageParser.NumupdateContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numupdate"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumupdate([NotNull] EmotionalDamageParser.NumupdateContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolassign"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolassign([NotNull] EmotionalDamageParser.BoolassignContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolassign"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolassign([NotNull] EmotionalDamageParser.BoolassignContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolupdate"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolupdate([NotNull] EmotionalDamageParser.BoolupdateContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolupdate"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolupdate([NotNull] EmotionalDamageParser.BoolupdateContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.booldcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBooldcl([NotNull] EmotionalDamageParser.BooldclContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.booldcl"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBooldcl([NotNull] EmotionalDamageParser.BooldclContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolval"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolval([NotNull] EmotionalDamageParser.BoolvalContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolval"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolval([NotNull] EmotionalDamageParser.BoolvalContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.selective"/>.
+	/// Enter a parse tree produced by the <c>Selective</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void EnterSelective([NotNull] EmotionalDamageParser.SelectiveContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.selective"/>.
+	/// Exit a parse tree produced by the <c>Selective</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -504,197 +410,369 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.iterative"/>.
+	/// Enter a parse tree produced by the <c>Rowid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIterative([NotNull] EmotionalDamageParser.IterativeContext context) { }
+	public virtual void EnterRowid([NotNull] EmotionalDamageParser.RowidContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.iterative"/>.
+	/// Exit a parse tree produced by the <c>Rowid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIterative([NotNull] EmotionalDamageParser.IterativeContext context) { }
+	public virtual void ExitRowid([NotNull] EmotionalDamageParser.RowidContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.forstmt"/>.
+	/// Enter a parse tree produced by the <c>Lengthid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterForstmt([NotNull] EmotionalDamageParser.ForstmtContext context) { }
+	public virtual void EnterLengthid([NotNull] EmotionalDamageParser.LengthidContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.forstmt"/>.
+	/// Exit a parse tree produced by the <c>Lengthid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitForstmt([NotNull] EmotionalDamageParser.ForstmtContext context) { }
+	public virtual void ExitLengthid([NotNull] EmotionalDamageParser.LengthidContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.whilestmt"/>.
+	/// Enter a parse tree produced by the <c>IntVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterWhilestmt([NotNull] EmotionalDamageParser.WhilestmtContext context) { }
+	public virtual void EnterIntVal([NotNull] EmotionalDamageParser.IntValContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.whilestmt"/>.
+	/// Exit a parse tree produced by the <c>IntVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitWhilestmt([NotNull] EmotionalDamageParser.WhilestmtContext context) { }
+	public virtual void ExitIntVal([NotNull] EmotionalDamageParser.IntValContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.random"/>.
+	/// Enter a parse tree produced by the <c>PowExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRandom([NotNull] EmotionalDamageParser.RandomContext context) { }
+	public virtual void EnterPowExpr([NotNull] EmotionalDamageParser.PowExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.random"/>.
+	/// Exit a parse tree produced by the <c>PowExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRandom([NotNull] EmotionalDamageParser.RandomContext context) { }
+	public virtual void ExitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
+	/// Enter a parse tree produced by the <c>NegVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumexpr([NotNull] EmotionalDamageParser.NumexprContext context) { }
+	public virtual void EnterNegVal([NotNull] EmotionalDamageParser.NegValContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
+	/// Exit a parse tree produced by the <c>NegVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumexpr([NotNull] EmotionalDamageParser.NumexprContext context) { }
+	public virtual void ExitNegVal([NotNull] EmotionalDamageParser.NegValContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.bexpr"/>.
+	/// Enter a parse tree produced by the <c>FloatVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBexpr([NotNull] EmotionalDamageParser.BexprContext context) { }
+	public virtual void EnterFloatVal([NotNull] EmotionalDamageParser.FloatValContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.bexpr"/>.
+	/// Exit a parse tree produced by the <c>FloatVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBexpr([NotNull] EmotionalDamageParser.BexprContext context) { }
+	public virtual void ExitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.sqrt"/>.
+	/// Enter a parse tree produced by the <c>DivideExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSqrt([NotNull] EmotionalDamageParser.SqrtContext context) { }
+	public virtual void EnterDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.sqrt"/>.
+	/// Exit a parse tree produced by the <c>DivideExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSqrt([NotNull] EmotionalDamageParser.SqrtContext context) { }
+	public virtual void ExitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.power"/>.
+	/// Enter a parse tree produced by the <c>GradientExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPower([NotNull] EmotionalDamageParser.PowerContext context) { }
+	public virtual void EnterGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.power"/>.
+	/// Exit a parse tree produced by the <c>GradientExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPower([NotNull] EmotionalDamageParser.PowerContext context) { }
+	public virtual void ExitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.mod"/>.
+	/// Enter a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMod([NotNull] EmotionalDamageParser.ModContext context) { }
+	public virtual void EnterFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.mod"/>.
+	/// Exit a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMod([NotNull] EmotionalDamageParser.ModContext context) { }
+	public virtual void ExitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.unaryoperator"/>.
+	/// Enter a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterUnaryoperator([NotNull] EmotionalDamageParser.UnaryoperatorContext context) { }
+	public virtual void EnterNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.unaryoperator"/>.
+	/// Exit a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitUnaryoperator([NotNull] EmotionalDamageParser.UnaryoperatorContext context) { }
+	public virtual void ExitNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.val"/>.
+	/// Enter a parse tree produced by the <c>PlusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVal([NotNull] EmotionalDamageParser.ValContext context) { }
+	public virtual void EnterPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.val"/>.
+	/// Exit a parse tree produced by the <c>PlusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVal([NotNull] EmotionalDamageParser.ValContext context) { }
+	public virtual void ExitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.funccall"/>.
+	/// Enter a parse tree produced by the <c>NumValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunccall([NotNull] EmotionalDamageParser.FunccallContext context) { }
+	public virtual void EnterNumValue([NotNull] EmotionalDamageParser.NumValueContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.funccall"/>.
+	/// Exit a parse tree produced by the <c>NumValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunccall([NotNull] EmotionalDamageParser.FunccallContext context) { }
+	public virtual void ExitNumValue([NotNull] EmotionalDamageParser.NumValueContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.gradfunccall"/>.
+	/// Enter a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGradfunccall([NotNull] EmotionalDamageParser.GradfunccallContext context) { }
+	public virtual void EnterNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.gradfunccall"/>.
+	/// Exit a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGradfunccall([NotNull] EmotionalDamageParser.GradfunccallContext context) { }
+	public virtual void ExitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.id"/>.
+	/// Enter a parse tree produced by the <c>SqrtExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterId([NotNull] EmotionalDamageParser.IdContext context) { }
+	public virtual void EnterSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.id"/>.
+	/// Exit a parse tree produced by the <c>SqrtExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitId([NotNull] EmotionalDamageParser.IdContext context) { }
+	public virtual void ExitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.num"/>.
+	/// Enter a parse tree produced by the <c>ModExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNum([NotNull] EmotionalDamageParser.NumContext context) { }
+	public virtual void EnterModExpr([NotNull] EmotionalDamageParser.ModExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.num"/>.
+	/// Exit a parse tree produced by the <c>ModExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNum([NotNull] EmotionalDamageParser.NumContext context) { }
+	public virtual void ExitModExpr([NotNull] EmotionalDamageParser.ModExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numtypes"/>.
+	/// Enter a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumtypes([NotNull] EmotionalDamageParser.NumtypesContext context) { }
+	public virtual void EnterParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numtypes"/>.
+	/// Exit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumtypes([NotNull] EmotionalDamageParser.NumtypesContext context) { }
+	public virtual void ExitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>TimesExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TimesExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Colid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterColid([NotNull] EmotionalDamageParser.ColidContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Colid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitColid([NotNull] EmotionalDamageParser.ColidContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>MinusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MinusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Greater</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGreater([NotNull] EmotionalDamageParser.GreaterContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Greater</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGreater([NotNull] EmotionalDamageParser.GreaterContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Smaller</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSmaller([NotNull] EmotionalDamageParser.SmallerContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Smaller</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSmaller([NotNull] EmotionalDamageParser.SmallerContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEquals([NotNull] EmotionalDamageParser.EqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NotEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NotEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

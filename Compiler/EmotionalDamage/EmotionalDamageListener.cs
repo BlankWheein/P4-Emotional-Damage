@@ -51,25 +51,15 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStmts([NotNull] EmotionalDamageParser.StmtsContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.block"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numtype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBlock([NotNull] EmotionalDamageParser.BlockContext context);
+	void EnterNumtype([NotNull] EmotionalDamageParser.NumtypeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.block"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numtype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBlock([NotNull] EmotionalDamageParser.BlockContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.stmt"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStmt([NotNull] EmotionalDamageParser.StmtContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.stmt"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStmt([NotNull] EmotionalDamageParser.StmtContext context);
+	void ExitNumtype([NotNull] EmotionalDamageParser.NumtypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.print"/>.
 	/// </summary>
@@ -81,312 +71,250 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPrint([NotNull] EmotionalDamageParser.PrintContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.println"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.types"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPrintln([NotNull] EmotionalDamageParser.PrintlnContext context);
+	void EnterTypes([NotNull] EmotionalDamageParser.TypesContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.println"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.types"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPrintln([NotNull] EmotionalDamageParser.PrintlnContext context);
+	void ExitTypes([NotNull] EmotionalDamageParser.TypesContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.returnstmt"/>.
+	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.returntype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterReturnstmt([NotNull] EmotionalDamageParser.ReturnstmtContext context);
+	void EnterReturntype([NotNull] EmotionalDamageParser.ReturntypeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.returnstmt"/>.
+	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.returntype"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitReturnstmt([NotNull] EmotionalDamageParser.ReturnstmtContext context);
+	void ExitReturntype([NotNull] EmotionalDamageParser.ReturntypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.func"/>.
+	/// Enter a parse tree produced by the <c>FuncDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFunc([NotNull] EmotionalDamageParser.FuncContext context);
+	void EnterFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.func"/>.
+	/// Exit a parse tree produced by the <c>FuncDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFunc([NotNull] EmotionalDamageParser.FuncContext context);
+	void ExitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.gradfunc"/>.
+	/// Enter a parse tree produced by the <c>MatrixDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterGradfunc([NotNull] EmotionalDamageParser.GradfuncContext context);
+	void EnterMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.gradfunc"/>.
+	/// Exit a parse tree produced by the <c>MatrixDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitGradfunc([NotNull] EmotionalDamageParser.GradfuncContext context);
+	void ExitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.rettype"/>.
+	/// Enter a parse tree produced by the <c>ArrayDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterRettype([NotNull] EmotionalDamageParser.RettypeContext context);
+	void EnterArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.rettype"/>.
+	/// Exit a parse tree produced by the <c>ArrayDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitRettype([NotNull] EmotionalDamageParser.RettypeContext context);
+	void ExitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.parameters"/>.
+	/// Enter a parse tree produced by the <c>NumDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParameters([NotNull] EmotionalDamageParser.ParametersContext context);
+	void EnterNumDcl([NotNull] EmotionalDamageParser.NumDclContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.parameters"/>.
+	/// Exit a parse tree produced by the <c>NumDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParameters([NotNull] EmotionalDamageParser.ParametersContext context);
+	void ExitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.parameter"/>.
+	/// Enter a parse tree produced by the <c>StringDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParameter([NotNull] EmotionalDamageParser.ParameterContext context);
+	void EnterStringDcl([NotNull] EmotionalDamageParser.StringDclContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.parameter"/>.
+	/// Exit a parse tree produced by the <c>StringDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParameter([NotNull] EmotionalDamageParser.ParameterContext context);
+	void ExitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixparameter"/>.
+	/// Enter a parse tree produced by the <c>BoolDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMatrixparameter([NotNull] EmotionalDamageParser.MatrixparameterContext context);
+	void EnterBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixparameter"/>.
+	/// Exit a parse tree produced by the <c>BoolDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMatrixparameter([NotNull] EmotionalDamageParser.MatrixparameterContext context);
+	void ExitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrparameter"/>.
+	/// Enter a parse tree produced by the <c>printStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context);
+	void EnterPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrparameter"/>.
+	/// Exit a parse tree produced by the <c>printStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context);
+	void ExitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterGraddcl([NotNull] EmotionalDamageParser.GraddclContext context);
+	void EnterReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context);
+	void ExitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
+	/// Enter a parse tree produced by the <c>NumAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIntdcl([NotNull] EmotionalDamageParser.IntdclContext context);
+	void EnterNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
+	/// Exit a parse tree produced by the <c>NumAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIntdcl([NotNull] EmotionalDamageParser.IntdclContext context);
+	void ExitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
+	/// Enter a parse tree produced by the <c>BoolAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFloatdcl([NotNull] EmotionalDamageParser.FloatdclContext context);
+	void EnterBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
+	/// Exit a parse tree produced by the <c>BoolAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFloatdcl([NotNull] EmotionalDamageParser.FloatdclContext context);
+	void ExitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intarrdcl"/>.
+	/// Enter a parse tree produced by the <c>MatrixElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context);
+	void EnterMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intarrdcl"/>.
+	/// Exit a parse tree produced by the <c>MatrixElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context);
+	void ExitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
+	/// Enter a parse tree produced by the <c>ArrayElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFloatarrdcl([NotNull] EmotionalDamageParser.FloatarrdclContext context);
+	void EnterArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
+	/// Exit a parse tree produced by the <c>ArrayElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFloatarrdcl([NotNull] EmotionalDamageParser.FloatarrdclContext context);
+	void ExitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrupdate"/>.
+	/// Enter a parse tree produced by the <c>UnaryPlus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterArrupdate([NotNull] EmotionalDamageParser.ArrupdateContext context);
+	void EnterUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrupdate"/>.
+	/// Exit a parse tree produced by the <c>UnaryPlus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitArrupdate([NotNull] EmotionalDamageParser.ArrupdateContext context);
+	void ExitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrassign"/>.
+	/// Enter a parse tree produced by the <c>UnaryMinus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterArrassign([NotNull] EmotionalDamageParser.ArrassignContext context);
+	void EnterUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrassign"/>.
+	/// Exit a parse tree produced by the <c>UnaryMinus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitArrassign([NotNull] EmotionalDamageParser.ArrassignContext context);
+	void ExitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixassign"/>.
+	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMatrixassign([NotNull] EmotionalDamageParser.MatrixassignContext context);
+	void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixassign"/>.
+	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMatrixassign([NotNull] EmotionalDamageParser.MatrixassignContext context);
+	void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.intmatrixdcl"/>.
+	/// Enter a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context);
+	void EnterFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.intmatrixdcl"/>.
+	/// Exit a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context);
+	void ExitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
+	/// Enter a parse tree produced by the <c>WhileStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFloatmatrixdcl([NotNull] EmotionalDamageParser.FloatmatrixdclContext context);
+	void EnterWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
+	/// Exit a parse tree produced by the <c>WhileStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFloatmatrixdcl([NotNull] EmotionalDamageParser.FloatmatrixdclContext context);
+	void ExitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixupdate"/>.
+	/// Enter a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMatrixupdate([NotNull] EmotionalDamageParser.MatrixupdateContext context);
+	void EnterForStmt([NotNull] EmotionalDamageParser.ForStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixupdate"/>.
+	/// Exit a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMatrixupdate([NotNull] EmotionalDamageParser.MatrixupdateContext context);
+	void ExitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixarrexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMatrixarrexpr([NotNull] EmotionalDamageParser.MatrixarrexprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixarrexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMatrixarrexpr([NotNull] EmotionalDamageParser.MatrixarrexprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.arrexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterArrexpr([NotNull] EmotionalDamageParser.ArrexprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.arrexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitArrexpr([NotNull] EmotionalDamageParser.ArrexprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixtranspose"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMatrixtranspose([NotNull] EmotionalDamageParser.MatrixtransposeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixtranspose"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMatrixtranspose([NotNull] EmotionalDamageParser.MatrixtransposeContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.matrixinverse"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMatrixinverse([NotNull] EmotionalDamageParser.MatrixinverseContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.matrixinverse"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMatrixinverse([NotNull] EmotionalDamageParser.MatrixinverseContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numassign"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumassign([NotNull] EmotionalDamageParser.NumassignContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numassign"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumassign([NotNull] EmotionalDamageParser.NumassignContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numupdate"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumupdate([NotNull] EmotionalDamageParser.NumupdateContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numupdate"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumupdate([NotNull] EmotionalDamageParser.NumupdateContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolassign"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolassign([NotNull] EmotionalDamageParser.BoolassignContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolassign"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolassign([NotNull] EmotionalDamageParser.BoolassignContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolupdate"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolupdate([NotNull] EmotionalDamageParser.BoolupdateContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolupdate"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolupdate([NotNull] EmotionalDamageParser.BoolupdateContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.booldcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBooldcl([NotNull] EmotionalDamageParser.BooldclContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.booldcl"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBooldcl([NotNull] EmotionalDamageParser.BooldclContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.boolval"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolval([NotNull] EmotionalDamageParser.BoolvalContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.boolval"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolval([NotNull] EmotionalDamageParser.BoolvalContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.selective"/>.
+	/// Enter a parse tree produced by the <c>Selective</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void EnterSelective([NotNull] EmotionalDamageParser.SelectiveContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.selective"/>.
+	/// Exit a parse tree produced by the <c>Selective</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSelective([NotNull] EmotionalDamageParser.SelectiveContext context);
@@ -421,163 +349,315 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.iterative"/>.
+	/// Enter a parse tree produced by the <c>Rowid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIterative([NotNull] EmotionalDamageParser.IterativeContext context);
+	void EnterRowid([NotNull] EmotionalDamageParser.RowidContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.iterative"/>.
+	/// Exit a parse tree produced by the <c>Rowid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIterative([NotNull] EmotionalDamageParser.IterativeContext context);
+	void ExitRowid([NotNull] EmotionalDamageParser.RowidContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.forstmt"/>.
+	/// Enter a parse tree produced by the <c>Lengthid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterForstmt([NotNull] EmotionalDamageParser.ForstmtContext context);
+	void EnterLengthid([NotNull] EmotionalDamageParser.LengthidContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.forstmt"/>.
+	/// Exit a parse tree produced by the <c>Lengthid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitForstmt([NotNull] EmotionalDamageParser.ForstmtContext context);
+	void ExitLengthid([NotNull] EmotionalDamageParser.LengthidContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.whilestmt"/>.
+	/// Enter a parse tree produced by the <c>IntVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterWhilestmt([NotNull] EmotionalDamageParser.WhilestmtContext context);
+	void EnterIntVal([NotNull] EmotionalDamageParser.IntValContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.whilestmt"/>.
+	/// Exit a parse tree produced by the <c>IntVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitWhilestmt([NotNull] EmotionalDamageParser.WhilestmtContext context);
+	void ExitIntVal([NotNull] EmotionalDamageParser.IntValContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.random"/>.
+	/// Enter a parse tree produced by the <c>PowExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterRandom([NotNull] EmotionalDamageParser.RandomContext context);
+	void EnterPowExpr([NotNull] EmotionalDamageParser.PowExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.random"/>.
+	/// Exit a parse tree produced by the <c>PowExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitRandom([NotNull] EmotionalDamageParser.RandomContext context);
+	void ExitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
+	/// Enter a parse tree produced by the <c>NegVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNumexpr([NotNull] EmotionalDamageParser.NumexprContext context);
+	void EnterNegVal([NotNull] EmotionalDamageParser.NegValContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
+	/// Exit a parse tree produced by the <c>NegVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNumexpr([NotNull] EmotionalDamageParser.NumexprContext context);
+	void ExitNegVal([NotNull] EmotionalDamageParser.NegValContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.bexpr"/>.
+	/// Enter a parse tree produced by the <c>FloatVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBexpr([NotNull] EmotionalDamageParser.BexprContext context);
+	void EnterFloatVal([NotNull] EmotionalDamageParser.FloatValContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.bexpr"/>.
+	/// Exit a parse tree produced by the <c>FloatVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBexpr([NotNull] EmotionalDamageParser.BexprContext context);
+	void ExitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.sqrt"/>.
+	/// Enter a parse tree produced by the <c>DivideExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterSqrt([NotNull] EmotionalDamageParser.SqrtContext context);
+	void EnterDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.sqrt"/>.
+	/// Exit a parse tree produced by the <c>DivideExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitSqrt([NotNull] EmotionalDamageParser.SqrtContext context);
+	void ExitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.power"/>.
+	/// Enter a parse tree produced by the <c>GradientExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPower([NotNull] EmotionalDamageParser.PowerContext context);
+	void EnterGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.power"/>.
+	/// Exit a parse tree produced by the <c>GradientExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPower([NotNull] EmotionalDamageParser.PowerContext context);
+	void ExitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.mod"/>.
+	/// Enter a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMod([NotNull] EmotionalDamageParser.ModContext context);
+	void EnterFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.mod"/>.
+	/// Exit a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMod([NotNull] EmotionalDamageParser.ModContext context);
+	void ExitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.unaryoperator"/>.
+	/// Enter a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterUnaryoperator([NotNull] EmotionalDamageParser.UnaryoperatorContext context);
+	void EnterNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.unaryoperator"/>.
+	/// Exit a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitUnaryoperator([NotNull] EmotionalDamageParser.UnaryoperatorContext context);
+	void ExitNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.val"/>.
+	/// Enter a parse tree produced by the <c>PlusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterVal([NotNull] EmotionalDamageParser.ValContext context);
+	void EnterPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.val"/>.
+	/// Exit a parse tree produced by the <c>PlusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitVal([NotNull] EmotionalDamageParser.ValContext context);
+	void ExitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.funccall"/>.
+	/// Enter a parse tree produced by the <c>NumValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFunccall([NotNull] EmotionalDamageParser.FunccallContext context);
+	void EnterNumValue([NotNull] EmotionalDamageParser.NumValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.funccall"/>.
+	/// Exit a parse tree produced by the <c>NumValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFunccall([NotNull] EmotionalDamageParser.FunccallContext context);
+	void ExitNumValue([NotNull] EmotionalDamageParser.NumValueContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.gradfunccall"/>.
+	/// Enter a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterGradfunccall([NotNull] EmotionalDamageParser.GradfunccallContext context);
+	void EnterNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.gradfunccall"/>.
+	/// Exit a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitGradfunccall([NotNull] EmotionalDamageParser.GradfunccallContext context);
+	void ExitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.id"/>.
+	/// Enter a parse tree produced by the <c>SqrtExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterId([NotNull] EmotionalDamageParser.IdContext context);
+	void EnterSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.id"/>.
+	/// Exit a parse tree produced by the <c>SqrtExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitId([NotNull] EmotionalDamageParser.IdContext context);
+	void ExitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.num"/>.
+	/// Enter a parse tree produced by the <c>ModExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNum([NotNull] EmotionalDamageParser.NumContext context);
+	void EnterModExpr([NotNull] EmotionalDamageParser.ModExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.num"/>.
+	/// Exit a parse tree produced by the <c>ModExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNum([NotNull] EmotionalDamageParser.NumContext context);
+	void ExitModExpr([NotNull] EmotionalDamageParser.ModExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EmotionalDamageParser.numtypes"/>.
+	/// Enter a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNumtypes([NotNull] EmotionalDamageParser.NumtypesContext context);
+	void EnterParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EmotionalDamageParser.numtypes"/>.
+	/// Exit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNumtypes([NotNull] EmotionalDamageParser.NumtypesContext context);
+	void ExitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>TimesExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TimesExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Colid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterColid([NotNull] EmotionalDamageParser.ColidContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Colid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitColid([NotNull] EmotionalDamageParser.ColidContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>MinusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MinusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Greater</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGreater([NotNull] EmotionalDamageParser.GreaterContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Greater</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGreater([NotNull] EmotionalDamageParser.GreaterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Smaller</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSmaller([NotNull] EmotionalDamageParser.SmallerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Smaller</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSmaller([NotNull] EmotionalDamageParser.SmallerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEquals([NotNull] EmotionalDamageParser.EqualsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEquals([NotNull] EmotionalDamageParser.EqualsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NotEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NotEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context);
 }

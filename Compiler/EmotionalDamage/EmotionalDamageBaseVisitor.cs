@@ -55,7 +55,7 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// <return>The visitor result.</return>
 	public virtual Result VisitStmts([NotNull] EmotionalDamageParser.StmtsContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.block"/>.
+	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numtype"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -63,17 +63,7 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBlock([NotNull] EmotionalDamageParser.BlockContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitStmt([NotNull] EmotionalDamageParser.StmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumtype([NotNull] EmotionalDamageParser.NumtypeContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.print"/>.
 	/// <para>
@@ -85,7 +75,7 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// <return>The visitor result.</return>
 	public virtual Result VisitPrint([NotNull] EmotionalDamageParser.PrintContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.println"/>.
+	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.types"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -93,9 +83,9 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitPrintln([NotNull] EmotionalDamageParser.PrintlnContext context) { return VisitChildren(context); }
+	public virtual Result VisitTypes([NotNull] EmotionalDamageParser.TypesContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.returnstmt"/>.
+	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.returntype"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -103,9 +93,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitReturnstmt([NotNull] EmotionalDamageParser.ReturnstmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitReturntype([NotNull] EmotionalDamageParser.ReturntypeContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.func"/>.
+	/// Visit a parse tree produced by the <c>FuncDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -113,9 +104,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFunc([NotNull] EmotionalDamageParser.FuncContext context) { return VisitChildren(context); }
+	public virtual Result VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.gradfunc"/>.
+	/// Visit a parse tree produced by the <c>MatrixDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -123,9 +115,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitGradfunc([NotNull] EmotionalDamageParser.GradfuncContext context) { return VisitChildren(context); }
+	public virtual Result VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.rettype"/>.
+	/// Visit a parse tree produced by the <c>ArrayDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -133,9 +126,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitRettype([NotNull] EmotionalDamageParser.RettypeContext context) { return VisitChildren(context); }
+	public virtual Result VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.parameters"/>.
+	/// Visit a parse tree produced by the <c>NumDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -143,9 +137,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParameters([NotNull] EmotionalDamageParser.ParametersContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.parameter"/>.
+	/// Visit a parse tree produced by the <c>StringDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -153,9 +148,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParameter([NotNull] EmotionalDamageParser.ParameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixparameter"/>.
+	/// Visit a parse tree produced by the <c>BoolDeclaration</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -163,9 +159,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixparameter([NotNull] EmotionalDamageParser.MatrixparameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.arrparameter"/>.
+	/// Visit a parse tree produced by the <c>printStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -173,9 +170,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitArrparameter([NotNull] EmotionalDamageParser.ArrparameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.graddcl"/>.
+	/// Visit a parse tree produced by the <c>ReturnStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -183,9 +181,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitGraddcl([NotNull] EmotionalDamageParser.GraddclContext context) { return VisitChildren(context); }
+	public virtual Result VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.intdcl"/>.
+	/// Visit a parse tree produced by the <c>NumAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -193,9 +192,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIntdcl([NotNull] EmotionalDamageParser.IntdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.floatdcl"/>.
+	/// Visit a parse tree produced by the <c>BoolAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -203,9 +203,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFloatdcl([NotNull] EmotionalDamageParser.FloatdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.intarrdcl"/>.
+	/// Visit a parse tree produced by the <c>MatrixElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -213,9 +214,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIntarrdcl([NotNull] EmotionalDamageParser.IntarrdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.floatarrdcl"/>.
+	/// Visit a parse tree produced by the <c>ArrayElementAssignStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -223,9 +225,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFloatarrdcl([NotNull] EmotionalDamageParser.FloatarrdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.arrupdate"/>.
+	/// Visit a parse tree produced by the <c>UnaryPlus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -233,9 +236,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitArrupdate([NotNull] EmotionalDamageParser.ArrupdateContext context) { return VisitChildren(context); }
+	public virtual Result VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.arrassign"/>.
+	/// Visit a parse tree produced by the <c>UnaryMinus</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -243,9 +247,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitArrassign([NotNull] EmotionalDamageParser.ArrassignContext context) { return VisitChildren(context); }
+	public virtual Result VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixassign"/>.
+	/// Visit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -253,9 +258,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixassign([NotNull] EmotionalDamageParser.MatrixassignContext context) { return VisitChildren(context); }
+	public virtual Result VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.intmatrixdcl"/>.
+	/// Visit a parse tree produced by the <c>FuncStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -263,9 +269,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIntmatrixdcl([NotNull] EmotionalDamageParser.IntmatrixdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.floatmatrixdcl"/>.
+	/// Visit a parse tree produced by the <c>WhileStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -273,9 +280,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFloatmatrixdcl([NotNull] EmotionalDamageParser.FloatmatrixdclContext context) { return VisitChildren(context); }
+	public virtual Result VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixupdate"/>.
+	/// Visit a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -283,109 +291,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixupdate([NotNull] EmotionalDamageParser.MatrixupdateContext context) { return VisitChildren(context); }
+	public virtual Result VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixarrexpr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixarrexpr([NotNull] EmotionalDamageParser.MatrixarrexprContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.arrexpr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitArrexpr([NotNull] EmotionalDamageParser.ArrexprContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixtranspose"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixtranspose([NotNull] EmotionalDamageParser.MatrixtransposeContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.matrixinverse"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitMatrixinverse([NotNull] EmotionalDamageParser.MatrixinverseContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numassign"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitNumassign([NotNull] EmotionalDamageParser.NumassignContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numupdate"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitNumupdate([NotNull] EmotionalDamageParser.NumupdateContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.boolassign"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitBoolassign([NotNull] EmotionalDamageParser.BoolassignContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.boolupdate"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitBoolupdate([NotNull] EmotionalDamageParser.BoolupdateContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.booldcl"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitBooldcl([NotNull] EmotionalDamageParser.BooldclContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.boolval"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitBoolval([NotNull] EmotionalDamageParser.BoolvalContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.selective"/>.
+	/// Visit a parse tree produced by the <c>Selective</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -425,7 +334,8 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// <return>The visitor result.</return>
 	public virtual Result VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.iterative"/>.
+	/// Visit a parse tree produced by the <c>Rowid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -433,9 +343,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIterative([NotNull] EmotionalDamageParser.IterativeContext context) { return VisitChildren(context); }
+	public virtual Result VisitRowid([NotNull] EmotionalDamageParser.RowidContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.forstmt"/>.
+	/// Visit a parse tree produced by the <c>Lengthid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -443,9 +354,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitForstmt([NotNull] EmotionalDamageParser.ForstmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitLengthid([NotNull] EmotionalDamageParser.LengthidContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.whilestmt"/>.
+	/// Visit a parse tree produced by the <c>IntVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -453,9 +365,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitWhilestmt([NotNull] EmotionalDamageParser.WhilestmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.random"/>.
+	/// Visit a parse tree produced by the <c>PowExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -463,9 +376,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitRandom([NotNull] EmotionalDamageParser.RandomContext context) { return VisitChildren(context); }
+	public virtual Result VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numexpr"/>.
+	/// Visit a parse tree produced by the <c>NegVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -473,9 +387,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNumexpr([NotNull] EmotionalDamageParser.NumexprContext context) { return VisitChildren(context); }
+	public virtual Result VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.bexpr"/>.
+	/// Visit a parse tree produced by the <c>FloatVal</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -483,9 +398,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBexpr([NotNull] EmotionalDamageParser.BexprContext context) { return VisitChildren(context); }
+	public virtual Result VisitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.sqrt"/>.
+	/// Visit a parse tree produced by the <c>DivideExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -493,9 +409,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSqrt([NotNull] EmotionalDamageParser.SqrtContext context) { return VisitChildren(context); }
+	public virtual Result VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.power"/>.
+	/// Visit a parse tree produced by the <c>GradientExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -503,9 +420,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitPower([NotNull] EmotionalDamageParser.PowerContext context) { return VisitChildren(context); }
+	public virtual Result VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.mod"/>.
+	/// Visit a parse tree produced by the <c>FuncCall</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -513,9 +431,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMod([NotNull] EmotionalDamageParser.ModContext context) { return VisitChildren(context); }
+	public virtual Result VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.unaryoperator"/>.
+	/// Visit a parse tree produced by the <c>NumArrValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -523,9 +442,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitUnaryoperator([NotNull] EmotionalDamageParser.UnaryoperatorContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumArrValue([NotNull] EmotionalDamageParser.NumArrValueContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.val"/>.
+	/// Visit a parse tree produced by the <c>PlusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -533,9 +453,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitVal([NotNull] EmotionalDamageParser.ValContext context) { return VisitChildren(context); }
+	public virtual Result VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.funccall"/>.
+	/// Visit a parse tree produced by the <c>NumValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -543,9 +464,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFunccall([NotNull] EmotionalDamageParser.FunccallContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumValue([NotNull] EmotionalDamageParser.NumValueContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.gradfunccall"/>.
+	/// Visit a parse tree produced by the <c>NumMatrixValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -553,9 +475,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitGradfunccall([NotNull] EmotionalDamageParser.GradfunccallContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.id"/>.
+	/// Visit a parse tree produced by the <c>SqrtExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -563,9 +486,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitId([NotNull] EmotionalDamageParser.IdContext context) { return VisitChildren(context); }
+	public virtual Result VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.num"/>.
+	/// Visit a parse tree produced by the <c>ModExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -573,9 +497,10 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNum([NotNull] EmotionalDamageParser.NumContext context) { return VisitChildren(context); }
+	public virtual Result VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EmotionalDamageParser.numtypes"/>.
+	/// Visit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -583,5 +508,115 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNumtypes([NotNull] EmotionalDamageParser.NumtypesContext context) { return VisitChildren(context); }
+	public virtual Result VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>TimesExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>Colid</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitColid([NotNull] EmotionalDamageParser.ColidContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>MinusExpr</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>Greater</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitGreater([NotNull] EmotionalDamageParser.GreaterContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>Smaller</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSmaller([NotNull] EmotionalDamageParser.SmallerContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>GreaterEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitGreaterEquals([NotNull] EmotionalDamageParser.GreaterEqualsContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>SmallerEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSmallerEquals([NotNull] EmotionalDamageParser.SmallerEqualsContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>Equals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEquals([NotNull] EmotionalDamageParser.EqualsContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>NotEquals</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitNotEquals([NotNull] EmotionalDamageParser.NotEqualsContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>BoolValue</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.bexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitBoolValue([NotNull] EmotionalDamageParser.BoolValueContext context) { return VisitChildren(context); }
 }
