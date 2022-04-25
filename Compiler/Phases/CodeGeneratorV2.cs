@@ -57,34 +57,32 @@ namespace Compiler.Phases
 
         public string CheckExpr(string input)
         {
+            // skal tilføjes parenteser ved sqrt, fix problem med nested expr (funccall + sqrt), add \\\\
             for(int i = 0; i < input.Length - 1; i++)
             {
                 char c = input[i];
                 char next_c = input[i + 1];
                 char prev_c = i > 0 ? input[i - 1] : '0';
                 string[] _expr;
+                string symbols = "%*/+-";
 
                 if (input.Length > 4 && input[..4] == "sqrt")
                     return $"MathF.Sqrt({CheckExpr(input[4..])})";
-
-                if (c.Equals('*') && next_c.Equals('*'))
+                else if (c.Equals('*') && next_c.Equals('*'))
                 {
                     _expr = input.Split("**");
                     var _expr1 = _expr[0];
                     var _expr2 = _expr[1];
                     return $"MathF.Pow({CheckExpr(_expr1)}, {CheckExpr(_expr2)})";
                 }
-
-                string symbols = "%*/+-";
-                if (symbols.Contains(c))
+                else if (symbols.Contains(c))
                 {
                     _expr = input.Split(c);
                     var _expr1 = _expr[0];
                     var _expr2 = _expr[1];
                     return $"{CheckExpr(_expr1)} {c} {CheckExpr(_expr2)}";
                 }
-
-                if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
+                else if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
                 {
                     string id = input.Split('.').First();
                     switch (next_c)
