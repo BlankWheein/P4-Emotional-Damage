@@ -23,5 +23,36 @@ namespace UnitTests.ScopeTests
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
+
+        [TestMethod]
+        public void TestIntDclFail()
+        {
+            var root = Parse(new System.Text.StringBuilder("float a = 2.14; int b=3.7/a;"));
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "a");
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Int, "b");
+            Assert.AreNotEqual(scope, root);
+            Assert.AreEqual(2, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
+        public void TestFloatDclSuccess()
+        {
+            var root = Parse(new System.Text.StringBuilder("int a = 77; float b=3/a;"));
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Int, "a");
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "b");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+
+
+        [TestMethod]
+        public void TestFloatDclArrayOperationFail()
+        {
+            var root = Parse(new System.Text.StringBuilder("int[2] a; float b=3/a;"));
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.AInt, "a");
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "b");
+            Assert.AreNotEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
     }
 }
