@@ -28,6 +28,7 @@ namespace AutoGrad
                 }
             }
         }
+
         public void Backward()
         {
             for (int i = 0; i < Rows; i++)

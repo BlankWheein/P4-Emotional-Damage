@@ -79,7 +79,7 @@ namespace Compiler.Phases
             var inum = context.Inum();
             var id = context.IDENTIFIER().GetText();
             var numtype = context.numtype().GetText();
-            AddStmt($"{numtype}[,] {id} = new {numtype}[{inum[0].GetText()}, {inum[1].GetText()}];");
+            AddStmt($"Matrix {id} = new({inum[0].GetText()},{inum[1].GetText()});");
             return false;
         }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
@@ -139,7 +139,7 @@ namespace Compiler.Phases
         public override object VisitPrintStmt([NotNull]EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : context?.expr()?.GetText();
-            AddStmt($"Console.WriteLine({printPart}); \n");
+            AddStmt($"Console.WriteLine({printPart});");
             return false;
         }
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
@@ -167,7 +167,8 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER()[0].GetText();
             var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
-            var exprstring = context.expr().GetText();
+            var expr = context.expr().GetText();
+            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr});");
 
             return false;
         }
@@ -182,19 +183,19 @@ namespace Compiler.Phases
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
         {
             var id = context.IDENTIFIER().GetText();
-            AddStmt($"{id}++");
+            AddStmt($"{id}++;");
             return false;
         }
         public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)
         {
             var id = context.IDENTIFIER().GetText();
-            AddStmt($"{id}--");
+            AddStmt($"{id}--;");
             return false;
         }
         public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
             var bexpr = context.bexpr().GetText();
-            AddStmt($"while{bexpr}"+"{");
+            AddStmt($"while({bexpr})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
             return false;

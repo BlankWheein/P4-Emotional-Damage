@@ -1,3 +1,29 @@
-﻿int kage = 24;
-string gap = "gappy";
-float i = 2 + 2.53 + kage + 3.2 + 3 + gap.len + gap.col + 32 + gap.row;
+﻿int a = 10;
+bool boo = false;
+int[5][5] coke;
+int[2] arr;
+
+print("Hello");
+print(10);
+
+return a;
+
+a = 15;
+
+boo = true;
+
+coke[0][0] = 10;
+
+a++;
+a--;
+
+while(boo){print("hello"); print("hello2"); print("hello3");}
+while(2 > 1){print("hello");}
+
+
+for (int i = 0; i < 10; i++){print("hello2");}
+
+if(1 > 2){print("ok");}
+elif(2 > 1){print("ok2");}
+else{print("ok3");}
+
