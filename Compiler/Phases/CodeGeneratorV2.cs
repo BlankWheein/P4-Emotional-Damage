@@ -81,7 +81,7 @@ namespace Compiler.Phases
                     _expr = input.Split(c);
                     var _expr1 = _expr[0];
                     var _expr2 = _expr[1];
-                    return $"{CheckExpr(_expr1)} {c} {_expr[1]}";
+                    return $"{CheckExpr(_expr1)} {c} {CheckExpr(_expr2)}";
                 }
 
                 if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
