@@ -232,5 +232,30 @@ namespace Compiler.Phases
             }
             return false;
         }
+        public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
+        {
+            string bexprstring = context.bexpr().GetText();
+            AddStmt($"if({bexprstring})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
+        {
+            string bexprstring = context.bexpr().GetText();
+            AddStmt($"else if({bexprstring})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+            
+        }
+        public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
+        {
+            
+            AddStmt("else{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
     }   
 }
