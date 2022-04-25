@@ -20,10 +20,39 @@ namespace Compiler.Phases
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
-            //throw new NotImplementedException();
-            return true;
+            bool isValid = true;
+            List<string> numberList = SplitOnOperators(context.expr().GetText());
+            if (context.numtype().GetText() == "int")
+            {
+                foreach (string s in numberList)
+                {
+                    if (!double.TryParse(s, out _))
+                    {
+                        Symbol symbol = Scope.LookUp(s);
+                        isValid &= symbol?.Type == SymbolType.Int;
+                    }
+                    else
+                    {
+                        isValid &= int.TryParse(s, out _);
+                    }
+                }
+            }
+            else if (context.numtype().GetText() == "float")
+            {
+                foreach (string s in numberList)
+                {
+                    if (!double.TryParse(s, out _))
+                    {
+                        Symbol symbol = Scope.LookUp(s);
+                        isValid &= (symbol?.Type == SymbolType.Float||symbol?.Type==SymbolType.Int);
+                    }
+                    else
+                    {
+                        isValid &= float.TryParse(s, out _);
+                    }
+                }
+            }
+            return isValid;
         }
-
-        
     }
 }

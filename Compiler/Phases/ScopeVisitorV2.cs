@@ -113,8 +113,12 @@ namespace Compiler.Phases
         {
             string id = context.IDENTIFIER().GetText();
             string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+
+            if (TypeChecker.CheckNumDcl(context))
+            {
                 if (Scope.LookUpExsting(id) == null)
                     Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
+            }
             return base.VisitNumDcl(context);
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
