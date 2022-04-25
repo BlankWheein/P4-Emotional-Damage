@@ -7,30 +7,32 @@ namespace Compiler.Phases
     {
         public List<Exception> Diagnostics { get; set; }
         public RootSymbolTable Scope { get; set; }
+        public TypeChecker TypeChecker { get; set; };
         public ScopeVisitorV2() 
         {
             this.Scope = new RootSymbolTable();
             Diagnostics = Scope.Diagnostics;
+            TypeChecker = new(this);
         }
         #region ControlStructures
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
             Scope.Allocate("If");
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             Scope.Allocate("Elif");
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
             Scope.Allocate("Else");
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
@@ -41,7 +43,7 @@ namespace Compiler.Phases
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(SymbolType.Int, context.IDENTIFIER().First().GetText());
             Scope.LookUp(context.IDENTIFIER().Last().GetText());
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
@@ -93,7 +95,6 @@ namespace Compiler.Phases
             {
                 Scope.Insert(SymbolType.Func, id);
                 Scope.Allocate("Func");
-                int typecount = context.types().Length;
                 if (context.IDENTIFIER().Length > 1)
                 for (int i = 1; i < context.IDENTIFIER().Length ; i++)
                 {
@@ -112,8 +113,8 @@ namespace Compiler.Phases
         {
             string id = context.IDENTIFIER().GetText();
             string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
-            if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
+                if (Scope.LookUpExsting(id) == null)
+                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitNumDcl(context);
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
