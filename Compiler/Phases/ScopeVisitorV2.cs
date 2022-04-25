@@ -161,6 +161,7 @@ namespace Compiler.Phases
         {
             string id = context.IDENTIFIER().GetText();
             string type = "Bool";
+            TypeChecker.CheckBoolDcl(context);
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitBoolDeclaration(context);
@@ -187,7 +188,7 @@ namespace Compiler.Phases
         public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUpExsting(id) == null)
+            if (Scope.LookUp(id) == null)
                 Scope.AddDiagnostic(new Exception($"{id} was not defined"));
             return base.VisitBoolAssignStmt(context);
         }
