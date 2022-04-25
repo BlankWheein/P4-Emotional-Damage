@@ -104,6 +104,7 @@ namespace Compiler.Phases
         {
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
+            var expr = context.expr().GetText();
             if(numtype == "float")
             {
                 bool active = false;
@@ -134,10 +135,10 @@ namespace Compiler.Phases
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
         {
             var id = context.IDENTIFIER().GetText();
-
-            AddStmt($"bool {id} = ");
-            Visit(context.bexpr());
-            AddStmt(";");
+            var val = context.bexpr().GetText();
+            AddStmt($"bool {id} = {val};");
+            //Visit(context.bexpr());
+            //AddStmt(";");
             return false;
         }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)

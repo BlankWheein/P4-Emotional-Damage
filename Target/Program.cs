@@ -12,7 +12,7 @@ boo = true;
 coke.Values[0][0] = new Value(10);
 a++;
 a--;
-while(boo){
+while(){
 Console.WriteLine("hello");
 Console.WriteLine("hello2");
 Console.WriteLine("hello3");
