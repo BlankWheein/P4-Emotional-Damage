@@ -19,7 +19,7 @@ namespace Compiler.Phases
         Regex IsVariable = new("[A-Za-z]");
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
-        internal List<string> SplitOnOperators(string text)  => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        internal List<string> SplitOnOperators(string text)  => text.Replace("(", "").Replace(")", "").Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
@@ -61,7 +61,6 @@ namespace Compiler.Phases
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {
             string id = ctx.IDENTIFIER().GetText();
-            string expr = ctx.expr().GetText().Replace("(", "").Replace(")", "");
             var _out = SplitOnOperators(expr);
             bool res = true;
             _out.ForEach(p =>
