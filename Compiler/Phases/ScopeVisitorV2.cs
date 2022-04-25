@@ -78,6 +78,14 @@ namespace Compiler.Phases
             Scope.ExitScope();
             return false;
         }
+        public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
+        {
+            foreach (var s in context.IDENTIFIER())
+                Scope.LookUpExsting(s.GetText());
+            return base.VisitFuncStmt(context);
+        }
+        #endregion
+        #region Declarations
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             string id = context.IDENTIFIER().First().GetText();
@@ -100,8 +108,6 @@ namespace Compiler.Phases
             }
             return false;
         }
-        #endregion
-        #region Declarations
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();
@@ -121,7 +127,7 @@ namespace Compiler.Phases
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+            string type = "A" + context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
             if (!int.TryParse(context.Inum().GetText(), out int max_index))
                 Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
             if (max_index < 0)
@@ -163,6 +169,7 @@ namespace Compiler.Phases
             Scope.LookUp(id);
             return base.VisitReturnStmt(context);
         }
+        #endregion
         #region Assigns
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
@@ -231,7 +238,6 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new Exception($"{m?.Id} is not a matrix"));
             return base.VisitTransposeMatrixStmt(context);
         }
-        #endregion
         #endregion
     }
 }

@@ -47,6 +47,8 @@ namespace Compiler.SymbolTableFolder
         String,
         Mint,
         Mfloat,
+        AInt,
+        AFloat,
         Bool,
         Func
     }
