@@ -199,8 +199,8 @@ namespace Compiler.Phases
         }
         public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
-            var bexpr = context.bexpr().GetText();
-            AddStmt($"while({bexpr})"+"{");
+            var arg = context?.bexpr()?.GetText() == null ? context?.IDENTIFIER()?.GetText() : context?.bexpr()?.GetText();
+            AddStmt($"while({arg})" + "{");
             VisitStmts(context.stmts());
             AddStmt("}");
             return false;
