@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Compiler.SymbolTableFolder;
 using System.Text;
+using ScopeTests;
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class FloatDeclarationTests : UnitTestInitializer
@@ -50,4 +51,4 @@ namespace ScopeTests
             Assert.AreEqual(scope, rootscope);
         }
     }
-}   
+}

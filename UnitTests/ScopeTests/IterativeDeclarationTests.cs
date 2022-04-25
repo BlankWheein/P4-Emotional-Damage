@@ -1,13 +1,14 @@
 ﻿using Compiler.SymbolTableFolder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ScopeTests;
 using System.Text;
 
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class IterativeDeclarationTests : UnitTestInitializer
-    { 
+    {
         [TestMethod]
         public void WhileDclNoBody()
         {
@@ -62,4 +63,4 @@ namespace ScopeTests
 
     }
 
-    }
+}

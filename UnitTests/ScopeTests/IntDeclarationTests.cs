@@ -4,8 +4,9 @@ using System.Text;
 using static EmotionalDamageParser;
 using Antlr4.Runtime;
 using Compiler.Phases;
+using ScopeTests;
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class IntDeclarationTests : UnitTestInitializer
@@ -53,4 +54,4 @@ namespace ScopeTests
             Assert.AreEqual(scope, rootscope);
         }
     }
-}   
+}

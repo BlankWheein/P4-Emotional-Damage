@@ -1,9 +1,10 @@
 ﻿using Compiler.SymbolTableFolder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ScopeTests;
 using System.Text;
 
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class MatrixDeclarationTests : UnitTestInitializer
@@ -12,7 +13,7 @@ namespace ScopeTests
         public void MatrixDcl()
         {
             var root = Parse(new StringBuilder("int[2][2] m;"));
-            scope.Insert(SymbolType.Mint, "m", row:2, col:2);
+            scope.Insert(SymbolType.Mint, "m", row: 2, col: 2);
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, scope.Diagnostics.Count);
         }
