@@ -61,7 +61,7 @@ namespace Compiler.Phases
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {
             string id = ctx.IDENTIFIER().GetText();
-            var _out = SplitOnOperators(expr);
+            var _out = SplitOnOperators(ctx.expr().GetText());
             bool res = true;
             _out.ForEach(p =>
             {
