@@ -37,10 +37,6 @@ namespace Compiler.Phases
         {
             Stmts.Add(() => AddText(v, newline, indent));
         }
-        private void AddStmt2(string v, bool newline = false, bool indent = true)
-        {
-            Stmts.Add(() => AddText(v, newline, indent));
-        }
         public void AddText(string value, bool newline = true, bool indent = true)
         {
             string res = "";
@@ -59,6 +55,33 @@ namespace Compiler.Phases
             _fs.Close();
         }
 
+        public string CheckExpr(string input)
+        {
+            for(int i = 0; i < input.Length - 1; i++)
+            {
+                char c = input[i];
+                char next_c = input[i + 1];
+                string[] _expr;
+
+                if (input.Length > 4 && input[..4] == "sqrt")
+                    return $"MathF.Sqrt({CheckExpr(input[5..])})";
+
+                if (c.Equals('*') && next_c.Equals('*'))
+                {
+                    _expr = input.Split("**");
+                    return $"MathF.Pow({_expr[0]}, {_expr[1]})";
+                }
+
+                string symbols = "%*/+-";
+                if (symbols.Contains(c))
+                {
+                    _expr = input.Split(c);
+                    return $"{_expr[0]} {c} {_expr[1]}";
+                }
+            }
+
+            return input;
+        }
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             var returntype = context.returntype().GetText();
@@ -78,7 +101,6 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
-
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
         {
             var inum = context.Inum();
@@ -104,7 +126,7 @@ namespace Compiler.Phases
         {
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
-            var expr = context.expr().GetText();
+            var expr = CheckExpr(context.expr().GetText());
             if(numtype == "float")
             {
                 bool active = false;
@@ -137,13 +159,11 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var val = context.bexpr().GetText();
             AddStmt($"bool {id} = {val};");
-            //Visit(context.bexpr());
-            //AddStmt(";");
             return false;
         }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
-            var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : context?.expr()?.GetText();
+            var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
             AddStmt($"Console.WriteLine({printPart});");
             return false;
         }
@@ -156,8 +176,8 @@ namespace Compiler.Phases
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
             var id = context.IDENTIFIER().GetText();
-            var exprstring = context.expr().GetText();
-            AddStmt($"{id} = {exprstring};");
+            var expr = CheckExpr(context.expr().GetText());
+            AddStmt($"{id} = {expr};");
             return false;
         }
         public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
@@ -172,7 +192,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER()[0].GetText();
             var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
-            var expr = context.expr().GetText();
+            var expr = CheckExpr(context.expr().GetText());
             AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr});");
 
             return false;
@@ -181,8 +201,22 @@ namespace Compiler.Phases
         {
             var id = context.IDENTIFIER()[0].GetText();
             var pos1 = context.Inum().GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum().GetText();
-            var exprstring = context.expr().GetText();
-            AddStmt($"{id}[{pos1}] = {exprstring};");
+            var expr = CheckExpr(context.expr().GetText());
+            AddStmt($"{id}[{pos1}] = {expr};");
+            return false;
+        }
+        public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
+        {
+            var ids = context.IDENTIFIER();
+            string str = $"{ids[0].GetText()}(";
+
+            for (var i = 1; i < ids.Length; i++)
+                str += $"{ids[i]}, ";
+
+            if (ids.Length > 1) str = str[..^2];
+
+            str += ");";
+            AddStmt(str);
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
@@ -208,12 +242,12 @@ namespace Compiler.Phases
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
             var id1 = context.IDENTIFIER()[0].GetText();
-            var exprstring = context.expr().GetText();
+            var expr = CheckExpr(context.expr().GetText());
             var bexpr = context.bexpr().GetText();
             var text = context.GetText().Split(';');
             var unaryoperator = text[2];
             string result = unaryoperator.Contains("++") == true ? "++" : "--";
-            AddStmt($"for (int {id1} = {exprstring}; {bexpr}; {id1}{result})"+"{");
+            AddStmt($"for (int {id1} = {expr}; {bexpr}; {id1}{result})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
             return false;
@@ -265,34 +299,31 @@ namespace Compiler.Phases
         }
 
         #region Expr
-
         public override object VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context)
         {
-            AddStmt2("(");
+            AddStmt("(", newline: false);
             Visit(context.expr());
-            AddStmt2(")");
+            AddStmt(")", newline: false);
             return false;
         }
         public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
         {
 
-            AddStmt2($"{context.IDENTIFIER(0).GetText()}(");
+            AddStmt($"{context.IDENTIFIER(0).GetText()}(", newline: false);
             for(int i =1; i < context.IDENTIFIER().Length-1; i++)
             {
-                AddStmt2($"{context.IDENTIFIER(i).GetText()},");
+                AddStmt($"{context.IDENTIFIER(i).GetText()},", newline: false);
             }
-
-            AddStmt2($"{context.IDENTIFIER().Last().GetText()})");
-
+            AddStmt($"{context.IDENTIFIER().Last().GetText()})", newline: false);
             return false;
         }
 
         
         public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
         {
-            AddStmt2($"Math.Sqrt(");
+            AddStmt($"Math.Sqrt(", newline: false);
             Visit(context.expr());
-            AddStmt2(")");
+            AddStmt(")", newline: false);
 
             return false;
         }
@@ -300,18 +331,18 @@ namespace Compiler.Phases
         //this c# method is for doubles oops. how do i fix this
         public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
         {
-            AddStmt2($"(int)Math.Pow(");
+            AddStmt($"MathF.Pow(", newline: false);
             Visit(context.expr(0));
-            AddStmt2(",");
+            AddStmt(",", newline: false);
             Visit(context.expr(1));
-            AddStmt2(")");
+            AddStmt(")", newline: false);
             return false;
         }
 
         public override object VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context)
         {
             Visit(context.expr(0));
-            AddStmt2($"%");
+            AddStmt($"%", newline: false);
             Visit(context.expr(1));
 
             return false;
@@ -321,7 +352,7 @@ namespace Compiler.Phases
         {
 
             Visit(context.expr(0));
-            AddStmt2($"*");
+            AddStmt($"*", newline: false);
             Visit(context.expr(1));
 
             return false;
@@ -330,7 +361,7 @@ namespace Compiler.Phases
         {
 
             Visit(context.expr(0));
-            AddStmt2($"/");
+            AddStmt($"/", newline: false);
             Visit(context.expr(1));
 
             return false;
@@ -340,7 +371,7 @@ namespace Compiler.Phases
         {
            
             Visit(context.expr(0));
-            AddStmt2($"+");
+            AddStmt($"+", newline: false);
             Visit(context.expr(1));
 
             return false;
@@ -350,7 +381,7 @@ namespace Compiler.Phases
         {
         
             Visit(context.expr(0));
-            AddStmt2($"-");
+            AddStmt($"-", newline: false);
             Visit(context.expr(1));
 
             return false;
@@ -383,20 +414,20 @@ namespace Compiler.Phases
 
         public override object VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context)
         {
-            AddStmt2("-");
+            AddStmt("-", newline: false);
             Visit(context.expr());
             return false;
         }
         public override object VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context)
         {
             var inum = context.Inum().GetText();
-            AddStmt2($"{inum}");
+            AddStmt($"{inum}", newline: false);
             return false;
         }
         public override object VisitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context)
         {
             var fnum = context.Fnum().GetText();
-            AddStmt2($"{fnum}");
+            AddStmt($"{fnum}", newline: false);
             return false;
         }
         #endregion

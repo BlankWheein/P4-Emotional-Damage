@@ -1,28 +1,17 @@
-﻿int a = 10;
-bool boo = false;
-int[5][5] coke;
-int[2] arr;
+﻿float x = sqrt 10+20;
+float a = 2**10;
+float b = 35 % 10;
+float c = 23 * 52;
+float d = 62/24;
+float e = 45 + 23;
+float f = 62 - 12;
+float g = 25 \\\\ 26;
 
-print("Hello");
-print(10);
+float z = x;
 
-return a;
+int[2] mon;
+int[2][3] mar;
 
-a = 15;
-
-boo = true;
-
-coke[0][0] = 10;
-
-a++;
-a--;
-
-while(boo){print("hello"); print("hello2"); print("hello3");}
-while(2 > 1){print("hello");}
-
-
-for (int i = 0; i < 10; i++){print("hello2");}
-
-if(1 > 2){print("ok");}
-elif(2 > 1){print("ok2");}
-else{print("ok3");}
+mon[1] = 10;
+mar[1][1] = 2;
+while(true){print("hello");}
