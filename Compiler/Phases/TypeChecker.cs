@@ -19,12 +19,11 @@ namespace Compiler.Phases
         Regex IsVariable = new("[A-Za-z]");
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
-        internal List<string> SplitOnOperators(string text)  => text.Replace("(", "").Replace(")", "").Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        internal List<string> SplitOnOperators(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
             bool isValid = true;
-            bool isGood;
             List<string> numberList = SplitOnOperators(context.expr().GetText());
             if (context.numtype().GetText() == "int")
             {
@@ -32,20 +31,22 @@ namespace Compiler.Phases
                 {
                     if (!double.TryParse(s, out _))
                     {
-                        Symbol symbol = Scope.LookUp(s);
-                        isValid &= symbol?.Type == SymbolType.Int;
-                        isGood = symbol?.Type == SymbolType.Int;
-                        if (!isGood)
+                        Symbol? symbol = Scope.LookUp(s);
+                        if (symbol == null) {
+                            isValid = false;
+                            Scope.AddDiagnostic(new Exception($"Variable '{s}' is not in the scope!"));
+                        }
+                        else if (symbol?.Type != SymbolType.Int)
                         {
-                            Scope.AddDiagnostic(new Exception($"Variable '{symbol.Id}' is not an int!"));
+                            isValid = false;
+                            Scope.AddDiagnostic(new Exception($"Variable '{symbol?.Id}' is not an int!"));
                         }
                     }
                     else
                     {
-                        isValid &= int.TryParse(s, out _);
-                        isGood = int.TryParse(s, out _);
-                        if (!isGood)
+                        if (!int.TryParse(s, out _))
                         {
+                            isValid = false;
                             Scope.AddDiagnostic(new Exception($"{s} is not an int!"));
                         }
                     }
@@ -58,19 +59,22 @@ namespace Compiler.Phases
                     if (!double.TryParse(s, out _))
                     {
                         Symbol symbol = Scope.LookUp(s);
-                        isValid &= (symbol?.Type == SymbolType.Float || symbol?.Type == SymbolType.Int);
-                        isGood = (symbol?.Type == SymbolType.Float || symbol?.Type == SymbolType.Int);
-                        if (!isGood)
+                        if (symbol == null)
                         {
+                            isValid = false;
+                            Scope.AddDiagnostic(new Exception($"Variable '{s}' is not in the scope!"));
+                        }
+                        else if (!(symbol?.Type == SymbolType.Float || symbol?.Type == SymbolType.Int))
+                        {
+                            isValid = false;
                             Scope.AddDiagnostic(new Exception($"{symbol.Id} is not float!"));
                         }
                     }
                     else
                     {
-                        isValid &= float.TryParse(s, out _);
-                        isGood = float.TryParse(s, out _);
-                        if (!isGood)
+                        if (!float.TryParse(s, out _))
                         {
+                            isValid = false;
                             Scope.AddDiagnostic(new Exception($"{s} is not float!"));
                         }
                     }
@@ -96,12 +100,25 @@ namespace Compiler.Phases
                 if (IsVariable.IsMatch(p))
                 {
                     var symbol = Scope.LookUp(p);
-                    if (Scope?.LookUp(id).Type == SymbolType.Int && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int")); }
-                    else if (Scope?.LookUp(id).Type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float")); }
-                } else if (IsDigit.IsMatch(p))
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && symbol.Type != SymbolType.Int)
+                    {
+                        res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
+                    }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int)
+                    {
+                        res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float"));
+                    }
+                }
+                else if (IsDigit.IsMatch(p))
                 {
-                    if (Scope?.LookUp(id).Type == SymbolType.Int && !int.TryParse(p, out _)) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int")); }
-                    else if (Scope?.LookUp(id).Type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _) )) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float")); }
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && !int.TryParse(p, out _))
+                    {
+                        res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int"));
+                    }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _)))
+                    {
+                        res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float"));
+                    }
                 }
             });
             return res;
