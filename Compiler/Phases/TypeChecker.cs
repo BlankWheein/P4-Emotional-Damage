@@ -24,6 +24,7 @@ namespace Compiler.Phases
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
             bool isValid = true;
+            bool isGood;
             List<string> numberList = SplitOnOperators(context.expr().GetText());
             if (context.numtype().GetText() == "int")
             {
@@ -33,10 +34,20 @@ namespace Compiler.Phases
                     {
                         Symbol symbol = Scope.LookUp(s);
                         isValid &= symbol?.Type == SymbolType.Int;
+                        isGood = symbol?.Type == SymbolType.Int;
+                        if (!isGood)
+                        {
+                            Scope.AddDiagnostic(new Exception($"Variable '{symbol.Id}' is not an int!"));
+                        }
                     }
                     else
                     {
                         isValid &= int.TryParse(s, out _);
+                        isGood = int.TryParse(s, out _);
+                        if (!isGood)
+                        {
+                            Scope.AddDiagnostic(new Exception($"{s} is not an int!"));
+                        }
                     }
                 }
             }
@@ -47,14 +58,31 @@ namespace Compiler.Phases
                     if (!double.TryParse(s, out _))
                     {
                         Symbol symbol = Scope.LookUp(s);
-                        isValid &= (symbol?.Type == SymbolType.Float||symbol?.Type==SymbolType.Int);
+                        isValid &= (symbol?.Type == SymbolType.Float || symbol?.Type == SymbolType.Int);
+                        isGood = (symbol?.Type == SymbolType.Float || symbol?.Type == SymbolType.Int);
+                        if (!isGood)
+                        {
+                            Scope.AddDiagnostic(new Exception($"{symbol.Id} is not float!"));
+                        }
                     }
                     else
                     {
                         isValid &= float.TryParse(s, out _);
+                        isGood = float.TryParse(s, out _);
+                        if (!isGood)
+                        {
+                            Scope.AddDiagnostic(new Exception($"{s} is not float!"));
+                        }
                     }
                 }
             }
+            return isValid;
+        }
+
+        internal bool CheckStringDcl(EmotionalDamageParser.StringDclContext context)
+        {
+            bool isValid = true;
+
             return isValid;
         }
 
