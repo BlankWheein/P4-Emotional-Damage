@@ -176,7 +176,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER()[0].GetText();
             var pos1 = context.Inum().GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum().GetText();
             var exprstring = context.expr().GetText();
-            AddStmt($"{id}{pos1} = {exprstring};");
+            AddStmt($"{id}[{pos1}] = {exprstring};");
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
@@ -195,6 +195,64 @@ namespace Compiler.Phases
         {
             var bexpr = context.bexpr().GetText();
             AddStmt($"while{bexpr}"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
+        {
+            var id1 = context.IDENTIFIER()[0].GetText();
+            var exprstring = context.expr().GetText();
+            var bexpr = context.bexpr().GetText();
+            var text = context.GetText().Split(';');
+            var unaryoperator = text[2];
+            string result = unaryoperator.Contains("++") == true ? "++" : "--";
+            AddStmt($"for (int {id1} = {exprstring}; {bexpr}; {id1}{result})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"{id} = {id}.Transpose()");
+            return false;
+        }
+        public override object VisitSelective([NotNull] EmotionalDamageParser.SelectiveContext context)
+        {
+            if(context.ifstmt() != null){
+                VisitIfstmt(context.ifstmt());
+            }
+            if (context.elifstmt() != null){
+                foreach (var i in context.elifstmt()){
+                    VisitElifstmt(i);
+                }
+            }
+            if(context.elsestmt() != null){
+                VisitElsestmt(context.elsestmt());
+            }
+            return false;
+        }
+        public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
+        {
+            string bexprstring = context.bexpr().GetText();
+            AddStmt($"if({bexprstring})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+        }
+        public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
+        {
+            string bexprstring = context.bexpr().GetText();
+            AddStmt($"else if({bexprstring})"+"{");
+            VisitStmts(context.stmts());
+            AddStmt("}");
+            return false;
+            
+        }
+        public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
+        {
+            
+            AddStmt("else{");
             VisitStmts(context.stmts());
             AddStmt("}");
             return false;
