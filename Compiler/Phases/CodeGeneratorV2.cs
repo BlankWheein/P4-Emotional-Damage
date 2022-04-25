@@ -212,5 +212,10 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
+            var id = context.IDENTIFIER().GetText();
+            AddStmt($"{id} = {id}.Transpose()");
+            return false;
+        }
     }   
 }
