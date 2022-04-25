@@ -78,6 +78,14 @@ namespace Compiler.Phases
             Scope.ExitScope();
             return false;
         }
+        public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
+        {
+            foreach (var s in context.IDENTIFIER())
+                Scope.LookUpExsting(s.GetText());
+            return base.VisitFuncStmt(context);
+        }
+        #endregion
+        #region Declarations
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             string id = context.IDENTIFIER().First().GetText();
@@ -100,14 +108,6 @@ namespace Compiler.Phases
             }
             return false;
         }
-        public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
-        {
-            foreach (var s in context.IDENTIFIER())
-                Scope.LookUpExsting(s.GetText());
-            return base.VisitFuncStmt(context);
-        }
-        #endregion
-        #region Declarations
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();
