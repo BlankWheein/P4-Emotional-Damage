@@ -178,8 +178,9 @@ namespace Compiler.Phases
         #region Assigns
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
+            if (!TypeChecker.CheckNumAssignStmtContext(context)) { return false; }
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUpExsting(id) == null)
+            if (Scope.LookUp(id) == null)
                 Scope.AddDiagnostic(new Exception($"{id} was not defined"));
             return base.VisitNumAssignStmt(context);
         }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Compiler.Phases
@@ -15,6 +16,8 @@ namespace Compiler.Phases
         }
 
         public RootSymbolTable Scope { get => ScopeVisitorV2.Scope; }
+        Regex IsVariable = new("[A-Za-z]");
+        Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
         internal List<string> SplitOnOperators(string text)  => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -53,6 +56,28 @@ namespace Compiler.Phases
                 }
             }
             return isValid;
+        }
+
+        public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
+        {
+            string id = ctx.IDENTIFIER().GetText();
+            string expr = ctx.expr().GetText().Replace("(", "").Replace(")", "");
+            var _out = SplitOnOperators(expr);
+            bool res = true;
+            _out.ForEach(p =>
+            {
+                if (IsVariable.IsMatch(p))
+                {
+                    var symbol = Scope.LookUp(p);
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int")); return; }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int) { res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float")); return; }
+                } else if (IsDigit.IsMatch(p))
+                {
+                    if (Scope?.LookUp(id).Type == SymbolType.Int && !int.TryParse(p, out _)) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int")); return; }
+                    else if (Scope?.LookUp(id).Type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _) )) { res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float")); return; }
+                }
+            });
+            return res;
         }
     }
 }
