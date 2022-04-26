@@ -173,5 +173,15 @@ namespace UnitTests.Daniel
             Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
+        [TestMethod]
+        public void IntAssignString()
+        {
+            var root = Parse(new StringBuilder("string kage2 = \"You deserve a treat!\"; int kage = kage2;"));
+            scope.Insert(SymbolType.Int, "kage");
+            scope.Insert(SymbolType.String, "kage2");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+
     }
 }
