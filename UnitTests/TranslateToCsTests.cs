@@ -80,5 +80,19 @@ namespace ScopeTests
             string input = _codeGen.CheckExpr("x.col");
             Assert.AreNotEqual(input, res);
         }
+        [TestMethod]
+        public void LenTest1()
+        {
+            string res = "x.Length";
+            string input = _codeGen.CheckExpr("x.len");
+            Assert.AreEqual(input, res);
+        }
+        [TestMethod]
+        public void LenTest2()
+        {
+            string res = "x.len";
+            string input = _codeGen.CheckExpr("x.len");
+            Assert.AreEqual(input, res);
+        }
     }
 }
