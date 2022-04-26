@@ -8,7 +8,7 @@ namespace Compiler.Phases
         public List<Exception> Diagnostics { get; set; }
         public RootSymbolTable Scope { get; set; }
         public TypeChecker TypeChecker { get; set; }
-        public ScopeVisitorV2() 
+        public ScopeVisitorV2()
         {
             this.Scope = new RootSymbolTable();
             Diagnostics = Scope.Diagnostics;
@@ -82,6 +82,7 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
+            TypeChecker.CheckFuncStmt(context);
             foreach (var s in context.IDENTIFIER())
                 Scope.LookUpExsting(s.GetText());
             return base.VisitFuncStmt(context);
@@ -201,7 +202,7 @@ namespace Compiler.Phases
             if (context.Inum().Length >= 1)
             {
                 string? row = context?.Inum()[0]?.GetText();
-                if ( row != null && int.Parse(row) >= m?.Row)
+                if (row != null && int.Parse(row) >= m?.Row)
                     Scope.AddDiagnostic(new Exception($"{row} was out of index"));
             }
             if (context.Inum().Length == 2)

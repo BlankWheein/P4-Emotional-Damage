@@ -192,10 +192,9 @@ namespace Compiler.Phases
 
         internal bool CheckFuncCall(EmotionalDamageParser.FuncCallContext context)
         {
-            string call = context.GetText();
             bool isValid = true;
             var func = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            List<Symbol> dclList = Scope.Symbols.FindAll(p => p.Isparameter == true);
+            List<Symbol> dclList = func?.Parameters;
             List<SymbolType> callList = new();
 
             
@@ -214,7 +213,6 @@ namespace Compiler.Phases
                     Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
                 }
                 else { callList.Add(s.Type); }
-                
             }
 
             //check if types match, and if the number of parameters match the function dcl
@@ -232,7 +230,7 @@ namespace Compiler.Phases
             else if(dclList.Count!=context.IDENTIFIER().Length-1)
             {
                 isValid = false;
-                Scope.AddDiagnostic(new("Parameter count does not match the function"));
+                Scope.AddDiagnostic(new("Parameter count does not match the function declaration!"));
             }
             return isValid;
         }
@@ -241,7 +239,8 @@ namespace Compiler.Phases
         internal bool CheckFuncStmt(EmotionalDamageParser.FuncStmtContext context)
         {
             bool isValid = true;
-            List<Symbol> dclList = Scope.Symbols.FindAll(p => p.Isparameter == true);
+            var func = Scope.LookUp(context.IDENTIFIER().First().GetText());
+            List<Symbol> dclList = func?.Parameters;
             List<SymbolType> callList = new();
 
 
@@ -261,7 +260,6 @@ namespace Compiler.Phases
                     Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
                 }
                 else { callList.Add(s.Type); }
-
             }
 
             //check if types match, and if the number of parameters match the function dcl
@@ -279,17 +277,15 @@ namespace Compiler.Phases
             else if (dclList.Count != context.IDENTIFIER().Length - 1)
             {
                 isValid = false;
-                Scope.AddDiagnostic(new("Parameter count does not match the function"));
+                Scope.AddDiagnostic(new("Parameter count does not match the function declaration!"));
             }
             return isValid;
         }
-
+        /*
         internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
 
-            //check index not less than 1
-            // check index not larger than array size
-            // check if index is integer
+            
             // check if expr evaluates to correct type
             bool isValid = true;
             Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
@@ -326,7 +322,7 @@ namespace Compiler.Phases
                 }
             }
             return false;
-        }
+        }*/
 
     }
 }

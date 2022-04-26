@@ -1,7 +1,8 @@
 ﻿
 int k = 2;
+float ok=7.4;
 float kage(int x) {
 	
 }
-int kage2 = kage(k);
-float kage3 = kage(k);
+
+kage(ok);
