@@ -20,7 +20,7 @@ namespace Compiler.Phases
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
         internal List<string> SplitOnOperatorsExpr(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        internal List<string> SplitOnOperatorsBexpr(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { ">=", "<=", ">", "<" , "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        internal List<string> SplitOnOperatorsBexpr(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
@@ -30,7 +30,9 @@ namespace Compiler.Phases
             {
                 type = (SymbolType)Enum.Parse(typeof(SymbolType), numtype[0].ToString().ToUpper() + numtype[1..^0]);
                 return ExprHelper(context.expr().GetText(), type);
-            } catch {
+            }
+            catch
+            {
                 Scope.AddDiagnostic(new($"{numtype} could not be parsed to a type"));
                 return false;
             }
@@ -139,5 +141,48 @@ namespace Compiler.Phases
             }
             return res;
         }
+
+        internal bool CheckArrayDcl(EmotionalDamageParser.ArrayDeclarationContext context)
+        {
+            bool isValid = true;
+            var number = context.Inum().GetText();
+
+            if (int.TryParse(number, out int x))
+            {
+                if (x < 1)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                }
+            }
+            else
+            {
+                isValid = false;
+                Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+            }
+
+            return isValid;
+        }
+
+        internal bool CheckFuncCall(EmotionalDamageParser.FuncCallContext context)
+        {
+            //check if amount of parameters correct
+            // check if type of parameters correct
+
+            bool isValid = true;
+            List<SymbolType> typeList=new();
+            
+            Scope.Symbols
+
+            Symbol func= Scope.LookUp(context.IDENTIFIER(0).GetText());
+
+
+
+            
+            return isValid;
+
+        }
+
+
     }
 }
