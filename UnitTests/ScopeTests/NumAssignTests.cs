@@ -49,7 +49,7 @@ namespace UnitTests.ScopeTests
         public void TestFloatDclArrayOperationFail()
         {
             var root = Parse(new System.Text.StringBuilder("int[2] a; float b=3/a;"));
-            scope.Insert(Compiler.SymbolTableFolder.SymbolType.AInt, "a");
+            scope.Insert(Compiler.SymbolTableFolder.SymbolType.Aint, "a");
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "b");
             Assert.AreNotEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);

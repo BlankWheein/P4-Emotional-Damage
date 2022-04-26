@@ -65,9 +65,9 @@ namespace Compiler.SymbolTableFolder
         /// <param name="type"></param>
         /// <param name="id"></param>
         /// <param name="is_initialized"></param>
-        public void Insert(SymbolType type, string id, bool is_initialized, int row, int col)
+        public void Insert(SymbolType type, string id, bool is_initialized, int row, int col, bool isparameter)
         {
-            Symbol symbol = new(id, type, is_initialized, row, col);
+            Symbol symbol = new(id, type, is_initialized, row, col, isparameter);
             Insert(symbol);
         }
    
@@ -116,7 +116,7 @@ namespace Compiler.SymbolTableFolder
 
         public void Dispose()
         {
-            Symbols.Clear();
+            //Symbols.Clear();
 
         }
         public override bool Equals(object? obj)

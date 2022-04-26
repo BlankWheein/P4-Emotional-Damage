@@ -67,18 +67,32 @@ namespace Compiler.Phases
             bool res = true;
             _out.ForEach(p =>
             {
-                if (IsVariable.IsMatch(p))
+                p = p.Replace("]", "");
+                var pp = p.Split("[");
+                p = pp[0];
+                if (pp.Length == 3 && (Scope?.LookUp(p).Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)
+                {
+                    res = false;
+                    Scope?.AddDiagnostic(new($"{p} was not of type Matrix"));
+                        
+                } else if (pp.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
+                {
+                    res = false;
+                    Scope?.AddDiagnostic(new($"{p} was not of type Array"));
+                } else if (pp.Length == 0)
+                    throw new Exception("What");
+                else if (IsVariable.IsMatch(p))
                 {
                     Symbol symbol;
                     if (p == "true" || p == "false")
                         symbol = new("NotSet", SymbolType.Int);
                     else
                         symbol = Scope.LookUp(p);
-                    if (type == SymbolType.Int && (symbol.Type != SymbolType.Int || symbol.Type != SymbolType.Bool))
+                    if (type == SymbolType.Int && (symbol?.Type & (SymbolType.Int | SymbolType.Bool | SymbolType.Mfloat | SymbolType.Mint)) == 0)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
                     }
-                    else if (type == SymbolType.Float && symbol.Type != SymbolType.Float && symbol.Type != SymbolType.Int && symbol.Type != SymbolType.Bool)
+                    else if (type == SymbolType.Float && (symbol?.Type & (SymbolType.Float | SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Mfloat)) == 0)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float"));
                     }
@@ -99,7 +113,31 @@ namespace Compiler.Phases
         }
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {
-            return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText()).Type);
+            return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText())?.Type);
+        }
+        public bool CheckMatrixValueGetter(EmotionalDamageParser.NumMatrixValueContext ctx)
+        {
+            bool res = true;
+            string id = ctx.IDENTIFIER().First().GetText();
+            var sym = Scope.LookUp(id);
+            if (sym?.Type != SymbolType.Mint && sym?.Type != SymbolType.Mfloat)
+            {
+                Scope.AddDiagnostic(new($"{id} was not of type Matrix"));
+                res = false;
+            }
+            return res;
+        }
+        public bool CheckArrayValueGetter(EmotionalDamageParser.ArrayDeclarationContext ctx)
+        {
+            bool res = true;
+            string id = ctx.IDENTIFIER().GetText();
+            var sym = Scope.LookUp(id);
+            if (sym?.Type != SymbolType.Mint && sym?.Type != SymbolType.Mfloat)
+            {
+                Scope.AddDiagnostic(new($"{id} was not of type Matrix"));
+                res = false;
+            }
+            return res;
         }
     }
 }

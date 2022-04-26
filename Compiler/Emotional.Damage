@@ -1,2 +1,5 @@
-﻿int x = 2;
-int y = x + 3;
+﻿
+int kage(int x, int y) {
+	int z = x * y;
+	return z;
+}

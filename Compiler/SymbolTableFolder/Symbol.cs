@@ -8,13 +8,14 @@ namespace Compiler.SymbolTableFolder
 {
     public sealed class Symbol
     {
-        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false, int row = 0, int col = 0)
+        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false, int row = 0, int col = 0, bool isparameter = false)
         {
             Type = type;
             Id = id;
             IsInitialized = isInitialized;
             Row = row;
             Col = col;
+            Isparameter = isparameter;
         }
 
         public SymbolType Type { get; set; }
@@ -22,6 +23,8 @@ namespace Compiler.SymbolTableFolder
         public bool IsInitialized { get; set; }
         public int Row { get; }
         public int Col { get; }
+        public bool Isparameter { get; }
+
         public override string ToString()
         {
             if (Row == 0)
@@ -40,16 +43,16 @@ namespace Compiler.SymbolTableFolder
     }
     public enum SymbolType
     {
-        Int,
-        Float,
-        Reserved,
-        Void,
-        String,
-        Mint,
-        Mfloat,
-        AInt,
-        AFloat,
-        Bool,
-        Func
+        Int = 1 << 0,
+        Float = 1 << 1,
+        Reserved = 1 << 2,
+        Void = 1 << 3,
+        String = 1 << 4,
+        Mint = 1 << 5,
+        Mfloat = 1 << 6,
+        Aint = 1 << 7,
+        Afloat = 1 << 8,
+        Bool = 1 << 9,
+        Func = 1 << 10,
     }
 }

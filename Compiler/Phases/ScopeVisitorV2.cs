@@ -102,7 +102,7 @@ namespace Compiler.Phases
                     string rawtype = context.types()[i - 1].GetText();
                     string type = rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToString();
                     Scope.LookUpExsting(identifier);
-                    Scope.Insert((SymbolType) Enum.Parse(typeof(SymbolType), type), identifier);
+                    Scope.Insert((SymbolType) Enum.Parse(typeof(SymbolType), type), identifier, isparameter: true);
                 }
                 VisitChildren(context);
                 Scope.ExitScope();
@@ -132,7 +132,7 @@ namespace Compiler.Phases
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            string type = "A" + context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+            string type = "A" + context.numtype().GetText()[0..^0].ToString();
             if (!int.TryParse(context.Inum().GetText(), out int max_index))
                 Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
             if (max_index < 0)
