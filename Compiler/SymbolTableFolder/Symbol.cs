@@ -8,7 +8,7 @@ namespace Compiler.SymbolTableFolder
 {
     public sealed class Symbol
     {
-        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false, int row = 0, int col = 0, bool isparameter = false)
+        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false, int row = 0, int col = 0, bool isparameter = false, bool isfunc = false, List<Symbol>? parameters = null)
         {
             Type = type;
             Id = id;
@@ -16,6 +16,10 @@ namespace Compiler.SymbolTableFolder
             Row = row;
             Col = col;
             Isparameter = isparameter;
+            IsFunc = isfunc;
+            if (parameters == null)
+                parameters = new();
+            Parameters = parameters;
         }
 
         public SymbolType Type { get; set; }
@@ -24,6 +28,8 @@ namespace Compiler.SymbolTableFolder
         public int Row { get; }
         public int Col { get; }
         public bool Isparameter { get; }
+        public bool IsFunc { get; }
+        public List<Symbol> Parameters { get; }
 
         public override string ToString()
         {
@@ -36,9 +42,19 @@ namespace Compiler.SymbolTableFolder
         }
         public override bool Equals(object? obj)
         {
+            bool res = true;
             Symbol? table = obj as Symbol;
             if (table == null) return false;
-            return table.ToString() == ToString();
+            try
+            {
+            for (int i = 0; i < Parameters.Count; i++) 
+                res &= Parameters[i].Equals(table.Parameters[i]);
+            for (int i = 0; i < table.Parameters.Count; i++)
+                res &= Parameters[i].Equals(table.Parameters[i]);
+            } 
+            catch { return false; }
+            res &= table.ToString() == ToString();
+            return res;
         }
     }
     public enum SymbolType
@@ -53,6 +69,5 @@ namespace Compiler.SymbolTableFolder
         Aint = 1 << 7,
         Afloat = 1 << 8,
         Bool = 1 << 9,
-        Func = 1 << 10,
     }
 }

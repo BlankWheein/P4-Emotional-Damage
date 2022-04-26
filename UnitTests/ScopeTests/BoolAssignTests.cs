@@ -20,8 +20,8 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void BoolDclBexpr()
         {
-            var root = Parse(new System.Text.StringBuilder("bool k = 2 * 3 == 6"));
-            var root2 = Parse(new System.Text.StringBuilder("bool k = 2 + 2 * 2 / 2 % 2 > 2"));
+            var root = Parse(new System.Text.StringBuilder("bool k = 2 * 3 == 6;"));
+            var root2 = Parse(new System.Text.StringBuilder("bool k = 2 + 2 * 2 / 2 % 2 > 2;"));
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Bool, "k");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(scope, root2);

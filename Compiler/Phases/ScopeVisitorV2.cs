@@ -93,8 +93,8 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().First().GetText();
             if (Scope.LookUpExsting(id) == null)
             {
-                Scope.Insert(SymbolType.Func, id);
-                Scope.Allocate("Func");
+                List<Symbol> symbols = new();
+                string type2 = context.returntype().GetText()[0].ToString().ToUpper() + context.returntype().GetText()[1..^0].ToString();
                 if (context.IDENTIFIER().Length > 1)
                 for (int i = 1; i < context.IDENTIFIER().Length ; i++)
                 {
@@ -102,8 +102,11 @@ namespace Compiler.Phases
                     string rawtype = context.types()[i - 1].GetText();
                     string type = rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToString();
                     Scope.LookUpExsting(identifier);
-                    Scope.Insert((SymbolType) Enum.Parse(typeof(SymbolType), type), identifier, isparameter: true);
+                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), type), isparameter: true));
                 }
+                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), type2), isfunc: false, parameters: symbols);
+                Scope.Insert(sym);
+                Scope.Allocate("Func");
                 VisitChildren(context);
                 Scope.ExitScope();
             }
@@ -254,5 +257,12 @@ namespace Compiler.Phases
             return base.VisitTransposeMatrixStmt(context);
         }
         #endregion
+
+
+        public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
+        {
+            TypeChecker.CheckFuncCall(context);
+            return base.VisitFuncCall(context);
+        }
     }
 }

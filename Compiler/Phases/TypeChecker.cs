@@ -19,8 +19,8 @@ namespace Compiler.Phases
         Regex IsVariable = new("[A-Za-z]");
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
-        internal List<string> SplitOnOperatorsExpr(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        internal List<string> SplitOnOperatorsBexpr(string text) => text.Replace("(", "").Replace(")", "").Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.None).ToList();
+        internal List<string> SplitOnOperatorsBexpr(string text) => text.Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
@@ -65,31 +65,57 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new("Type was null"));
                 return false;
             }
+
             var _out = SplitOnOperatorsExpr(expr);
             bool res = true;
             _out.ForEach(p =>
             {
                 p = p.Replace("]", "");
-                var pp = p.Split("[");
-                p = pp[0];
-                if (pp.Length == 3 && (Scope?.LookUp(p).Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)
+                var MatrixArrCheck = p.Split("[");
+                p = MatrixArrCheck[0];
+                p = p.Replace(")", "");
+                var FuncCheck = p.Split("(", StringSplitOptions.RemoveEmptyEntries);
+                string p2 = FuncCheck[0];
+                p2 = p2.Replace("(", "");
+                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false")
+                {
+                    var isfunc = Scope.LookUp(FuncCheck[0]);
+                    if ( isfunc?.IsFunc == true && FuncCheck.Length > 0)
+                    {
+                        if (type == SymbolType.Int && (isfunc.Type & ( SymbolType.Int | SymbolType.Aint | SymbolType.Mint )) == 0)
+                        {
+                            res = false;
+                            Scope?.AddDiagnostic(new($"{p2} does not return int"));
+                        }
+                        if (type == SymbolType.Float && (isfunc.Type & (SymbolType.Int | SymbolType.Aint | SymbolType.Mint | SymbolType.Float | SymbolType.Afloat | SymbolType.Mfloat)) == 0)
+                        {
+                            res = false;
+                            Scope?.AddDiagnostic(new($"{p2} does not return Float or int"));
+                        }
+                    }
+                } else
+                {
+
+                }
+                if (MatrixArrCheck.Length == 3 && (Scope?.LookUp(p).Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)
                 {
                     res = false;
                     Scope?.AddDiagnostic(new($"{p} was not of type Matrix"));
                         
-                } else if (pp.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
+                } else if (MatrixArrCheck.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
                 {
                     res = false;
                     Scope?.AddDiagnostic(new($"{p} was not of type Array"));
-                } else if (pp.Length == 0)
+                } else if (MatrixArrCheck.Length == 0)
                     throw new Exception("What");
-                else if (IsVariable.IsMatch(p))
+
+                else if (IsVariable.IsMatch(p) && p != "true" && p != "false")
                 {
-                    Symbol symbol;
+                    Symbol? symbol;
                     if (p == "true" || p == "false")
                         symbol = new("NotSet", SymbolType.Int);
                     else
-                        symbol = Scope.LookUp(p);
+                        symbol = Scope?.LookUp(p);
                     if (type == SymbolType.Int && (symbol?.Type & (SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Aint)) == 0)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
@@ -166,7 +192,9 @@ namespace Compiler.Phases
 
         internal bool CheckFuncCall(EmotionalDamageParser.FuncCallContext context)
         {
+            string call = context.GetText();
             bool isValid = true;
+            var func = Scope.LookUp(context.IDENTIFIER().First().GetText());
             List<Symbol> dclList = Scope.Symbols.FindAll(p => p.Isparameter == true);
             List<SymbolType> callList = new();
 

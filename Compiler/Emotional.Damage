@@ -1,2 +1,7 @@
-﻿float[2] m;
-float k = m[1];
+﻿
+int k = 2;
+float kage(int x) {
+	
+}
+int kage2 = kage(k);
+float kage3 = kage(k);

@@ -41,7 +41,7 @@ namespace Compiler.SymbolTableFolder
         }
         // Decorator stuff
         public void Insert(Symbol s) => Current?.Insert(s);
-        public void Insert(SymbolType type, string id, bool isInitialized = true, int row = 0, int col = 0, bool isparameter = false) => Current?.Insert(type, id, isInitialized, row, col, isparameter);
+        public void Insert(SymbolType type, string id, bool isInitialized = true, int row = 0, int col = 0, bool isparameter = false, bool isfunc = false, List<Symbol>? parameters = null) => Current?.Insert(type, id, isInitialized, row, col, isparameter, isfunc, parameters);
         public Symbol? LookUp(string id) => Current?.LookUp(id);
         public Symbol? LookUpExsting(string id) => Current?.LookUpExsting(id);
         public void SetInitialized(string id) => Current.SetInitialized(id);
