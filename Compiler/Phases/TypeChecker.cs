@@ -280,7 +280,7 @@ namespace Compiler.Phases
         
         internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-            // check if expr evaluates to correct type
+            
             bool isValid=true;
             Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
 
@@ -314,6 +314,12 @@ namespace Compiler.Phases
                     isValid = false;
                     Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
                 }
+            }
+
+            // check if expr evaluates to correct type, something is wrong here
+            if (context.expr() != null)
+            {
+                isValid &= ExprHelper(context.expr().GetText(), array.Type);
             }
             return isValid;
         }
