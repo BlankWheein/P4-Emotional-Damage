@@ -15,3 +15,13 @@ int[2][3] mar;
 mon[1] = 10;
 mar[1][1] = 2;
 while(true){print("hello");}
+int h = mar.row;
+int i = mar.col;
+int j = mon.len;
+
+
+float k = sqrt b;
+
+float kage(float a, float b){}
+
+kage(sqrt 10, sqrt a);

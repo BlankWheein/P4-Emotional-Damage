@@ -57,26 +57,40 @@ namespace Compiler.Phases
 
         public string CheckExpr(string input)
         {
+            // skal tilføjes parenteser ved sqrt, fix problem med nested expr (funccall + sqrt), add \\\\
             for(int i = 0; i < input.Length - 1; i++)
             {
                 char c = input[i];
                 char next_c = input[i + 1];
+                char prev_c = i > 0 ? input[i - 1] : '0';
                 string[] _expr;
+                string symbols = "%*/+-";
 
                 if (input.Length > 4 && input[..4] == "sqrt")
-                    return $"MathF.Sqrt({CheckExpr(input[5..])})";
-
-                if (c.Equals('*') && next_c.Equals('*'))
+                    return $"MathF.Sqrt({CheckExpr(input[4..])})";
+                else if (c.Equals('*') && next_c.Equals('*'))
                 {
                     _expr = input.Split("**");
-                    return $"MathF.Pow({_expr[0]}, {_expr[1]})";
+                    var _expr1 = _expr[0];
+                    var _expr2 = _expr[1];
+                    return $"MathF.Pow({CheckExpr(_expr1)}, {CheckExpr(_expr2)})";
                 }
-
-                string symbols = "%*/+-";
-                if (symbols.Contains(c))
+                else if (symbols.Contains(c))
                 {
                     _expr = input.Split(c);
-                    return $"{_expr[0]} {c} {_expr[1]}";
+                    var _expr1 = _expr[0];
+                    var _expr2 = _expr[1];
+                    return $"{CheckExpr(_expr1)} {c} {CheckExpr(_expr2)}";
+                }
+                else if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
+                {
+                    string id = input.Split('.').First();
+                    switch (next_c)
+                    {
+                        case 'r': return $"{id}.Rows";
+                        case 'c': return $"{id}.Columns";
+                        case 'l': return $"{id}.Length";
+                    }
                 }
             }
 
@@ -298,138 +312,5 @@ namespace Compiler.Phases
             return false;
         }
 
-        #region Expr
-        public override object VisitParenExpr([NotNull] EmotionalDamageParser.ParenExprContext context)
-        {
-            AddStmt("(", newline: false);
-            Visit(context.expr());
-            AddStmt(")", newline: false);
-            return false;
-        }
-        public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
-        {
-
-            AddStmt($"{context.IDENTIFIER(0).GetText()}(", newline: false);
-            for(int i =1; i < context.IDENTIFIER().Length-1; i++)
-            {
-                AddStmt($"{context.IDENTIFIER(i).GetText()},", newline: false);
-            }
-            AddStmt($"{context.IDENTIFIER().Last().GetText()})", newline: false);
-            return false;
-        }
-
-        
-        public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
-        {
-            AddStmt($"Math.Sqrt(", newline: false);
-            Visit(context.expr());
-            AddStmt(")", newline: false);
-
-            return false;
-        }
-
-        //this c# method is for doubles oops. how do i fix this
-        public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
-        {
-            AddStmt($"MathF.Pow(", newline: false);
-            Visit(context.expr(0));
-            AddStmt(",", newline: false);
-            Visit(context.expr(1));
-            AddStmt(")", newline: false);
-            return false;
-        }
-
-        public override object VisitModExpr([NotNull] EmotionalDamageParser.ModExprContext context)
-        {
-            Visit(context.expr(0));
-            AddStmt($"%", newline: false);
-            Visit(context.expr(1));
-
-            return false;
-        }
-
-        public override object VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context)
-        {
-
-            Visit(context.expr(0));
-            AddStmt($"*", newline: false);
-            Visit(context.expr(1));
-
-            return false;
-        }
-        public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
-        {
-
-            Visit(context.expr(0));
-            AddStmt($"/", newline: false);
-            Visit(context.expr(1));
-
-            return false;
-        }
-
-        public override object VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context)
-        {
-           
-            Visit(context.expr(0));
-            AddStmt($"+", newline: false);
-            Visit(context.expr(1));
-
-            return false;
-        }
-
-        public override object VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context)
-        {
-        
-            Visit(context.expr(0));
-            AddStmt($"-", newline: false);
-            Visit(context.expr(1));
-
-            return false;
-        }
-
-        public override object VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context)
-        {
-            return false;
-        }
-
-        public override object VisitNumMatrixValue([NotNull] EmotionalDamageParser.NumMatrixValueContext context)
-        {
-            return false;
-        }
-
-        public override object VisitRowid([NotNull] EmotionalDamageParser.RowidContext context)
-        {
-            return false;
-        }
-
-        public override object VisitColid([NotNull] EmotionalDamageParser.ColidContext context)
-        {
-            return false;
-        }
-
-        public override object VisitLengthid([NotNull] EmotionalDamageParser.LengthidContext context)
-        {
-            return false;
-        }
-
-        public override object VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context)
-        {
-            AddStmt("-", newline: false);
-            Visit(context.expr());
-            return false;
-        }
-        public override object VisitIntVal([NotNull] EmotionalDamageParser.IntValContext context)
-        {
-            var inum = context.Inum().GetText();
-            AddStmt($"{inum}", newline: false);
-            return false;
-        }
-        public override object VisitFloatVal([NotNull] EmotionalDamageParser.FloatValContext context)
-        {
-            var fnum = context.Fnum().GetText();
-            AddStmt($"{fnum}", newline: false);
-            return false;
-        }
-        #endregion
     }
 }
