@@ -13,7 +13,7 @@ namespace UnitTests.ScopeTests
         public void FuncDeclare()
         {
             var root = Parse(new StringBuilder("int kage() {}"));
-            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol> () { });
+            scope.Insert(SymbolType.Int, "kage", isfunc: true);
             scope.Allocate("Func");
             Assert.AreEqual(scope, root);
         }
@@ -21,7 +21,7 @@ namespace UnitTests.ScopeTests
         public void FuncDeclareWith1Parameter()
         {
             var root = Parse(new StringBuilder("int kage(int x) {}"));
-            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int) });
+            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int) }, isfunc: true);
             scope.Allocate("Func");
             Assert.AreEqual(scope, root);
         }
@@ -29,7 +29,7 @@ namespace UnitTests.ScopeTests
         public void FuncDeclareWith2Parameter()
         {
             var root = Parse(new StringBuilder("int kage(int x, int y) {}"));
-            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Int) });
+            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Int) }, isfunc: true);
             scope.Allocate("Func");
             Assert.AreEqual(scope, root);
         }
@@ -37,7 +37,7 @@ namespace UnitTests.ScopeTests
         public void FuncDeclareWith2ParameterFail()
         {
             var root = Parse(new StringBuilder("int kage(int x, int y) {}"));
-            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("y", SymbolType.Int) });
+            scope.Insert(SymbolType.Int, "kage", parameters: new List<Symbol>() { new("y", SymbolType.Int) }, isfunc: true);
             scope.Allocate("Func");
             Assert.AreNotEqual(scope, root);
         }
