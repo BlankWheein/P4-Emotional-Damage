@@ -51,8 +51,9 @@ namespace Compiler.SymbolTableFolder
                 res &= Parameters[i].Equals(table.Parameters[i]);
             for (int i = 0; i < table.Parameters.Count; i++)
                 res &= Parameters[i].Equals(table.Parameters[i]);
-            } 
+            }
             catch { return false; }
+            res &= IsFunc == table.IsFunc;
             res &= table.ToString() == ToString();
             return res;
         }
