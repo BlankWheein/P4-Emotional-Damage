@@ -164,5 +164,16 @@ namespace UnitTests.Daniel
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
+        [TestMethod]
+        public void IntFuncReturn()
+        {
+            var root = Parse(new StringBuilder("int kage = 5; int kage2 = 10; int kage3(int x, int y) {int z = x + y; }"));
+            scope.Insert(SymbolType.Int, "kage");
+            scope.Insert(SymbolType.Int, "kage2");
+            scope.Insert(SymbolType.Int, "kage3", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Int) }, isfunc: true);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+
     }
 }
