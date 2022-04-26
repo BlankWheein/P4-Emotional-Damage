@@ -35,7 +35,7 @@ namespace Compiler.SymbolTableFolder
         {
             Symbol? symbol = LookUpHelper(id);
             if (symbol == null)
-                Diagnostics.Add(new Exception(id + " was not defined"));
+                Diagnostics.Add(new Exception(id + " was not defined2"));
             return symbol;
         }
 
