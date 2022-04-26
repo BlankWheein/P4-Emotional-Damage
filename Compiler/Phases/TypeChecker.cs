@@ -166,46 +166,48 @@ namespace Compiler.Phases
 
         internal bool CheckFuncCall(EmotionalDamageParser.FuncCallContext context)
         {
-            //check if amount of parameters correct
-            // check if type of parameters correct
+            bool isValid = true;
+            List<Symbol> dclList = Scope.Symbols.FindAll(p => p.Isparameter == true);
+            List<SymbolType> callList = new();
 
-            bool isValid = true; 
-           
-            List<Symbol> parameterList = Scope.Symbols.FindAll(p=>p.Isparameter==true);
-
-            List<SymbolType> typeList = new();
             
-
-            //count amout of parameters in the call
-            // add their types to the list
-            for(int i =1;i< context.IDENTIFIER().Length; i++)
+            //add symbols to callList if they can be found and are initialized in the scope
+            for (int i = 1; i < context.IDENTIFIER().Length; i++)
             {
-               Symbol s= Scope.LookUp(context.IDENTIFIER(i).GetText());
-                typeList.Add(s.Type);
+                Symbol s = Scope.LookUp(context.IDENTIFIER(i).GetText());
+                if (s == null)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
+                    
+                }else if (s.IsInitialized==false)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
+                }
+                else { callList.Add(s.Type); }
+                
             }
 
-            //check amount of parameters
-          
-            if (parameterList.Count == typeList.Count)
+            //check if types match, and if the number of parameters match the function dcl
+            if (dclList.Count == callList.Count)
             {
-               for(int i=0;i<parameterList.Count;i++)
+                for (int i = 0; i < dclList.Count; i++)
                 {
-                    isValid &= parameterList[i].Type == typeList[i];
+                    isValid &= dclList[i].Type == callList[i];
+                }
+                if (isValid == false)
+                {
+                    Scope.Diagnostics.Add(new($"Function call parameter types don't match the function declaration!"));
                 }
             }
-            else
+            else if(dclList.Count!=context.IDENTIFIER().Length-1)
             {
                 isValid = false;
                 Scope.AddDiagnostic(new("Parameter count does not match the function"));
             }
-
-
-
-            
             return isValid;
 
         }
-
-
     }
 }
