@@ -53,6 +53,13 @@ namespace ScopeTests
             Assert.AreNotEqual(res, input);
         }
         [TestMethod]
+        public void NestedExprTest3()
+        {
+            string res = "x % 34 +(MathF.Sqrt(MathF.Pow(x, 4))) + 12 - 5788 / 789 + 123";
+            string input = _codeGen.CheckExpr("x % 34 +(sqrt(x**4/3)) + 12 - 5788 / 789 + 123");
+            Assert.AreNotEqual(res, input);
+        }
+        [TestMethod]
         public void RowsTest1()
         {
             string res = "x.Rows";
