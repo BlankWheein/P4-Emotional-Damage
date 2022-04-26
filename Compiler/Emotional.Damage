@@ -1,27 +1,4 @@
-﻿float x = sqrt 10+20;
-float a = 2**10;
-float b = 35 % 10;
-float c = 23 * 52;
-float d = 62/24;
-float e = 45 + 23;
-float f = 62 - 12;
-float g = 25 \\\\ 26;
-
-float z = x;
-
-int[2] mon;
-int[2][3] mar;
-
-mon[1] = 10;
-mar[1][1] = 2;
-while(true){print("hello");}
-int h = mar.row;
-int i = mar.col;
-int j = mon.len;
-
-
-float k = sqrt (b + sqrt(10) * (2 / 43));
-
-float kage(float a, float b){}
-
-kage(sqrt (10), sqrt (a));
+﻿float a = (12+10)**(12+125) *24 / 10
+float m = 20+sqrt(10+23*sqrt(10)) + 2;
+float a = 23 * 123 % 235 + 235221 - 124513 + 200 - 123214;
+float c = 12+4**20+3;
