@@ -207,7 +207,98 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new("Parameter count does not match the function"));
             }
             return isValid;
-
         }
+
+
+        internal bool CheckFuncStmt(EmotionalDamageParser.FuncStmtContext context)
+        {
+            bool isValid = true;
+            List<Symbol> dclList = Scope.Symbols.FindAll(p => p.Isparameter == true);
+            List<SymbolType> callList = new();
+
+
+            //add symbols to callList if they can be found and are initialized in the scope
+            for (int i = 1; i < context.IDENTIFIER().Length; i++)
+            {
+                Symbol s = Scope.LookUp(context.IDENTIFIER(i).GetText());
+                if (s == null)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
+
+                }
+                else if (s.IsInitialized == false)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
+                }
+                else { callList.Add(s.Type); }
+
+            }
+
+            //check if types match, and if the number of parameters match the function dcl
+            if (dclList.Count == callList.Count)
+            {
+                for (int i = 0; i < dclList.Count; i++)
+                {
+                    isValid &= dclList[i].Type == callList[i];
+                }
+                if (isValid == false)
+                {
+                    Scope.Diagnostics.Add(new($"Function call parameter types don't match the function declaration!"));
+                }
+            }
+            else if (dclList.Count != context.IDENTIFIER().Length - 1)
+            {
+                isValid = false;
+                Scope.AddDiagnostic(new("Parameter count does not match the function"));
+            }
+            return isValid;
+        }
+
+        internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
+        {
+
+            //check index not less than 1
+            // check index not larger than array size
+            // check if index is integer
+            // check if expr evaluates to correct type
+            bool isValid = true;
+            Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
+
+
+            if (context.Inum() != null)
+            {
+                var number = context.Inum().GetText();
+                if (int.TryParse(number, out int x))
+                {
+                    if (x < 1)
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                    }else if (x > array.Row)
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"Index out of bounds! "));
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+                }
+            }
+            else
+            {
+                Symbol id = Scope.LookUp(context.IDENTIFIER(1).GetText());
+                if (id.Type != SymbolType.Int)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
+                }
+            }
+            return false;
+        }
+
     }
 }
