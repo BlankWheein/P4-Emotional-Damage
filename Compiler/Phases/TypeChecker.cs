@@ -281,29 +281,27 @@ namespace Compiler.Phases
             }
             return isValid;
         }
-        /*
+        
         internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-
-            
             // check if expr evaluates to correct type
-            bool isValid = true;
+            bool isValid=true;
             Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
-
 
             if (context.Inum() != null)
             {
                 var number = context.Inum().GetText();
                 if (int.TryParse(number, out int x))
                 {
-                    if (x < 1)
+                    if (x < 0)
                     {
                         isValid = false;
                         Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
-                    }else if (x > array.Row)
+                    }
+                    else if (x > array.Row-1)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"Index out of bounds! "));
+                        Scope.Diagnostics.Add(new($"Array index out of bounds!"));
                     }
                 }
                 else
@@ -321,8 +319,8 @@ namespace Compiler.Phases
                     Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
                 }
             }
-            return false;
-        }*/
+            return isValid;
+        }
 
     }
 }

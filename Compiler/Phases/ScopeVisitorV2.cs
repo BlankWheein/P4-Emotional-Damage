@@ -221,6 +221,8 @@ namespace Compiler.Phases
         }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
+            TypeChecker.CheckArrayAssign(context);
+            /*
             Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
             string? row = context?.Inum()?.GetText();
             if (row != null && int.Parse(row) >= m?.Row)
@@ -232,7 +234,7 @@ namespace Compiler.Phases
             foreach (var Sid in context.IDENTIFIER())
                 if (Scope.LookUp(Sid.GetText()) == null)
                     Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
-
+            */
             return base.VisitArrayElementAssignStmt(context);
         }
         public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)
