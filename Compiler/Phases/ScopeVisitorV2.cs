@@ -104,7 +104,7 @@ namespace Compiler.Phases
                     Scope.LookUpExsting(identifier);
                     symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), type), isparameter: true));
                 }
-                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), type2), isfunc: false, parameters: symbols);
+                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), type2), isfunc: true, parameters: symbols);
                 Scope.Insert(sym);
                 Scope.Allocate("Func");
                 VisitChildren(context);
@@ -117,11 +117,9 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
 
-            if (TypeChecker.CheckNumDcl(context))
-            {
-                if (Scope.LookUpExsting(id) == null)
-                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
-            }
+            TypeChecker.CheckNumDcl(context);
+            if (Scope.LookUpExsting(id) == null)
+                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitNumDcl(context);
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
@@ -137,16 +135,13 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string type = "A" + context.numtype().GetText()[0..^0].ToString();
 
-            if (TypeChecker.CheckArrayDcl(context))
-            {
-                if (!int.TryParse(context.Inum().GetText(), out int max_index))
-                    Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
-                if (max_index < 0)
-                    Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
-                if (Scope.LookUpExsting(id) == null)
-                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
-
-            }
+            TypeChecker.CheckArrayDcl(context);
+            if (!int.TryParse(context.Inum().GetText(), out int max_index))
+                Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
+            if (max_index < 0)
+                Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
+            if (Scope.LookUpExsting(id) == null)
+                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
             return base.VisitArrayDeclaration(context);
         }
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
@@ -187,7 +182,7 @@ namespace Compiler.Phases
         #region Assigns
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
-            if (!TypeChecker.CheckNumAssignStmtContext(context)) { return false; }
+            TypeChecker.CheckNumAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
             if (Scope.LookUp(id) == null)
                 Scope.AddDiagnostic(new Exception($"{id} was not defined"));
