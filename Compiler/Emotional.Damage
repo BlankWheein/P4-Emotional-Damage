@@ -20,8 +20,8 @@ int i = mar.col;
 int j = mon.len;
 
 
-float k = sqrt b;
+float k = sqrt (b + sqrt(10) * (2 / 43));
 
 float kage(float a, float b){}
 
-kage(sqrt 10, sqrt a);
+kage(sqrt (10), sqrt (a));

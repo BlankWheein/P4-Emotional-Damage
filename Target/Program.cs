@@ -1,6 +1,6 @@
 using AutoGrad;
 
-float x = MathF.Sqrt(10 + 20);
+float x = MathF.Sqrt<missing '('>10 + 20<missing ')'>;
 float a = MathF.Pow(2, 10);
 float b = 35 % 10;
 float c = 23 * 52;
@@ -19,7 +19,7 @@ Console.WriteLine("hello");
 int h = mar.Rows;
 int i = mar.Columns;
 int j = mon.Length;
-float k = MathF.Sqrt(b);
+float k = MathF.Sqrt(b + MathF.Sqrt(10) * (2 / 43));
 float kage (float a, float b) {
 }
 kage();
