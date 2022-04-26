@@ -169,12 +169,35 @@ namespace Compiler.Phases
             //check if amount of parameters correct
             // check if type of parameters correct
 
-            bool isValid = true;
-            List<SymbolType> typeList=new();
-            
-            Scope.Symbols
+            bool isValid = true; 
+           
+            List<Symbol> parameterList = Scope.Symbols.FindAll(p=>p.Isparameter==true);
 
-            Symbol func= Scope.LookUp(context.IDENTIFIER(0).GetText());
+            List<SymbolType> typeList = new();
+            
+
+            //count amout of parameters in the call
+            // add their types to the list
+            for(int i =1;i< context.IDENTIFIER().Length; i++)
+            {
+               Symbol s= Scope.LookUp(context.IDENTIFIER(i).GetText());
+                typeList.Add(s.Type);
+            }
+
+            //check amount of parameters
+          
+            if (parameterList.Count == typeList.Count)
+            {
+               for(int i=0;i<parameterList.Count;i++)
+                {
+                    isValid &= parameterList[i].Type == typeList[i];
+                }
+            }
+            else
+            {
+                isValid = false;
+                Scope.AddDiagnostic(new("Parameter count does not match the function"));
+            }
 
 
 
