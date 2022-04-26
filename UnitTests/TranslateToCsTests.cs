@@ -39,11 +39,46 @@ namespace ScopeTests
         }
 
         [TestMethod]
-        public void NestedExprTest()
+        public void NestedExprTest1()
         {
-            string res = "x + 34 *(MathF.sqrt(MathF.Pow(x, 4)))";
+            string res = "x + 34 *(MathF.Sqrt(MathF.Pow(x, 4)))";
             string input = _codeGen.CheckExpr("x + 34 *(sqrt(x**4))");
             Assert.AreEqual(res, input);
+        }
+        [TestMethod]
+        public void NestedExprTest2()
+        {
+            string res = "x / 34 +(sqrt(x**4/3))";
+            string input = _codeGen.CheckExpr("x / 34 +(sqrt(x**4/3))");
+            Assert.AreNotEqual(res, input);
+        }
+        [TestMethod]
+        public void RowsTest1()
+        {
+            string res = "x.Rows";
+            string input = _codeGen.CheckExpr("x.row");
+            Assert.AreEqual(input, res);
+        }
+        [TestMethod]
+        public void RowsTest2()
+        {
+            string res = "x.row";
+            string input = _codeGen.CheckExpr("x.row");
+            Assert.AreNotEqual(input, res);
+        }
+        [TestMethod]
+        public void ColTest1()
+        {
+            string res = "x.Columns";
+            string input = _codeGen.CheckExpr("x.col");
+            Assert.AreEqual(input, res);
+        }
+        [TestMethod]
+        public void ColTest2()
+        {
+            string res = "x.col";
+            string input = _codeGen.CheckExpr("x.col");
+            Assert.AreNotEqual(input, res);
         }
     }
 }
