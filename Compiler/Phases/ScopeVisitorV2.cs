@@ -132,7 +132,7 @@ namespace Compiler.Phases
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            string type = "A" + context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+            string type = "A" + context.numtype().GetText()[0..^0].ToString();
 
             if (TypeChecker.CheckArrayDcl(context))
             {
@@ -223,14 +223,17 @@ namespace Compiler.Phases
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
             Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            string row = context.Inum().GetText();
-            if (int.Parse(row) >= m?.Row)
+            string? row = context?.Inum()?.GetText();
+            if (row != null && int.Parse(row) >= m?.Row)
                 Scope.AddDiagnostic(new Exception($"{row} was out of index"));
-            if (int.Parse(row) < 0)
-                Scope.AddDiagnostic(new Exception($"{row} was negative"));
+
+            if (context.Inum() != null && int.Parse(context.Inum().GetText()) < 0)
+                Scope.AddDiagnostic(new Exception($"{context.Inum().GetText()} was negative"));
+
             foreach (var Sid in context.IDENTIFIER())
                 if (Scope.LookUp(Sid.GetText()) == null)
                     Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
+
             return base.VisitArrayElementAssignStmt(context);
         }
         public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)

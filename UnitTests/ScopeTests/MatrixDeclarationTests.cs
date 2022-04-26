@@ -46,5 +46,64 @@ namespace UnitTests.ScopeTests
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, scope.Diagnostics.Count);
         }
+        [TestMethod]
+        public void UseFloatMatrixInInt()
+        {
+            var root = Parse(new StringBuilder("float[2][2] m; int k = m[1][1];"));
+            scope.Insert(SymbolType.Mfloat, "m", row: 2, col: 2);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseIntMatrixInInt()
+        {
+            var root = Parse(new StringBuilder("int[2][2] m; int k = m[1][1];"));
+            scope.Insert(SymbolType.Mint, "m", row: 2, col: 2);
+            scope.Insert(SymbolType.Int, "k");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseFloatMatrixInFloat()
+        {
+            var root = Parse(new StringBuilder("float[2][2] m; float k = m[1][1];"));
+            scope.Insert(SymbolType.Mfloat, "m", row: 2, col: 2);
+            scope.Insert(SymbolType.Float, "k");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseIntMatrixInFloat()
+        {
+            var root = Parse(new StringBuilder("int[2][2] m; float k = m[1][1];"));
+            scope.Insert(SymbolType.Mint, "m", row: 2, col: 2);
+            scope.Insert(SymbolType.Float, "k");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseArrayAsMatrix()
+        {
+            var root = Parse(new StringBuilder("int[2] m; int k = m[1][1];"));
+            scope.Insert(SymbolType.Aint, "m", row: 2);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseIntAsMatrix()
+        {
+            var root = Parse(new StringBuilder("int m = 0; int k = m[1][1];"));
+            scope.Insert(SymbolType.Int, "m");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void UseFloatAsMatrix()
+        {
+            var root = Parse(new StringBuilder("float m = 0.0; int k = m[1][1];"));
+            scope.Insert(SymbolType.Float, "m");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
     }
 }

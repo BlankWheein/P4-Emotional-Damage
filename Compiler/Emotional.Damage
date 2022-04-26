@@ -1,5 +1,2 @@
-﻿
-int kage(int x, int y) {
-	int z = x * y;
-	return z;
-}
+﻿float[2] m;
+float k = m[1];

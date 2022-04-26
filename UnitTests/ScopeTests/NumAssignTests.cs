@@ -46,13 +46,13 @@ namespace UnitTests.ScopeTests
 
 
         [TestMethod]
-        public void TestFloatDclArrayOperationFail()
+        public void TestFloatDclArrayOperation()
         {
             var root = Parse(new System.Text.StringBuilder("int[2] a; float b=3/a;"));
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Aint, "a");
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "b");
             Assert.AreNotEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
     }
 }

@@ -90,11 +90,11 @@ namespace Compiler.Phases
                         symbol = new("NotSet", SymbolType.Int);
                     else
                         symbol = Scope.LookUp(p);
-                    if (type == SymbolType.Int && (symbol?.Type & (SymbolType.Int | SymbolType.Bool | SymbolType.Mfloat | SymbolType.Mint)) == 0)
+                    if (type == SymbolType.Int && (symbol?.Type & (SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Aint)) == 0)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
                     }
-                    else if (type == SymbolType.Float && (symbol?.Type & (SymbolType.Float | SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Mfloat)) == 0)
+                    else if (type == SymbolType.Float && (symbol?.Type & (SymbolType.Float | SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Mfloat | SymbolType.Aint | SymbolType.Afloat)) == 0)
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float"));
                     }
