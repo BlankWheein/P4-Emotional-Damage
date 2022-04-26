@@ -13,10 +13,10 @@ namespace ScopeTests
         internal RootSymbolTable? scope;
         private ProgContext? __context;
         private EmotionalDamageLexer? __lexer;
-        private EmotionalDamageParser? __parser;
+        internal EmotionalDamageParser? __parser;
         private AntlrInputStream? __stream;
         private CommonTokenStream? __lexerStream;
-        private ScopeVisitorV2? _scopeTypeChecker;
+        internal ScopeVisitorV2? _scopeTypeChecker;
         public RootSymbolTable Parse(StringBuilder __source)
         {
             __stream = new(__source.ToString());

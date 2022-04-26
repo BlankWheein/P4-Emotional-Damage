@@ -103,11 +103,13 @@ namespace Compiler.Phases
                     string rawtype = context.types()[i - 1].GetText();
                     string type = rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToString();
                     Scope.LookUpExsting(identifier);
-                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), type), isparameter: true));
+                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), type)));
                 }
                 Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), type2), isfunc: true, parameters: symbols);
                 Scope.Insert(sym);
                 Scope.Allocate("Func");
+                foreach (var s in symbols)
+                    Scope.Insert(s);
                 VisitChildren(context);
                 Scope.ExitScope();
             }

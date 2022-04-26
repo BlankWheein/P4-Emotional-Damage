@@ -38,6 +38,11 @@ namespace Compiler.SymbolTableFolder
                 Diagnostics.Add(new Exception(id + " was not defined2"));
             return symbol;
         }
+        public Symbol? LookUpSilent(string id)
+        {
+            Symbol? symbol = LookUpHelper(id);
+            return symbol;
+        }
 
         public Symbol? LookUpExsting(string id)
         {
@@ -64,10 +69,9 @@ namespace Compiler.SymbolTableFolder
         /// </summary>
         /// <param name="type"></param>
         /// <param name="id"></param>
-        /// <param name="is_initialized"></param>
-        public void Insert(SymbolType type, string id, bool is_initialized, int row, int col, bool isparameter, bool isfunc, List<Symbol>? parameters)
+        public void Insert(SymbolType type, string id, int row, int col, bool? isfunc, List<Symbol>? parameters)
         {
-            Symbol symbol = new(id, type, is_initialized, row, col, isparameter, isfunc, parameters);
+            Symbol symbol = new(id, type, row, col, isfunc, parameters);
             Insert(symbol);
         }
    
@@ -83,18 +87,6 @@ namespace Compiler.SymbolTableFolder
                 Diagnostics.Add(new Exception(symbol?.ToString()));
         }
 
-        /// <summary>
-        /// Set a symbol with id <paramref name="id"/> to initialized
-        /// </summary>
-        /// <param name="id"></param>
-        public void SetInitialized(string id)
-        {
-            Symbol? symbol = LookUpHelper(id);
-            if (symbol != null)
-                symbol.IsInitialized = true;
-            else
-                Diagnostics.Add(new Exception(id));
-        }
         public override string ToString()
         {
             string res = SymbolTableType + ": ";

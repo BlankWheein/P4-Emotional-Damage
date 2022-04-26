@@ -12,7 +12,7 @@ namespace Compiler.SymbolTableFolder
         public SymbolTable Root { get; set; }
         internal SymbolTable Current { get; set; }
         public List<Symbol> Symbols { get => Current.Symbols; }
-        public List<Symbol> ReservedSymbols { get; } = new() { new Symbol("hej") };
+        public List<Symbol> ReservedSymbols { get; } = new() { new("true"), new("false") };
         public RootSymbolTable(bool Testing=false)
         {
             Root = new SymbolTable(null, this, _testing, type: "Global");
@@ -41,10 +41,10 @@ namespace Compiler.SymbolTableFolder
         }
         // Decorator stuff
         public void Insert(Symbol s) => Current?.Insert(s);
-        public void Insert(SymbolType type, string id, bool isInitialized = true, int row = 0, int col = 0, bool isparameter = false, bool isfunc = false, List<Symbol>? parameters = null) => Current?.Insert(type, id, isInitialized, row, col, isparameter, isfunc, parameters);
+        public void Insert(SymbolType type, string id, int row = 0, int col = 0, bool? isfunc = false, List<Symbol>? parameters = null) => Current?.Insert(type, id, row, col, isfunc, parameters);
         public Symbol? LookUp(string id) => Current?.LookUp(id);
+        public Symbol? LookUpSilent(string id) => Current?.LookUpSilent(id);
         public Symbol? LookUpExsting(string id) => Current?.LookUpExsting(id);
-        public void SetInitialized(string id) => Current.SetInitialized(id);
 
         internal void AddDiagnostic(Exception exception)
         {
@@ -52,7 +52,7 @@ namespace Compiler.SymbolTableFolder
         }
         public override bool Equals(object? obj)
         {
-            return Root.Equals((obj as RootSymbolTable)?.Root);
+            return Root.ToString().Equals((obj as RootSymbolTable)?.Root.ToString());
         }
         public override string ToString()
         {

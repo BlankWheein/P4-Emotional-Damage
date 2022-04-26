@@ -51,6 +51,7 @@ namespace UnitTests.ScopeTests
         {
             var root = Parse(new StringBuilder("float[2][2] m; int k = m[1][1];"));
             scope.Insert(SymbolType.Mfloat, "m", row: 2, col: 2);
+            scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
@@ -86,6 +87,7 @@ namespace UnitTests.ScopeTests
         {
             var root = Parse(new StringBuilder("int[2] m; int k = m[1][1];"));
             scope.Insert(SymbolType.Aint, "m", row: 2);
+            scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
@@ -94,6 +96,7 @@ namespace UnitTests.ScopeTests
         {
             var root = Parse(new StringBuilder("int m = 0; int k = m[1][1];"));
             scope.Insert(SymbolType.Int, "m");
+            scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
@@ -102,6 +105,7 @@ namespace UnitTests.ScopeTests
         {
             var root = Parse(new StringBuilder("float m = 0.0; int k = m[1][1];"));
             scope.Insert(SymbolType.Float, "m");
+            scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);
         }

@@ -8,31 +8,43 @@ namespace Compiler.SymbolTableFolder
 {
     public sealed class Symbol
     {
-        public Symbol(string id, SymbolType type=SymbolType.Reserved, bool isInitialized=false, int row = 0, int col = 0, bool isparameter = false, bool isfunc = false, List<Symbol>? parameters = null)
+        public Symbol(string id, SymbolType type=SymbolType.Reserved, int row = 0, int col = 0, bool? isfunc = null, List<Symbol>? parameters = null)
         {
+            IsParameter = false;
             Type = type;
             Id = id;
-            IsInitialized = isInitialized;
             Row = row;
             Col = col;
-            Isparameter = isparameter;
-            IsFunc = isfunc;
             if (parameters == null)
                 parameters = new();
+            else
+                IsFunc = true;
+            if (isfunc != null)
+                IsFunc = (bool)isfunc;
             Parameters = parameters;
+            Parameters.ForEach(p =>
+            {
+                p.IsParameter = true;
+            });
         }
 
         public SymbolType Type { get; set; }
         public string Id { get; set; }
-        public bool IsInitialized { get; set; }
         public int Row { get; }
         public int Col { get; }
-        public bool Isparameter { get; }
+        public bool IsParameter { get; set; }
         public bool IsFunc { get; }
         public List<Symbol> Parameters { get; }
 
         public override string ToString()
         {
+            string parameters = "";
+            Parameters.ForEach(p =>
+            {
+                parameters += p.ToString();
+            });
+            string text = $"{Type} {Id} {Row}:{Col} // {IsParameter}^{IsFunc} {parameters}";
+            return text;
             if (Row == 0)
                 return $"{Type} {Id}";
             else if (Row != 0 && Col == 0)

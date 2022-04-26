@@ -19,7 +19,7 @@ namespace Compiler.Phases
         Regex IsVariable = new("[A-Za-z]");
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
-        internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.None).ToList();
+        internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
         internal List<string> SplitOnOperatorsBexpr(string text) => text.Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
@@ -77,25 +77,30 @@ namespace Compiler.Phases
                 var FuncCheck = p.Split("(", StringSplitOptions.RemoveEmptyEntries);
                 string p2 = FuncCheck[0];
                 p2 = p2.Replace("(", "");
-                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false")
+                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false" )
                 {
-                    var isfunc = Scope.LookUp(FuncCheck[0]);
+                    var isfunc = Scope.LookUpSilent(FuncCheck[0]);
+                    if (isfunc == null)
+                    {
+                        Scope.AddDiagnostic(new($"{FuncCheck[0]} was not defined"));
+                        res = false;
+                        return;
+                    }
                     if ( isfunc?.IsFunc == true && FuncCheck.Length > 0)
                     {
                         if (type == SymbolType.Int && (isfunc.Type & ( SymbolType.Int | SymbolType.Aint | SymbolType.Mint )) == 0)
                         {
                             res = false;
                             Scope?.AddDiagnostic(new($"{p2} does not return int"));
+                            return;
                         }
                         if (type == SymbolType.Float && (isfunc.Type & (SymbolType.Int | SymbolType.Aint | SymbolType.Mint | SymbolType.Float | SymbolType.Afloat | SymbolType.Mfloat)) == 0)
                         {
                             res = false;
                             Scope?.AddDiagnostic(new($"{p2} does not return Float or int"));
+                            return;
                         }
                     }
-                } else
-                {
-
                 }
                 if (MatrixArrCheck.Length == 3 && (Scope?.LookUp(p).Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)
                 {
@@ -207,10 +212,6 @@ namespace Compiler.Phases
                     isValid = false;
                     Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
                     
-                }else if (s.IsInitialized==false)
-                {
-                    isValid = false;
-                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
                 }
                 else { callList.Add(s.Type); }
             }
@@ -253,11 +254,6 @@ namespace Compiler.Phases
                     isValid = false;
                     Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
 
-                }
-                else if (s.IsInitialized == false)
-                {
-                    isValid = false;
-                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not initialized!"));
                 }
                 else { callList.Add(s.Type); }
             }
@@ -321,6 +317,5 @@ namespace Compiler.Phases
             }
             return isValid;
         }
-
     }
 }
