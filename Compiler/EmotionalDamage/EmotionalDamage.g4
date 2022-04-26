@@ -38,7 +38,7 @@ elsestmt: 'else' '{' stmts '}';
 expr:
      '('expr')' #ParenExpr
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
-    | 'sqrt' expr #SqrtExpr
+    | 'sqrt' '(' expr ')' #SqrtExpr
     | expr '**' expr #PowExpr
     | expr '%' expr #ModExpr
     | expr '*' expr #TimesExpr

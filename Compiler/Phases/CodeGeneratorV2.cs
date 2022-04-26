@@ -73,7 +73,7 @@ namespace Compiler.Phases
                 string symbols = "%*/+-";
 
                 if (input.Length > 4 && input[..4] == "sqrt")
-                    return $"MathF.Sqrt({CheckExpr(input[4..])})";
+                    return $"MathF.Sqrt{CheckExpr(input[4..])}";
                 else if (c.Equals('*') && next_c.Equals('*'))
                 {
                     _expr = input.Split("**");
