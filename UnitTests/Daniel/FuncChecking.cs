@@ -77,7 +77,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncReturnExpr()
         {
-            var root = Parse(new StringBuilder("float kage() {int z = 6; float x = 6.9; return z + x;}"));
+            var root = Parse(new StringBuilder("float kage() {int z = 6; float x = 6.9; return x;}"));
             scope.Insert(SymbolType.Float, "kage", parameters: new List<Symbol>() { }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
@@ -90,7 +90,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncReturnBexpr()
         {
-            var root = Parse(new StringBuilder("float kage() {int z = 6; float x = 6.9; return z > x;}"));
+            var root = Parse(new StringBuilder("float kage() {int z = 6; float x = 6.9; bool test = z > x; return test;}"));
             scope.Insert(SymbolType.Float, "kage", parameters: new List<Symbol>() { }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
@@ -183,7 +183,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Bool, "kage4");
             scope.Insert(SymbolType.Float, "kage5");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -251,7 +251,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Float, "k");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
         [TestMethod]

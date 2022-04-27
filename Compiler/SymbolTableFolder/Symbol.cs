@@ -115,6 +115,10 @@ namespace Compiler.SymbolTableFolder
                     return true;
                 return false;
             }
+            if (variabletype == SymbolType.NotDefined || functionout == SymbolType.NotDefined)
+            {
+                return false;
+            }
             throw new Exception();
             return false;
         }
@@ -134,5 +138,6 @@ namespace Compiler.SymbolTableFolder
         Aint = 1 << 7,
         Afloat = 1 << 8,
         Bool = 1 << 9,
+        NotDefined = 1 << 10,
     }
 }

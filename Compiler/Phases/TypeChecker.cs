@@ -21,62 +21,73 @@ namespace Compiler.Phases
         Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
         internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-        public bool CheckBexpr(EmotionalDamageParser.IfstmtContext context)
-        {
-            string bexpr = context.bexpr().GetText();
-            bool isValid = true;
-            if (bexpr == "true" || bexpr == "false") return isValid;
-            var text = SplitOnOperatorsBexpr(bexpr);
-
-            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-                return true;
-            else if (Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
-                return false;
-            }
-            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
-                return false;
-            }
-
-            bool left = ExprHelper(text[0], SymbolType.Float);
-            bool right = ExprHelper(text[1], SymbolType.Float);
-            if (left && !right || !left && right)
-                isValid = false;
-
-            return isValid;
-        }
-        public bool CheckBexpr(EmotionalDamageParser.ElifstmtContext context)
-        {
-            string bexpr = context.bexpr().GetText();
-            bool isValid = true;
-            if (bexpr == "true" || bexpr == "false") return isValid;
-            var text = SplitOnOperatorsBexpr(bexpr);
-            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-                return true;
-            else if (Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
-                return false;
-            }
-            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
-                return false;
-            }
-
-            bool left = ExprHelper(text[0], SymbolType.Float);
-            bool right = ExprHelper(text[1], SymbolType.Float);
-            if (left && !right || !left && right)
-                isValid = false;
-
-            return isValid;
-        }
-
         internal List<string> SplitOnOperatorsBexpr(string text) => text.Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+        public bool CheckBexpr(EmotionalDamageParser.IfstmtContext ctx)
+        {
+            string bexpr = ctx.bexpr().GetText();
+            bool isValid = true;
+            if (bexpr == "true" || bexpr == "false") return isValid;
+            var text = SplitOnOperatorsBexpr(bexpr);
+
+            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
+                return true;
+            else if ((Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && (text[0] == "true" || text[0] == "false")) && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
+            {
+                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
+                return false;
+            }
+            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool && (text[0] == "true" || text[0] == "false"))
+            {
+                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
+                return false;
+            }
+
+            bool left = ExprHelper(text[0], SymbolType.Bool);
+            bool right = ExprHelper(text[1], SymbolType.Bool);
+            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
+            {
+                Scope.AddDiagnostic(new("== OR != was not used in bool"));
+                isValid = false;
+            }
+            if (left && !right || !left && right)
+                isValid = false;
+
+            return isValid;
+        }
+        public bool CheckBexpr(EmotionalDamageParser.ElifstmtContext ctx)
+        {
+            string bexpr = ctx.bexpr().GetText();
+            bool isValid = true;
+            if (bexpr == "true" || bexpr == "false") return isValid;
+            var text = SplitOnOperatorsBexpr(bexpr);
+            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
+                return true;
+            else if (Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
+            {
+                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
+                return false;
+            }
+            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool)
+            {
+                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
+                return false;
+            }
+
+            bool left = ExprHelper(text[0], SymbolType.Bool);
+            bool right = ExprHelper(text[1], SymbolType.Bool);
+
+            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
+            {
+                Scope.AddDiagnostic(new("== OR != was not used in bool"));
+                isValid = false;
+            }
+            if (left && !right || !left && right)
+                isValid = false;
+
+            return isValid;
+        }
+
 
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
@@ -104,19 +115,81 @@ namespace Compiler.Phases
             return isValid;
         }
 
-        internal bool CheckBoolDcl(EmotionalDamageParser.BoolDeclarationContext context)
+        internal bool CheckBoolDcl(EmotionalDamageParser.BoolDeclarationContext ctx)
         {
-            string bexpr = context.bexpr().GetText();
+            string bexpr = ctx.bexpr().GetText();
             if (bexpr == "true" || bexpr == "false") return true;
             var text = SplitOnOperatorsBexpr(bexpr);
             bool isValid = true;
             bool left = ExprHelper(text[0], SymbolType.Bool);
             bool right = ExprHelper(text[1], SymbolType.Bool);
+            bool iscomp = GetExprType(text[0]).IsCompatible(GetExprType(text[1])) == false;
+            if (iscomp)
+            {
+                Scope.AddDiagnostic(new($"Left and right hand side of {bexpr} is not compatible"));
+                isValid = false;
+            }
+            else if (!iscomp && left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
+            {
+                Scope.AddDiagnostic(new("== OR != was not used in bool"));
+                isValid = false;
+            }
+
             if (left && !right || !left && right)
                 isValid = false;
 
             return isValid;
         }
+        List<string> GetExprVariableNoFunc(string _text)
+        {
+            List<string> _items = new();
+            foreach (var _outvar in SplitOnOperatorsExpr(_text))
+            {
+                var text = "";
+                List<string> items = new();
+                foreach (var item in _outvar)
+                {
+                    if (char.IsLetter(item) || (text.Length > 0 && char.IsDigit(item)))
+                        text += item;
+                    else
+                        if (text != "")
+                    {
+                        items.Add(text);
+                        text = "";
+                    }
+                }
+                if (text != "")
+                {
+                    items.Add(text);
+                }
+                if (items.Count == 1)
+                    _items.Add(items[0]);
+            }
+            return _items;
+        }
+        private SymbolType GetExprType(string text)
+        {
+
+            var symbols = GetExprVariableNoFunc(text);
+            var values = GetValuesFromExpr(text);
+            if (symbols.Count == 0 && values.Count == 0)
+            {
+                Symbol? sym = Scope.LookUpSilent(text);
+                if (sym != null)
+                    return sym.Type;
+                return SymbolType.NotDefined;
+            }
+            bool res = true;
+            foreach(var s in symbols)
+            {
+                Symbol? sym = Scope.LookUpSilent(s);
+                if (sym != null)
+                    res &= SymbolType.Int.IsCompatible(sym.Type) == true;
+            }
+            Console.WriteLine();
+            return SymbolType.Int;
+        }
+
         private Symbol? GetFunctionReturnType(string expr)
         {
             string id = expr.Split('(')[0];
@@ -127,6 +200,17 @@ namespace Compiler.Phases
             return expr.Split('(')[1].Replace(")", "").Split(",").ToList();
         }
        
+        private bool ExprParser(string expr, SymbolType type)
+        {
+            bool res = true;
+            res &= IsVariablesDeclared(expr, type);
+            res &= CanParseValues(expr, type);
+            res &= CanParseFunction(expr, type);
+            res &= DoesVariableReturnCompatibleType(expr, type);
+            //res &= CanParseArrayValues(expr, type);
+            //res &= CanParseMatrixValues(expr, type);
+            return res;
+        }
         private bool CanParseFunction(string expr, SymbolType type)
         {
             var _out = SplitOnOperatorsExpr(expr).ToList();
@@ -162,51 +246,18 @@ namespace Compiler.Phases
             }
             return res;
         }
-        private bool ExprParser(string expr, SymbolType type)
-        {
-            bool res = true;
-            res &= IsVariablesDeclared(expr, type);
-            res &= CanParseValues(expr, type);
-            res &= CanParseFunction(expr, type);
-            res &= DoesVariableReturnCompatibleType(expr, type);
-            //res &= CanParseArrayValues(expr, type);
-            //res &= CanParseMatrixValues(expr, type);
-            return res;
-        }
 
         private bool DoesVariableReturnCompatibleType(string expr, SymbolType type)
         {
-            var _out = SplitOnOperatorsExpr(expr).ToList();
             bool res = true;
-            var text = "";
-            List<string> _items = new();
-            foreach (var _outvar in _out) {
-                text = "";
-                List<string> items = new();
-                foreach (var item in _outvar)
-                {
-                    if (char.IsLetter(item))
-                        text += item;
-                    else
-                        if (text != "")
-                        {
-                            items.Add(text);
-                            text = "";
-                        }
-                }
-                if (text != "")
-                {
-                    items.Add(text);
-                }
-                if (items.Count == 1)
-                    _items.Add(items[0]);
-            }
             List<Symbol?> symbols = new();
-            foreach (var dcl in _items)
-                symbols.Add(Scope.LookUpSilent(dcl));
-            foreach(var item in symbols)
+            List<string> symbolsasstring = GetExprVariableNoFunc(expr);
+            foreach (var s in symbolsasstring)
+                symbols.Add(Scope?.LookUpSilent(s));
+
+            foreach (var item in symbols)
             {
-                if (item?.Type.IsCompatible(type) == false)
+                if (item?.Type.IsCompatible(type) == false && type != SymbolType.Bool)
                 {
                     res = false;
                     Scope.AddDiagnostic(new($"{item?.Type}: {item?.Id} is not compatible with {type}"));
@@ -215,14 +266,46 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool CanParseValues(string expr, SymbolType type)
+        internal bool CheckBoolAssignStmtContext(EmotionalDamageParser.BoolAssignStmtContext ctx)
         {
-            bool res = true;
+            string bexpr = ctx.bexpr().GetText();
+            bool isValid = true;
+            if (Scope.LookUpSilent(ctx.IDENTIFIER().GetText())?.Type.IsBool() == false)
+            {
+                Scope.AddDiagnostic(new($"{ctx.IDENTIFIER().GetText()} was not of type bool"));
+                return false;
+            }
+            if (bexpr == "true" || bexpr == "false") return true;
+            var text = SplitOnOperatorsBexpr(bexpr);
+            if ((text[0] == "true" || text[0] == "false") && !(text[1] == "true" || text[1] == "false" || Scope.LookUpSilent(text[1])?.Type.IsBool() == true))
+            {
+                Scope.AddDiagnostic(new($"Bool/Int Mismatch"));
+                return false;
+            }
+            if ((text[1] == "true" || text[1] == "false") && !(text[0] == "true" || text[0] == "false" || Scope.LookUpSilent(text[0])?.Type.IsBool() == true))
+            {
+                Scope.AddDiagnostic(new($"Int/Bool Mismatch"));
+                return false;
+            }
+            bool left = ExprHelper(text[0], SymbolType.Bool);
+            bool right = ExprHelper(text[1], SymbolType.Bool);
+            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
+            {
+                Scope.AddDiagnostic(new("== OR != was not used in bool"));
+                isValid = false;
+            }
+            if (left && !right || !left && right)
+                isValid = false;
+
+            return isValid;
+        }
+        List<string> GetValuesFromExpr(string expr)
+        {
             List<string> items = new();
             var text = "";
             foreach (var item in expr)
             {
-                if (char.IsDigit(item))
+                if (char.IsDigit(item) || item == '.')
                 {
                     text += item;
                 }
@@ -235,6 +318,12 @@ namespace Compiler.Phases
             }
             if (text != "")
                 items.Add(text);
+            return items;
+        }
+        private bool CanParseValues(string expr, SymbolType type)
+        {
+            bool res = true;
+            var items = GetValuesFromExpr(expr);
             foreach (var value in items)
                 switch (type)
                 {
@@ -242,11 +331,11 @@ namespace Compiler.Phases
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
                         break;
-                    case SymbolType.Float when (!float.TryParse(value, out _) || !int.TryParse(value, out _)):
+                    case SymbolType.Float when (!(float.TryParse(value, out _) || int.TryParse(value, out _))):
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to float"));
                         break;
-                    case SymbolType.Bool when (!bool.TryParse(value, out _)):
+                    case SymbolType.Bool when (!(bool.TryParse(value, out _) || float.TryParse(value, out _) || int.TryParse(value, out _))):
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to bool"));
                         break;
@@ -258,28 +347,14 @@ namespace Compiler.Phases
 
         private bool IsVariablesDeclared(string expr, SymbolType type)
         {
-            var _out = SplitOnOperatorsExpr(expr).ToList();
             bool res = true;
-            List<string> items = new();
-            var text = "";
-            foreach (var item in expr)
-            {
-                if (char.IsLetter(item))
+            var items = GetExprVariableNoFunc(expr);
+            foreach (var dcl in items)
+                if (Scope.LookUpSilent(dcl) == null && dcl != "true" && dcl != "false" && dcl != "sqrt")
                 {
-                    text += item;
+                    Scope.AddDiagnostic(new($"{dcl} was not defined3"));
+                    res &= false;
                 }
-                else
-                    if (text != "")
-                    {
-                        items.Add(text);
-                        text = "";
-                    }
-            }
-            if (text != "")
-                items.Add(text);
-            foreach(var dcl in items)
-                if (Scope.LookUp(dcl) == null)
-                    res = false;
             return res;
         }
 
@@ -294,95 +369,6 @@ namespace Compiler.Phases
                 SymbolType.String => ExprParser(expr, SymbolType.String),
                 _ => throw new Exception(),
             };
-            
-                
-
-            if (type == null)
-            {
-                Scope.AddDiagnostic(new("Type was null"));
-                return false;
-            }
-
-            var _out = SplitOnOperatorsExpr(expr);
-            bool res = true;
-            _out.ForEach(p =>
-            {
-                p = p.Replace("]", "");
-                var MatrixArrCheck = p.Split("[");
-                p = MatrixArrCheck[0];
-                p = p.Replace(")", "");
-                var FuncCheck = p.Split("(", StringSplitOptions.RemoveEmptyEntries);
-                string p2 = FuncCheck[0];
-                p2 = p2.Replace("(", "");
-                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false")
-                {
-                    var isfunc = Scope.LookUpSilent(FuncCheck[0]);
-                    if (isfunc == null)
-                    {
-                        Scope.AddDiagnostic(new($"{FuncCheck[0]} was not defined"));
-                        res = false;
-                        return;
-                    }
-                    if (isfunc?.IsFunc == true && FuncCheck.Length > 0)
-                    {
-                        if (type == SymbolType.Int && (isfunc.Type & (SymbolType.Int | SymbolType.Aint | SymbolType.Mint)) == 0)
-                        {
-                            res = false;
-                            Scope?.AddDiagnostic(new($"{p2} does not return int"));
-                            return;
-                        }
-                        if (type == SymbolType.Float && (isfunc.Type & (SymbolType.Int | SymbolType.Aint | SymbolType.Mint | SymbolType.Float | SymbolType.Afloat | SymbolType.Mfloat)) == 0)
-                        {
-                            res = false;
-                            Scope?.AddDiagnostic(new($"{p2} does not return Float or int"));
-                            return;
-                        }
-                    }
-                }
-                if (MatrixArrCheck.Length == 3 && (Scope?.LookUp(p).Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)
-                {
-                    res = false;
-                    Scope?.AddDiagnostic(new($"{p} was not of type Matrix"));
-
-                }
-                else if (MatrixArrCheck.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
-                {
-                    res = false;
-                    Scope?.AddDiagnostic(new($"{p} was not of type Array"));
-                }
-                else if (MatrixArrCheck.Length == 0)
-                    throw new Exception("What");
-
-                else if (IsVariable.IsMatch(p) && p != "true" && p != "false")
-                {
-                    Symbol? symbol;
-                    symbol = Scope?.LookUp(p);
-                    if ((type & (SymbolType.Int | SymbolType.Float | SymbolType.Afloat | SymbolType.Mfloat | SymbolType.Aint | SymbolType.Mint)) != 0 && symbol?.Type == SymbolType.Bool)
-                    {
-                        res = false; Scope.AddDiagnostic(new($"{p} was of type bool not number"));
-                    }
-                    else if (type == SymbolType.Int && (symbol?.Type & (SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Aint)) == 0)
-                    {
-                        res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int"));
-                    }
-                    else if (type == SymbolType.Float && (symbol?.Type & (SymbolType.Float | SymbolType.Int | SymbolType.Bool | SymbolType.Mint | SymbolType.Mfloat | SymbolType.Aint | SymbolType.Afloat)) == 0)
-                    {
-                        res = false; Scope.AddDiagnostic(new($"'{p}' was not of type int or float"));
-                    }
-                }
-                else if (IsDigit.IsMatch(p))
-                {
-                    if (type == SymbolType.Int && !int.TryParse(p, out _))
-                    {
-                        res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int"));
-                    }
-                    else if (type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _)))
-                    {
-                        res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float"));
-                    }
-                }
-            });
-            return res;
         }
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {

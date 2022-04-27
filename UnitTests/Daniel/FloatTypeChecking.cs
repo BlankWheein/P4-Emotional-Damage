@@ -15,7 +15,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void Floatsqrt()
         {
-            var root = Parse(new StringBuilder("float kage = sqrt 5 ;"));
+            var root = Parse(new StringBuilder("float kage = sqrt (5) ;"));
             scope.Insert(SymbolType.Float, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, root.Diagnostics.Count);
@@ -36,7 +36,7 @@ namespace UnitTests.Daniel
             var root = Parse(new StringBuilder("float kage = true;"));
             scope.Insert(SymbolType.Float, "kage");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(1, __parser.NumberOfSyntaxErrors);
         }
 
         [TestMethod]

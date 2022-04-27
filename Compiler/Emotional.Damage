@@ -1,1 +1,4 @@
-﻿int x = 1 > 2;
+﻿int z = 2;
+float x = 1;
+
+bool test = z > x;

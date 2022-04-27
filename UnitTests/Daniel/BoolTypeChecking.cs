@@ -61,16 +61,16 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Bool, "k");
             scope.Insert(SymbolType.Int, "ting");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
         [TestMethod]
         public void UseBoolAsFloat()
         {
             var root = Parse(new StringBuilder("bool k = true; float ting = k;"));
             scope.Insert(SymbolType.Bool, "k");
-            scope.Insert(SymbolType.Int, "ting");
+            scope.Insert(SymbolType.Float, "ting");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
         [TestMethod]
         public void IfStatementTests()

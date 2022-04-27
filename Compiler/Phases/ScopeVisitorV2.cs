@@ -194,6 +194,7 @@ namespace Compiler.Phases
         }
         public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
         {
+            TypeChecker.CheckBoolAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
             if (Scope.LookUp(id) == null)
                 Scope.AddDiagnostic(new Exception($"{id} was not defined"));

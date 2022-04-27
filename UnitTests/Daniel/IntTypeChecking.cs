@@ -25,7 +25,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void Intsqrt()
         {
-            var root = Parse(new StringBuilder("int kage = sqrt 5 ;"));
+            var root = Parse(new StringBuilder("int kage = sqrt (5) ;"));
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, root.Diagnostics.Count);
