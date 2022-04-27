@@ -135,7 +135,7 @@ namespace Compiler.Phases
             foreach (var func in _out.Where(f => f.Contains('(')))
             {
                 Symbol? function = GetFunctionReturnType(func);
-                if (function.IsFunc != true)
+                if (function?.IsFunc != true)
                     continue;
                 List<string> ParametersAsString = GetFunctionParameters(func);
                 if (function == null)
