@@ -119,6 +119,7 @@ namespace Compiler.Phases
             SymbolType type = SymbolType.Int;
             var _out = SplitOnOperatorsExpr(expr);
             bool res = true;
+            return true;
         }
         private bool ExprHelper(string expr, SymbolType? type = null)
         {
