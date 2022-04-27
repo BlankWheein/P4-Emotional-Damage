@@ -316,10 +316,77 @@ namespace Compiler.Phases
                 }
             }
 
-            // check if expr evaluates to correct type, something is wrong here
+            // This does not work
             if (context.expr() != null)
             {
                 isValid &= ExprHelper(context.expr().GetText(), array.Type);
+            }
+            return isValid;
+        }
+
+        internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context) 
+        {
+            bool isValid = true;
+            Symbol matrix = Scope.LookUp(context.IDENTIFIER(0).GetText());
+
+            if (context.Inum() != null)
+            {
+                for(int i=0;i<context.Inum().Length;i++){
+                    var number = context.Inum(i).GetText();
+                    if (int.TryParse(number, out int x))
+                    {
+                        if (x < 0)// denne del er nok ligegyldig for grammar, tillader ikke negative tal
+                        {
+                            isValid = false;
+                            Scope.Diagnostics.Add(new($"Matrix dimenensions can't have {x} elements!"));
+                        }
+                        else if (x > matrix.Row - 1 || x>matrix.Col-1)
+                        {
+                            isValid = false;
+                            Scope.Diagnostics.Add(new($"Matrix index out of bounds!"));
+                        }
+                    }
+                    else
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+                    }
+                }
+            }
+            if(context.IDENTIFIER()!=null)
+            {
+                for (int i = 1; i < context.IDENTIFIER().Length; i++)
+                {
+                    Symbol id = Scope.LookUp(context.IDENTIFIER(i).GetText());
+                    if (id?.Type != SymbolType.Int)
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
+                    }
+                }
+            }
+
+            // This does not work
+            if (context.expr() != null)
+            {
+                isValid &= ExprHelper(context.expr().GetText(), matrix.Type);
+            }
+            return isValid;
+        }
+
+        internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext  context)
+        {
+            bool isValid = true;
+            Symbol symbol = Scope.LookUp(context.IDENTIFIER().GetText());
+            if (symbol == null)
+            {
+                isValid = false;
+                Scope.Diagnostics.Add(new($"{context.IDENTIFIER().GetText()} is not declared!"));
+            }
+            else if((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat) ) == 0)//if the type is not matrix, enter the if statement
+            {
+                isValid = false;
+                Scope.Diagnostics.Add(new($"{symbol.Id} is not a matrix!"));
             }
             return isValid;
         }
