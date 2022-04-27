@@ -111,7 +111,7 @@ namespace Compiler.Phases
             bool right = ExprHelper(text[1], SymbolType.Bool);
             if (left && !right || !left && right)
                 isValid = false;
-            
+
             return isValid;
         }
         private bool ExprToInt(string expr)
@@ -140,7 +140,7 @@ namespace Compiler.Phases
                 var FuncCheck = p.Split("(", StringSplitOptions.RemoveEmptyEntries);
                 string p2 = FuncCheck[0];
                 p2 = p2.Replace("(", "");
-                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false" )
+                if (IsVariable.IsMatch(FuncCheck[0]) && p2 != "true" && p2 != "false")
                 {
                     var isfunc = Scope.LookUpSilent(FuncCheck[0]);
                     if (isfunc == null)
@@ -149,9 +149,9 @@ namespace Compiler.Phases
                         res = false;
                         return;
                     }
-                    if ( isfunc?.IsFunc == true && FuncCheck.Length > 0)
+                    if (isfunc?.IsFunc == true && FuncCheck.Length > 0)
                     {
-                        if (type == SymbolType.Int && (isfunc.Type & ( SymbolType.Int | SymbolType.Aint | SymbolType.Mint )) == 0)
+                        if (type == SymbolType.Int && (isfunc.Type & (SymbolType.Int | SymbolType.Aint | SymbolType.Mint)) == 0)
                         {
                             res = false;
                             Scope?.AddDiagnostic(new($"{p2} does not return int"));
@@ -169,12 +169,14 @@ namespace Compiler.Phases
                 {
                     res = false;
                     Scope?.AddDiagnostic(new($"{p} was not of type Matrix"));
-                        
-                } else if (MatrixArrCheck.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
+
+                }
+                else if (MatrixArrCheck.Length == 2 && (Scope?.LookUp(p).Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
                 {
                     res = false;
                     Scope?.AddDiagnostic(new($"{p} was not of type Array"));
-                } else if (MatrixArrCheck.Length == 0)
+                }
+                else if (MatrixArrCheck.Length == 0)
                     throw new Exception("What");
 
                 else if (IsVariable.IsMatch(p) && p != "true" && p != "false")
@@ -200,7 +202,7 @@ namespace Compiler.Phases
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int"));
                     }
-                    else if (type == SymbolType.Float &&(!float.TryParse(p, out _) && !int.TryParse(p, out _)))
+                    else if (type == SymbolType.Float && (!float.TryParse(p, out _) && !int.TryParse(p, out _)))
                     {
                         res = false; Scope.AddDiagnostic(new($"'{p}' could not be converted to an int or float"));
                     }
@@ -237,6 +239,29 @@ namespace Compiler.Phases
             return res;
         }
 
+
+        internal bool CheckMatrixDcl(EmotionalDamageParser.MatrixDeclarationContext context)
+        {
+            bool isValid = true;
+
+            foreach (var inum in context.Inum())
+            {
+                if (int.TryParse(inum.GetText(), out int x))
+                {
+                    if (x < 1)
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"{inum.GetText()} is not an integer!"));
+                }
+            }
+            return isValid;
+        }
         internal bool CheckArrayDcl(EmotionalDamageParser.ArrayDeclarationContext context)
         {
             bool isValid = true;
@@ -266,7 +291,7 @@ namespace Compiler.Phases
             List<Symbol> dclList = func?.Parameters;
             List<SymbolType> callList = new();
 
-            
+
             //add symbols to callList if they can be found and are initialized in the scope
             for (int i = 1; i < context.IDENTIFIER().Length; i++)
             {
@@ -275,7 +300,7 @@ namespace Compiler.Phases
                 {
                     isValid = false;
                     Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
-                    
+
                 }
                 else { callList.Add(s.Type); }
             }
@@ -292,7 +317,7 @@ namespace Compiler.Phases
                     Scope.Diagnostics.Add(new($"Function call parameter types don't match the function declaration!"));
                 }
             }
-            else if(dclList.Count!=context.IDENTIFIER().Length-1)
+            else if (dclList.Count != context.IDENTIFIER().Length - 1)
             {
                 isValid = false;
                 Scope.AddDiagnostic(new("Parameter count does not match the function declaration!"));
@@ -341,11 +366,11 @@ namespace Compiler.Phases
             }
             return isValid;
         }
-        
+
         internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-            
-            bool isValid=true;
+
+            bool isValid = true;
             Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
 
             if (context.Inum() != null)
@@ -358,7 +383,7 @@ namespace Compiler.Phases
                         isValid = false;
                         Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
                     }
-                    else if (x > array.Row-1)
+                    else if (x > array.Row - 1)
                     {
                         isValid = false;
                         Scope.Diagnostics.Add(new($"Array index out of bounds!"));
@@ -393,14 +418,15 @@ namespace Compiler.Phases
             return isValid;
         }
 
-        internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context) 
+        internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
             bool isValid = true;
             Symbol matrix = Scope.LookUp(context.IDENTIFIER(0).GetText());
 
             if (context.Inum() != null)
             {
-                for(int i=0;i<context.Inum().Length;i++){
+                for (int i = 0; i < context.Inum().Length; i++)
+                {
                     var number = context.Inum(i).GetText();
                     if (int.TryParse(number, out int x))
                     {
@@ -409,7 +435,7 @@ namespace Compiler.Phases
                             isValid = false;
                             Scope.Diagnostics.Add(new($"Matrix dimenensions can't have {x} elements!"));
                         }
-                        else if (x > matrix.Row - 1 || x>matrix.Col-1)
+                        else if (x > matrix.Row - 1 || x > matrix.Col - 1)
                         {
                             isValid = false;
                             Scope.Diagnostics.Add(new($"Matrix index out of bounds!"));
@@ -422,7 +448,7 @@ namespace Compiler.Phases
                     }
                 }
             }
-            if(context.IDENTIFIER()!=null)
+            if (context.IDENTIFIER() != null)
             {
                 for (int i = 1; i < context.IDENTIFIER().Length; i++)
                 {
@@ -448,7 +474,7 @@ namespace Compiler.Phases
             return isValid;
         }
 
-        internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext  context)
+        internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext context)
         {
             bool isValid = true;
             Symbol symbol = Scope.LookUp(context.IDENTIFIER().GetText());
@@ -457,7 +483,7 @@ namespace Compiler.Phases
                 isValid = false;
                 Scope.Diagnostics.Add(new($"{context.IDENTIFIER().GetText()} is not declared!"));
             }
-            else if((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat) ) == 0)//if the type is not matrix, enter the if statement
+            else if ((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)//if the type is not matrix, enter the if statement
             {
                 isValid = false;
                 Scope.Diagnostics.Add(new($"{symbol.Id} is not a matrix!"));

@@ -140,13 +140,14 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string type = "A" + context.numtype().GetText()[0..^0].ToString();
 
-            TypeChecker.CheckArrayDcl(context);
-            if (!int.TryParse(context.Inum().GetText(), out int max_index))
-                Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
-            if (max_index < 0)
-                Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
-            if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
+            if (TypeChecker.CheckArrayDcl(context))
+            {
+                if (Scope.LookUpExsting(id) == null)
+                {
+                    int.TryParse(context.Inum().GetText(), out int max_index);
+                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
+                }
+            }
             return base.VisitArrayDeclaration(context);
         }
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
