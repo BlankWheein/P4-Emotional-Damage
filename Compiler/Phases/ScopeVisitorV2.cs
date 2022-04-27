@@ -229,7 +229,6 @@ namespace Compiler.Phases
 
         public override object VisitFuncCall([NotNull] EmotionalDamageParser.FuncCallContext context)
         {
-            TypeChecker.CheckFuncCall(context);
             return base.VisitFuncCall(context);
         }
     }

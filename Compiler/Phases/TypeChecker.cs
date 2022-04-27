@@ -166,8 +166,8 @@ namespace Compiler.Phases
         {
             bool res = true;
             res &= IsVariablesDeclared(expr, type);
-            res &= CanParseFunction(expr, type);
             res &= CanParseValues(expr, type);
+            res &= CanParseFunction(expr, type);
             //res &= CanParseMatrixValues(expr, type);
             //res &= CanParseArrayValues(expr, type);
             return res;
@@ -412,46 +412,6 @@ namespace Compiler.Phases
             return isValid;
         }
 
-        internal bool CheckFuncCall(EmotionalDamageParser.FuncCallContext context)
-        {
-            bool isValid = true;
-            var func = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            List<Symbol> dclList = func?.Parameters;
-            List<SymbolType> callList = new();
-
-
-            //add symbols to callList if they can be found and are initialized in the scope
-            for (int i = 1; i < context.IDENTIFIER().Length; i++)
-            {
-                Symbol s = Scope.LookUp(context.IDENTIFIER(i).GetText());
-                if (s == null)
-                {
-                    isValid = false;
-                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
-
-                }
-                else { callList.Add(s.Type); }
-            }
-
-            //check if types match, and if the number of parameters match the function dcl
-            if (dclList.Count == callList.Count)
-            {
-                for (int i = 0; i < dclList.Count; i++)
-                {
-                    isValid &= dclList[i].Type == callList[i];
-                }
-                if (isValid == false)
-                {
-                    Scope.Diagnostics.Add(new($"Function call parameter types don't match the function declaration!"));
-                }
-            }
-            else if (dclList.Count != context.IDENTIFIER().Length - 1)
-            {
-                isValid = false;
-                Scope.AddDiagnostic(new("Parameter count does not match the function declaration!"));
-            }
-            return isValid;
-        }
 
 
         internal bool CheckFuncStmt(EmotionalDamageParser.FuncStmtContext context)

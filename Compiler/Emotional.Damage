@@ -1,5 +1,7 @@
-﻿int kage (int x) {
+﻿float kage(float q) {
+	int z = 6;
+	float x = 6.9;
+	return x;
 }
-
-int k = 2;
-int x = kage(x) + (1 + 2) + (k * 2) + (2 * k) + k;
+int kage2 = 69;
+float kage3 = kage(kage2);
