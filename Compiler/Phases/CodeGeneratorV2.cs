@@ -13,12 +13,18 @@ namespace Compiler.Phases
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         bool _isTesting = false;
+        private PreCodeGen _preCodeGen = new PreCodeGen();
+
 
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
+            _preCodeGen.checkGradien();
+            foreach (var file in _preCodeGen._lines) { Console.WriteLine(file); }
+            
+
             AddStmt("using AutoGrad;\n");
 
         }
