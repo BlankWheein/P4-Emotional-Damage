@@ -63,7 +63,6 @@ namespace Compiler.Phases
                 stmt();
             _fs.Close();
         }
-
         public string CheckExpr(string input)
         {
             if (input.Contains("sqrt("))
@@ -72,6 +71,7 @@ namespace Compiler.Phases
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
+
             if (input.Contains("////")) 
             {
                 
@@ -79,8 +79,9 @@ namespace Compiler.Phases
                 var _expr2 = input.Split("////")[1];
                 input = $"{_expr1}.grad = {_expr2};\n {_expr1}.Backward()";
             }
-            
-            if (input.Contains("**")) // edge case: FuncCall
+           
+
+            if (input.Contains("**"))
             {
                 string left = "", right = "";
                 var _expr1 = input.Split("**")[0];
@@ -88,36 +89,36 @@ namespace Compiler.Phases
                 int _len1 = _expr1.Length - 1;
                 int _len2 = _expr2.Length - 1;
 
-                int left_r = 0;
-                int right_r = 0;
 
-                var _index = input.IndexOf("**");
-                
-                if (_index == -1)
-                    throw new Exception("");
+                int start_index = 0;
+
                 if (_expr1.Last().Equals(')'))
                 {
                     for (int j = _len1; j >= 0; j--)
                     {
+                        char ch = _expr1[j];
                         if (_expr1[j].Equals('('))
                         {
-                            left = _expr1.Substring(j + 1, _len1 - j - 1);
-                            left_r = j;
-                            break;
+                            if(j == 0 || !Char.IsLetter(_expr1[j - 1]) || _expr1[j - 1].Equals('_'))
+                            {
+                                left = _expr1.Substring(j + 1, _len1 - j - 1);
+                                start_index = j;
+                                break;
+                            }
                         }
                     }
                 }
                 else
                 {
-                    string symbols = "%*+/-=";
+                    string _symbols = "%*+/-=";
                     for (int j = _len1; j >= 0; j--)
                     {
                         char ch = _expr1[j];
                         if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                        if (symbols.Contains(ch) || j == 0)
+                        if (_symbols.Contains(ch) || j == 0)
                         {
                             left = _expr1.Substring(j + 1, _len1 - j);
-                            left_r = j + 1;
+                            start_index = j + 1;
                             break;
                         }
                     }
@@ -125,79 +126,43 @@ namespace Compiler.Phases
                 
                 if (_expr2.First().Equals('('))
                 {
-                    for (int j = 0; j < _len2; j++)
+                    for (int j = 0; j <= _len2; j++)
                     {
-                        if (_expr2[j].Equals(')'))
+                        char ch = _expr2[j];
+                        if (ch.Equals(')'))
                         {
-                            right = _expr2.Substring(1, j-1);
-                            right_r = j - 1;
+                            right = _expr2.Substring(1, j - 1);
                             break;
                         }
                     }
                 }
                 else
                 {
-                    string symbols = "%*+/-=";
+                    string _symbols = "%*+/-=";
                     for (int j = 0; j < _len2; j++)
                     {
                         char ch = _expr2[j];
                         if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                        if (symbols.Contains(ch) || j == 1)
+                        if (_symbols.Contains(ch) || j == 1)
                         {
                             right = _expr2.Substring(0, j);
-                            right_r = j;
                             break;
                         }
                     }
                 }
-                string old_str = input.Substring(left_r, _len1+_len2-2);
-                string s = $"MathF.Pow({left},{right})";
-                input = input.Replace(old_str, s);
+                input = input.Replace(left, "").Replace(right, "").Replace("**", "").Replace("()", "");
+                input = input.Insert(start_index, $"MathF.Pow({left},{right})");
             }
+
+
+            #region formatting
+            string symbols = "%*+/-";
+            foreach(var symbol in symbols)
+                input = input.Replace(symbol.ToString(), $" {symbol} ");
+            input = input.Replace("\\\\\\\\", " \\\\\\\\ ");
+            #endregion
+
             return input;
-
-            /*
-                        for(int i = 0; i < input.Length - 1; i++)
-                        {
-                            char c = input[i];
-                            char next_c = input[i + 1];
-                            char prev_c = i > 0 ? input[i - 1] : '0';
-                            string[] _expr;
-                            string symbols = "%*+/-";
-
-                            if (c.Equals('*') && next_c.Equals('*'))
-                            {
-                                _expr = input.Split("**");
-                                var _expr1 = _expr[0];
-                                var _expr2 = _expr[1];
-                                return $"MathF.Pow({CheckExpr(_expr1)}, {CheckExpr(_expr2)})";
-                            }
-                            else if (symbols.Contains(c))
-                            {
-                                _expr = input.Split(c);
-                                var _expr1 = _expr[0];
-                                var _expr2 = _expr[1];
-                                return $"{CheckExpr(_expr1)} {c} {CheckExpr(_expr2)}";
-                            }
-                            else if (c.Equals('.') && (Char.IsLetterOrDigit(prev_c) || prev_c.Equals('_')))
-                            {
-                                string id = input.Split('.').First();
-                                switch (next_c)
-                                {
-                                    case 'r': return $"{id}.Rows";
-                                    case 'c': return $"{id}.Columns";
-                                    case 'l': return $"{id}.Length";
-                                }
-                            }
-                            else if (c.Equals('\\') && input.Substring(i, 4).Equals("\\\\\\\\"))
-                            {
-                                _expr = input.Split("\\\\\\\\");
-                                var _expr1 = CheckExpr(_expr[0]);
-                                var _expr2 = CheckExpr(_expr[1]);
-                                return input; // indtil videre
-                            }
-                        }
-                    */
         }
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
@@ -243,7 +208,8 @@ namespace Compiler.Phases
         {
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
-            var expr = CheckExpr(context.expr().GetText());
+            var expr_str = context.GetText().Replace(";", "").Split('=').Last();
+            var expr = CheckExpr(expr_str);
             if(numtype == "float")
             {
                 bool active = false;
