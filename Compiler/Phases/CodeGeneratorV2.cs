@@ -64,75 +64,80 @@ namespace Compiler.Phases
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
             
-            if (input.Contains("**"))
+            if (input.Contains("**")) // edge case: FuncCall
             {
-                for (int i = 0; i < input.Length; i++)
+                string left = "", right = "";
+                var _expr1 = input.Split("**")[0];
+                var _expr2 = input.Split("**")[1];
+                int _len1 = _expr1.Length - 1;
+                int _len2 = _expr2.Length - 1;
+
+                int left_r = 0;
+                int right_r = 0;
+
+                var _index = input.IndexOf("**");
+                
+                if (_index == -1)
+                    throw new Exception("");
+
+                if (_expr1.Last().Equals(')'))
                 {
-                    char c = input[i];
-
-                    if (c.Equals('*') && input[i+1].Equals('*'))
+                    for (int j = _len1; j >= 0; j--)
                     {
-                        List<string> items1 = new();
-                        List<string> items2 = new();
-
-                        var _expr1 = input.Split("**")[0];
-                        var _expr2 = input.Split("**")[1];
-
-                        string symbols = "%*+/-=";
-
-                        bool left_par = false, right_par = false;
-
-                        if (_expr1.Last().Equals(')'))
+                        if (_expr1[j].Equals('('))
                         {
-                            left_par = true;
+                            left = _expr1.Substring(j + 1, _len1 - j - 1);
+                            left_r = j;
+                            break;
                         }
-                        if (_expr2.First().Equals('('))
-                        {
-                            right_par = true;
-                        }
-
-                        int prev_index = _expr1.Length-1;
-
-                        for (int j = _expr1.Length-1; j >= 0; j--)
-                        {
-                            char ch = _expr1[j];
-                            if (j == 0) items1.Add(_expr1.Substring(0, prev_index));
-                            else if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                            else if (symbols.Contains(ch))
-                            {
-                                items1.Add(_expr1.Substring(j+1, prev_index - j));
-                                prev_index = j;
-                            }
-                            //if (!left_par && items1.Count > 0) break;
-                            //else if (ch.Equals('(')) break;
-                        }
-
-                        prev_index = 0;
-
-                        for (int j = 0; j <= _expr2.Length-1; j++)
-                        {
-                            char ch = _expr2[j];
-                            if (j == _expr2.Length-1)
-                                items2.Add(_expr2.Substring(prev_index, _expr2.Length - prev_index));
-                            if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                            else if (symbols.Contains(ch))
-                            {
-                                items2.Add(_expr2.Substring(prev_index, j - prev_index));
-                                prev_index = j+1;
-                            }
-                        }
-
-                        string left = "";
-                        string right = "";
-
-                        foreach(var item in items1)
-                            left += $"{item}, ";
-                        left = left[..^2];
-                        string s = $"MathF.Pow({left}, {right})";
-                        Console.WriteLine();
-
                     }
                 }
+                else
+                {
+                    string symbols = "%*+/-=";
+                    for (int j = _len1; j >= 0; j--)
+                    {
+                        char ch = _expr1[j];
+                        if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
+                        if (symbols.Contains(ch) || j == 0)
+                        {
+                            left = _expr1.Substring(j + 1, _len1 - j);
+                            left_r = j + 1;
+                            break;
+                        }
+                    }
+                }
+
+                if (_expr2.First().Equals('('))
+                {
+                    for (int j = 0; j < _len2; j++)
+                    {
+                        if (_expr2[j].Equals(')'))
+                        {
+                            right = _expr2.Substring(1, j-1);
+                            right_r = j - 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    string symbols = "%*+/-=";
+                    for (int j = 0; j < _len2; j++)
+                    {
+                        char ch = _expr2[j];
+                        if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
+                        if (symbols.Contains(ch) || j == 1)
+                        {
+                            right = _expr2.Substring(0, j);
+                            right_r = j;
+                            break;
+                        }
+                    }
+                }
+                string old_str = input.Substring(left_r, _len1+_len2-2);
+                string s = $"MathF.Pow({left},{right})";
+                input = input.Replace(old_str, s);
             }
             return input;
 
