@@ -13,15 +13,15 @@ namespace Compiler.Phases
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         bool _isTesting = false;
-        private PreCodeGen _preCodeGen = new PreCodeGen();
+
 
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
-            _preCodeGen.checkGradien();
             AddStmt("using AutoGrad;\n");
+            
 
         }
         public CodeGeneratorV2(bool IsTesting)
@@ -58,6 +58,7 @@ namespace Compiler.Phases
         }
         public void Compile()
         {
+            
             foreach (var stmt in Stmts)
                 stmt();
             _fs.Close();
@@ -76,7 +77,7 @@ namespace Compiler.Phases
                 
                 var _expr1 = input.Split("////")[0];
                 var _expr2 = input.Split("////")[1];
-                input = $"{_expr1}.Backward(); {_expr2}.grad;";
+                input = $"{_expr1}.grad = {_expr2};\n {_expr1}.Backward()";
             }
             
             if (input.Contains("**")) // edge case: FuncCall

@@ -14,7 +14,8 @@ namespace Compiler
         private readonly AntlrInputStream __stream;
         private readonly CommonTokenStream __lexerStream;
         //private ScopeVisitorV2 _scopeTypeChecker;
-        private CodeGeneratorV2 _codeGenerator;
+        private PreCodeGen _preCodeGen;
+        public CodeGeneratorV2 _codeGenerator;
         public Wrapper(StringBuilder __source)
         {
             this.__source = __source;
@@ -25,6 +26,7 @@ namespace Compiler
             __context = __parser.prog();
 
             //_scopeTypeChecker = new();
+            _preCodeGen = new();
             _codeGenerator = new();
         }
         public void Compile()

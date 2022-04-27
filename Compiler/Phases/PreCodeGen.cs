@@ -12,21 +12,61 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Compiler/Emotional.Damage";
         private FileStream _fs;
+        private IEnumerable<string> lines;
         public List<string> Exprs = new();
+        public string child = "IEnumerable<Value> children{";
 
         public PreCodeGen() {
             if (!File.Exists(_path)) {
                 throw new Exception($"File {_path} does not exist or can't be reached.");
             }
+            lines = File.ReadLines(_path);
+            Wrapper._codeGenerator.Stmts;
         }
-        public void checkGradien() {
-            IEnumerable<string> lines = File.ReadLines(_path);
-            foreach (var l in lines) {
-                if (l.Contains("////")) {
-                    Exprs.Add(l.Split("////")[0]);
-                    Exprs.Add(l.Split("////")[1]);
+        public override object VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context)
+        {
+            Exprs.Add(RetrunValueObj(context.expr()[0].GetText()));
+            Console.WriteLine(context.expr()[0].GetText());
+            return false;
+        }
+        
+        public string RetrunValueObj(string expr) {
+            lines = File.ReadLines(_path);
+            int i = 0;
+            foreach (var l1 in lines)
+            {
+                if ((l1.Contains($"{expr}=") || l1.Contains($"{expr}=")))
+                {
+                Console.WriteLine(++i);
+                    string children = l1.Split("=")[1].Trim(';');
+                    string id = l1.Split("=")[0].Replace("float", "");
+                    if (children.Any(c => char.IsLetter(c)))
+                    {
+                        var childrenArr = children.Split('*', '+', '/', '-');
+                        foreach (string c in childrenArr)
+                        {
+                            if (c.Any(x => char.IsLetter(x)))
+                            {
+                                child += $"{RetrunValueObj(c)}";
+                            }
+                        }
+                        child = child.Remove(child.Length - 1);
+                        child += "}";
+                    }
+                    else
+                    {
+                        if (child != "IEnumerable<Value> children{")
+                        {
+                            expr = $"Value {id} = new Value({children}, {child}, \'{id}\');";
+                        }
+                        else {
+                            expr = $"Value {id} = new Value({children}, null, \"" + $"{id}".Trim()+"\");";
+                        }
+                    }
+
                 }
             }
+            return expr;
         }
     }
 }
