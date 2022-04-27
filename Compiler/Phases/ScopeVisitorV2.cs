@@ -18,6 +18,7 @@ namespace Compiler.Phases
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
             Scope.Allocate("If");
+            TypeChecker.CheckBexpr(context);
             VisitChildren(context);
             Scope.ExitScope();
             return false;
@@ -25,6 +26,7 @@ namespace Compiler.Phases
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             Scope.Allocate("Elif");
+            TypeChecker.CheckBexpr(context);
             VisitChildren(context);
             Scope.ExitScope();
             return false;

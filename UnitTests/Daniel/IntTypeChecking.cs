@@ -10,7 +10,7 @@ using Compiler.SymbolTableFolder;
 namespace UnitTests.Daniel
 {
     [TestClass]
-    public class DanielsBaby : UnitTestInitializer
+    public class IntTypeChecking : UnitTestInitializer
     {
         [TestMethod]
         public void Ting()
