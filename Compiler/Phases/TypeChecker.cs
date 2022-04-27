@@ -132,21 +132,21 @@ namespace Compiler.Phases
             var _out = SplitOnOperatorsExpr(expr).ToList();
             bool res = true;
 
-            foreach (var func in _out.Where(f => f.Contains('(')))
+            foreach (var _func in _out.Where(f => f.Contains('(')))
             {
-                Symbol? function = GetFunctionReturnType(func);
+                Symbol? function = GetFunctionReturnType(_func);
                 if (function?.IsFunc != true)
                     continue;
-                List<string> ParametersAsString = GetFunctionParameters(func);
+                List<string> ParametersAsString = GetFunctionParameters(_func);
                 if (!function.Type.IsCompatible(type))
                 {
                     res = false;
-                    Scope.AddDiagnostic(new CouldNotParseIntException($"{func} does not return {type}"));
+                    Scope.AddDiagnostic(new CouldNotParseIntException($"{_func} does not return {type}"));
                 }
                 if (ParametersAsString.Count != function?.Parameters?.Count)
                 {
                     res = false;
-                    Scope.AddDiagnostic(new CouldNotParseIntException($"Missing input parameters on func {func}"));
+                    Scope.AddDiagnostic(new CouldNotParseIntException($"Missing input parameters on func {_func}"));
                 }
                 if (function?.Parameters.Count > 0)
                 for (int i = 0; i < function.Parameters.Count; i++)
@@ -168,14 +168,55 @@ namespace Compiler.Phases
             res &= IsVariablesDeclared(expr, type);
             res &= CanParseValues(expr, type);
             res &= CanParseFunction(expr, type);
-            //res &= CanParseMatrixValues(expr, type);
+            res &= DoesVariableReturnCompatibleType(expr, type);
             //res &= CanParseArrayValues(expr, type);
+            //res &= CanParseMatrixValues(expr, type);
+            return res;
+        }
+
+        private bool DoesVariableReturnCompatibleType(string expr, SymbolType type)
+        {
+            var _out = SplitOnOperatorsExpr(expr).ToList();
+            bool res = true;
+            var text = "";
+            List<string> _items = new();
+            foreach (var _outvar in _out) {
+                text = "";
+                List<string> items = new();
+                foreach (var item in _outvar)
+                {
+                    if (char.IsLetter(item))
+                        text += item;
+                    else
+                        if (text != "")
+                        {
+                            items.Add(text);
+                            text = "";
+                        }
+                }
+                if (text != "")
+                {
+                    items.Add(text);
+                }
+                if (items.Count == 1)
+                    _items.Add(items[0]);
+            }
+            List<Symbol?> symbols = new();
+            foreach (var dcl in _items)
+                symbols.Add(Scope.LookUpSilent(dcl));
+            foreach(var item in symbols)
+            {
+                if (item?.Type.IsCompatible(type) == false)
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new($"{item?.Type}: {item?.Id} is not compatible with {type}"));
+                }
+            }
             return res;
         }
 
         private bool CanParseValues(string expr, SymbolType type)
         {
-            var _out = SplitOnOperatorsExpr(expr).ToList();
             bool res = true;
             List<string> items = new();
             var text = "";
@@ -195,18 +236,23 @@ namespace Compiler.Phases
             if (text != "")
                 items.Add(text);
             foreach (var value in items)
-            {
-                if (type == SymbolType.Int && !int.TryParse(value, out _))
+                switch (type)
                 {
-                    res = false;
-                    Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
+                    case SymbolType.Int when !int.TryParse(value, out _):
+                        res = false;
+                        Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
+                        break;
+                    case SymbolType.Float when (!float.TryParse(value, out _) || !int.TryParse(value, out _)):
+                        res = false;
+                        Scope.AddDiagnostic(new($"{value} Could not be parsed to float"));
+                        break;
+                    case SymbolType.Bool when (!bool.TryParse(value, out _)):
+                        res = false;
+                        Scope.AddDiagnostic(new($"{value} Could not be parsed to bool"));
+                        break;
+                    case SymbolType.String:
+                        break;
                 }
-                if (type == SymbolType.Float && (!float.TryParse(value, out _) || !int.TryParse(value, out _)))
-                {
-                    res = false;
-                    Scope.AddDiagnostic(new($"{value} Could not be parsed to float"));
-                }
-            }
             return res;
         }
 
@@ -411,8 +457,6 @@ namespace Compiler.Phases
 
             return isValid;
         }
-
-
 
         internal bool CheckFuncStmt(EmotionalDamageParser.FuncStmtContext context)
         {
