@@ -22,9 +22,6 @@ namespace Compiler.Phases
                 File.Delete(_path);
             _fs = File.Create(_path);
             _preCodeGen.checkGradien();
-            foreach (var file in _preCodeGen._lines) { Console.WriteLine(file); }
-            
-
             AddStmt("using AutoGrad;\n");
 
         }
