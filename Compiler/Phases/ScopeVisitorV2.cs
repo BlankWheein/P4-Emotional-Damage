@@ -200,25 +200,26 @@ namespace Compiler.Phases
         }
         public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
-            Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            if (context.Inum().Length >= 1)
-            {
-                string? row = context?.Inum()[0]?.GetText();
-                if (row != null && int.Parse(row) >= m?.Row)
-                    Scope.AddDiagnostic(new Exception($"{row} was out of index"));
-            }
-            if (context.Inum().Length == 2)
-            {
-                string? col = context?.Inum()[1]?.GetText();
-                if (col != null && int.Parse(col) >= m?.Col)
-                    Scope.AddDiagnostic(new Exception($"{col} was out of index"));
-            }
-            foreach (var Sid in context.Inum())
-                if (int.Parse(Sid.GetText()) < 0)
-                    Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was negative"));
-            foreach (var Sid in context.IDENTIFIER())
-                if (Scope.LookUp(Sid.GetText()) == null)
-                    Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
+            TypeChecker.CheckMatrixAssign(context);
+            //Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
+            //if (context.Inum().Length >= 1)
+            //{
+            //    string? row = context?.Inum()[0]?.GetText();
+            //    if (row != null && int.Parse(row) >= m?.Row)
+            //        Scope.AddDiagnostic(new Exception($"{row} was out of index"));
+            //}
+            //if (context.Inum().Length == 2)
+            //{
+            //    string? col = context?.Inum()[1]?.GetText();
+            //    if (col != null && int.Parse(col) >= m?.Col)
+            //        Scope.AddDiagnostic(new Exception($"{col} was out of index"));
+            //}
+            //foreach (var Sid in context.Inum())
+            //    if (int.Parse(Sid.GetText()) < 0)
+            //        Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was negative"));
+            //foreach (var Sid in context.IDENTIFIER())
+            //    if (Scope.LookUp(Sid.GetText()) == null)
+            //        Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
             return base.VisitMatrixElementAssignStmt(context);
         }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
