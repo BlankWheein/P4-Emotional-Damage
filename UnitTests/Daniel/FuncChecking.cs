@@ -267,5 +267,19 @@ namespace UnitTests.Daniel
             Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
+        [TestMethod]
+        public void FuncSameName()
+        {
+            var root = Parse(new StringBuilder("void kage(float q) {int z = 6; float x = 6.9;} int kage = 34;"));
+            scope.Insert(SymbolType.Void, "kage", parameters: new List<Symbol>() { new("q", SymbolType.Float) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Int, "z");
+            scope.Insert(SymbolType.Float, "x");
+            scope.ExitScope();
+            scope.Insert(SymbolType.Int, "kage");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+
     }
 }
