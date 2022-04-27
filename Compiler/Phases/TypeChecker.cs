@@ -373,5 +373,22 @@ namespace Compiler.Phases
             }
             return isValid;
         }
+
+        internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext  context)
+        {
+            bool isValid = true;
+            Symbol symbol = Scope.LookUp(context.IDENTIFIER().GetText());
+            if (symbol == null)
+            {
+                isValid = false;
+                Scope.Diagnostics.Add(new($"{context.IDENTIFIER().GetText()} is not declared!"));
+            }
+            else if((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat) ) == 0)//if the type is not matrix, enter the if statement
+            {
+                isValid = false;
+                Scope.Diagnostics.Add(new($"{symbol.Id} is not a matrix!"));
+            }
+            return isValid;
+        }
     }
 }
