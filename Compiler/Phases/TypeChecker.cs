@@ -45,11 +45,7 @@ namespace Compiler.Phases
 
             bool left = ExprHelper(text[0], SymbolType.Bool);
             bool right = ExprHelper(text[1], SymbolType.Bool);
-            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
-            {
-                Scope.AddDiagnostic(new("== OR != was not used in bool"));
-                isValid = false;
-            }
+            
             if (left && !right || !left && right)
                 isValid = false;
 
@@ -77,11 +73,7 @@ namespace Compiler.Phases
             bool left = ExprHelper(text[0], SymbolType.Bool);
             bool right = ExprHelper(text[1], SymbolType.Bool);
 
-            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
-            {
-                Scope.AddDiagnostic(new("== OR != was not used in bool"));
-                isValid = false;
-            }
+            
             if (left && !right || !left && right)
                 isValid = false;
 
@@ -129,11 +121,7 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new($"Left and right hand side of {bexpr} is not compatible"));
                 isValid = false;
             }
-            else if (!iscomp && left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
-            {
-                Scope.AddDiagnostic(new("== OR != was not used in bool"));
-                isValid = false;
-            }
+            
 
             if (left && !right || !left && right)
                 isValid = false;
@@ -289,11 +277,7 @@ namespace Compiler.Phases
             }
             bool left = ExprHelper(text[0], SymbolType.Bool);
             bool right = ExprHelper(text[1], SymbolType.Bool);
-            if (left && right && !(ctx.GetText().Contains("==") || ctx.GetText().Contains("!=")))
-            {
-                Scope.AddDiagnostic(new("== OR != was not used in bool"));
-                isValid = false;
-            }
+            
             if (left && !right || !left && right)
                 isValid = false;
 

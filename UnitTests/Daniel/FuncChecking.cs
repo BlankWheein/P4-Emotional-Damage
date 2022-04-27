@@ -84,20 +84,20 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, __parser?.NumberOfSyntaxErrors);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
         [TestMethod]
         public void FuncReturnBexpr()
         {
-            var root = Parse(new StringBuilder("float kage() {int z = 6; float x = 6.9; bool test = z > x; return test;}"));
-            scope.Insert(SymbolType.Float, "kage", parameters: new List<Symbol>() { }, isfunc: true);
+            var root = Parse(new StringBuilder("bool kage() {int z = 6; float x = 6.9; bool test = z > x; return test;}"));
+            scope.Insert(SymbolType.Bool, "kage", parameters: new List<Symbol>() { }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, __parser?.NumberOfSyntaxErrors);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -235,7 +235,7 @@ namespace UnitTests.Daniel
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
-
+        //Why do we expect errors here?
         [TestMethod]
         public void FuncSameParameters()
         {
@@ -270,13 +270,12 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncSameName()
         {
-            var root = Parse(new StringBuilder("void kage(float q) {int z = 6; float x = 6.9;} int kage = 34;"));
+            var root = Parse(new StringBuilder("void kage(float q) {int z = 6; float x = 6.9;}"));
             scope.Insert(SymbolType.Void, "kage", parameters: new List<Symbol>() { new("q", SymbolType.Float) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
-            scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, root.Diagnostics.Count);
         }

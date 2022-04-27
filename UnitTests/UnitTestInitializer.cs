@@ -39,7 +39,7 @@ namespace ScopeTests
         [TestCleanup]
         public void CleanUp()
         {
-
+            Assert.AreEqual(0, __parser?.NumberOfSyntaxErrors);
         }
     }
 }

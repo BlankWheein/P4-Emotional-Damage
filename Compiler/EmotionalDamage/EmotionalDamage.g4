@@ -58,12 +58,12 @@ expr:
     ;
 
 bexpr :
-        expr '>' expr #Greater
-      | expr '<' expr #Smaller
-      | expr '>=' expr #GreaterEquals
-      | expr '<=' expr #SmallerEquals
-      | expr '==' (expr | 'true' | 'false') #Equals
-      | expr '!=' (expr | 'true' | 'false') #NotEquals
+        IDENTIFIER '>' (IDENTIFIER | Inum) #Greater
+      | IDENTIFIER '<' (IDENTIFIER | Inum) #Smaller
+      | IDENTIFIER '>=' (IDENTIFIER | Inum) #GreaterEquals
+      | IDENTIFIER '<=' (IDENTIFIER | Inum) #SmallerEquals
+      | IDENTIFIER '==' (IDENTIFIER | Inum | 'true' | 'false') #Equals
+      | IDENTIFIER '!=' (IDENTIFIER | Inum | 'true' | 'false') #NotEquals
       | ('true' | 'false') #BoolValue
       ;
 

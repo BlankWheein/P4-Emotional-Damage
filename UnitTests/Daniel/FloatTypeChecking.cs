@@ -31,24 +31,6 @@ namespace UnitTests.Daniel
         }
 
         [TestMethod]
-        public void FloatAssignBool()
-        {
-            var root = Parse(new StringBuilder("float kage = true;"));
-            scope.Insert(SymbolType.Float, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, __parser.NumberOfSyntaxErrors);
-        }
-
-        [TestMethod]
-        public void FloatAssignBexpr()
-        {
-            var root = Parse(new StringBuilder("float kage = 34 > 30;"));
-            scope.Insert(SymbolType.Float, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, __parser?.NumberOfSyntaxErrors);
-        }
-
-        [TestMethod]
         public void FloatDivide()
         {
             var root = Parse(new StringBuilder("float kage = 5 / 5;"));

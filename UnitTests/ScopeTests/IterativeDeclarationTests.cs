@@ -12,14 +12,16 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void WhileDclNoBody()
         {
-            var root = Parse(new StringBuilder("while (1 == 2) {}"));
+            var root = Parse(new StringBuilder("int k = 2; while (k == 2) {}"));
+            scope.Insert(SymbolType.Int, "k");
             scope.Allocate("While");
             Assert.AreEqual(scope, root);
         }
         [TestMethod]
         public void WhileDclBody()
         {
-            var root = Parse(new StringBuilder("while (1 == 2) {int kage = 2;}"));
+            var root = Parse(new StringBuilder("int k = 1; while (k == 2) {int kage = 2;}"));
+            scope.Insert(SymbolType.Int, "k");
             scope.Allocate("While");
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
@@ -27,7 +29,7 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void WhileDclNoBody2()
         {
-            var root = Parse(new StringBuilder("int kage = 2;while (kage == 2) {int kage2 = 2;}"));
+            var root = Parse(new StringBuilder("int kage = 2; while (kage == 2) {int kage2 = 2;}"));
             scope.Insert(SymbolType.Int, "kage");
             scope.Allocate("While");
             scope.Insert(SymbolType.Int, "kage2");
@@ -37,7 +39,8 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void ForDcl()
         {
-            var root = Parse(new StringBuilder("for (int i = 0; i < 10; i++) {}"));
+            var root = Parse(new StringBuilder("int kage = 10; for (int i = 0; i < kage; i++) {}"));
+            scope.Insert(SymbolType.Int, "kage");
             scope.Allocate("For");
             scope.Insert(SymbolType.Int, "i");
             Assert.AreEqual(scope, root);
