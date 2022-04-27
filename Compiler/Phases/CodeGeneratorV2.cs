@@ -13,13 +13,14 @@ namespace Compiler.Phases
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         bool _isTesting = false;
-
+        
 
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
+            
             AddStmt("using AutoGrad;\n");
             
 
@@ -72,14 +73,14 @@ namespace Compiler.Phases
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
 
-            if (input.Contains("////")) 
+            if (input.Contains("\\\\"))
             {
-                
-                var _expr1 = input.Split("////")[0];
-                var _expr2 = input.Split("////")[1];
+
+                var _expr1 = input.Split("\\\\")[0];
+                var _expr2 = input.Split("\\\\")[1];
                 input = $"{_expr1}.grad = {_expr2};\n {_expr1}.Backward()";
             }
-           
+
 
             if (input.Contains("**"))
             {
