@@ -71,6 +71,13 @@ namespace Compiler.Phases
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
+            if (input.Contains("////")) 
+            {
+                
+                var _expr1 = input.Split("////")[0];
+                var _expr2 = input.Split("////")[1];
+                input = $"{_expr1}.Backward(); {_expr2}.grad;";
+            }
             
             if (input.Contains("**")) // edge case: FuncCall
             {
@@ -87,7 +94,6 @@ namespace Compiler.Phases
                 
                 if (_index == -1)
                     throw new Exception("");
-
                 if (_expr1.Last().Equals(')'))
                 {
                     for (int j = _len1; j >= 0; j--)
@@ -115,7 +121,7 @@ namespace Compiler.Phases
                         }
                     }
                 }
-
+                
                 if (_expr2.First().Equals('('))
                 {
                     for (int j = 0; j < _len2; j++)
