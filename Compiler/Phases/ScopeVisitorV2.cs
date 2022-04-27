@@ -121,6 +121,7 @@ namespace Compiler.Phases
         {
             string id = context.IDENTIFIER().GetText();
             string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+            var text = context.GetText();
 
             TypeChecker.CheckNumDcl(context);
             if (Scope.LookUpExsting(id) == null)

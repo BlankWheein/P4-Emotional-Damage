@@ -70,6 +70,58 @@ namespace Compiler.SymbolTableFolder
             return res;
         }
     }
+    public static class SymbolTypeExtensions
+    {
+        public static bool IsInt(this SymbolType type)
+        {
+            return (type & (SymbolType.Int | SymbolType.Mint | SymbolType.Aint)) != 0;
+        }
+        public static bool IsFloat(this SymbolType type)
+        {
+            return (type & (SymbolType.Float | SymbolType.Mfloat | SymbolType.Afloat)) != 0;
+        }
+        public static bool IsBool(this SymbolType type)
+        {
+            return (type & (SymbolType.Bool)) != 0;
+        }
+        public static bool IsString(this SymbolType type)
+        {
+            return (type & (SymbolType.String)) != 0;
+        }
+
+        public static bool IsCompatible(this SymbolType functionout, SymbolType variabletype)
+        {
+            if (variabletype.IsInt())
+            {
+                if (functionout.IsInt())
+                    return true;
+                return false;
+            }
+            else if (variabletype.IsFloat())
+            {
+                if (functionout.IsInt() || functionout.IsFloat())
+                    return true;
+                return false;
+            }
+            if (variabletype.IsBool())
+            {
+                if (functionout.IsBool())
+                    return true;
+                return false;
+            }
+            if (variabletype.IsString())
+            {
+                if (functionout.IsString())
+                    return true;
+                return false;
+            }
+            throw new Exception();
+            return false;
+        }
+
+
+
+    }
     public enum SymbolType
     {
         Int = 1 << 0,

@@ -97,4 +97,4 @@ namespace UnitTests.Daniel
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
     }
-}
+    }

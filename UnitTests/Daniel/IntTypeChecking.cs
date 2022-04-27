@@ -34,7 +34,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntAssignFloat()
         {
-            var root = Parse(new StringBuilder("int kage = 5.8;"));
+            var root = Parse(new StringBuilder("int kagef(int x) {} float k = 2; int kage = kagef(k);"));
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);

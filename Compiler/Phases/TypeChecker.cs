@@ -1,4 +1,5 @@
-﻿using Compiler.SymbolTableFolder;
+﻿using Compiler.Phases.Exceptions;
+using Compiler.SymbolTableFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,12 +81,14 @@ namespace Compiler.Phases
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
+            var text = context.GetText();
             SymbolType type;
             string numtype = context.numtype().GetText();
             try
             {
                 type = (SymbolType)Enum.Parse(typeof(SymbolType), numtype[0].ToString().ToUpper() + numtype[1..^0]);
-                return ExprHelper(context.expr().GetText(), type);
+                bool res =  ExprHelper(context.expr().GetText(), type);
+                return res;
             }
             catch
             {
@@ -114,15 +117,82 @@ namespace Compiler.Phases
 
             return isValid;
         }
-        private bool ExprToInt(string expr)
+        private Symbol? GetFunctionReturnType(string expr)
         {
-            SymbolType type = SymbolType.Int;
-            var _out = SplitOnOperatorsExpr(expr);
+            string id = expr.Split('(')[0];
+            return Scope.LookUpSilent(id);
+        }
+        private List<string> GetFunctionParameters(string expr)
+        {
+            return expr.Split('(')[1].Replace(")", "").Split(",").ToList();
+        }
+       
+        private bool CanParseFunction(string expr, SymbolType type)
+        {
+            var _out = SplitOnOperatorsExpr(expr).ToList();
             bool res = true;
-            return true;
+
+            foreach (var func in _out.Where(f => f.Contains('(')))
+            {
+                Symbol? function = GetFunctionReturnType(func);
+                List<string> ParametersAsString = GetFunctionParameters(func);
+                if (function == null)
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new CouldNotParseIntException($"{func} Has not been declared"));
+                }
+                else if (!function.Type.IsCompatible(type))
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new CouldNotParseIntException($"{func} does not return {type}"));
+                }
+                if (ParametersAsString.Count != function?.Parameters?.Count)
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new CouldNotParseIntException($"Missing input parameters on func {func}"));
+                }
+                for (int i = 0; i < function.Parameters.Count; i++)
+                {
+                    var functionparameterinput = function.Parameters[i];
+                    var functioncallparameterinput = Scope.LookUp(ParametersAsString[i]);
+                    if (functioncallparameterinput == null)
+                    {
+                        res = false;
+                        Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {functioncallparameterinput} was not declared"));
+                    }
+                    else if (!functioncallparameterinput.Type.IsCompatible(functionparameterinput.Type))
+                    {
+                        res = false;
+                        Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {functioncallparameterinput} Does not have type {functionparameterinput.Type}"));
+                    }
+                }
+            }
+            return res;
+        }
+        private bool ExprParser(string expr, SymbolType type)
+        {
+            bool res = true;
+            res &= CanParseFunction(expr, type);
+            //res &= CanParseMatrixValues(expr, type);
+            //res &= CanParseArrayValues(expr, type);
+            //res &= CanParseVariables(expr, type);
+            //res &= CanParseValues(expr, type);
+            return res;
         }
         private bool ExprHelper(string expr, SymbolType? type = null)
         {
+
+            return type switch
+            {
+                SymbolType.Int => ExprParser(expr, SymbolType.Int),
+                SymbolType.Float => ExprParser(expr, SymbolType.Float),
+                SymbolType.Bool => ExprParser(expr, SymbolType.Bool),
+                SymbolType.String => ExprParser(expr, SymbolType.String),
+                _ => throw new Exception(),
+            };
+            
+                
+
             if (type == null)
             {
                 Scope.AddDiagnostic(new("Type was null"));
