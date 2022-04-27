@@ -13,10 +13,7 @@ namespace Compiler.Phases
        
         public List<string> Exprs = new();
 
-        public PreCodeGen() {
-            
-           
-        }
+        public PreCodeGen() {}
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             var numtype = context.numtype().GetText();
