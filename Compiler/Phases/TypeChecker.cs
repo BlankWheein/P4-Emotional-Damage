@@ -138,12 +138,7 @@ namespace Compiler.Phases
                 if (function?.IsFunc != true)
                     continue;
                 List<string> ParametersAsString = GetFunctionParameters(func);
-                if (function == null)
-                {
-                    res = false;
-                    Scope.AddDiagnostic(new CouldNotParseIntException($"{func} Has not been declared"));
-                }
-                else if (!function.Type.IsCompatible(type))
+                if (!function.Type.IsCompatible(type))
                 {
                     res = false;
                     Scope.AddDiagnostic(new CouldNotParseIntException($"{func} does not return {type}"));
@@ -157,13 +152,8 @@ namespace Compiler.Phases
                 for (int i = 0; i < function.Parameters.Count; i++)
                 {
                     var functionparameterinput = function.Parameters[i];
-                    var functioncallparameterinput = Scope.LookUp(ParametersAsString[i]);
-                    if (functioncallparameterinput == null)
-                    {
-                        res = false;
-                        Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {functioncallparameterinput} was not declared"));
-                    }
-                    else if (!functioncallparameterinput.Type.IsCompatible(functionparameterinput.Type))
+                    var functioncallparameterinput = Scope.LookUpSilent(ParametersAsString[i]);
+                    if (functioncallparameterinput != null && !functioncallparameterinput.Type.IsCompatible(functionparameterinput.Type))
                     {
                         res = false;
                         Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {functioncallparameterinput} Does not have type {functionparameterinput.Type}"));
@@ -175,13 +165,78 @@ namespace Compiler.Phases
         private bool ExprParser(string expr, SymbolType type)
         {
             bool res = true;
+            res &= IsVariablesDeclared(expr, type);
             res &= CanParseFunction(expr, type);
+            res &= CanParseValues(expr, type);
             //res &= CanParseMatrixValues(expr, type);
             //res &= CanParseArrayValues(expr, type);
-            //res &= CanParseVariables(expr, type);
-            //res &= CanParseValues(expr, type);
             return res;
         }
+
+        private bool CanParseValues(string expr, SymbolType type)
+        {
+            var _out = SplitOnOperatorsExpr(expr).ToList();
+            bool res = true;
+            List<string> items = new();
+            var text = "";
+            foreach (var item in expr)
+            {
+                if (char.IsDigit(item))
+                {
+                    text += item;
+                }
+                else
+                    if (text != "")
+                {
+                    items.Add(text);
+                    text = "";
+                }
+            }
+            if (text != "")
+                items.Add(text);
+            foreach (var value in items)
+            {
+                if (type == SymbolType.Int && !int.TryParse(value, out _))
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
+                }
+                if (type == SymbolType.Float && (!float.TryParse(value, out _) || !int.TryParse(value, out _)))
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new($"{value} Could not be parsed to float"));
+                }
+            }
+            return res;
+        }
+
+        private bool IsVariablesDeclared(string expr, SymbolType type)
+        {
+            var _out = SplitOnOperatorsExpr(expr).ToList();
+            bool res = true;
+            List<string> items = new();
+            var text = "";
+            foreach (var item in expr)
+            {
+                if (char.IsLetter(item))
+                {
+                    text += item;
+                }
+                else
+                    if (text != "")
+                    {
+                        items.Add(text);
+                        text = "";
+                    }
+            }
+            if (text != "")
+                items.Add(text);
+            foreach(var dcl in items)
+                if (Scope.LookUp(dcl) == null)
+                    res = false;
+            return res;
+        }
+
         private bool ExprHelper(string expr, SymbolType? type = null)
         {
 
