@@ -1,6 +1,8 @@
-﻿float a = 23 * 123 % 235 + 235221 - 124513 + 200 - 123214;
-float c = 12+4**20+3;
-float c = (12+4)**(20+3);
-
-float ma = 2 + 1 \\\\ b;
+﻿float a = 23;
+float b = a * 12;
+float c = 12;
+float d = b * c;
+float e = a * b;
+float f = e * b;
+float ma = f \\ a;
 print(2+3);
