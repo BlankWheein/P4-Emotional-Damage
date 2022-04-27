@@ -373,7 +373,12 @@ namespace Compiler.Phases
             else
             {
                 Symbol id = Scope.LookUp(context.IDENTIFIER(1).GetText());
-                if (id.Type != SymbolType.Int)
+                if (id == null)
+                {
+                    isValid = false;
+                    Scope.Diagnostics.Add(new($"{context.IDENTIFIER(1)} is not declared!"));
+                }
+                else if (id.Type != SymbolType.Int)
                 {
                     isValid = false;
                     Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
@@ -422,7 +427,12 @@ namespace Compiler.Phases
                 for (int i = 1; i < context.IDENTIFIER().Length; i++)
                 {
                     Symbol id = Scope.LookUp(context.IDENTIFIER(i).GetText());
-                    if (id?.Type != SymbolType.Int)
+                    if (id == null)
+                    {
+                        isValid = false;
+                        Scope.Diagnostics.Add(new($"{context.IDENTIFIER(i)} is not declared!"));
+                    }
+                    else if (id?.Type != SymbolType.Int)
                     {
                         isValid = false;
                         Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
