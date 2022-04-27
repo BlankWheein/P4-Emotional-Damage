@@ -183,5 +183,14 @@ namespace UnitTests.Daniel
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
+        [TestMethod]
+        public void IntAssign()
+        {
+            var root = Parse(new StringBuilder("int kage = 12; kage = 31 > 21;"));
+            scope.Insert(SymbolType.Int, "kage");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+
     }
 }
