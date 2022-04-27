@@ -155,15 +155,12 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string type = "M" + context.numtype().GetText();
             var inum = context.Inum();
-            foreach (var num in inum)
+
+            if (TypeChecker.CheckMatrixDcl(context)) 
             {
-                if (!int.TryParse(num.GetText(), out int max_index))
-                    Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
-                if (max_index < 0)
-                    Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
+                if (Scope.LookUpExsting(id) == null)
+                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: int.Parse(inum.First().GetText()), col: int.Parse(inum.Last().GetText()));
             }
-            if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: int.Parse(inum.First().GetText()), col: int.Parse(inum.Last().GetText()));
             return base.VisitMatrixDeclaration(context);
         }
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)

@@ -251,7 +251,7 @@ namespace Compiler.Phases
                     if (x < 1)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                        Scope.Diagnostics.Add(new($"Matrices can't have {x} elements!"));
                     }
                 }
                 else
