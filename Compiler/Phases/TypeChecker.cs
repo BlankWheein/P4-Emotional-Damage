@@ -153,6 +153,7 @@ namespace Compiler.Phases
                     res = false;
                     Scope.AddDiagnostic(new CouldNotParseIntException($"Missing input parameters on func {func}"));
                 }
+                if (function?.Parameters.Count > 0)
                 for (int i = 0; i < function.Parameters.Count; i++)
                 {
                     var functionparameterinput = function.Parameters[i];
