@@ -10,63 +10,75 @@ namespace Compiler.Phases
 {
     internal class PreCodeGen : EmotionalDamageBaseVisitor<object>
     {
-        private string _path = @"../../../../Compiler/Emotional.Damage";
-        private FileStream _fs;
-        private IEnumerable<string> lines;
+       
         public List<string> Exprs = new();
-        public string child = "IEnumerable<Value> children{";
 
         public PreCodeGen() {
-            if (!File.Exists(_path)) {
-                throw new Exception($"File {_path} does not exist or can't be reached.");
-            }
-            lines = File.ReadLines(_path);
-            Wrapper._codeGenerator.Stmts;
+            
+           
         }
-        public override object VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context)
+        public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
-            Exprs.Add(RetrunValueObj(context.expr()[0].GetText()));
-            Console.WriteLine(context.expr()[0].GetText());
+            var numtype = context.numtype().GetText();
+            var id = context.IDENTIFIER().GetText();
+            var expr_str = context.GetText().Replace(";", "").Split('=').Last();
+            var expr = CheckExpr(expr_str);
             return false;
         }
-        
-        public string RetrunValueObj(string expr) {
-            lines = File.ReadLines(_path);
-            int i = 0;
-            foreach (var l1 in lines)
-            {
-                if ((l1.Contains($"{expr}=") || l1.Contains($"{expr}=")))
-                {
-                Console.WriteLine(++i);
-                    string children = l1.Split("=")[1].Trim(';');
-                    string id = l1.Split("=")[0].Replace("float", "");
-                    if (children.Any(c => char.IsLetter(c)))
-                    {
-                        var childrenArr = children.Split('*', '+', '/', '-');
-                        foreach (string c in childrenArr)
-                        {
-                            if (c.Any(x => char.IsLetter(x)))
-                            {
-                                child += $"{RetrunValueObj(c)}";
-                            }
-                        }
-                        child = child.Remove(child.Length - 1);
-                        child += "}";
-                    }
-                    else
-                    {
-                        if (child != "IEnumerable<Value> children{")
-                        {
-                            expr = $"Value {id} = new Value({children}, {child}, \'{id}\');";
-                        }
-                        else {
-                            expr = $"Value {id} = new Value({children}, null, \"" + $"{id}".Trim()+"\");";
-                        }
-                    }
-
-                }
-            }
-            return expr;
+        public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
+        {
+            var id = context.IDENTIFIER().GetText();
+            var expr = CheckExpr(context.expr().GetText());
+           
+            return false;
         }
+        public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
+        {
+            if (context.expr() != null) { 
+                CheckExpr(context.expr().GetText());
+            }
+            
+            return false;
+        }
+        public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
+        {
+
+            var expr = CheckExpr(context.expr().GetText());
+           
+
+            return false;
+        }
+        public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
+        {
+            var expr = CheckExpr(context.expr().GetText());
+            
+            return false;
+        }
+        public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
+        {
+           
+            var expr = CheckExpr(context.expr().GetText());
+           
+            VisitStmts(context.stmts());
+            
+            return false;
+        }
+
+
+        public string CheckExpr(string input)
+        {
+           
+            if (input.Contains("\\\\"))
+            {
+
+                var _expr1 = input.Split("\\\\")[0];
+                var _expr2 = input.Split("\\\\")[1];
+                Exprs.Add(_expr1);
+                Exprs.Add(_expr2);
+            }
+            return input;
+        }
+        
+        
     }
 }
