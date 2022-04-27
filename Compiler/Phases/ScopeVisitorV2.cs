@@ -86,7 +86,7 @@ namespace Compiler.Phases
         {
             TypeChecker.CheckFuncStmt(context);
             foreach (var s in context.IDENTIFIER())
-                Scope.LookUpExsting(s.GetText());
+                Scope.LookUp(s.GetText());
             return base.VisitFuncStmt(context);
         }
         #endregion
