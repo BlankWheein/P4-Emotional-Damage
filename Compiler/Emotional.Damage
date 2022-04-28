@@ -1,5 +1,5 @@
 ﻿float a = 23;
-float b = a * 12;
+float b = c * 12;
 float c = 12;
 float d = b * c;
 float e = a * b;

@@ -12,25 +12,25 @@ namespace Compiler.Phases
     {
        
         public List<string> Exprs = new();
-
+        private List<string> perhaps = new List<string>();
         public PreCodeGen() {}
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
            
-            var expr_str = context.GetText().Replace(";", "").Split('=').Last();
-            var expr = CheckExpr(expr_str);
+            var expr_str = context.GetText().Replace(";", "");
+            CheckExpr(expr_str);
             return false;
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
-            var expr = CheckExpr(context.expr().GetText());
+            CheckExpr(context.GetText());
            
             return false;
         }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             if (context.expr() != null) { 
-                CheckExpr(context.expr().GetText());
+                CheckExpr(context.GetText());
             }
             
             return false;
@@ -38,21 +38,21 @@ namespace Compiler.Phases
         public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
 
-            var expr = CheckExpr(context.expr().GetText());
+            CheckExpr(context.GetText());
            
 
             return false;
         }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-            var expr = CheckExpr(context.expr().GetText());
+            CheckExpr(context.GetText());
             
             return false;
         }
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
            
-            var expr = CheckExpr(context.expr().GetText());
+           CheckExpr(context.GetText());
            
             VisitStmts(context.stmts());
             
@@ -60,20 +60,46 @@ namespace Compiler.Phases
         }
 
 
-        public string CheckExpr(string input)
+        public void CheckExpr(string input)
         {
-           
-            if (input.Contains("\\\\"))
+            var exprtmp1 = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
+            var exprtmp = input.Replace(";", "").Split('=').Last();
+            if (exprtmp.Contains("\\\\"))
             {
-
                 var _expr1 = input.Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
                 Exprs.Add(_expr1);
                 Exprs.Add(_expr2);
             }
-            return input;
+            else if (exprtmp.Any(c => char.IsLetter(c)))
+            {
+                var expr = exprtmp.Split('%', '/', '+', '-', '*');
+                
+                foreach (var _expr in expr)
+                {
+                    if (_expr.Any(c => char.IsLetter(c)))
+                    {
+                        if (CheckForGrad(_expr))
+                        {
+                            Exprs.Add(exprtmp1);
+                        }
+                        else { 
+                            perhaps.Add(exprtmp1);
+                        }
+                        
+                    }
+                }
+            }
         }
-        
-        
+        public bool CheckForGrad(string input)
+        {
+            if (Exprs.Any(c => c == input)) { 
+                return true;
+            }
+            
+            return false;
+        }
+
+
     }
 }

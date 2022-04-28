@@ -13,16 +13,16 @@ namespace Compiler.Phases
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         bool _isTesting = false;
-        
+        private List<string> Values = new() { };
 
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
-            
+
             AddStmt("using AutoGrad;\n");
-            
+
 
         }
         public CodeGeneratorV2(bool IsTesting)
@@ -63,6 +63,10 @@ namespace Compiler.Phases
             foreach (var stmt in Stmts)
                 stmt();
             _fs.Close();
+        }
+        public void PreVisit(List<string> values)
+        {
+            Values = values;
         }
         public string CheckExpr(string input)
         {
@@ -211,7 +215,10 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            if(numtype == "float")
+            if (Values.Any(v => v == id)) {
+                AddStmt($"Value {id} = new Value({expr}, null, " +$"\"{id}\"".Trim() +", true);");
+            }
+            else if(numtype == "float")
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)
@@ -225,11 +232,13 @@ namespace Compiler.Phases
                         expr = expr.Insert(i, "f");
                     }
                 }
+                AddStmt($"{numtype} {id} = {expr};");
             }
 
-            AddStmt($"{numtype} {id} = {expr};");
             return false;
         }
+        
+
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {
             var id = context.IDENTIFIER().GetText();
