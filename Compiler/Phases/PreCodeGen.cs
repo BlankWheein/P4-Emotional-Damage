@@ -16,15 +16,13 @@ namespace Compiler.Phases
         public PreCodeGen() {}
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
-            var numtype = context.numtype().GetText();
-            var id = context.IDENTIFIER().GetText();
+           
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
             return false;
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
-            var id = context.IDENTIFIER().GetText();
             var expr = CheckExpr(context.expr().GetText());
            
             return false;
