@@ -272,15 +272,75 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncSameName()
         {
-            var root = Parse(new StringBuilder("void kage(float q) {int z = 6; float x = 6.9;}"));
+            var root = Parse(new StringBuilder("void kage(float q) {int z = 6; float x = 6.9;} int kage = 5;"));
             scope.Insert(SymbolType.Void, "kage", parameters: new List<Symbol>() { new("q", SymbolType.Float) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
+            scope.Insert(SymbolType.Int, "kage");
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
+        public void FuncArrSucces()
+        {
+            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[3] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; final[3] = kage(arr, lol);"));
+            scope.Insert(SymbolType.Aint, "kage", 3, parameters: new List<Symbol>() { new("a", SymbolType.Aint, 2), new("a2", SymbolType.Aint, 3) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Aint, "ice", 3);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Aint, "arr", 2);
+            scope.Insert(SymbolType.Aint, "lol", 3);
+            scope.Insert(SymbolType.Aint, "final", 3);
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
+        [TestMethod]
+        public void FuncArrFails()
+        {
+            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[2] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; final[1] = kage(arr, lol);"));
+            scope.Insert(SymbolType.Aint, "kage", 3, parameters: new List<Symbol>() { new("a", SymbolType.Aint, 2), new("a2", SymbolType.Aint, 3) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Aint, "ice", 2);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Aint, "arr", 2);
+            scope.Insert(SymbolType.Aint, "lol", 3);
+            scope.Insert(SymbolType.Aint, "final", 1);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(2, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
+        public void FuncMatSucces()
+        {
+            var root = Parse(new StringBuilder("int[3][3] kage(int[2][2] m, int[3][3] m2) {int[3][3] ice = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; final[3][3] = kage(arr, lol);"));
+            scope.Insert(SymbolType.Mint, "kage", 3, 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, 2, 2), new("m2", SymbolType.Aint, 3, 3) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Mint, "ice", 3, 3);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Mint, "mat", 2, 2);
+            scope.Insert(SymbolType.Mint, "lol", 3, 3);
+            scope.Insert(SymbolType.Mint, "final", 3, 3);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(0, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
+        public void FuncMatFails()
+        {
+            var root = Parse(new StringBuilder("int[3][1] kage(int[1][2] m, int[9][3] m2) {int[3][3] ice = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; final[3][5] = kage(arr, lol);"));
+            scope.Insert(SymbolType.Mint, "kage", 3, 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, 1, 2), new("m2", SymbolType.Aint, 9, 3) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Mint, "ice", 3, 3);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Mint, "mat", 2, 2);
+            scope.Insert(SymbolType.Mint, "lol", 3, 3);
+            scope.Insert(SymbolType.Mint, "final", 3, 5);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(3, root.Diagnostics.Count);
+        }
     }
 }
