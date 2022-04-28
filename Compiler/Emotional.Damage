@@ -1,8 +1,4 @@
-﻿int[3][3] kage(int[3][3] m) {
-	int[3][3] ice; 
-	ice[2][2] = m[1][1];
-	return ice;
-}
-int[2][2] mat;
-int[3][3] final;
-final = kage(mat);
+﻿int kage() {int k = 1; return k;}
+
+bool k = true;
+k = kage();

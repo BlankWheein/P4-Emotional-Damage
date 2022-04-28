@@ -69,6 +69,11 @@ namespace Compiler.SymbolTableFolder
             res &= table.ToString() == ToString();
             return res;
         }
+
+        internal bool SameReturn(Symbol? sym)
+        {
+            return Type == sym?.Type && Col == sym.Col && Row == sym.Row;
+        }
     }
     public static class SymbolTypeExtensions
     {

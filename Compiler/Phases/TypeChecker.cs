@@ -43,10 +43,11 @@ namespace Compiler.Phases
             var text = context.GetText();
             SymbolType type;
             string numtype = context.numtype().GetText();
+            
             try
             {
                 type = (SymbolType)Enum.Parse(typeof(SymbolType), numtype[0].ToString().ToUpper() + numtype[1..^0]);
-                bool res =  ExprHelper(context.expr().GetText(), type);
+                bool res =  ExprHelper(context.expr().GetText(), new Symbol("Constant", type));
                 return res;
             }
             catch
@@ -349,9 +350,12 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool ExprHelper(string expr, SymbolType? type = null)
+        private bool ExprHelper(string expr, Symbol? sym = null)
         {
-            return type switch
+            bool res = true;
+            res &= AreFuncsCompatible(expr, sym);
+            if (res == false) return false;
+            return res && sym?.Type switch
             {
                 SymbolType.Int => ExprParser(expr, SymbolType.Int),
                 SymbolType.Aint => ExprParser(expr, SymbolType.Int),
@@ -365,10 +369,27 @@ namespace Compiler.Phases
                 _ => throw new Exception(),
             };
         }
+
+        private bool AreFuncsCompatible(string expr, Symbol? sym)
+        {
+            bool res = true;
+            var _out = SplitOnOperatorsExpr(expr).Where(p => p.Contains("(")).ToList();
+            foreach(var func in _out)
+            {
+                var ting = GetFunctionReturnType(func);
+                if (ting != null && !ting.SameReturn(sym))
+                {
+                    Scope.AddDiagnostic(new($"{func} does not return type {sym?.Type}"));
+                    res = false;
+                }
+            }
+            return res;
+        }
+
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {
             string text = ctx.GetText();
-            return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText())?.Type);
+            return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText()));
         }
         
         internal bool CheckMatrixDcl(EmotionalDamageParser.MatrixDeclarationContext context)
@@ -446,7 +467,7 @@ namespace Compiler.Phases
                 return false;
             }
             if (context.expr() != null)
-                res &= ExprHelper(context.expr().GetText(), id.Type);
+                res &= ExprHelper(context.expr().GetText(), id);
             else
                 if (!id.Type.IsString())
             {
@@ -504,7 +525,7 @@ namespace Compiler.Phases
                 return false;
             }
             if (context.expr() != null)
-                res &= ExprHelper(context.expr().GetText(), id.Type);
+                res &= ExprHelper(context.expr().GetText(), id);
             else if (!id.Type.IsString())
                 {
                     res = false;
