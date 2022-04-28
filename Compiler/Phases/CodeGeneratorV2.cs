@@ -70,6 +70,8 @@ namespace Compiler.Phases
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
+            if (input.Contains(".col"))
+                input = input.Replace(".col", ".Columns");
 
             if (input.Contains("**"))
             {
@@ -96,13 +98,13 @@ namespace Compiler.Phases
                         }
                     }
                 }
-                else if (!_expr1.Contains("%*+/-"))
+                else if (!_expr1.Any(o=> "%*+/-(".Contains(o)))
                 {
                     left = _expr1;
                 }
                 else
                 {
-                    string _symbols = "%*+/-=";
+                    string _symbols = "%*+/-=(";
                     for (int j = _len1; j >= 0; j--)
                     {
                         if (char.IsLetterOrDigit(_expr1[j]) || _expr1[j].Equals('_')) continue;
@@ -114,7 +116,6 @@ namespace Compiler.Phases
                         }
                     }
                 }
-
                 if (_expr2.First().Equals('('))
                 {
                     for (int j = 0; j <= _len2; j++)
@@ -126,7 +127,7 @@ namespace Compiler.Phases
                         }
                     }
                 }
-                else if (!_expr2.Contains("%*+/-"))
+                else if (!_expr2.Any(o => "%*+/-)".Contains(o)))
                 {
                     right = _expr2;
                 }
@@ -143,8 +144,9 @@ namespace Compiler.Phases
                         }
                     }
                 }
-                input = input.Replace(left, "").Replace(right, "").Replace("**", "").Replace("()", "");
-                input = input.Insert(start_index, $"MathF.Pow({left},{right})");
+                string _left = _expr1.Last().Equals(')') == true ? $"({left})" : left;
+                string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
+                input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
             }
 
 
@@ -153,6 +155,7 @@ namespace Compiler.Phases
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
             input = input.Replace("\\\\", " \\\\ ");
+            input = input.Replace(",", ", ");
             #endregion
 
             return input;
