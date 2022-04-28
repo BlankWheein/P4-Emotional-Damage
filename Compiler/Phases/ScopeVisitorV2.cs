@@ -8,6 +8,8 @@ namespace Compiler.Phases
         public List<Exception> Diagnostics { get; set; }
         public RootSymbolTable Scope { get; set; }
         public TypeChecker TypeChecker { get; set; }
+        private Symbol? CurrentFunction = null;
+        private int CurrentFunctionReturnCount = 0;
         public ScopeVisitorV2()
         {
             this.Scope = new RootSymbolTable();
@@ -22,6 +24,13 @@ namespace Compiler.Phases
             VisitChildren(context);
             Scope.ExitScope();
             return false;
+        }
+        
+        public override object VisitProg([NotNull] EmotionalDamageParser.ProgContext context)
+        {
+            if (TypeChecker.CountReturnStmts(context.stmts()) > 0)
+                Scope.AddDiagnostic(new("Cant use Return in global scope"));
+            return base.VisitProg(context);
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
@@ -137,14 +146,24 @@ namespace Compiler.Phases
                         }
                         symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), FixMatrixArrayType(rawtype_)), row: localrow, col: localcol));
                     }
-                        Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols, row: row, col: col);
-                        Scope.Insert(sym);
-                        Scope.Allocate("Func");
-                        foreach (var s in symbols)
-                            Scope.Insert(s);
-                        VisitChildren(context);
-                        Scope.ExitScope();
-                    }
+                        
+                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols, row: row, col: col);
+                var lastFunction = CurrentFunction;
+                var lastFunctionReturnCount = CurrentFunctionReturnCount;
+                CurrentFunction = sym;
+                CurrentFunctionReturnCount = 0;
+                TypeChecker.CheckForReturns(context.stmts(), sym);
+                Scope.Insert(sym);
+                Scope.Allocate("Func");
+                foreach (var s in symbols)
+                    Scope.Insert(s);
+                VisitChildren(context);
+                Scope.ExitScope();
+                if (CurrentFunctionReturnCount > 1)
+                    Scope.AddDiagnostic(new($"Multiple return stmts in function {id}"));
+                CurrentFunction = lastFunction;
+                CurrentFunctionReturnCount = lastFunctionReturnCount;
+            }
 
             return false;
             }
@@ -209,8 +228,11 @@ namespace Compiler.Phases
         #region Stmt
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
         {
+            CurrentFunctionReturnCount++;
             string id = context.IDENTIFIER().GetText();
-            Scope.LookUp(id);
+            Symbol? sym = Scope.LookUp(id);
+            if (CurrentFunction != null && sym != null && !CurrentFunction.Type.IsVoid() && CurrentFunction.SameReturn(sym) == false)
+                Scope.AddDiagnostic(new($"{id} does not have return type of {CurrentFunction.Type}"));
             return base.VisitReturnStmt(context);
         }
         #endregion

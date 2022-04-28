@@ -89,6 +89,10 @@ namespace Compiler.SymbolTableFolder
         {
             return (type & (SymbolType.Bool)) != 0;
         }
+        public static bool IsVoid(this SymbolType type)
+        {
+            return (type & (SymbolType.Void)) != 0;
+        }
         public static bool IsString(this SymbolType type)
         {
             return (type & (SymbolType.String)) != 0;

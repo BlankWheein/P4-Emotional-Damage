@@ -138,7 +138,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntFuncReturn()
         {
-            var root = Parse(new StringBuilder("int kage = 5; int kage2 = 10; int kagew(int x, int y) {int z = x + y; } int ice = kagew(kage, kage2);"));
+            var root = Parse(new StringBuilder("int kage = 5; int kage2 = 10; int kagew(int x, int y) {int z = x + y; return z;} int ice = kagew(kage, kage2);"));
             scope.Insert(SymbolType.Int, "kage");
             scope.Insert(SymbolType.Int, "kage2");
             scope.Insert(SymbolType.Int, "kagew", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Int) }, isfunc: true);

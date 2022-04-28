@@ -71,7 +71,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -186,13 +186,13 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Bool, "kage4");
             scope.Insert(SymbolType.Float, "kage5");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            Assert.AreEqual(4, root.Diagnostics.Count);
         }
 
         [TestMethod]
         public void FuncCallRightParameters()
         {
-            var root = Parse(new StringBuilder("float kage(int x, float y, bool elite) {int z = 6; float q = 6.9; return x;} int kage2 = 69; float kage3 = 75.5; bool kage4 = true; float kage5 = kage(kage2, kage3, kage4);"));
+            var root = Parse(new StringBuilder("float kage(int x, float y, bool elite) {int z = 6; float q = 6.9; return y;} int kage2 = 69; float kage3 = 75.5; bool kage4 = true; float kage5 = kage(kage2, kage3, kage4);"));
             scope.Insert(SymbolType.Float, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Float), new("elite", SymbolType.Bool) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
@@ -310,7 +310,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Aint, "lol", row: 3);
             scope.Insert(SymbolType.Aint, "final", row: 1);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
         [TestMethod]
         public void FuncArrFails2()
@@ -382,7 +382,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Mint, "lol", row: 3, col: 3);
             scope.Insert(SymbolType.Mint, "final", row: 3, col: 5);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
         [TestMethod]

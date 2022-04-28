@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static EmotionalDamageParser;
 
 namespace Compiler.Phases
 {
@@ -100,6 +101,36 @@ namespace Compiler.Phases
             bool isValid = IsValidBexpr(bexpr);
             return isValid;
         }
+        internal void CheckForReturns(StmtsContext stmts, Symbol rettype)
+        {
+            switch (rettype?.Type.IsVoid())
+            {
+                case true when stmts?.stmt() != null && stmts?.stmt()?.LastOrDefault() is ReturnStmtContext ret:
+                    Scope.AddDiagnostic(new($"Last Statement in void function {rettype.Id} was return"));
+                    break;
+                case true when stmts?.stmt() != null && stmts?.stmt()?.LastOrDefault() is not ReturnStmtContext ret:
+                    break;
+
+                case false when stmts?.stmt() != null && stmts?.stmt()?.LastOrDefault() is ReturnStmtContext ret:
+                    break;
+                case false when stmts?.stmt() != null && !(stmts?.stmt()?.LastOrDefault() is ReturnStmtContext ret):
+                    Scope.AddDiagnostic(new($"Last Statement in function {rettype.Id} was not return"));
+                    break;
+                default:
+                    throw new Exception();
+            }
+        }
+        internal int CountReturnStmts(StmtsContext stmts)
+        {
+            int count = 0;
+            foreach (var stmt in stmts.stmt())
+            {
+                if (stmt != null && stmt is ReturnStmtContext)
+                    count++;
+            }
+            return count;
+        }
+
         List<string> GetExprVariableNoFunc(string _text)
         {
             List<string> _items = new();

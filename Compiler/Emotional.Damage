@@ -1,9 +1,9 @@
-﻿int[3] kage(int[2] a, int[3] a2) {
-	int[2] ice;
-	ice[1] = a[1] + a2[2];
+﻿int[3][1] kage(int[1][2] m, int[9][3] m2) {
+	int[3][1] ice; 
+	ice[2][0] = m[1][1] + m2[2][2]; 
 	return ice;
-} 
-int[2] arr;
-int[3] lol;
-int[1] final;
-final = kage(arr, lol);
+}
+int[2][2] mat;
+int[3][3] lol;
+int[3][5] final;
+final = kage(mat, lol);
