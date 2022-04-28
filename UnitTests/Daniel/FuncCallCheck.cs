@@ -135,7 +135,7 @@ namespace UnitTests.Daniel
         public void FloatCallInt()
         {
             var root = Parse(new StringBuilder("int kage() {int z = 6; return z;} float k = 5.8; k = kage();"));
-            Assert.AreEqual(0, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FloatCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} float k = 5.7; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() {int[3] lol; return lol;} float k = 5.7; k = kage();"));
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
@@ -204,7 +204,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntArrCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} int[4] k; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() {int[3] lol; return lol;} int[3] k; k = kage();"));
             Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
@@ -316,7 +316,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FloatMatCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} float[4][4] k; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() {int[3] lol; return lol;} float[4][4] k; k = kage();"));
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
@@ -338,7 +338,7 @@ namespace UnitTests.Daniel
         public void FloatMatCallFloatMat()
         {
             var root = Parse(new StringBuilder("float[4][4] kage() {float[4][4] l; return l;} float[4][4] k; k = kage();"));
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
         [TestMethod]
