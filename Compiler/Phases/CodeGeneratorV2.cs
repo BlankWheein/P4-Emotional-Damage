@@ -227,10 +227,21 @@ namespace Compiler.Phases
                 expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
             }
             if (Values.Any(v => v.Contains(id))) {
-                if (Values.Any(v => expr.Contains(v))) {
-                    expr = expr.Replace(Values.First(v => expr.Contains(v)).ToString(), $"{Values.First(v => expr.Contains(v))}.data");
+                var word = expr.Split(' ');
+                expr = "";
+                int i = 0;
+                foreach (var val in word) {                   
+                    if (Values.Any(v => val.Contains(v))) {
+                        //expr = expr.Replace(val, $"{val}.data");
+                        word[i] = $"{val}.data";
+                    }
+                    expr += word[i];
+                    i++;
                 }
-                AddStmt($"Value {id} = new Value({expr}, null, " +$"\"{id}\"".Trim() +", true);");
+
+                
+
+                AddStmt($"Value {id} = new Value({expr}, null," +$"\"{id}\"".Trim() +", true);");
             }
             else if(numtype == "float")
             {
@@ -245,6 +256,9 @@ namespace Compiler.Phases
                         active = false;
                         expr = expr.Insert(i, "f");
                     }
+                }
+                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ').Contains(v))){
+                    expr = expr.Replace(Values.First(v => expr.Split(' ').Contains(v)), Values.First(v => expr.Split(' ').Contains(v))+".data");
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }

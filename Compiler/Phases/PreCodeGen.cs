@@ -12,8 +12,9 @@ namespace Compiler.Phases
     {
        
         public List<string> Exprs = new();
-        private List<string> perhaps = new List<string>();
-        private int count = 0;
+        private List<string> _grads = new();
+
+       // private int count = 0;
         public bool lookingforGrads = false;
         public PreCodeGen() {}
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
@@ -70,15 +71,19 @@ namespace Compiler.Phases
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
-                if (!Exprs.Any(c => c == _expr1) && !Exprs.Any(c => c == _expr2))
-                {
+                //if(Exprs.Any(v => _expr1 == v) && Exprs.Any(v => _expr2 == v))
+                //{
+                //    count--;
+                //}
+                //else
+                //{
+                //    count++;
                     Exprs.Add(_expr1);
                     Exprs.Add(_expr2);
-                    count++;
-                }
-                else { count--; }
+                    _grads.Add(_expr1);
+                //}
             }
-            else if (exprtmp.Any(c => char.IsLetter(c)) && !input.Contains("\\\\") && count>0 && lookingforGrads) { 
+            else if (exprtmp.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 
                 var expr = exprtmp.Split('%', '/', '+', '-', '*');
                 foreach (var _expr in expr)
@@ -88,18 +93,15 @@ namespace Compiler.Phases
                         if (CheckForGrad(_expr))
                         {
                             Exprs.Add(exprtmp1);
-                        }
-                        else { 
-                            perhaps.Add(exprtmp1);
-                        }
-                        
+
+                        }                        
                     }
                 }
             }
         }
         public bool CheckForGrad(string input)
         {
-            if (Exprs.Any(c => c == input)) { 
+            if (Exprs.Any(c => c == input) && !_grads.Any(c => c == input)) { 
                 return true;
             }
             
