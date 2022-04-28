@@ -286,7 +286,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncArrSucces()
         {
-            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[3] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; final[3] = kage(arr, lol);"));
+            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[3] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[3] final= kage(arr, lol);"));
             scope.Insert(SymbolType.Aint, "kage", row: 3, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 2), new("a2", SymbolType.Aint, row: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 3);
