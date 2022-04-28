@@ -1,25 +1,16 @@
 using AutoGrad;
 
-float x = MathF.Sqrt<missing '('>10 + 20<missing ')'>;
-float a = MathF.Pow(2, 10);
-float b = 35 % 10;
-float c = 23 * 52;
-float d = 62 / 24;
-float e = 45 + 23;
-float f = 62 - 12;
-float g = 25\\\\26;
-float z = x;
-int[] mon = new int[2];
-Matrix mar = new(2,3);
-mon[1] = 10;
-mar.Values[1][1] = new Value(2);
-while(true){
-Console.WriteLine("hello");
+int kage (int a) {
+    return a;
 }
-int h = mar.Rows;
-int i = mar.Columns;
-int j = mon.Length;
-float k = MathF.Sqrt(b + MathF.Sqrt(10) * (2 / 43));
-float kage (float a, float b) {
-}
-kage();
+float b = (kage(2 + 3) + 32);
+float md = (32 + 235 + 62);
+float a = 2 + MathF.Pow(12 + 10 + kage(2 + 3),12 + 125) * 24 / 10;
+float m = 20 + MathF.Sqrt(10 + 23 * MathF.Sqrt(10)) + 2;
+float n = 23 * 123 % 235 + 235221 - 124513 + 200 - 123214;
+float d = MathF.Pow(12 + 4,20 + 3);
+float c = MathF.Pow(12 + 4,20 + 3);
+float f = 12 + MathF.Pow(4 * a,29);
+float g = MathF.Pow(2,10);
+float ma = 2 + 1 \\ b;
+Console.WriteLine(2 + 3);
