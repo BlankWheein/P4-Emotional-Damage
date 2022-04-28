@@ -1,1 +1,18 @@
-﻿float b = 20+(32+152+y)**(35+10)+10;
+﻿float a = -4;
+float b = 2;
+float c = a + b;
+float d= a*b+b**3;
+c = c+c+1;
+c= c+1+c+(-a);
+d = d+d*2+(b+a);
+d= d+3*d+(b-a);
+float e=c-d;
+float f=e**2;
+float g =f/2;
+g=g + 10 / f;
+
+print(g);
+float ga = g\\a;
+float gb =g\\b;
+print(ga);
+print(gb);

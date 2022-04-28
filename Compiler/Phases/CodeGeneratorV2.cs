@@ -12,8 +12,8 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-
         bool _isTesting = false;
+        private List<string> Values = new() { };
 
 
         public CodeGeneratorV2()
@@ -21,7 +21,9 @@ namespace Compiler.Phases
             if (File.Exists(_path))
                 File.Delete(_path);
             _fs = File.Create(_path);
+
             AddStmt("using AutoGrad;\n");
+
 
         }
         public CodeGeneratorV2(bool IsTesting)
@@ -58,9 +60,14 @@ namespace Compiler.Phases
         }
         public void Compile()
         {
+            
             foreach (var stmt in Stmts)
                 stmt();
             _fs.Close();
+        }
+        public void PreVisit(List<string> values)
+        {
+            Values = values;
         }
         public string CheckExpr(string input)
         {
@@ -73,6 +80,15 @@ namespace Compiler.Phases
             if (input.Contains(".col"))
                 input = input.Replace(".col", ".Columns");
 
+            if (input.Contains("\\\\"))
+            {
+
+                var _expr1 = input.Split("\\\\")[0];
+                var _expr2 = input.Split("\\\\")[1];
+                input = $"{_expr1}.Backward(); {_expr2}.grad";
+            }
+
+
             if (input.Contains("**"))
             {
                 string left = "", right = "";
@@ -80,6 +96,7 @@ namespace Compiler.Phases
                 var _expr2 = input.Split("**")[1];
                 int _len1 = _expr1.Length - 1;
                 int _len2 = _expr2.Length - 1;
+
 
                 int start_index = 0;
 
@@ -154,7 +171,6 @@ namespace Compiler.Phases
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
-            input = input.Replace("\\\\", " \\\\ ");
             input = input.Replace(",", ", ");
             #endregion
 
@@ -206,7 +222,41 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            if(numtype == "float")
+            if (expr.Contains("Backward()")) {
+                AddStmt($"{expr.Split(';')[0]};");
+                expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
+            }
+            if (Values.Any(v => v.Contains(id))) {
+                if (expr.Any(c => char.IsLetter(c)))
+                {
+                    if (expr.Contains("MathF")) { 
+                        var word = expr.Split(',');
+                        expr = "";
+                        int i = 0;
+                        foreach (var val in word)
+                        {
+                            if (val.Any(c => char.IsLetter(c)))
+                            {
+                                word[i] = $"{val}.data";
+                            }
+                            if (val.Contains("(")) {
+                                word[i] += ",";
+                            }
+                            expr += word[i];
+                            i++;
+                        }
+                    }
+                    AddStmt($"Value {id} = {expr};");
+
+                }
+                else
+                {
+
+                    AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
+                }
+
+            }
+            else if(numtype == "float")
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)
@@ -220,11 +270,16 @@ namespace Compiler.Phases
                         expr = expr.Insert(i, "f");
                     }
                 }
+                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ').Contains(v))){
+                    expr = expr.Replace(Values.First(v => expr.Split(' ').Contains(v)), Values.First(v => expr.Split(' ').Contains(v))+".data");
+                }
+                AddStmt($"{numtype} {id} = {expr};");
             }
 
-            AddStmt($"{numtype} {id} = {expr};");
             return false;
         }
+        
+
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {
             var id = context.IDENTIFIER().GetText();

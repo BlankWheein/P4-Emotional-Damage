@@ -14,6 +14,7 @@ namespace Compiler
         private readonly AntlrInputStream __stream;
         private readonly CommonTokenStream __lexerStream;
         //private ScopeVisitorV2 _scopeTypeChecker;
+        private PreCodeGen _preCodeGen;
         private CodeGeneratorV2 _codeGenerator;
         public Wrapper(StringBuilder __source)
         {
@@ -25,6 +26,7 @@ namespace Compiler
             __context = __parser.prog();
 
             //_scopeTypeChecker = new();
+            _preCodeGen = new PreCodeGen();
             _codeGenerator = new();
         }
         public void Compile()
@@ -39,7 +41,10 @@ namespace Compiler
             ////_scopeTypeChecker.Print();
             ////_scopeTypeChecker.Dispose();
             //Console.ResetColor();
-
+            _preCodeGen.Visit(__context);
+            _preCodeGen.lookingforGrads = true;
+            _preCodeGen.Visit(__context);
+            _codeGenerator.PreVisit(_preCodeGen.Exprs);
             _codeGenerator.Visit(__context);
             _codeGenerator.Compile();
         }
