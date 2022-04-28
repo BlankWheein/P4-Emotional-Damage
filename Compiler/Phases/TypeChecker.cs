@@ -367,6 +367,7 @@ namespace Compiler.Phases
         }
         public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
         {
+            string text = ctx.GetText();
             return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText())?.Type);
         }
         
