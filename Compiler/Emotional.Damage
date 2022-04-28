@@ -1,9 +1,9 @@
-
 ﻿float a = 23;
-float b = c * 12;
 float c = 12;
+float b = c * 12;
 float d = b * c;
 float e = a * b;
 float f = e * b;
 float ma = f \\ a;
-print(2+3);
+print(f);
+float k = f * 4;

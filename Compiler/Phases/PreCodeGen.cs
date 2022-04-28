@@ -66,12 +66,12 @@ namespace Compiler.Phases
             var exprtmp = input.Replace(";", "").Split('=').Last();
             if (exprtmp.Contains("\\\\"))
             {
-                var _expr1 = input.Split("\\\\")[0];
+                var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
                 Exprs.Add(_expr1);
                 Exprs.Add(_expr2);
             }
-            else if (exprtmp.Any(c => char.IsLetter(c)))
+            else if (exprtmp.Any(c => char.IsLetter(c)) && !input.Contains("\\\\"))
             {
                 var expr = exprtmp.Split('%', '/', '+', '-', '*');
                 

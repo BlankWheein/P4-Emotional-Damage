@@ -85,7 +85,7 @@ namespace Compiler.Phases
 
                 var _expr1 = input.Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
-                input = $"{_expr1}.grad = {_expr2};\n {_expr1}.Backward()";
+                input = $"{_expr1}.Backward(); {_expr2}.grad";
             }
 
 
@@ -171,7 +171,6 @@ namespace Compiler.Phases
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
-            input = input.Replace("\\\\", " \\\\ ");
             input = input.Replace(",", ", ");
             #endregion
 
@@ -223,7 +222,11 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            if (Values.Any(v => v == id)) {
+            if (expr.Contains("Backward()")) {
+                AddStmt($"{expr.Split(';')[0]};");
+                expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
+            }
+            if (Values.Any(v => v.Contains(id))) {
                 if (Values.Any(v => expr.Contains(v))) {
                     expr = expr.Replace(Values.First(v => expr.Contains(v)).ToString(), $"{Values.First(v => expr.Contains(v))}.data");
                 }
