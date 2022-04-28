@@ -15,6 +15,7 @@ namespace Compiler.Phases
         bool _isTesting = false;
         private List<string> Values = new() { };
 
+
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
@@ -76,6 +77,8 @@ namespace Compiler.Phases
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
+            if (input.Contains(".col"))
+                input = input.Replace(".col", ".Columns");
 
             if (input.Contains("\\\\"))
             {
@@ -101,7 +104,6 @@ namespace Compiler.Phases
                 {
                     for (int j = _len1; j >= 0; j--)
                     {
-                        char ch = _expr1[j];
                         if (_expr1[j].Equals('('))
                         {
                             if(j == 0 || !Char.IsLetter(_expr1[j - 1]) || _expr1[j - 1].Equals('_'))
@@ -113,14 +115,17 @@ namespace Compiler.Phases
                         }
                     }
                 }
+                else if (!_expr1.Any(o=> "%*+/-(".Contains(o)))
+                {
+                    left = _expr1;
+                }
                 else
                 {
-                    string _symbols = "%*+/-=";
+                    string _symbols = "%*+/-=(";
                     for (int j = _len1; j >= 0; j--)
                     {
-                        char ch = _expr1[j];
-                        if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                        if (_symbols.Contains(ch) || j == 0)
+                        if (char.IsLetterOrDigit(_expr1[j]) || _expr1[j].Equals('_')) continue;
+                        if (_symbols.Contains(_expr1[j]) || j == 0)
                         {
                             left = _expr1.Substring(j + 1, _len1 - j);
                             start_index = j + 1;
@@ -128,35 +133,37 @@ namespace Compiler.Phases
                         }
                     }
                 }
-                
                 if (_expr2.First().Equals('('))
                 {
                     for (int j = 0; j <= _len2; j++)
                     {
-                        char ch = _expr2[j];
-                        if (ch.Equals(')'))
+                        if (_expr2[j].Equals(')'))
                         {
                             right = _expr2.Substring(1, j - 1);
                             break;
                         }
                     }
                 }
+                else if (!_expr2.Any(o => "%*+/-)".Contains(o)))
+                {
+                    right = _expr2;
+                }
                 else
                 {
                     string _symbols = "%*+/-=";
-                    for (int j = 0; j < _len2; j++)
+                    for (int j = 0; j <= _len2; j++)
                     {
-                        char ch = _expr2[j];
-                        if (char.IsLetterOrDigit(ch) || ch.Equals('_')) continue;
-                        if (_symbols.Contains(ch) || j == 1)
+                        if (char.IsLetterOrDigit(_expr2[j]) || _expr2[j].Equals('_')) continue;
+                        if (_symbols.Contains(_expr2[j]) || j == 1)
                         {
                             right = _expr2.Substring(0, j);
                             break;
                         }
                     }
                 }
-                input = input.Replace(left, "").Replace(right, "").Replace("**", "").Replace("()", "");
-                input = input.Insert(start_index, $"MathF.Pow({left},{right})");
+                string _left = _expr1.Last().Equals(')') == true ? $"({left})" : left;
+                string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
+                input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
             }
 
 
@@ -164,7 +171,8 @@ namespace Compiler.Phases
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
-            input = input.Replace("\\\\\\\\", " \\\\\\\\ ");
+            input = input.Replace("\\\\", " \\\\ ");
+            input = input.Replace(",", ", ");
             #endregion
 
             return input;

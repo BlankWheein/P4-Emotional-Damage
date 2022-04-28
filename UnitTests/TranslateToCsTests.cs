@@ -13,7 +13,7 @@ namespace ScopeTests
         [TestMethod]
         public void sqrtTest1() {
             string res = "MathF.Sqrt(x + 4 * MathF.Sqrt(45))";
-            string input = _codeGen.CheckExpr("sqrt(x + 4 * sqrt(45))");
+            string input = _codeGen.CheckExpr("sqrt(x+4*sqrt(45))");
             Assert.AreEqual(res, input);
         }
 
@@ -21,9 +21,18 @@ namespace ScopeTests
         public void sqrtTest2()
         {
             string res = "sqrt(x + 4 * sqrt(45))";
-            string input = _codeGen.CheckExpr("sqrt(x + 4 * sqrt(45))");
+            string input = _codeGen.CheckExpr("sqrt(x+4*sqrt(45))");
             Assert.AreNotEqual(res, input);
         }
+
+        [TestMethod]
+        public void sqrtTest3()
+        {
+            string res = "MathF.Sqrt(x)";
+            string input = _codeGen.CheckExpr("sqrt(x)");
+            Assert.AreEqual(res, input);
+        }
+
         [TestMethod]
         public void PowTest1() {
             string res = "MathF.Pow(x, 132)";
@@ -39,24 +48,48 @@ namespace ScopeTests
         }
 
         [TestMethod]
+        public void PowTest3()
+        {
+            string res = "MathF.Pow(x, y)";
+            string input = _codeGen.CheckExpr("x**y");
+            Assert.AreEqual(input, res);
+        }
+
+        [TestMethod]
+        public void PowTest4()
+        {
+            string res = "20 * MathF.Pow(32 + 152 + y, 35 + 10) + 10";
+            string input = _codeGen.CheckExpr("20*(32+152+y)**(35+10)+10");
+            Assert.AreEqual(input, res);
+        }
+
+        [TestMethod]
+        public void PowTest5()
+        {
+            string res = "MathF.Pow(32 + 152 + y, 35)";
+            string input = _codeGen.CheckExpr("(32+152+y)**35");
+            Assert.AreEqual(input, res);
+        }
+
+        [TestMethod]
         public void NestedExprTest1()
         {
-            string res = "x + 34 *(MathF.Sqrt(MathF.Pow(x, 4)))";
-            string input = _codeGen.CheckExpr("x + 34 *(sqrt(x**4))");
+            string res = "x + 34 * (MathF.Sqrt(MathF.Pow(x, 4)))";
+            string input = _codeGen.CheckExpr("x+34*(sqrt(x**4))");
             Assert.AreEqual(res, input);
         }
         [TestMethod]
         public void NestedExprTest2()
         {
-            string res = "x / 34 +(sqrt(x**4/3))";
-            string input = _codeGen.CheckExpr("x / 34 +(sqrt(x**4/3))");
+            string res = "x / 34 + (sqrt(x**4/3))";
+            string input = _codeGen.CheckExpr("x/34+(sqrt(x**4/3))");
             Assert.AreNotEqual(res, input);
         }
         [TestMethod]
         public void NestedExprTest3()
         {
-            string res = "x % 34 +(MathF.Sqrt(MathF.Pow(x, 4))) + 12 - 5788 / 789 + 123";
-            string input = _codeGen.CheckExpr("x % 34 +(sqrt(x**4/3)) + 12 - 5788 / 789 + 123");
+            string res = "x % 34 + (MathF.Sqrt(MathF.Pow(x, 4) / 3)) + 12 - 5788 / 789 + 123";
+            string input = _codeGen.CheckExpr("x%34+(sqrt(x**4/3))+12-5788/789+123");
             Assert.AreEqual(res, input);
         }
 
@@ -100,7 +133,7 @@ namespace ScopeTests
         {
             string res = "x.len";
             string input = _codeGen.CheckExpr("x.len");
-            Assert.AreEqual(input, res);
+            Assert.AreNotEqual(input, res);
         }
     }
 }
