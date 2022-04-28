@@ -314,6 +314,34 @@ namespace UnitTests.Daniel
         }
 
         [TestMethod]
+        public void FuncWrongArrDim()
+        {
+            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice = a[1]; return ice;} int[1] arr; final[2] = kage(arr);"));
+            scope.Insert(SymbolType.Aint, "kage", 2, parameters: new List<Symbol>() { new("a", SymbolType.Aint, 2)}, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Aint, "ice", 2);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Aint, "arr", 1);
+            scope.Insert(SymbolType.Aint, "final", 2);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
+        public void FuncWrongArrDim2()
+        {
+            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice = a[1]; return ice;} int[5] arr; final[2] = kage(arr);"));
+            scope.Insert(SymbolType.Aint, "kage", 2, parameters: new List<Symbol>() { new("a", SymbolType.Aint, 2) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Aint, "ice", 2);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Aint, "arr", 5);
+            scope.Insert(SymbolType.Aint, "final", 2);
+            Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+
+        [TestMethod]
         public void FuncMatSucces()
         {
             var root = Parse(new StringBuilder("int[3][3] kage(int[2][2] m, int[3][3] m2) {int[3][3] ice = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; final[3][3] = kage(arr, lol);"));
