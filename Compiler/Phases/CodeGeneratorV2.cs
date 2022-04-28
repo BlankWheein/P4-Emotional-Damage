@@ -216,6 +216,9 @@ namespace Compiler.Phases
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
             if (Values.Any(v => v == id)) {
+                if (Values.Any(v => expr.Contains(v))) {
+                    expr = expr.Replace(Values.First(v => expr.Contains(v)).ToString(), $"{Values.First(v => expr.Contains(v))}.data");
+                }
                 AddStmt($"Value {id} = new Value({expr}, null, " +$"\"{id}\"".Trim() +", true);");
             }
             else if(numtype == "float")
