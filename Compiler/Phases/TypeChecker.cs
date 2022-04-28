@@ -149,6 +149,14 @@ namespace Compiler.Phases
             return res;
         }
 
+        private bool IsIndexInBounds(string expr)
+        {
+            bool res = true;
+            var _out = SplitOnOperatorsExpr(expr).Where(p => p.Contains("[")).ToList();
+
+            return res;
+        }
+
         private bool CanUseRowColLen(string expr, SymbolType type)
         {
             bool res = true;
@@ -439,58 +447,59 @@ namespace Compiler.Phases
 
         internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
-            bool isValid = true;
-            Symbol matrix = Scope.LookUp(context.IDENTIFIER(0).GetText());
-
-            if (context.Inum() != null)
+            bool res = true;
+            Symbol? id = Scope.LookUp(context.IDENTIFIER()[0].GetText()) ;
+            if (id == null) return false;
+            if (context.Inum().Length == 2)
+            foreach (var s in context.Inum())
             {
-                for (int i = 0; i < context.Inum().Length; i++)
+                if (int.TryParse(s.GetText(), out int x) && x < 0)
                 {
-                    var number = context.Inum(i).GetText();
-                    if (int.TryParse(number, out int x))
-                    {
-                        if (x < 0)// denne del er nok ligegyldig for grammar, tillader ikke negative tal
-                        {
-                            isValid = false;
-                            Scope.AddDiagnostic(new($"Matrix dimenensions can't have {x} elements!"));
-                        }
-                        else if (x > matrix.Row - 1 || x > matrix.Col - 1)
-                        {
-                            isValid = false;
-                            Scope.AddDiagnostic(new($"Matrix index out of bounds!"));
-                        }
-                    }
-                    else
-                    {
-                        isValid = false;
-                        Scope.AddDiagnostic(new($"{x} is not an integer!"));
-                    }
+                    res = false;
+                    Scope.AddDiagnostic(new("index cant be negative"));
                 }
             }
-            if (context.IDENTIFIER() != null)
+            if (context.IDENTIFIER().Length > 1)
             {
                 for (int i = 1; i < context.IDENTIFIER().Length; i++)
                 {
-                    Symbol id = Scope.LookUp(context.IDENTIFIER(i).GetText());
-                    if (id == null)
+                    if (Scope.LookUpSilent(context.IDENTIFIER()[i].GetText())?.Type.IsInt() != true)
                     {
-                        isValid = false;
-                        Scope.AddDiagnostic(new($"{context.IDENTIFIER(i)} is not declared!"));
-                    }
-                    else if (id?.Type != SymbolType.Int)
-                    {
-                        isValid = false;
-                        Scope.AddDiagnostic(new($"{id.Id} is not an integer!"));
+                        Scope.AddDiagnostic(new($"Index {Scope.LookUpSilent(context.IDENTIFIER()[i].GetText())?.Id} was not of type int"));
+                        res = false;
                     }
                 }
             }
-
-            // This does not work
-            if (context.expr() != null)
+            if (context.Inum().Length == 2)
             {
-                isValid &= ExprHelper(context.expr().GetText(), matrix.Type);
+                int row = int.Parse(context.Inum().First().GetText());
+                int col = int.Parse(context.Inum().Last().GetText());
+                if (row >= id.Row)
+                {
+                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]"));
+                    res = false;
+                }
+                if (col >= id.Col)
+                {
+                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]"));
+                    res = false;
+                }
             }
-            return isValid;
+            
+            if (!id.Type.IsMatrix())
+            {
+                Scope.AddDiagnostic(new($"{id.Id} was not a matrix"));
+                return false;
+            }
+            if (context.expr() != null)
+                res &= ExprHelper(context.expr().GetText(), id.Type);
+            else if (!id.Type.IsString())
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new($"Array {id.Id} was not of type string"));
+                }
+
+            return res;
         }
 
         internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext context)

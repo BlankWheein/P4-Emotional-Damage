@@ -1,4 +1,3 @@
-﻿float kage = 5;
-float kage3 = kage.row;
-kage3 = kage.col;
-kage3 = kage.len;
+﻿int[2][2] kage;
+kage[1][1] = 5;
+kage[1][0] = 7;

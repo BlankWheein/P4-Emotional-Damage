@@ -43,9 +43,8 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void MatrixAssignIndexOutOfBounds()
         {
-            var root = Parse(new StringBuilder("int[2][2] kage; kage[2][2]=5;kage[4][2]=7;"));
+            var root = Parse(new StringBuilder("int[2][2] kage; kage[2][2] = 5; kage[4][2] = 7;"));
             Assert.AreEqual(4, root.Diagnostics.Count);
-
         }
 
         [TestMethod]
@@ -60,14 +59,6 @@ namespace UnitTests.Daniel
         {
             var root = Parse(new StringBuilder("int[2][2] kage;float a=3.1; kage[a][1]=5;"));
             Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-
-        [TestMethod]
-        public void MatrixAssignMultiErrors()
-        {
-            var root = Parse(new StringBuilder("int[2][2] kage; int[2][2] kage2; float a=3.1; kage[a][8]=5; kage2[10,b]=5;"));
-            Assert.AreEqual(4, root.Diagnostics.Count);
         }
     }
 }
