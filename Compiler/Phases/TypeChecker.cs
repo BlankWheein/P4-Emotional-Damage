@@ -361,6 +361,7 @@ namespace Compiler.Phases
                 SymbolType.Mfloat => ExprParser(expr, SymbolType.Float),
                 SymbolType.Bool => ExprParser(expr, SymbolType.Bool),
                 SymbolType.String => ExprParser(expr, SymbolType.String),
+                null => throw new NullReferenceException();
                 _ => throw new Exception(),
             };
         }
@@ -420,12 +421,22 @@ namespace Compiler.Phases
             Symbol? index = context.IDENTIFIER().Length == 2 ? Scope.LookUp(context.IDENTIFIER()[1].GetText()) : new Symbol("Constant", SymbolType.Int);
             if (id == null || index == null)
                 res = false;
+            if (index != null && index?.Type.IsInt() != true)
+            {
+                res = false;
+                Scope.AddDiagnostic(new($"Index was not of type Int"));
+            }
             if (index?.Id == "Constant" && int.TryParse(context.Inum().GetText(), out int x))
             {
                 if (x < 0)
                 {
                     res = false;
                     Scope.AddDiagnostic(new("index cant be negative"));
+                }
+                else if (x >= id?.Row)
+                {
+                    res = false;
+                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}] does not have the dimension {x}"));
                 }
             }
             if (!id.Type.IsArray())

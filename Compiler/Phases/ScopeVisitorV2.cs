@@ -97,16 +97,21 @@ namespace Compiler.Phases
             {
                 List<Symbol> symbols = new();
                 string type2 = context.returntype().GetText()[0].ToString().ToUpper() + context.returntype().GetText()[1..^0].ToString();
+                string rawtype = type2.Split("[")[0];
+                if (type2.Count(p => p == '[') == 1)
+                    rawtype = "A" + rawtype.ToLower();
+                if (type2.Count(p => p == '[') == 2)
+                    rawtype = "M" + rawtype.ToLower();
                 if (context.IDENTIFIER().Length > 1)
                 for (int i = 1; i < context.IDENTIFIER().Length ; i++)
                 {
                     string identifier = context.IDENTIFIER()[i].GetText();
-                    string rawtype = context.types()[i - 1].GetText();
-                    string type = rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToString();
+                    string rawtype_ = context.types()[i - 1].GetText();
+                    string type = rawtype_[0].ToString().ToUpper() + rawtype_[1..^0].ToString();
                     Scope.LookUpExsting(identifier);
-                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), type)));
+                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype)));
                 }
-                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), type2), isfunc: true, parameters: symbols);
+                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols);
                 Scope.Insert(sym);
                 Scope.Allocate("Func");
                 foreach (var s in symbols)

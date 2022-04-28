@@ -46,7 +46,6 @@ namespace UnitTests.Daniel
         {
             var root = Parse(new StringBuilder("int[2] kage; kage[2]=5;"));
             Assert.AreEqual(1, root.Diagnostics.Count);
-
         }
 
         [TestMethod]
@@ -66,7 +65,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ArrayElementToElement()
         {
-            var root = Parse(new StringBuilder("int[2] kage; kage[1]=5; kage[0]= kage[1]"));
+            var root = Parse(new StringBuilder("int[2] kage; kage[1]=5; kage[0]= kage[1];"));
             scope.Insert(SymbolType.Aint, "kage", 2);
             Assert.AreEqual(root, scope);
             Assert.AreEqual(0, root.Diagnostics.Count);
