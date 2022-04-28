@@ -238,7 +238,7 @@ namespace Compiler.Phases
                     res = false;
                     Scope.AddDiagnostic(new CouldNotParseIntException($"{_func} does not return {type}"));
                 }
-                if (ParametersAsString.Count != function?.Parameters?.Count)
+                if (ParametersAsString.Count > 0 && ParametersAsString[0] != "" && ParametersAsString.Count != function?.Parameters?.Count)
                 {
                     res = false;
                     Scope.AddDiagnostic(new CouldNotParseIntException($"Missing input parameters on func {_func}"));

@@ -103,30 +103,51 @@ namespace Compiler.Phases
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             string id = context.IDENTIFIER().First().GetText();
+            EmotionalDamageParser.TypesContext? rettype = context.returntype()?.types();
+            int row = 0;
+            int col = 0;
+            if (rettype != null)
+            {
+                if (rettype.Inum().Length >= 1)
+                    int.TryParse(rettype?.Inum(0)?.GetText(), out row);
+                if (rettype.Inum().Length >= 2)
+                    int.TryParse(rettype?.Inum(1)?.GetText(), out col);
+            }
             if (Scope.LookUpExsting(id) == null)
             {
                 List<Symbol> symbols = new();
                 string type2 = context.returntype().GetText()[0].ToString().ToUpper() + context.returntype().GetText()[1..^0].ToString();
                 string rawtype = FixMatrixArrayType(type2);
-                
+
                 if (context.IDENTIFIER().Length > 1)
-                for (int i = 1; i < context.IDENTIFIER().Length ; i++)
-                {
-                    string identifier = context.IDENTIFIER()[i].GetText();
-                    string rawtype_ = context.types()[i - 1].GetText();
-                    Scope.LookUpExsting(identifier);
-                    symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), FixMatrixArrayType(rawtype_))));
-                }
-                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols);
-                Scope.Insert(sym);
-                Scope.Allocate("Func");
-                foreach (var s in symbols)
-                    Scope.Insert(s);
-                VisitChildren(context);
-                Scope.ExitScope();
-            }
+                    for (int i = 1; i < context.IDENTIFIER().Length; i++)
+                    {
+                        var type = context.types()[i - 1];
+                        string identifier = context.IDENTIFIER()[i].GetText();
+                        string rawtype_ = context.types()[i - 1].GetText();
+                        Scope.LookUpExsting(identifier);
+                        int localrow = 0;
+                        int localcol = 0;
+                        if (type != null)
+                        {
+                            if (type.Inum().Length >= 1)
+                                int.TryParse(type?.Inum(0)?.GetText(), out localrow);
+                            if (type.Inum().Length >= 2)
+                                int.TryParse(type?.Inum(1)?.GetText(), out localcol);
+                        }
+                        symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), FixMatrixArrayType(rawtype_)), row: localrow, col: localcol));
+                    }
+                        Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols, row: row, col: col);
+                        Scope.Insert(sym);
+                        Scope.Allocate("Func");
+                        foreach (var s in symbols)
+                            Scope.Insert(s);
+                        VisitChildren(context);
+                        Scope.ExitScope();
+                    }
+
             return false;
-        }
+            }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();

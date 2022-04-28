@@ -266,7 +266,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Float, "x");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(3, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -345,7 +345,7 @@ namespace UnitTests.Daniel
         public void FuncMatSucces()
         {
             var root = Parse(new StringBuilder("int[3][3] kage(int[2][2] m, int[3][3] m2) {int[3][3] ice; ice[2][2] = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; int[3][3] final; final = kage(mat, lol);"));
-            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 2, col: 2), new("m2", SymbolType.Aint, row: 3, col: 3) }, isfunc: true);
+            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 2, col: 2), new("m2", SymbolType.Mint, row: 3, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
             scope.ExitScope();
@@ -360,7 +360,7 @@ namespace UnitTests.Daniel
         public void FuncMatFails()
         {
             var root = Parse(new StringBuilder("int[3][1] kage(int[1][2] m, int[9][3] m2) {int[3][3] ice; ice[2][2] = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; int[3][5] final; final = kage(mat, lol);"));
-            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 1, col: 2), new("m2", SymbolType.Aint, row: 9, col: 3) }, isfunc: true);
+            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 1, col: 2), new("m2", SymbolType.Mint, row: 9, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
             scope.ExitScope();
@@ -375,28 +375,28 @@ namespace UnitTests.Daniel
         public void FuncMatDim()
         {
             var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice; ice[2][2] = m[1][1]; return ice;} int[2][2] mat; int[3][3] final; final= kage(mat);"));
-            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 3, col: 3)}, isfunc: true);
+            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 3, col: 3)}, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
             scope.ExitScope();
             scope.Insert(SymbolType.Mint, "mat", row: 2, col: 2);
             scope.Insert(SymbolType.Mint, "final", row: 3, col: 3);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
         [TestMethod]
         public void FuncMatDim2()
         {
             var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice; ice[2][2] = m[1][1]; return ice;} int[5][7] mat; int[3][3] final; final[2][2]= kage(mat);"));
-            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 3, col: 3) }, isfunc: true);
+            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 3, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
             scope.ExitScope();
             scope.Insert(SymbolType.Mint, "mat", row: 5, col: 7);
             scope.Insert(SymbolType.Mint, "final", row: 3, col: 3);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
     }
 }
