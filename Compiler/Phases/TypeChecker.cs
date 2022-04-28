@@ -247,12 +247,12 @@ namespace Compiler.Phases
                 if (function?.Parameters.Count > 0)
                 for (int i = 0; i < function.Parameters.Count; i++)
                 {
-                    var functionparameterinput = function.Parameters[i];
-                    var functioncallparameterinput = Scope.LookUpSilent(ParametersAsString[i]);
-                    if (functioncallparameterinput != null && !functioncallparameterinput.Type.IsCompatible(functionparameterinput.Type))
+                    var fp = function.Parameters[i];
+                    var fc = Scope.LookUpSilent(ParametersAsString[i]);
+                    if (fc != null && !fc.Type.IsCompatible(fp.Type) || !(fp.Row == fc.Row && fp.Col == fc.Col))
                     {
                         res = false;
-                        Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {functioncallparameterinput} Does not have type {functionparameterinput.Type}"));
+                        Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {fc} Does not have type {fp.Type}"));
                     }
                 }
             }

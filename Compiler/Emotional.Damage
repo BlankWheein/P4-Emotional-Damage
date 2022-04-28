@@ -1,4 +1,9 @@
-﻿int kage() {int k = 1; return k;}
-
-bool k = true;
-k = kage();
+﻿int[3] kage(int[2] a, int[3] a2) {
+	int[2] ice;
+	ice[1] = a[1] + a2[2];
+	return ice;
+} 
+int[2] arr;
+int[3] lol;
+int[1] final;
+final = kage(arr, lol);

@@ -236,7 +236,7 @@ namespace UnitTests.Daniel
             scope.ExitScope();
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(9, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
         [TestMethod]
         public void FuncSameParameters()
@@ -310,6 +310,20 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Aint, "lol", row: 3);
             scope.Insert(SymbolType.Aint, "final", row: 1);
             Assert.AreEqual(scope, root);
+            Assert.AreEqual(1, root.Diagnostics.Count);
+        }
+        [TestMethod]
+        public void FuncArrFails2()
+        {
+            var root = Parse(new StringBuilder("int[1] kage(int[3] a, int[2] a2) {int[1] ice; ice[0] = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[1] final; final = kage(arr, lol);"));
+            scope.Insert(SymbolType.Aint, "kage", row: 1, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 3), new("a2", SymbolType.Aint, row: 2) }, isfunc: true);
+            scope.Allocate("Func");
+            scope.Insert(SymbolType.Aint, "ice", row: 1);
+            scope.ExitScope();
+            scope.Insert(SymbolType.Aint, "arr", row: 2);
+            scope.Insert(SymbolType.Aint, "lol", row: 3);
+            scope.Insert(SymbolType.Aint, "final", row: 1);
+            Assert.AreEqual(scope, root);
             Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
@@ -360,7 +374,7 @@ namespace UnitTests.Daniel
         public void FuncMatFails()
         {
             var root = Parse(new StringBuilder("int[3][1] kage(int[1][2] m, int[9][3] m2) {int[3][3] ice; ice[2][2] = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; int[3][5] final; final = kage(mat, lol);"));
-            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 1, col: 2), new("m2", SymbolType.Mint, row: 9, col: 3) }, isfunc: true);
+            scope.Insert(SymbolType.Mint, "kage", row: 3, col: 1, parameters: new List<Symbol>() { new("m", SymbolType.Mint, row: 1, col: 2), new("m2", SymbolType.Mint, row: 9, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
             scope.ExitScope();
@@ -368,7 +382,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Mint, "lol", row: 3, col: 3);
             scope.Insert(SymbolType.Mint, "final", row: 3, col: 5);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
         [TestMethod]
