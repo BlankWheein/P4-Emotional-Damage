@@ -361,7 +361,7 @@ namespace Compiler.Phases
                 SymbolType.Mfloat => ExprParser(expr, SymbolType.Float),
                 SymbolType.Bool => ExprParser(expr, SymbolType.Bool),
                 SymbolType.String => ExprParser(expr, SymbolType.String),
-                null => throw new NullReferenceException();
+                null => throw new NullReferenceException(),
                 _ => throw new Exception(),
             };
         }
