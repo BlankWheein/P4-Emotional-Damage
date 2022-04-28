@@ -318,7 +318,7 @@ namespace Compiler.Phases
             foreach (var value in items)
                 switch (type)
                 {
-                    case SymbolType.Int when !int.TryParse(value, out _):
+                    case SymbolType.Int when value != "." && !int.TryParse(value, out _):
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
                         break;
