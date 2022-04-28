@@ -92,7 +92,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} int k = 5; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() {int[3] lol; return lol;} int k = 5; k = kage();"));
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
@@ -260,7 +260,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntMatCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} int[4][4] k; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() { int[3] lol; return lol;} int[4][4] k; k = kage();"));
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
@@ -275,7 +275,7 @@ namespace UnitTests.Daniel
         public void IntMatCallIntMat()
         {
             var root = Parse(new StringBuilder("int[4][4] kage() {int[4][4] l; return l;} int[4][4] k; k = kage();"));
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
         [TestMethod]
