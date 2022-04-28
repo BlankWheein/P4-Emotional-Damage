@@ -36,7 +36,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void BoolCallIntArr()
         {
-            var root = Parse(new StringBuilder("int[3] kage() {Int[3] lol; return lol;} bool k = true; k = kage();"));
+            var root = Parse(new StringBuilder("int[3] kage() {int[3] lol; return lol;} bool k = true; k = kage();"));
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
