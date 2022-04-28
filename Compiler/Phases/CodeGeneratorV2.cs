@@ -227,21 +227,34 @@ namespace Compiler.Phases
                 expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
             }
             if (Values.Any(v => v.Contains(id))) {
-                var word = expr.Split(' ');
-                expr = "";
-                int i = 0;
-                foreach (var val in word) {                   
-                    if (Values.Any(v => val.Contains(v))) {
-                        //expr = expr.Replace(val, $"{val}.data");
-                        word[i] = $"{val}.data";
+                if (expr.Any(c => char.IsLetter(c)))
+                {
+                    if (expr.Contains("MathF")) { 
+                        var word = expr.Split(',');
+                        expr = "";
+                        int i = 0;
+                        foreach (var val in word)
+                        {
+                            if (val.Any(c => char.IsLetter(c)))
+                            {
+                                word[i] = $"{val}.data";
+                            }
+                            if (val.Contains("(")) {
+                                word[i] += ",";
+                            }
+                            expr += word[i];
+                            i++;
+                        }
                     }
-                    expr += word[i];
-                    i++;
+                    AddStmt($"Value {id} = {expr};");
+
+                }
+                else
+                {
+
+                    AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
 
-                
-
-                AddStmt($"Value {id} = new Value({expr}, null," +$"\"{id}\"".Trim() +", true);");
             }
             else if(numtype == "float")
             {
