@@ -13,6 +13,8 @@ namespace Compiler.Phases
        
         public List<string> Exprs = new();
         private List<string> perhaps = new List<string>();
+        private int count = 0;
+        public bool lookingforGrads = false;
         public PreCodeGen() {}
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
@@ -68,13 +70,17 @@ namespace Compiler.Phases
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
-                Exprs.Add(_expr1);
-                Exprs.Add(_expr2);
+                if (!Exprs.Any(c => c == _expr1) && !Exprs.Any(c => c == _expr2))
+                {
+                    Exprs.Add(_expr1);
+                    Exprs.Add(_expr2);
+                    count++;
+                }
+                else { count--; }
             }
-            else if (exprtmp.Any(c => char.IsLetter(c)) && !input.Contains("\\\\"))
-            {
+            else if (exprtmp.Any(c => char.IsLetter(c)) && !input.Contains("\\\\") && count>0 && lookingforGrads) { 
+
                 var expr = exprtmp.Split('%', '/', '+', '-', '*');
-                
                 foreach (var _expr in expr)
                 {
                     if (_expr.Any(c => char.IsLetter(c)))

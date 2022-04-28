@@ -42,6 +42,7 @@ namespace Compiler
             ////_scopeTypeChecker.Dispose();
             //Console.ResetColor();
             _preCodeGen.Visit(__context);
+            _preCodeGen.lookingforGrads = true;
             _preCodeGen.Visit(__context);
             _codeGenerator.PreVisit(_preCodeGen.Exprs);
             _codeGenerator.Visit(__context);
