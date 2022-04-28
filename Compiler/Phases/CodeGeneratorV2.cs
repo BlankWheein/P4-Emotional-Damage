@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace Compiler.Phases
 {
-    internal class CodeGeneratorV2 : EmotionalDamageBaseVisitor<object>
+    public class CodeGeneratorV2 : EmotionalDamageBaseVisitor<object>
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-        
+
+        bool _isTesting = false;
+
+
         public CodeGeneratorV2()
         {
             if (File.Exists(_path))
@@ -20,6 +23,11 @@ namespace Compiler.Phases
             _fs = File.Create(_path);
             AddStmt("using AutoGrad;\n");
 
+        }
+        public CodeGeneratorV2(bool IsTesting)
+        {
+
+            _isTesting = IsTesting;
         }
         #region Indent
         public string Indent = "";
