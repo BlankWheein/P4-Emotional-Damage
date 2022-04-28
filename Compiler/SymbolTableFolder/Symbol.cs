@@ -88,6 +88,14 @@ namespace Compiler.SymbolTableFolder
         {
             return (type & (SymbolType.String)) != 0;
         }
+        public static bool IsArray(this SymbolType type)
+        {
+            return (type & (SymbolType.Aint | SymbolType.Afloat)) != 0;
+        }
+        public static bool IsMatrix(this SymbolType type)
+        {
+            return (type & (SymbolType.Mint | SymbolType.Mfloat)) != 0;
+        }
 
         public static bool IsCompatible(this SymbolType functionout, SymbolType variabletype)
         {

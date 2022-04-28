@@ -25,37 +25,10 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void Intsqrt()
         {
-            var root = Parse(new StringBuilder("int kage = sqrt (5) ;"));
+            var root = Parse(new StringBuilder("int kage = sqrt (5);"));
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(0, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void IntAssignFloat()
-        {
-            var root = Parse(new StringBuilder("int kagef(int x) {} int k = 2; int kage = kagef(k) + (2 * 3);"));
-            scope.Insert(SymbolType.Int, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void IntAssignBool()
-        {
-            var root = Parse(new StringBuilder("int kage = true;"));
-            scope.Insert(SymbolType.Int, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void IntAssignBexpr()
-        {
-            var root = Parse(new StringBuilder("int kage = 34 > 30;"));
-            scope.Insert(SymbolType.Int, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, __parser?.NumberOfSyntaxErrors);
         }
 
         [TestMethod]
@@ -88,7 +61,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IntRowLenCol()
         {
-            var root = Parse(new StringBuilder("int kage = 5; int kage3 = kage.row; kage3 = kage.col; kage3 = kage.len"));
+            var root = Parse(new StringBuilder("int kage = 5; int kage3 = kage.row; kage3 = kage.col; kage3 = kage.len;"));
             scope.Insert(SymbolType.Int, "kage");
             scope.Insert(SymbolType.Int, "kage3");
             Assert.AreEqual(scope, root);
@@ -178,16 +151,7 @@ namespace UnitTests.Daniel
         public void IntAssignString()
         {
             var root = Parse(new StringBuilder("string kage2 = \"You deserve a treat!\"; int kage = kage2;"));
-            scope.Insert(SymbolType.Int, "kage");
             scope.Insert(SymbolType.String, "kage2");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void IntAssign()
-        {
-            var root = Parse(new StringBuilder("int kage = 12; kage = 31 > 21;"));
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);

@@ -37,8 +37,9 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void ArrayAssign()
         {
-            var root = Parse(new StringBuilder("int[4] m; for (int i = 0; i < m.len; i++) { m[i] = i*2; }"));
+            var root = Parse(new StringBuilder("int[4] m; int k = m.len; for (int i = 0; i < k; i++) { m[i] = i*2; }"));
             scope.Insert(SymbolType.Aint, "m", row: 4);
+            scope.Insert(SymbolType.Int, "k");
             scope.Allocate("For");
             scope.Insert(SymbolType.Int, "i");
             Assert.AreEqual(scope, root);
@@ -105,7 +106,7 @@ namespace UnitTests.ScopeTests
             scope.Insert(SymbolType.Float, "m");
             scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
     }
 }

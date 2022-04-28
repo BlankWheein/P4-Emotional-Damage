@@ -60,7 +60,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FloatRowLenCol()
         {
-            var root = Parse(new StringBuilder("float kage = 5; float kage3 = kage.row; kage3 = kage.col; kage3 = kage.len"));
+            var root = Parse(new StringBuilder("float kage = 5; float kage3 = kage.row; kage3 = kage.col; kage3 = kage.len;"));
             scope.Insert(SymbolType.Float, "kage");
             scope.Insert(SymbolType.Float, "kage3");
             Assert.AreEqual(scope, root);

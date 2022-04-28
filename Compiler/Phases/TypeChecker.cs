@@ -144,10 +144,76 @@ namespace Compiler.Phases
             res &= CanParseValues(expr, type);
             res &= CanParseFunction(expr, type);
             res &= DoesVariableReturnCompatibleType(expr, type);
-            //res &= CanParseArrayValues(expr, type);
-            //res &= CanParseMatrixValues(expr, type);
+            res &= CanParseMultiDimensionalVariables(expr, type);
+            res &= CanUseRowColLen(expr, type);
             return res;
         }
+
+        private bool CanUseRowColLen(string expr, SymbolType type)
+        {
+            bool res = true;
+            var _out = SplitOnOperatorsExpr(expr);
+            foreach (var item in _out)
+            {
+                if (item.Contains(".row"))
+                {
+                    Symbol? sym = Scope.LookUpSilent(item.Split(".")[0]);
+                    if (sym != null && !sym.Type.IsMatrix())
+                    {
+                        Scope.AddDiagnostic(new("cant use .row on non Matrix"));
+                        res = false;
+                    }
+                }
+                else if (item.Contains(".col"))
+                {
+                    Symbol? sym = Scope.LookUpSilent(item.Split(".")[0]);
+                    if (sym != null && !sym.Type.IsMatrix())
+                    {
+                        Scope.AddDiagnostic(new("cant use .col on non Matrix"));
+                        res = false;
+                    }
+                }
+                else if (item.Contains(".len"))
+                {
+                    Symbol? sym = Scope.LookUpSilent(item.Split(".")[0]);
+                    if (sym != null && !sym.Type.IsArray())
+                    {
+                        Scope.AddDiagnostic(new("cant use .len on non Array"));
+                        res = false;
+                    }
+                }
+            }
+            return res;
+        }
+
+        private bool CanParseMultiDimensionalVariables(string expr, SymbolType type)
+        {
+            bool res = true;
+            var _out = SplitOnOperatorsExpr(expr);
+            foreach (var item in _out)
+            {
+                Symbol? sym = Scope.LookUpSilent(item.Split("[")[0]);
+                if (sym == null) return false;
+                int count = item.Split("[").Length;
+                if (count == 1 && (sym.Type.IsArray() || sym.Type.IsMatrix()))
+                {
+                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A/M{type.ToString().ToLower()}"));
+                    res = false;
+                }
+                else if (count == 2 && !sym.Type.IsArray())
+                {
+                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A{type.ToString().ToLower()}"));
+                    res = false;
+                }
+                else if (count == 3 && !sym.Type.IsMatrix())
+                {
+                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type M{type.ToString().ToLower()}"));
+                    res = false;
+                }
+            }
+            return res;
+        }
+
         private bool CanParseFunction(string expr, SymbolType type)
         {
             var _out = SplitOnOperatorsExpr(expr).ToList();
@@ -248,7 +314,7 @@ namespace Compiler.Phases
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to int"));
                         break;
-                    case SymbolType.Float when (!(float.TryParse(value, out _) || int.TryParse(value, out _))):
+                    case SymbolType.Float when ( value != "." &&  !(float.TryParse(value, out _) || int.TryParse(value, out _))):
                         res = false;
                         Scope.AddDiagnostic(new($"{value} Could not be parsed to float"));
                         break;
@@ -341,53 +407,34 @@ namespace Compiler.Phases
 
         internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-
-            bool isValid = true;
-            Symbol array = Scope.LookUp(context.IDENTIFIER(0).GetText());
-
-            if (context.Inum() != null)
+            bool res = true;
+            Symbol? id = Scope.LookUp(context.IDENTIFIER()[0].GetText());
+            Symbol? index = context.IDENTIFIER().Length == 2 ? Scope.LookUp(context.IDENTIFIER()[1].GetText()) : new Symbol("Constant", SymbolType.Int);
+            if (id == null || index == null)
+                res = false;
+            if (index?.Id == "Constant" && int.TryParse(context.Inum().GetText(), out int x))
             {
-                var number = context.Inum().GetText();
-                if (int.TryParse(number, out int x))
+                if (x < 0)
                 {
-                    if (x < 0)
-                    {
-                        isValid = false;
-                        Scope.AddDiagnostic(new($"Arrays can't have {x} elements!"));
-                    }
-                    else if (x > array.Row - 1)
-                    {
-                        isValid = false;
-                        Scope.AddDiagnostic(new($"Array index out of bounds!"));
-                    }
-                }
-                else
-                {
-                    isValid = false;
-                    Scope.AddDiagnostic(new($"{x} is not an integer!"));
+                    res = false;
+                    Scope.AddDiagnostic(new("index cant be negative"));
                 }
             }
-            else
+            if (!id.Type.IsArray())
             {
-                Symbol id = Scope.LookUp(context.IDENTIFIER(1).GetText());
-                if (id == null)
-                {
-                    isValid = false;
-                    Scope.AddDiagnostic(new($"{context.IDENTIFIER(1)} is not declared!"));
-                }
-                else if (id.Type != SymbolType.Int)
-                {
-                    isValid = false;
-                    Scope.AddDiagnostic(new($"{id.Id} is not an integer!"));
-                }
+                Scope.AddDiagnostic(new($"{id.Id} was not an array"));
+                return false;
             }
-
-            // This does not work
             if (context.expr() != null)
+                res &= ExprHelper(context.expr().GetText(), id.Type);
+            else
+                if (!id.Type.IsString())
             {
-                isValid &= ExprHelper(context.expr().GetText(), array.Type);
+                res = false;
+                Scope.AddDiagnostic(new($"Array {id.Id} was not of type string"));
             }
-            return isValid;
+
+            return res;
         }
 
         internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context)

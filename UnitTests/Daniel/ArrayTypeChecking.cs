@@ -36,7 +36,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ArrayAssignSuccess()
         {
-            var root = Parse(new StringBuilder("int[2] kage; kage[0]=5;kage[1]=7;"));
+            var root = Parse(new StringBuilder("int[2] kage; kage[0] = 5; kage[1] = 7;"));
             Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
@@ -59,16 +59,8 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ArrayAssignIDNotInt()
         {
-            var root = Parse(new StringBuilder("int[2] kage;float a=1.1; kage[a]=5;"));
+            var root = Parse(new StringBuilder("int[2] kage; float a = 1.1; kage[a] = 5;"));
             Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-
-        [TestMethod]
-        public void ArrayAssignMultiErrors()
-        {
-            var root = Parse(new StringBuilder("int[2] kage; float a=1.1; kage[a]=5; kage[b]=5; kage[9]=5;"));
-            Assert.AreEqual(3, root.Diagnostics.Count);
         }
 
         [TestMethod]
