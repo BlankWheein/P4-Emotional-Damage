@@ -286,7 +286,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncArrSucces()
         {
-            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[3] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[3] final= kage(arr, lol);"));
+            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[3] ice; ice[2] = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[3] final; final[1] = kage(arr, lol);"));
             scope.Insert(SymbolType.Aint, "kage", row: 3, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 2), new("a2", SymbolType.Aint, row: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 3);
@@ -301,7 +301,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncArrFails()
         {
-            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[2] ice = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; final[1] = kage(arr, lol);"));
+            var root = Parse(new StringBuilder("int[3] kage(int[2] a, int[3] a2) {int[2] ice; ice[1] = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[1] final; final[0] = kage(arr, lol);"));
             scope.Insert(SymbolType.Aint, "kage", row: 3, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 2), new("a2", SymbolType.Aint, row: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 2);
@@ -316,7 +316,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncWrongArrDim()
         {
-            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice = a[1]; return ice;} int[1] arr; final[2] = kage(arr);"));
+            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice; ice[1] = a[1]; return ice;} int[1] arr; int[2] final; final[1] = kage(arr);"));
             scope.Insert(SymbolType.Aint, "kage", row: 2, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 2)}, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 2);
@@ -330,7 +330,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncWrongArrDim2()
         {
-            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice = a[1]; return ice;} int[5] arr; final[2] = kage(arr);"));
+            var root = Parse(new StringBuilder("int[2] kage(int[2] a) {int[2] ice; ice[1] = a[1]; return ice;} int[5] arr; int[2] final; final[1] = kage(arr);"));
             scope.Insert(SymbolType.Aint, "kage", row: 2, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 2) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 2);
@@ -344,7 +344,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncMatSucces()
         {
-            var root = Parse(new StringBuilder("int[3][3] kage(int[2][2] m, int[3][3] m2) {int[3][3] ice = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; final[3][3] = kage(mat, lol);"));
+            var root = Parse(new StringBuilder("int[3][3] kage(int[2][2] m, int[3][3] m2) {int[3][3] ice; ice[2][2] = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; int[3][3] final; final[2][2] = kage(mat, lol);"));
             scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 2, col: 2), new("m2", SymbolType.Aint, row: 3, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
@@ -359,7 +359,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncMatFails()
         {
-            var root = Parse(new StringBuilder("int[3][1] kage(int[1][2] m, int[9][3] m2) {int[3][3] ice = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; final[3][5] = kage(mat, lol);"));
+            var root = Parse(new StringBuilder("int[3][1] kage(int[1][2] m, int[9][3] m2) {int[3][3] ice; ice[2][2] = m[1][1] + m2[2][2]; return ice;} int[2][2] mat; int[3][3] lol; int[3][5] final; final[2][2] = kage(mat, lol);"));
             scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 1, col: 2), new("m2", SymbolType.Aint, row: 9, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
@@ -374,7 +374,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncMatDim()
         {
-            var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice = m[1][1]; return ice;} int[2][2] mat; final[3][3] = kage(mat);"));
+            var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice; ice[2][2] = m[1][1]; return ice;} int[2][2] mat; int[3][3] final; final[2][2]= kage(mat);"));
             scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 3, col: 3)}, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
@@ -388,7 +388,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncMatDim2()
         {
-            var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice = m[1][1]; return ice;} int[5][7] mat; final[3][3] = kage(mat);"));
+            var root = Parse(new StringBuilder("int[3][3] kage(int[3][3] m) {int[3][3] ice; ice[2][2] = m[1][1]; return ice;} int[5][7] mat; int[3][3] final; final[2][2]= kage(mat);"));
             scope.Insert(SymbolType.Mint, "kage", row: 3, col: 3, parameters: new List<Symbol>() { new("m", SymbolType.Aint, row: 3, col: 3) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Mint, "ice", row: 3, col: 3);
