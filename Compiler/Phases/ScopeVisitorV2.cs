@@ -84,7 +84,6 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
-            TypeChecker.CheckFuncStmt(context);
             foreach (var s in context.IDENTIFIER())
                 Scope.LookUp(s.GetText());
             return base.VisitFuncStmt(context);
@@ -133,7 +132,7 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string text = context.STRING_CONSTANT().GetText();
             if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), text), id);
+                Scope.Insert(SymbolType.String, id);
             return base.VisitStringDcl(context);
         }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)

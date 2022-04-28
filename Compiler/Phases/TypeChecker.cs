@@ -26,61 +26,17 @@ namespace Compiler.Phases
         public bool CheckBexpr(EmotionalDamageParser.IfstmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
-            bool isValid = true;
-            if (bexpr == "true" || bexpr == "false") return isValid;
-            var text = SplitOnOperatorsBexpr(bexpr);
-
-            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-                return true;
-            else if ((Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && (text[0] == "true" || text[0] == "false")) && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
-                return false;
-            }
-            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool && (text[0] == "true" || text[0] == "false"))
-            {
-                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
-                return false;
-            }
-
-            bool left = ExprHelper(text[0], SymbolType.Bool);
-            bool right = ExprHelper(text[1], SymbolType.Bool);
-            
-            if (left && !right || !left && right)
-                isValid = false;
-
+            if (bexpr == "true" || bexpr == "false") return true;
+            bool isValid = IsValidBexpr(bexpr);
             return isValid;
         }
         public bool CheckBexpr(EmotionalDamageParser.ElifstmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
-            bool isValid = true;
-            if (bexpr == "true" || bexpr == "false") return isValid;
-            var text = SplitOnOperatorsBexpr(bexpr);
-            if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-                return true;
-            else if (Scope.LookUpSilent(text[0])?.Type != SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type == SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use non-bool and bool"));
-                return false;
-            }
-            else if (Scope.LookUpSilent(text[0])?.Type == SymbolType.Bool && Scope.LookUpSilent(text[1])?.Type != SymbolType.Bool)
-            {
-                Scope.AddDiagnostic(new($"Cant use bool and non-bool"));
-                return false;
-            }
-
-            bool left = ExprHelper(text[0], SymbolType.Bool);
-            bool right = ExprHelper(text[1], SymbolType.Bool);
-
-            
-            if (left && !right || !left && right)
-                isValid = false;
-
+            if (bexpr == "true" || bexpr == "false") return true;
+            bool isValid = IsValidBexpr(bexpr);
             return isValid;
         }
-
-
 
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
@@ -106,26 +62,41 @@ namespace Compiler.Phases
 
             return isValid;
         }
+        internal bool IsValidBexpr(string bexpr)
+        {
+            var _out = SplitOnOperatorsBexpr(bexpr);
+            string RightAsString = _out[1];
+            Symbol? left = Scope.LookUp(_out[0]);
+            Symbol? right;
+            if (RightAsString == "true" || RightAsString == "false")
+                right = new("Constant", SymbolType.Bool);
+            else if (int.TryParse(RightAsString, out _))
+                right = new("Constant", SymbolType.Int);
+            else
+                right = Scope.LookUp(RightAsString);
 
+            bool iscomp;
+            if (right != null && left != null)
+                iscomp = left.Type.IsCompatible(right.Type);
+            else
+                iscomp = false;
+            if (iscomp == false)
+                return false;
+            if (left?.Type.IsBool() == true)
+            {
+                if (!bexpr.Contains("==") && !bexpr.Contains("!="))
+                {
+                    Scope.AddDiagnostic(new("Bool check needs to contain '==' OR '!='"));
+                    iscomp = false;
+                }
+            }
+            return iscomp;
+        }
         internal bool CheckBoolDcl(EmotionalDamageParser.BoolDeclarationContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
             if (bexpr == "true" || bexpr == "false") return true;
-            var text = SplitOnOperatorsBexpr(bexpr);
-            bool isValid = true;
-            bool left = ExprHelper(text[0], SymbolType.Bool);
-            bool right = ExprHelper(text[1], SymbolType.Bool);
-            bool iscomp = GetExprType(text[0]).IsCompatible(GetExprType(text[1])) == false;
-            if (iscomp)
-            {
-                Scope.AddDiagnostic(new($"Left and right hand side of {bexpr} is not compatible"));
-                isValid = false;
-            }
-            
-
-            if (left && !right || !left && right)
-                isValid = false;
-
+            bool isValid = IsValidBexpr(bexpr);
             return isValid;
         }
         List<string> GetExprVariableNoFunc(string _text)
@@ -154,28 +125,6 @@ namespace Compiler.Phases
                     _items.Add(items[0]);
             }
             return _items;
-        }
-        private SymbolType GetExprType(string text)
-        {
-
-            var symbols = GetExprVariableNoFunc(text);
-            var values = GetValuesFromExpr(text);
-            if (symbols.Count == 0 && values.Count == 0)
-            {
-                Symbol? sym = Scope.LookUpSilent(text);
-                if (sym != null)
-                    return sym.Type;
-                return SymbolType.NotDefined;
-            }
-            bool res = true;
-            foreach(var s in symbols)
-            {
-                Symbol? sym = Scope.LookUpSilent(s);
-                if (sym != null)
-                    res &= SymbolType.Int.IsCompatible(sym.Type) == true;
-            }
-            Console.WriteLine();
-            return SymbolType.Int;
         }
 
         private Symbol? GetFunctionReturnType(string expr)
@@ -257,30 +206,14 @@ namespace Compiler.Phases
         internal bool CheckBoolAssignStmtContext(EmotionalDamageParser.BoolAssignStmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
-            bool isValid = true;
+            bool isValid;
             if (Scope.LookUpSilent(ctx.IDENTIFIER().GetText())?.Type.IsBool() == false)
             {
                 Scope.AddDiagnostic(new($"{ctx.IDENTIFIER().GetText()} was not of type bool"));
                 return false;
             }
             if (bexpr == "true" || bexpr == "false") return true;
-            var text = SplitOnOperatorsBexpr(bexpr);
-            if ((text[0] == "true" || text[0] == "false") && !(text[1] == "true" || text[1] == "false" || Scope.LookUpSilent(text[1])?.Type.IsBool() == true))
-            {
-                Scope.AddDiagnostic(new($"Bool/Int Mismatch"));
-                return false;
-            }
-            if ((text[1] == "true" || text[1] == "false") && !(text[0] == "true" || text[0] == "false" || Scope.LookUpSilent(text[0])?.Type.IsBool() == true))
-            {
-                Scope.AddDiagnostic(new($"Int/Bool Mismatch"));
-                return false;
-            }
-            bool left = ExprHelper(text[0], SymbolType.Bool);
-            bool right = ExprHelper(text[1], SymbolType.Bool);
-            
-            if (left && !right || !left && right)
-                isValid = false;
-
+            isValid = IsValidBexpr(bexpr);
             return isValid;
         }
         List<string> GetValuesFromExpr(string expr)
@@ -344,11 +277,14 @@ namespace Compiler.Phases
 
         private bool ExprHelper(string expr, SymbolType? type = null)
         {
-
             return type switch
             {
                 SymbolType.Int => ExprParser(expr, SymbolType.Int),
+                SymbolType.Aint => ExprParser(expr, SymbolType.Int),
+                SymbolType.Mint => ExprParser(expr, SymbolType.Int),
                 SymbolType.Float => ExprParser(expr, SymbolType.Float),
+                SymbolType.Afloat => ExprParser(expr, SymbolType.Float),
+                SymbolType.Mfloat => ExprParser(expr, SymbolType.Float),
                 SymbolType.Bool => ExprParser(expr, SymbolType.Bool),
                 SymbolType.String => ExprParser(expr, SymbolType.String),
                 _ => throw new Exception(),
@@ -358,32 +294,7 @@ namespace Compiler.Phases
         {
             return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText())?.Type);
         }
-        public bool CheckMatrixValueGetter(EmotionalDamageParser.NumMatrixValueContext ctx)
-        {
-            bool res = true;
-            string id = ctx.IDENTIFIER().First().GetText();
-            var sym = Scope.LookUp(id);
-            if (sym?.Type != SymbolType.Mint && sym?.Type != SymbolType.Mfloat)
-            {
-                Scope.AddDiagnostic(new($"{id} was not of type Matrix"));
-                res = false;
-            }
-            return res;
-        }
-        public bool CheckArrayValueGetter(EmotionalDamageParser.ArrayDeclarationContext ctx)
-        {
-            bool res = true;
-            string id = ctx.IDENTIFIER().GetText();
-            var sym = Scope.LookUp(id);
-            if (sym?.Type != SymbolType.Mint && sym?.Type != SymbolType.Mfloat)
-            {
-                Scope.AddDiagnostic(new($"{id} was not of type Matrix"));
-                res = false;
-            }
-            return res;
-        }
-
-
+        
         internal bool CheckMatrixDcl(EmotionalDamageParser.MatrixDeclarationContext context)
         {
             bool isValid = true;
@@ -395,13 +306,13 @@ namespace Compiler.Phases
                     if (x < 1)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"Matrices can't have {x} elements!"));
+                        Scope.AddDiagnostic(new($"Matrices can't have {x} elements!"));
                     }
                 }
                 else
                 {
                     isValid = false;
-                    Scope.Diagnostics.Add(new($"{inum.GetText()} is not an integer!"));
+                    Scope.AddDiagnostic(new($"{inum.GetText()} is not an integer!"));
                 }
             }
             return isValid;
@@ -416,56 +327,15 @@ namespace Compiler.Phases
                 if (x < 1)
                 {
                     isValid = false;
-                    Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                    Scope.AddDiagnostic(new($"Arrays can't have {x} elements!"));
                 }
             }
             else
             {
                 isValid = false;
-                Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+                Scope.AddDiagnostic(new($"{x} is not an integer!"));
             }
 
-            return isValid;
-        }
-
-        internal bool CheckFuncStmt(EmotionalDamageParser.FuncStmtContext context)
-        {
-            bool isValid = true;
-            var func = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            List<Symbol> dclList = func?.Parameters;
-            List<SymbolType> callList = new();
-
-
-            //add symbols to callList if they can be found and are initialized in the scope
-            for (int i = 1; i < context.IDENTIFIER().Length; i++)
-            {
-                Symbol s = Scope.LookUp(context.IDENTIFIER(i).GetText());
-                if (s == null)
-                {
-                    isValid = false;
-                    Scope.Diagnostics.Add(new($"Variable {context.IDENTIFIER(i).GetText()} is not declared!"));
-
-                }
-                else { callList.Add(s.Type); }
-            }
-
-            //check if types match, and if the number of parameters match the function dcl
-            if (dclList.Count == callList.Count)
-            {
-                for (int i = 0; i < dclList.Count; i++)
-                {
-                    isValid &= dclList[i].Type == callList[i];
-                }
-                if (isValid == false)
-                {
-                    Scope.Diagnostics.Add(new($"Function call parameter types don't match the function declaration!"));
-                }
-            }
-            else if (dclList.Count != context.IDENTIFIER().Length - 1)
-            {
-                isValid = false;
-                Scope.AddDiagnostic(new("Parameter count does not match the function declaration!"));
-            }
             return isValid;
         }
 
@@ -483,18 +353,18 @@ namespace Compiler.Phases
                     if (x < 0)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"Arrays can't have {x} elements!"));
+                        Scope.AddDiagnostic(new($"Arrays can't have {x} elements!"));
                     }
                     else if (x > array.Row - 1)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"Array index out of bounds!"));
+                        Scope.AddDiagnostic(new($"Array index out of bounds!"));
                     }
                 }
                 else
                 {
                     isValid = false;
-                    Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+                    Scope.AddDiagnostic(new($"{x} is not an integer!"));
                 }
             }
             else
@@ -503,12 +373,12 @@ namespace Compiler.Phases
                 if (id == null)
                 {
                     isValid = false;
-                    Scope.Diagnostics.Add(new($"{context.IDENTIFIER(1)} is not declared!"));
+                    Scope.AddDiagnostic(new($"{context.IDENTIFIER(1)} is not declared!"));
                 }
                 else if (id.Type != SymbolType.Int)
                 {
                     isValid = false;
-                    Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
+                    Scope.AddDiagnostic(new($"{id.Id} is not an integer!"));
                 }
             }
 
@@ -535,18 +405,18 @@ namespace Compiler.Phases
                         if (x < 0)// denne del er nok ligegyldig for grammar, tillader ikke negative tal
                         {
                             isValid = false;
-                            Scope.Diagnostics.Add(new($"Matrix dimenensions can't have {x} elements!"));
+                            Scope.AddDiagnostic(new($"Matrix dimenensions can't have {x} elements!"));
                         }
                         else if (x > matrix.Row - 1 || x > matrix.Col - 1)
                         {
                             isValid = false;
-                            Scope.Diagnostics.Add(new($"Matrix index out of bounds!"));
+                            Scope.AddDiagnostic(new($"Matrix index out of bounds!"));
                         }
                     }
                     else
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"{x} is not an integer!"));
+                        Scope.AddDiagnostic(new($"{x} is not an integer!"));
                     }
                 }
             }
@@ -558,12 +428,12 @@ namespace Compiler.Phases
                     if (id == null)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"{context.IDENTIFIER(i)} is not declared!"));
+                        Scope.AddDiagnostic(new($"{context.IDENTIFIER(i)} is not declared!"));
                     }
                     else if (id?.Type != SymbolType.Int)
                     {
                         isValid = false;
-                        Scope.Diagnostics.Add(new($"{id.Id} is not an integer!"));
+                        Scope.AddDiagnostic(new($"{id.Id} is not an integer!"));
                     }
                 }
             }
@@ -579,16 +449,16 @@ namespace Compiler.Phases
         internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext context)
         {
             bool isValid = true;
-            Symbol symbol = Scope.LookUp(context.IDENTIFIER().GetText());
+            Symbol? symbol = Scope.LookUp(context.IDENTIFIER().GetText());
             if (symbol == null)
             {
                 isValid = false;
-                Scope.Diagnostics.Add(new($"{context.IDENTIFIER().GetText()} is not declared!"));
+                Scope.AddDiagnostic(new($"{context.IDENTIFIER().GetText()} is not declared!"));
             }
             else if ((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)//if the type is not matrix, enter the if statement
             {
                 isValid = false;
-                Scope.Diagnostics.Add(new($"{symbol.Id} is not a matrix!"));
+                Scope.AddDiagnostic(new($"{symbol.Id} is not a matrix!"));
             }
             return isValid;
         }

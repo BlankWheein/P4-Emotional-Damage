@@ -165,16 +165,7 @@ namespace UnitTests.Daniel
         public void FloatAssignString()
         {
             var root = Parse(new StringBuilder("string kage2 = \"You deserve a treat!\"; float kage = kage2;"));
-            scope.Insert(SymbolType.Float, "kage");
             scope.Insert(SymbolType.String, "kage2");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void FloatAssign()
-        {
-            var root = Parse(new StringBuilder("float kage = 12; kage = 31 > 21;"));
             scope.Insert(SymbolType.Float, "kage");
             Assert.AreEqual(scope, root);
             Assert.AreEqual(1, root.Diagnostics.Count);

@@ -37,8 +37,10 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void MatrixAssign()
         {
-            var root = Parse(new StringBuilder("int[4][2] m; for (int i = 0; i < m.row; i++) {for (int j = 0; j < m.col; j++) { m[i][j] = i*j; }}"));
+            var root = Parse(new StringBuilder("int[4][2] m; int k = m.row; int k2 = m.col; for (int i = 0; i < k; i++) {for (int j = 0; j < k2; j++) { m[i][j] = i*j; }}"));
             scope.Insert(SymbolType.Mint, "m", row: 4, col: 2);
+            scope.Insert(SymbolType.Int, "k");
+            scope.Insert(SymbolType.Int, "k2");
             scope.Allocate("For");
             scope.Insert(SymbolType.Int, "i");
             scope.Allocate("For");

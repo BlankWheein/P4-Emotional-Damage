@@ -91,10 +91,10 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void IfStatementTests3()
         {
-            var root = Parse(new StringBuilder("bool k = true;if (k == k + 1) {}"));
+            var root = Parse(new StringBuilder("bool k = true;if (k == k) {}"));
             scope.Insert(SymbolType.Bool, "k");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
     }
     }

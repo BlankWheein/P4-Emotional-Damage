@@ -172,7 +172,10 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncCallWrongParameters()
         {
-            var root = Parse(new StringBuilder("float kage(int x, float y, string elite) {int z = 6; float q = 6.9; return x;} float kage2 = 6.9; int kage3 = 75; bool kage4 = true; float kage5 = kage(kage2, kage4, kage3);"));
+            var source = new StringBuilder(  "float kage(int x, float y, string elite) {int z = 6; float q = 6.9; return x;}");
+            source.Append(                  "float kage2 = 6.9; int kage3 = 75; bool kage4 = true;");
+            source.Append(                  "float kage5 = kage(kage2, kage4, kage3);");
+            var root = Parse(source);
             scope.Insert(SymbolType.Float, "kage", parameters: new List<Symbol>() { new("x", SymbolType.Int), new("y", SymbolType.Float), new("elite", SymbolType.String)}, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Int, "z");
@@ -183,7 +186,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Bool, "kage4");
             scope.Insert(SymbolType.Float, "kage5");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(3, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -233,9 +236,8 @@ namespace UnitTests.Daniel
             scope.ExitScope();
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(9, root.Diagnostics.Count);
         }
-        //Why do we expect errors here?
         [TestMethod]
         public void FuncSameParameters()
         {
@@ -251,7 +253,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Float, "k");
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
 
         [TestMethod]
