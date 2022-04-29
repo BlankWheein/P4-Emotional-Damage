@@ -161,6 +161,17 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>GradientDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>printStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>
@@ -421,17 +432,6 @@ public partial class EmotionalDamageBaseVisitor<Result> : AbstractParseTreeVisit
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by the <c>GradientExpr</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>FuncCall</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.

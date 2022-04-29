@@ -13,6 +13,7 @@ dcl :
     | numtype IDENTIFIER '=' expr';' #NumDcl
     | 'string' IDENTIFIER '=' STRING_CONSTANT';' #StringDcl
     | 'bool' IDENTIFIER '=' bexpr';' #BoolDeclaration
+    | numtype IDENTIFIER '=' IDENTIFIER '\\\\' IDENTIFIER';' #GradientDcl
     ;
 
 stmt: 
@@ -46,7 +47,6 @@ expr:
     | expr '/' expr #DivideExpr
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
-    | IDENTIFIER '\\\\' IDENTIFIER #GradientExpr
     | IDENTIFIER #NumValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue

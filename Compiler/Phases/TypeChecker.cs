@@ -18,10 +18,8 @@ namespace Compiler.Phases
         }
 
         public RootSymbolTable Scope { get => ScopeVisitorV2.Scope; }
-        Regex IsVariable = new("[A-Za-z]");
-        Regex IsDigit = new("[0-9]");
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
-        internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "\\\\", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
         internal List<string> SplitOnOperatorsBexpr(string text) => text.Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         public bool CheckBexpr(EmotionalDamageParser.IfstmtContext ctx)
@@ -57,13 +55,6 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new($"{numtype} could not be parsed to a type"));
                 return false;
             }
-        }
-
-        internal bool CheckStringDcl(EmotionalDamageParser.StringDclContext context)
-        {
-            bool isValid = true;
-
-            return isValid;
         }
         internal bool IsValidBexpr(string bexpr)
         {
@@ -193,14 +184,6 @@ namespace Compiler.Phases
             return true;
         }
 
-        private bool IsIndexInBounds(string expr)
-        {
-            bool res = true;
-            var _out = SplitOnOperatorsExpr(expr).Where(p => p.Contains("[")).ToList();
-
-            return res;
-        }
-
         private bool CanUseRowColLen(string expr, SymbolType type)
         {
             bool res = true;
@@ -321,13 +304,13 @@ namespace Compiler.Phases
             return res;
         }
 
-        internal bool CheckBoolAssignStmtContext(EmotionalDamageParser.BoolAssignStmtContext ctx)
+        internal bool CheckBoolAssignStmtContext(BoolAssignStmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
             bool isValid;
             if (Scope.LookUpSilent(ctx.IDENTIFIER().GetText())?.Type.IsBool() == false)
             {
-                Scope.AddDiagnostic(new($"{ctx.IDENTIFIER().GetText()} was not of type bool"));
+                Scope.AddDiagnostic(new TypeCheckerException($"{ctx.IDENTIFIER().GetText()} was not of type bool", ctx));
                 return false;
             }
             if (bexpr == "true" || bexpr == "false") return true;
@@ -429,13 +412,13 @@ namespace Compiler.Phases
             return res;
         }
 
-        public bool CheckNumAssignStmtContext(EmotionalDamageParser.NumAssignStmtContext ctx)
+        public bool CheckNumAssignStmtContext(NumAssignStmtContext ctx)
         {
             string text = ctx.GetText();
             return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText()));
         }
         
-        internal bool CheckMatrixDcl(EmotionalDamageParser.MatrixDeclarationContext context)
+        internal bool CheckMatrixDcl(MatrixDeclarationContext context)
         {
             bool isValid = true;
 
@@ -446,18 +429,18 @@ namespace Compiler.Phases
                     if (x < 1)
                     {
                         isValid = false;
-                        Scope.AddDiagnostic(new($"Matrices can't have {x} elements!"));
+                        Scope.AddDiagnostic(new TypeCheckerException($"Matrices can't have {x} elements!", context));
                     }
                 }
                 else
                 {
                     isValid = false;
-                    Scope.AddDiagnostic(new($"{inum.GetText()} is not an integer!"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"{inum.GetText()} is not an integer!", context));
                 }
             }
             return isValid;
         }
-        internal bool CheckArrayDcl(EmotionalDamageParser.ArrayDeclarationContext context)
+        internal bool CheckArrayDcl(ArrayDeclarationContext context)
         {
             bool isValid = true;
             var number = context.Inum().GetText();
@@ -467,19 +450,19 @@ namespace Compiler.Phases
                 if (x < 1)
                 {
                     isValid = false;
-                    Scope.AddDiagnostic(new($"Arrays can't have {x} elements!"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"Arrays can't have {x} elements!", context));
                 }
             }
             else
             {
                 isValid = false;
-                Scope.AddDiagnostic(new($"{x} is not an integer!"));
+                Scope.AddDiagnostic(new TypeCheckerException($"{x} is not an integer!", context));
             }
 
             return isValid;
         }
 
-        internal bool CheckArrayAssign(EmotionalDamageParser.ArrayElementAssignStmtContext context)
+        internal bool CheckArrayAssign(ArrayElementAssignStmtContext context)
         {
             bool res = true;
             Symbol? id = Scope.LookUp(context.IDENTIFIER()[0].GetText());
@@ -489,24 +472,24 @@ namespace Compiler.Phases
             if (index != null && index?.Type.IsInt() != true)
             {
                 res = false;
-                Scope.AddDiagnostic(new($"Index was not of type Int"));
+                Scope.AddDiagnostic(new TypeCheckerException($"Index was not of type Int", context));
             }
             if (index?.Id == "Constant" && int.TryParse(context.Inum().GetText(), out int x))
             {
                 if (x < 0)
                 {
                     res = false;
-                    Scope.AddDiagnostic(new("index cant be negative"));
+                    Scope.AddDiagnostic(new TypeCheckerException("index cant be negative", context));
                 }
                 else if (x >= id?.Row)
                 {
                     res = false;
-                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}] does not have the dimension {x}"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"{id.Id}[{id.Row}] does not have the dimension {x}", context));
                 }
             }
             if (!id.Type.IsArray())
             {
-                Scope.AddDiagnostic(new($"{id.Id} was not an array"));
+                Scope.AddDiagnostic(new TypeCheckerException($"{id.Id} was not an array", context));
                 return false;
             }
             if (context.expr() != null)
@@ -515,13 +498,13 @@ namespace Compiler.Phases
                 if (!id.Type.IsString())
             {
                 res = false;
-                Scope.AddDiagnostic(new($"Array {id.Id} was not of type string"));
+                Scope.AddDiagnostic(new TypeCheckerException($"Array {id.Id} was not of type string", context));
             }
 
             return res;
         }
 
-        internal bool CheckMatrixAssign(EmotionalDamageParser.MatrixElementAssignStmtContext context)
+        internal bool CheckMatrixAssign(MatrixElementAssignStmtContext context)
         {
             bool res = true;
             Symbol? id = Scope.LookUp(context.IDENTIFIER()[0].GetText()) ;
@@ -532,7 +515,7 @@ namespace Compiler.Phases
                 if (int.TryParse(s.GetText(), out int x) && x < 0)
                 {
                     res = false;
-                    Scope.AddDiagnostic(new("index cant be negative"));
+                    Scope.AddDiagnostic(new TypeCheckerException("index cant be negative", context));
                 }
             }
             if (context.IDENTIFIER().Length > 1)
@@ -541,7 +524,7 @@ namespace Compiler.Phases
                 {
                     if (Scope.LookUpSilent(context.IDENTIFIER()[i].GetText())?.Type.IsInt() != true)
                     {
-                        Scope.AddDiagnostic(new($"Index {Scope.LookUpSilent(context.IDENTIFIER()[i].GetText())?.Id} was not of type int"));
+                        Scope.AddDiagnostic(new TypeCheckerException($"Index {Scope.LookUpSilent(context.IDENTIFIER()[i].GetText())?.Id} was not of type int", context));
                         res = false;
                     }
                 }
@@ -552,19 +535,19 @@ namespace Compiler.Phases
                 int col = int.Parse(context.Inum().Last().GetText());
                 if (row >= id.Row)
                 {
-                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]", context));
                     res = false;
                 }
                 if (col >= id.Col)
                 {
-                    Scope.AddDiagnostic(new($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"{id.Id}[{id.Row}][{id.Col}] does not have the dimension [{row}][{col}]", context));
                     res = false;
                 }
             }
             
             if (!id.Type.IsMatrix())
             {
-                Scope.AddDiagnostic(new($"{id.Id} was not a matrix"));
+                Scope.AddDiagnostic(new TypeCheckerException($"{id.Id} was not a matrix", context));
                 return false;
             }
             if (context.expr() != null)
@@ -572,7 +555,7 @@ namespace Compiler.Phases
             else if (!id.Type.IsString())
                 {
                     res = false;
-                    Scope.AddDiagnostic(new($"Array {id.Id} was not of type string"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"Array {id.Id} was not of type string", context));
                 }
 
             return res;

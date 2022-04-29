@@ -192,6 +192,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>GradientDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GradientDcl</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.dcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>printStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -521,20 +535,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>GradientExpr</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>GradientExpr</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGradientExpr([NotNull] EmotionalDamageParser.GradientExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>FuncCall</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
