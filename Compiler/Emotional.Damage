@@ -1,3 +1,5 @@
-﻿int[1][1] k;
-int[1][1] k2;
-bool x = k § k2;
+﻿float kage = 2;
+float k  = 3;
+float l = k * kage;
+float test = l \\ kage;
+print(test);
