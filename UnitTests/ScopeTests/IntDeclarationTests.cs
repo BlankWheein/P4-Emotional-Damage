@@ -4,8 +4,9 @@ using System.Text;
 using static EmotionalDamageParser;
 using Antlr4.Runtime;
 using Compiler.Phases;
+using ScopeTests;
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class IntDeclarationTests : UnitTestInitializer
@@ -31,26 +32,21 @@ namespace ScopeTests
             scope.Insert(new Symbol("kage", SymbolType.Float));
             Assert.AreNotEqual(scope, rootscope);
         }
-        [TestMethod]
-        public void IntDeclationWrongSource()
-        {
-            RootSymbolTable rootscope = Parse(new StringBuilder("int kage;"));
-            Assert.AreEqual(scope, rootscope);
-        }
+        
         [TestMethod]
         public void IntDeclationAlreadyDefined()
         {
-            RootSymbolTable rootscope = Parse(new StringBuilder("int kage = 2; int kage = 2"));
+            RootSymbolTable rootscope = Parse(new StringBuilder("int kage = 2; int kage = 2;"));
             scope.Insert(SymbolType.Int, "kage");
             Assert.AreEqual(scope, rootscope);
         }
         [TestMethod]
         public void MultipleIntDeclation()
         {
-            RootSymbolTable rootscope = Parse(new StringBuilder("int kage = 2; int kage2 = 2"));
+            RootSymbolTable rootscope = Parse(new StringBuilder("int kage = 2; int kage2 = 2;"));
             scope.Insert(SymbolType.Int, "kage");
             scope.Insert(SymbolType.Int, "kage2");
             Assert.AreEqual(scope, rootscope);
         }
     }
-}   
+}

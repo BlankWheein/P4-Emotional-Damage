@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
+using Compiler.Phases.Exceptions;
 using Compiler.SymbolTableFolder;
 
 namespace Compiler.Phases
@@ -7,30 +8,43 @@ namespace Compiler.Phases
     {
         public List<Exception> Diagnostics { get; set; }
         public RootSymbolTable Scope { get; set; }
-        public ScopeVisitorV2() 
+        public TypeChecker TypeChecker { get; set; }
+        private Symbol? CurrentFunction = null;
+        private int CurrentFunctionReturnCount = 0;
+        public ScopeVisitorV2()
         {
             this.Scope = new RootSymbolTable();
             Diagnostics = Scope.Diagnostics;
+            TypeChecker = new(this);
         }
         #region ControlStructures
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
             Scope.Allocate("If");
-            base.VisitChildren(context);
+            TypeChecker.CheckBexpr(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
+        }
+        
+        public override object VisitProg([NotNull] EmotionalDamageParser.ProgContext context)
+        {
+            if (TypeChecker.CountReturnStmts(context.stmts()) > 0)
+                Scope.AddDiagnostic(new ("Cant use Return in global scope"));
+            return base.VisitProg(context);
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             Scope.Allocate("Elif");
-            base.VisitChildren(context);
+            TypeChecker.CheckBexpr(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
             Scope.Allocate("Else");
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
@@ -41,7 +55,7 @@ namespace Compiler.Phases
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(SymbolType.Int, context.IDENTIFIER().First().GetText());
             Scope.LookUp(context.IDENTIFIER().Last().GetText());
-            base.VisitChildren(context);
+            VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
@@ -81,37 +95,109 @@ namespace Compiler.Phases
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
             foreach (var s in context.IDENTIFIER())
-                Scope.LookUpExsting(s.GetText());
+                Scope.LookUp(s.GetText());
             return base.VisitFuncStmt(context);
         }
         #endregion
+        private string FixMatrixArrayType(string type)
+        {
+            string rawtype = type.Split("[")[0];
+            if (type.Count(p => p == '[') == 1)
+                rawtype = "A" + rawtype.ToLower();
+            if (type.Count(p => p == '[') == 2)
+                rawtype = "M" + rawtype.ToLower();
+
+            return rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToLower(); ;
+        }
         #region Declarations
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             string id = context.IDENTIFIER().First().GetText();
+            EmotionalDamageParser.TypesContext? rettype = context.returntype()?.types();
+            int row = 0;
+            int col = 0;
+            if (rettype != null)
+            {
+                if (rettype.Inum().Length >= 1)
+                    int.TryParse(rettype?.Inum(0)?.GetText(), out row);
+                if (rettype.Inum().Length >= 2)
+                    int.TryParse(rettype?.Inum(1)?.GetText(), out col);
+            }
             if (Scope.LookUpExsting(id) == null)
             {
-                Scope.Insert(SymbolType.Func, id);
-                Scope.Allocate("Func");
-                int typecount = context.types().Length;
+                List<Symbol> symbols = new();
+                string type2 = context.returntype().GetText()[0].ToString().ToUpper() + context.returntype().GetText()[1..^0].ToString();
+                string rawtype = FixMatrixArrayType(type2);
+
                 if (context.IDENTIFIER().Length > 1)
-                for (int i = 1; i < context.IDENTIFIER().Length ; i++)
-                {
-                    string identifier = context.IDENTIFIER()[i].GetText();
-                    string rawtype = context.types()[i - 1].GetText();
-                    string type = rawtype[0].ToString().ToUpper() + rawtype[1..^0].ToString();
-                    Scope.LookUpExsting(identifier);
-                    Scope.Insert((SymbolType) Enum.Parse(typeof(SymbolType), type), identifier);
-                }
+                    for (int i = 1; i < context.IDENTIFIER().Length; i++)
+                    {
+                        var type = context.types()[i - 1];
+                        string identifier = context.IDENTIFIER()[i].GetText();
+                        string rawtype_ = context.types()[i - 1].GetText();
+                        Scope.LookUpExsting(identifier);
+                        int localrow = 0;
+                        int localcol = 0;
+                        if (type != null)
+                        {
+                            if (type.Inum().Length >= 1)
+                                int.TryParse(type?.Inum(0)?.GetText(), out localrow);
+                            if (type.Inum().Length >= 2)
+                                int.TryParse(type?.Inum(1)?.GetText(), out localcol);
+                        }
+                        symbols.Add(new Symbol(identifier, (SymbolType)Enum.Parse(typeof(SymbolType), FixMatrixArrayType(rawtype_)), row: localrow, col: localcol));
+                    }
+                        
+                Symbol sym = new(id, (SymbolType)Enum.Parse(typeof(SymbolType), rawtype), isfunc: true, parameters: symbols, row: row, col: col);
+                var lastFunction = CurrentFunction;
+                var lastFunctionReturnCount = CurrentFunctionReturnCount;
+                CurrentFunction = sym;
+                CurrentFunctionReturnCount = 0;
+                TypeChecker.CheckForReturns(context.stmts(), sym);
+                Scope.Insert(sym);
+                Scope.Allocate("Func");
+                foreach (var s in symbols)
+                    Scope.Insert(s);
                 VisitChildren(context);
                 Scope.ExitScope();
+                if (CurrentFunctionReturnCount > 1)
+                    Scope.AddDiagnostic(new TypeCheckerException($"Multiple return stmts in function {id}", context));
+                CurrentFunction = lastFunction;
+                CurrentFunctionReturnCount = lastFunctionReturnCount;
             }
+
+            return false;
+            }
+        public override object VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context)
+        {
+            string identifier = context.IDENTIFIER().First().GetText();
+            string id1 = context.IDENTIFIER()[1].GetText();
+            string id2 = context.IDENTIFIER().Last().GetText();
+            Symbol? sym = Scope.LookUp(identifier);
+            Symbol? sym1 = Scope.LookUp(id1);
+            Symbol? sym2 = Scope.LookUp(id2);
+            if (sym1?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1} was not a matrix", context));
+            if (sym2?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id2} was not a matrix", context));
+            if (sym1?.Type.IsMatrix() != true || sym2?.Type.IsMatrix() != true)
+                return false;
+            if (sym == null || sym1 == null || sym2 == null) return false;
+            if (sym1 == null || sym2 == null) { return false; }
+            if (sym1.Col != sym2.Row)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1}'s Rows is not Equal to {id2}'s Columns", context));
+            if (sym.Row != sym1.Row || sym.Col != sym2.Col)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} does not have the dimensions [{sym1.Row}][{sym2.Col}]", context));
+
             return false;
         }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();
             string type = context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
+            var text = context.GetText();
+
+            TypeChecker.CheckNumDcl(context);
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitNumDcl(context);
@@ -121,19 +207,22 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string text = context.STRING_CONSTANT().GetText();
             if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), text), id);
+                Scope.Insert(SymbolType.String, id);
             return base.VisitStringDcl(context);
         }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
-            string type = "A" + context.numtype().GetText()[0].ToString().ToUpper() + context.numtype().GetText()[1..^0].ToString();
-            if (!int.TryParse(context.Inum().GetText(), out int max_index))
-                Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
-            if (max_index < 0)
-                Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
-            if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
+            string type = "A" + context.numtype().GetText()[0..^0].ToString();
+
+            if (TypeChecker.CheckArrayDcl(context))
+            {
+                if (Scope.LookUpExsting(id) == null)
+                {
+                    int.TryParse(context.Inum().GetText(), out int max_index);
+                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: max_index);
+                }
+            }
             return base.VisitArrayDeclaration(context);
         }
         public override object VisitMatrixDeclaration([NotNull] EmotionalDamageParser.MatrixDeclarationContext context)
@@ -141,21 +230,19 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().GetText();
             string type = "M" + context.numtype().GetText();
             var inum = context.Inum();
-            foreach (var num in inum)
+
+            if (TypeChecker.CheckMatrixDcl(context)) 
             {
-                if (!int.TryParse(num.GetText(), out int max_index))
-                    Scope.AddDiagnostic(new Exception($"{max_index} was not a number"));
-                if (max_index < 0)
-                    Scope.AddDiagnostic(new Exception($"{max_index} was negative"));
+                if (Scope.LookUpExsting(id) == null)
+                    Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: int.Parse(inum.First().GetText()), col: int.Parse(inum.Last().GetText()));
             }
-            if (Scope.LookUpExsting(id) == null)
-                Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id, row: int.Parse(inum.First().GetText()), col: int.Parse(inum.Last().GetText()));
             return base.VisitMatrixDeclaration(context);
         }
         public override object VisitBoolDeclaration([NotNull] EmotionalDamageParser.BoolDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
             string type = "Bool";
+            TypeChecker.CheckBoolDcl(context);
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert((SymbolType)Enum.Parse(typeof(SymbolType), type), id);
             return base.VisitBoolDeclaration(context);
@@ -165,60 +252,39 @@ namespace Compiler.Phases
         #region Stmt
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
         {
+            CurrentFunctionReturnCount++;
             string id = context.IDENTIFIER().GetText();
-            Scope.LookUp(id);
+            Symbol? sym = Scope.LookUp(id);
+            if (CurrentFunction != null && sym != null && !CurrentFunction.Type.IsVoid() && CurrentFunction.SameReturn(sym) == false)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id} does not have return type of {CurrentFunction.Type}", context));
             return base.VisitReturnStmt(context);
         }
         #endregion
         #region Assigns
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
+            TypeChecker.CheckNumAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUpExsting(id) == null)
-                Scope.AddDiagnostic(new Exception($"{id} was not defined"));
+            if (Scope.LookUp(id) == null)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id} was not defined", context));
             return base.VisitNumAssignStmt(context);
         }
         public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
         {
+            TypeChecker.CheckBoolAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUpExsting(id) == null)
-                Scope.AddDiagnostic(new Exception($"{id} was not defined"));
+            if (Scope.LookUp(id) == null)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id} was not defined",context));
             return base.VisitBoolAssignStmt(context);
         }
         public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
-            Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            if (context.Inum().Length >= 1)
-            {
-                string? row = context?.Inum()[0]?.GetText();
-                if ( row != null && int.Parse(row) >= m?.Row)
-                    Scope.AddDiagnostic(new Exception($"{row} was out of index"));
-            }
-            if (context.Inum().Length == 2)
-            {
-                string? col = context?.Inum()[1]?.GetText();
-                if (col != null && int.Parse(col) >= m?.Col)
-                    Scope.AddDiagnostic(new Exception($"{col} was out of index"));
-            }
-            foreach (var Sid in context.Inum())
-                if (int.Parse(Sid.GetText()) < 0)
-                    Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was negative"));
-            foreach (var Sid in context.IDENTIFIER())
-                if (Scope.LookUp(Sid.GetText()) == null)
-                    Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
+            TypeChecker.CheckMatrixAssign(context);
             return base.VisitMatrixElementAssignStmt(context);
         }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
         {
-            Symbol? m = Scope.LookUp(context.IDENTIFIER().First().GetText());
-            string row = context.Inum().GetText();
-            if (int.Parse(row) >= m?.Row)
-                Scope.AddDiagnostic(new Exception($"{row} was out of index"));
-            if (int.Parse(row) < 0)
-                Scope.AddDiagnostic(new Exception($"{row} was negative"));
-            foreach (var Sid in context.IDENTIFIER())
-                if (Scope.LookUp(Sid.GetText()) == null)
-                    Scope.AddDiagnostic(new Exception($"{Sid.GetText()} was not defined"));
+            TypeChecker.CheckArrayAssign(context);
             return base.VisitArrayElementAssignStmt(context);
         }
         public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)
@@ -233,11 +299,44 @@ namespace Compiler.Phases
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context)
         {
-            Symbol? m = Scope.LookUp(context.IDENTIFIER().GetText());
-            if (m?.Type != (SymbolType.Mint | SymbolType.Mfloat))
-                Scope.AddDiagnostic(new Exception($"{m?.Id} is not a matrix"));
-            return base.VisitTransposeMatrixStmt(context);
+            string identifier = context.IDENTIFIER(0).GetText();
+            string id1 = context.IDENTIFIER(1).GetText();
+            Symbol? sym = Scope.LookUp(identifier);
+            Symbol? sym1 = Scope.LookUp(id1);
+            if (sym == null || sym1 == null)
+                return false;
+            if (sym?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Matrix", context));
+            if (sym1?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1} was not of type Matrix", context));
+            if (sym?.Type.IsMatrix() != true || sym1?.Type.IsMatrix() != true)
+                return false;
+            if (sym?.Row != sym1?.Col || sym?.Col != sym1?.Row)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} does not have the dimension [{sym1?.Col}][{sym1?.Row}]", context));
+            return false;
         }
         #endregion
+        public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
+        {
+            string identifier = context.IDENTIFIER(0).GetText();
+            string id1 = context.IDENTIFIER(1).GetText();
+            string id2 = context.IDENTIFIER(2).GetText();
+            Symbol? symbol = Scope.LookUpExsting(identifier);
+            Symbol? sym1 = Scope.LookUp(id1);
+            Symbol? sym2 = Scope.LookUp(id2);
+            if (symbol != null) return false;
+            if (sym1 == null || sym2 == null) return false;
+            if (sym1.Type.IsMatrix() || sym1.Type.IsArray())
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1} was of type Matrix/Array", context));
+            if (sym2.Type.IsMatrix() || sym2.Type.IsArray())
+                Scope.AddDiagnostic(new TypeCheckerException($"{id2} was of type Matrix/Array", context));
+            if (sym1.Type.IsBool() || sym1.Type.IsString())
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1} was of type Bool/String", context));
+            if (sym2.Type.IsBool() || sym2.Type.IsString())
+                Scope.AddDiagnostic(new TypeCheckerException($"{id2} was of type Bool/String", context));
+            if (sym1.Type.IsVoid() || sym2.Type.IsVoid())
+                Scope.AddDiagnostic(new TypeCheckerException($"{id1} OR {id2} was of type void... How did this happen", context));
+            return false;
+        }
     }
 }

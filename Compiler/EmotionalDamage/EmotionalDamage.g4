@@ -13,6 +13,7 @@ dcl :
     | numtype IDENTIFIER '=' expr';' #NumDcl
     | 'string' IDENTIFIER '=' STRING_CONSTANT';' #StringDcl
     | 'bool' IDENTIFIER '=' bexpr';' #BoolDeclaration
+    | numtype IDENTIFIER '=' IDENTIFIER '\\\\' IDENTIFIER';' #GradientDcl
     ;
 
 stmt: 
@@ -20,11 +21,12 @@ stmt:
     | 'return' IDENTIFIER ';' #ReturnStmt
     | IDENTIFIER '=' expr';' #NumAssignStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt
+    | IDENTIFIER '=' 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
+    | IDENTIFIER '=' IDENTIFIER '§' IDENTIFIER';' #DotExprs
     | IDENTIFIER '['(IDENTIFIER | Inum)']''['(IDENTIFIER | Inum)']' '=' expr';' #MatrixElementAssignStmt
     | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
     | IDENTIFIER'++'';' #UnaryPlus
     | IDENTIFIER'--'';' #UnaryMinus
-    | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
     | 'while' '('(bexpr | IDENTIFIER)')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
@@ -38,14 +40,13 @@ elsestmt: 'else' '{' stmts '}';
 expr:
      '('expr')' #ParenExpr
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
-    | 'sqrt' '(' expr ')' #SqrtExpr
+    | 'sqrt' '('expr')' #SqrtExpr
     | expr '**' expr #PowExpr
     | expr '%' expr #ModExpr
     | expr '*' expr #TimesExpr
     | expr '/' expr #DivideExpr
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
-    | expr '\\\\' expr #GradientExpr
     | IDENTIFIER #NumValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue
@@ -58,12 +59,12 @@ expr:
     ;
 
 bexpr :
-        expr '>' expr #Greater
-      | expr '<' expr #Smaller
-      | expr '>=' expr #GreaterEquals
-      | expr '<=' expr #SmallerEquals
-      | expr '==' expr #Equals
-      | expr '!=' expr #NotEquals
+        IDENTIFIER '>' (IDENTIFIER | Inum) #Greater
+      | IDENTIFIER '<' (IDENTIFIER | Inum) #Smaller
+      | IDENTIFIER '>=' (IDENTIFIER | Inum) #GreaterEquals
+      | IDENTIFIER '<=' (IDENTIFIER | Inum) #SmallerEquals
+      | IDENTIFIER '==' (IDENTIFIER | Inum | 'true' | 'false') #Equals
+      | IDENTIFIER '!=' (IDENTIFIER | Inum | 'true' | 'false') #NotEquals
       | ('true' | 'false') #BoolValue
       ;
 
@@ -76,3 +77,4 @@ fragment ESC : '\\' (["\\/bfnrt] | UNICODE) ;
 fragment UNICODE : 'u' HEX HEX HEX HEX ;
 fragment HEX : [0-9a-fA-F] ;
 WS: [ \n\t\r]+ -> channel(HIDDEN);
+LINE_COMMENT: '//' ~[\r\n]* -> skip;

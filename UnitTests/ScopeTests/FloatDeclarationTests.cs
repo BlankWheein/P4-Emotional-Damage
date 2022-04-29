@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Compiler.SymbolTableFolder;
 using System.Text;
+using ScopeTests;
 
-namespace ScopeTests
+namespace UnitTests.ScopeTests
 {
     [TestClass]
     public class FloatDeclarationTests : UnitTestInitializer
@@ -28,26 +29,21 @@ namespace ScopeTests
             scope.Insert(new Symbol("kage", SymbolType.Float));
             Assert.AreNotEqual(scope, rootscope);
         }
-        [TestMethod]
-        public void FloatDeclationWrongSource()
-        {
-            RootSymbolTable rootscope = Parse(new StringBuilder("float kage;"));
-            Assert.AreEqual(scope, rootscope);
-        }
+        
         [TestMethod]
         public void FloatDeclationAlreadyDefined()
         {
-            RootSymbolTable rootscope = Parse(new StringBuilder("float kage = 2; float kage = 2"));
+            RootSymbolTable rootscope = Parse(new StringBuilder("float kage = 2; float kage = 2;"));
             scope.Insert(SymbolType.Float, "kage");
             Assert.AreEqual(scope, rootscope);
         }
         [TestMethod]
         public void MultipleFloatDeclation()
         {
-            RootSymbolTable rootscope = Parse(new StringBuilder("float kage = 2; float kage2 = 2"));
+            RootSymbolTable rootscope = Parse(new StringBuilder("float kage = 2; float kage2 = 2;"));
             scope.Insert(SymbolType.Float, "kage");
             scope.Insert(SymbolType.Float, "kage2");
             Assert.AreEqual(scope, rootscope);
         }
     }
-}   
+}
