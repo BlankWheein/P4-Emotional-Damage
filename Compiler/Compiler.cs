@@ -16,6 +16,7 @@ namespace Compiler
         //private ScopeVisitorV2 _scopeTypeChecker;
         private PreCodeGen _preCodeGen;
         private CodeGeneratorV2 _codeGenerator;
+        private ScopeVisitorV2 _scopeTypeChecker;
         public Wrapper(StringBuilder __source)
         {
             this.__source = __source;
@@ -28,19 +29,20 @@ namespace Compiler
             //_scopeTypeChecker = new();
             _preCodeGen = new PreCodeGen();
             _codeGenerator = new();
+            _scopeTypeChecker = new();
         }
         public void Compile()
         {
-            //_scopeTypeChecker.Visit(__context);
-            //Console.ForegroundColor = ConsoleColor.Red;
-            //foreach (var s in _scopeTypeChecker.Diagnostics)
-            //    Console.WriteLine(s);
-            //Console.ForegroundColor = ConsoleColor.White;
-            //Console.WriteLine("Printing Scope Tree:");
-            //Console.ForegroundColor = ConsoleColor.Green;
-            ////_scopeTypeChecker.Print();
-            ////_scopeTypeChecker.Dispose();
-            //Console.ResetColor();
+            _scopeTypeChecker.Visit(__context);
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (var s in _scopeTypeChecker.Diagnostics)
+                Console.WriteLine(s);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Printing Scope Tree:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            _scopeTypeChecker.Print();
+            Console.ResetColor();
+            if (_scopeTypeChecker.Diagnostics.Count > 0) return;
             _preCodeGen.Visit(__context);
             _preCodeGen.lookingforGrads = true;
             _preCodeGen.Visit(__context);
