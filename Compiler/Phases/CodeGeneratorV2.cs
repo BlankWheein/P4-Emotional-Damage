@@ -426,8 +426,10 @@ namespace Compiler.Phases
             return false;
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
-            var id = context.IDENTIFIER().GetText();
-            AddStmt($"{id} = {id}.Transpose()");
+            var id1 = context.IDENTIFIER().First().GetText();
+            var id2 = context.IDENTIFIER().Last().GetText();
+
+            AddStmt($"{id1} = {id2}.Transpose()");
             return false;
         }
         public override object VisitSelective([NotNull] EmotionalDamageParser.SelectiveContext context)
