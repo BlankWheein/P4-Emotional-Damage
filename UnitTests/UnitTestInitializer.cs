@@ -26,6 +26,7 @@ namespace ScopeTests
             __context = __parser.prog();
             _scopeTypeChecker = new();
             _scopeTypeChecker.Visit(__context);
+
             return _scopeTypeChecker.Scope;
 
         }

@@ -26,7 +26,7 @@ stmt:
     | IDENTIFIER'--'';' #UnaryMinus
     | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
-    | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
+    | 'while' '('(bexpr | IDENTIFIER)')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
     | ifstmt elifstmt* elsestmt? #Selective
     ;
@@ -38,7 +38,7 @@ elsestmt: 'else' '{' stmts '}';
 expr:
      '('expr')' #ParenExpr
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')' #FuncCall
-    | 'sqrt' expr #SqrtExpr
+    | 'sqrt' '(' expr ')' #SqrtExpr
     | expr '**' expr #PowExpr
     | expr '%' expr #ModExpr
     | expr '*' expr #TimesExpr
