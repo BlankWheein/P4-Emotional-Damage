@@ -80,14 +80,14 @@ namespace Compiler.Phases
         public string CheckExpr(string input)
         {
             if (input.Contains("sqrt(")) { 
-                var word = input.Split("sqrt(");
-                input = "";
+                var word = input.Split("sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 int i = 0;
                 foreach (var val in word)
                 {
+                    Console.WriteLine(val);
                     if (val.Contains(")"))
                     {
-                        if (!val.Split(')').First().Any(c => char.IsDigit(c)))
+                        if (val.Split(')').First().Any(c => Values.Contains(c.ToString())))
                         {
                             word[i] = $"{val.Split(')').First().Trim()}.Pow(1/2{val.Split(val.Split(')').First()).Last()}";
                         }
@@ -97,8 +97,115 @@ namespace Compiler.Phases
                         }
                     }
                     input += word[i];
+                    Console.WriteLine(input);
                     i++;
                 }
+                //if (input.Contains("sqrt("))
+                //{
+                //    string left = "", right = "";
+                //    var _expr1 = input.Split("")[0];
+                //    var _expr2 = input.Split("**")[1];
+                //    int _len1 = _expr1.Length - 1;
+                //    int _len2 = _expr2.Length - 1;
+
+
+                //    int start_index = 0;
+
+                //    if (_expr1.Last().Equals(')'))
+                //    {
+                //        int nrLparen = 1;
+                //        for (int j = _len1; j >= 0; j--)
+                //        {
+                //            if (_expr1[j].Equals(')'))
+                //            {
+                //                nrLparen++;
+                //            }
+                //            else if (_expr1[j].Equals('(') && nrLparen > 1)
+                //            {
+                //                nrLparen--;
+                //            }
+                //            else if (_expr1[j].Equals('(') && nrLparen == 1)
+                //            {
+                //                if (j == 0 || !Char.IsLetter(_expr1[j - 1]) || _expr1[j - 1].Equals('_'))
+                //                {
+                //                    left = _expr1.Substring(j + 1, _len1 - j - 1);
+                //                    start_index = j;
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+                //    else if (!_expr1.Any(o => "%*+/-(".Contains(o)))
+                //    {
+                //        left = _expr1;
+                //    }
+                //    else
+                //    {
+                //        string _symbols = "%*+/-=(";
+                //        for (int j = _len1; j >= 0; j--)
+                //        {
+                //            if (char.IsLetterOrDigit(_expr1[j]) || _expr1[j].Equals('_')) continue;
+                //            if (_symbols.Contains(_expr1[j]) || j == 0)
+                //            {
+                //                left = _expr1.Substring(j + 1, _len1 - j);
+                //                start_index = j + 1;
+                //                break;
+                //            }
+                //        }
+                //    }
+                //    if (_expr2.First().Equals('('))
+                //    {
+                //        int nrRparren = 1;
+                //        for (int j = 0; j <= _len2; j++)
+                //        {
+                //            if (_expr2[j].Equals('('))
+                //            {
+                //                nrRparren++;
+                //            }
+                //            else if (_expr2[j].Equals(')') && nrRparren > 1)
+                //            {
+                //                nrRparren--;
+                //            }
+                //            else if (_expr2[j].Equals(')') && nrRparren == 1)
+                //            {
+                //                right = _expr2.Substring(1, j - 1);
+                //                break;
+                //            }
+                //        }
+                //    }
+                //    else if (!_expr2.Any(o => "%*+/-)".Contains(o)))
+                //    {
+                //        right = _expr2;
+                //    }
+                //    else
+                //    {
+                //        string _symbols = "%*+/-=";
+                //        for (int j = 0; j <= _len2; j++)
+                //        {
+                //            if (char.IsLetterOrDigit(_expr2[j]) || _expr2[j].Equals('_')) continue;
+                //            if (_symbols.Contains(_expr2[j]) || j == 1)
+                //            {
+                //                right = _expr2.Substring(0, j);
+                //                break;
+                //            }
+                //        }
+                //    }
+                //    string _left = _expr1.Last().Equals(')') == true ? $"({left})" : left;
+                //    string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
+
+
+                //    if (_left.Any(c => char.IsLetter(c)))
+                //    {
+                //        input = input.Replace($"{_left}**{_right}", $"{left}.Pow({right})");
+                //    }
+                //    else
+                //    {
+                //        input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
+                //    }
+
+
+
+                //}
             }
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
