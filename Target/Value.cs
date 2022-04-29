@@ -124,6 +124,14 @@ namespace AutoGrad
         {
             return self + (-other);
         }
+        public static Value operator -(float self, Value other)
+        {
+            return new Value(self) + (-other);
+        }
+        public static Value operator -(Value self, float other)
+        {
+            return self + new Value(-other);
+        }
 
 
         public static Value operator /(Value self, float other)
@@ -138,7 +146,8 @@ namespace AutoGrad
         {
             return new Value(self) * other.Pow(-1);
         }
-        
+       
+
         public override string ToString()
         {
             return $"Value(data={data}, grad={grad})";

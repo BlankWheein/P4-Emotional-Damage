@@ -71,8 +71,26 @@ namespace Compiler.Phases
         }
         public string CheckExpr(string input)
         {
-            if (input.Contains("sqrt("))
-                input = input.Replace("sqrt(", "MathF.Sqrt(");
+            if (input.Contains("sqrt(")) { 
+                var word = input.Split("sqrt(");
+                input = "";
+                int i = 0;
+                foreach (var val in word)
+                {
+                    if (val.Contains(")"))
+                    {
+                        if (!val.Split(')').First().Any(c => char.IsDigit(c)))
+                        {
+                            word[i] = $"{val.Split(')').First().Trim()}.Pow(1/2{val.Split(val.Split(')').First()).Last()}";
+                        }
+                        else {
+                            word[i] = $"MathF.Sqrt({val.Split(' ').Last()}";
+                        }
+                    }
+                    input += word[i];
+                    i++;
+                }
+            }
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
@@ -235,19 +253,18 @@ namespace Compiler.Phases
                         int i = 0;
                         foreach (var val in word)
                         {
-                            if (val.Contains("MathF.Sqrt"))
-                            {
-                                if (!val.Any(c => char.IsDigit(c)))
-                                {
-                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Trim()}.Pow(1/2)";
-                                }
-                            }
+                            //if (val.Contains("MathF.Sqrt"))
+                            //{
+                            //    if (!val.Any(c => char.IsDigit(c)))
+                            //    {
+                            //        word[i] = $"{val.Split('(').Last().Replace($")", " ").Trim()}.Pow(1/2)";
+                            //    }
+                            //}
                             if (val.Contains("MathF.Pow"))
                             {
                                 if (!val.Any(c => char.IsDigit(c)))
                                 {
-                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Replace(",", "").Trim()}.Pow(";
-                                    
+                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Replace(",", "").Trim()}.Pow(";   
                                 }
                             }
                             expr += word[i];
