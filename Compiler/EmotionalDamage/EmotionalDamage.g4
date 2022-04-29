@@ -28,7 +28,7 @@ stmt:
     | IDENTIFIER'++'';' #UnaryPlus
     | IDENTIFIER'--'';' #UnaryMinus
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
-    | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
+    | 'while' '('(bexpr | IDENTIFIER)')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
     | ifstmt elifstmt* elsestmt? #Selective
     ;

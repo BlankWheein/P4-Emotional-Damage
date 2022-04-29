@@ -13,7 +13,8 @@ namespace Compiler
         private readonly EmotionalDamageParser __parser;
         private readonly AntlrInputStream __stream;
         private readonly CommonTokenStream __lexerStream;
-        private ScopeVisitorV2 _scopeTypeChecker;
+        //private ScopeVisitorV2 _scopeTypeChecker;
+        private PreCodeGen _preCodeGen;
         private CodeGeneratorV2 _codeGenerator;
         public Wrapper(StringBuilder __source)
         {
@@ -24,24 +25,28 @@ namespace Compiler
             __parser = new(__lexerStream);
             __context = __parser.prog();
 
-            _scopeTypeChecker = new();
+            //_scopeTypeChecker = new();
+            _preCodeGen = new PreCodeGen();
             _codeGenerator = new();
         }
         public void Compile()
         {
-            _scopeTypeChecker.Visit(__context);
-            Console.ForegroundColor = ConsoleColor.Red;
-            foreach (var s in _scopeTypeChecker.Diagnostics)
-                Console.WriteLine(s);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Printing Scope Tree:");
-            Console.ForegroundColor = ConsoleColor.Green;
-            _scopeTypeChecker.Print();
-            //_scopeTypeChecker.Dispose();
-            Console.ResetColor();
-
-            //_codeGenerator.Visit(__context);
-            //_codeGenerator.Compile();
+            //_scopeTypeChecker.Visit(__context);
+            //Console.ForegroundColor = ConsoleColor.Red;
+            //foreach (var s in _scopeTypeChecker.Diagnostics)
+            //    Console.WriteLine(s);
+            //Console.ForegroundColor = ConsoleColor.White;
+            //Console.WriteLine("Printing Scope Tree:");
+            //Console.ForegroundColor = ConsoleColor.Green;
+            ////_scopeTypeChecker.Print();
+            ////_scopeTypeChecker.Dispose();
+            //Console.ResetColor();
+            _preCodeGen.Visit(__context);
+            _preCodeGen.lookingforGrads = true;
+            _preCodeGen.Visit(__context);
+            _codeGenerator.PreVisit(_preCodeGen.Exprs);
+            _codeGenerator.Visit(__context);
+            _codeGenerator.Compile();
         }
 
     }
