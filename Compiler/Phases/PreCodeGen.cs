@@ -62,7 +62,11 @@ namespace Compiler.Phases
             return false;
         }
 
-
+        public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
+        {
+            CheckExpr(context.GetText());
+            return false;
+        }
         public void CheckExpr(string input)
         {
             var exprtmp1 = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();

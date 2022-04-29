@@ -59,7 +59,7 @@ namespace Compiler.Phases
                 File.Delete(_path);
             _fs = File.Create(_path);
 
-            AddStmt("using AutoGrad;\n");
+            AddText("using AutoGrad;\n");
             
             foreach (var stmt in Stmts)
                 stmt();
@@ -271,10 +271,11 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            if (expr.Contains("Backward()")) {
-                AddStmt($"{expr.Split(';')[0]};");
-                expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
-            }
+            //if (expr.Contains("Backward()"))
+            //{
+            //    AddStmt($"{expr.Split(';')[0]};");
+            //    expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
+            //}
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)))
                 {
@@ -309,7 +310,15 @@ namespace Compiler.Phases
 
             return false;
         }
-        
+        public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
+        {
+            
+                
+            AddStmt($"{context.IDENTIFIER(1)}.Backward();");
+            AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
+            
+            return false;
+        }
 
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {

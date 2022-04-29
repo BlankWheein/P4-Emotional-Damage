@@ -1,5 +1,5 @@
-﻿int kage = 2;
-int k  = 3;
-int l = k * kage;
+﻿float kage = 2;
+float k  = 3;
+float l = k * kage;
 float test = l \\ kage;
 print(test);
