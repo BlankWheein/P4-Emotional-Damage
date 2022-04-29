@@ -42,16 +42,17 @@ namespace Compiler.Phases
         internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
         {
             var text = context.GetText();
+            var expr = context.expr().GetText();
             SymbolType type;
             string numtype = context.numtype().GetText();
             
             try
             {
                 type = (SymbolType)Enum.Parse(typeof(SymbolType), numtype[0].ToString().ToUpper() + numtype[1..^0]);
-                bool res =  ExprHelper(context.expr().GetText(), new Symbol("Constant", type));
+                bool res =  ExprHelper(expr, new Symbol("Constant", type));
                 return res;
             }
-            catch
+            catch (Exception ex)
             {
                 Scope.AddDiagnostic(new($"{numtype} could not be parsed to a type"));
                 return false;
@@ -179,7 +180,17 @@ namespace Compiler.Phases
             res &= DoesVariableReturnCompatibleType(expr, type);
             res &= CanParseMultiDimensionalVariables(expr, type);
             res &= CanUseRowColLen(expr, type);
+            res &= CheckDotExpr(expr, type);
             return res;
+        }
+
+        private bool CheckDotExpr(string expr, SymbolType type)
+        {
+            if (!expr.Contains("§")) return true;
+            var dotexprsplit = expr.Split("§");
+            Symbol? left = Scope.LookUpSilent(SplitOnOperatorsExpr(dotexprsplit.First()).Last());
+            Symbol? right =  Scope.LookUpSilent(SplitOnOperatorsExpr(dotexprsplit.Last()).First());
+            return true;
         }
 
         private bool IsIndexInBounds(string expr)
@@ -565,23 +576,6 @@ namespace Compiler.Phases
                 }
 
             return res;
-        }
-
-        internal bool CheckMatrixTranspose(EmotionalDamageParser.TransposeMatrixStmtContext context)
-        {
-            bool isValid = true;
-            Symbol? symbol = Scope.LookUp(context.IDENTIFIER().GetText());
-            if (symbol == null)
-            {
-                isValid = false;
-                Scope.AddDiagnostic(new($"{context.IDENTIFIER().GetText()} is not declared!"));
-            }
-            else if ((symbol.Type & (SymbolType.Mint | SymbolType.Mfloat)) == 0)//if the type is not matrix, enter the if statement
-            {
-                isValid = false;
-                Scope.AddDiagnostic(new($"{symbol.Id} is not a matrix!"));
-            }
-            return isValid;
         }
     }
 }

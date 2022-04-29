@@ -138,6 +138,20 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>MatrixElementAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
@@ -247,13 +261,6 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>DotExprs</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>FloatVal</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
@@ -337,13 +344,6 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>TransposeMatrixStmt</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>Colid</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.

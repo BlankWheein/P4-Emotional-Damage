@@ -20,6 +20,8 @@ stmt:
     | 'return' IDENTIFIER ';' #ReturnStmt
     | IDENTIFIER '=' expr';' #NumAssignStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt
+    | IDENTIFIER '=' 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
+    | IDENTIFIER '=' IDENTIFIER '§' IDENTIFIER';' #DotExprs
     | IDENTIFIER '['(IDENTIFIER | Inum)']''['(IDENTIFIER | Inum)']' '=' expr';' #MatrixElementAssignStmt
     | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
     | IDENTIFIER'++'';' #UnaryPlus
@@ -45,8 +47,6 @@ expr:
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
     | IDENTIFIER '\\\\' IDENTIFIER #GradientExpr
-    | 'T''('IDENTIFIER')' #TransposeMatrixStmt
-    | IDENTIFIER '§' IDENTIFIER #DotExprs
     | IDENTIFIER #NumValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue

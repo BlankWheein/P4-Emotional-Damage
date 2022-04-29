@@ -167,6 +167,29 @@ namespace Compiler.Phases
 
             return false;
             }
+        public override object VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context)
+        {
+            string identifier = context.IDENTIFIER().First().GetText();
+            string id1 = context.IDENTIFIER()[1].GetText();
+            string id2 = context.IDENTIFIER().Last().GetText();
+            Symbol? sym = Scope.LookUp(identifier);
+            Symbol? sym1 = Scope.LookUp(id1);
+            if (!sym1?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new($"{id1} was not a matrix"));
+            Symbol? sym2 = Scope.LookUp(id2);
+            if (!sym2?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new($"{id2} was not a matrix"));
+            if (!sym1?.Type.IsMatrix() != true || !sym2?.Type.IsMatrix() != true)
+                return false;
+            if (sym == null || sym1 == null || sym2 == null) return false;
+            if (sym1 == null || sym2 == null) { return false; }
+            if (sym1.Row != sym2.Col)
+                Scope.AddDiagnostic(new($"{id1}'s Rows is not Equal to {id2}'s Columns"));
+            if (sym.Row != sym1.Row || sym.Col != sym2.Col)
+                Scope.AddDiagnostic(new($"{identifier} does not have the dimensions [{sym1.Row}][{sym2.Col}]"));
+
+            return false;
+        }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             string id = context.IDENTIFIER().GetText();
@@ -275,8 +298,21 @@ namespace Compiler.Phases
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context)
         {
-            TypeChecker.CheckMatrixTranspose(context);
-            return base.VisitTransposeMatrixStmt(context);
+            string identifier = context.IDENTIFIER(0).GetText();
+            string id1 = context.IDENTIFIER(1).GetText();
+            Symbol? sym = Scope.LookUp(identifier);
+            Symbol? sym1 = Scope.LookUp(id1);
+            if (sym == null || sym1 == null)
+                return false;
+            if (sym?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new($"{identifier} was not of type Matrix"));
+            if (sym1?.Type.IsMatrix() != true)
+                Scope.AddDiagnostic(new($"{id1} was not of type Matrix"));
+            if (sym?.Type.IsMatrix() != true || sym1?.Type.IsMatrix() != true)
+                return false;
+            if (sym?.Row != sym1?.Col || sym?.Col != sym1?.Row)
+                Scope.AddDiagnostic(new($"{identifier} does not have the dimension [{sym1?.Col}][{sym1?.Row}]"));
+            return false;
         }
         #endregion
 
