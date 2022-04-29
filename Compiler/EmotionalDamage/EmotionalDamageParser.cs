@@ -42,7 +42,8 @@ public partial class EmotionalDamageParser : Parser {
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
 		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, T__44=45, 
-		T__45=46, Inum=47, Fnum=48, IDENTIFIER=49, STRING_CONSTANT=50, WS=51;
+		T__45=46, Inum=47, Fnum=48, IDENTIFIER=49, STRING_CONSTANT=50, WS=51, 
+		LINE_COMMENT=52;
 	public const int
 		RULE_prog = 0, RULE_stmts = 1, RULE_numtype = 2, RULE_print = 3, RULE_types = 4, 
 		RULE_returntype = 5, RULE_dcl = 6, RULE_stmt = 7, RULE_ifstmt = 8, RULE_elifstmt = 9, 
@@ -65,7 +66,7 @@ public partial class EmotionalDamageParser : Parser {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, "Inum", 
-		"Fnum", "IDENTIFIER", "STRING_CONSTANT", "WS"
+		"Fnum", "IDENTIFIER", "STRING_CONSTANT", "WS", "LINE_COMMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -2988,7 +2989,7 @@ public partial class EmotionalDamageParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\x35', '\x170', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '\x36', '\x170', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
 		'\x6', '\t', '\x6', '\x4', '\a', '\t', '\a', '\x4', '\b', '\t', '\b', 
 		'\x4', '\t', '\t', '\t', '\x4', '\n', '\t', '\n', '\x4', '\v', '\t', '\v', 

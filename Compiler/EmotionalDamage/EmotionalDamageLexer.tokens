@@ -49,6 +49,7 @@ Fnum=48
 IDENTIFIER=49
 STRING_CONSTANT=50
 WS=51
+LINE_COMMENT=52
 'int'=1
 'float'=2
 'print'=3
