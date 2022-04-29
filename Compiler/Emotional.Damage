@@ -1,7 +1,8 @@
 ﻿float a = -4;
 float b = 2;
+float h = 4;
 float c = a + b;
-float d= a*b+sqrt(b)+ (9+2) - sqrt(7 +(29 - 9)) + (8+2);
+float d= a*b+sqrt(b)+ (9+2) - sqrt(7 +(b - 9)) + (8+2);
 c = c+c+1;
 c= c+1+c+(-a);
 d = d+d*2+(b+a);

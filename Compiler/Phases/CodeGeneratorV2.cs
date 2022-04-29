@@ -65,6 +65,14 @@ namespace Compiler.Phases
                 stmt();
             _fs.Close();
         }
+        public string checkForVals(string val) {
+
+            if (Values.Any(v => val.Split(' ', '(', '+', '-', '/', '*').Contains(v)))
+            {
+                val = val.Replace(Values.First(v => val.Split(' ', '(', '+', '-', '/', '*').Contains(v)), Values.First(v => val.Split(' ', '(', '+', '-', '/', '*').Contains(v)) + ".data");
+            }
+            return val;
+        }
         public void PreVisit(List<string> values)
         {
             Values = values;
@@ -85,6 +93,7 @@ namespace Compiler.Phases
                         }
                         else {
                             word[i] = $"MathF.Sqrt({val.Split(' ').Last()}";
+                            word[i] = checkForVals(word[i]);
                         }
                     }
                     input += word[i];
@@ -253,13 +262,6 @@ namespace Compiler.Phases
                         int i = 0;
                         foreach (var val in word)
                         {
-                            //if (val.Contains("MathF.Sqrt"))
-                            //{
-                            //    if (!val.Any(c => char.IsDigit(c)))
-                            //    {
-                            //        word[i] = $"{val.Split('(').Last().Replace($")", " ").Trim()}.Pow(1/2)";
-                            //    }
-                            //}
                             if (val.Contains("MathF.Pow"))
                             {
                                 if (!val.Any(c => char.IsDigit(c)))
