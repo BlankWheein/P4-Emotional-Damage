@@ -247,6 +247,13 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitNegVal([NotNull] EmotionalDamageParser.NegValContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>FloatVal</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
@@ -260,13 +267,6 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>DotExprs</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>GradientExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.

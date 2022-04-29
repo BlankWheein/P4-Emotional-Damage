@@ -44,9 +44,9 @@ expr:
     | expr '/' expr #DivideExpr
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
-    | expr '§' expr #DotExprs
-    | expr '\\\\' expr #GradientExpr
+    | IDENTIFIER '\\\\' IDENTIFIER #GradientExpr
     | 'T''('IDENTIFIER')' #TransposeMatrixStmt
+    | IDENTIFIER '§' IDENTIFIER #DotExprs
     | IDENTIFIER #NumValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue

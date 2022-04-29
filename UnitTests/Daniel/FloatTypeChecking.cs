@@ -40,24 +40,6 @@ namespace UnitTests.Daniel
         }
 
         [TestMethod]
-        public void FloatGradient()
-        {
-            var root = Parse(new StringBuilder("float kage = 5 \\\\ 4;"));
-            scope.Insert(SymbolType.Float, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void FloatGradientFloat()
-        {
-            var root = Parse(new StringBuilder("float kage = 5 \\\\ 4.7;"));
-            scope.Insert(SymbolType.Float, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
         public void FloatRowLenCol()
         {
             var root = Parse(new StringBuilder("float kage = 5; float kage3 = kage.row; kage3 = kage.col; kage3 = kage.len;"));

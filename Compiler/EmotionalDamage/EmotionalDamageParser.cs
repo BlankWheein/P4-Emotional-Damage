@@ -56,9 +56,9 @@ public partial class EmotionalDamageParser : Parser {
 		null, "'int'", "'float'", "'print'", "'println'", "'['", "']'", "'bool'", 
 		"'string'", "'void'", "'('", "','", "')'", "'{'", "'}'", "';'", "'='", 
 		"'$'", "'return'", "'++'", "'--'", "'while'", "'for'", "'if'", "'elif'", 
-		"'else'", "'sqrt'", "'**'", "'%'", "'*'", "'/'", "'+'", "'-'", "'\u00A7'", 
-		"'\\\\'", "'T'", "'.row'", "'.col'", "'.len'", "'>'", "'<'", "'>='", "'<='", 
-		"'=='", "'true'", "'false'", "'!='"
+		"'else'", "'sqrt'", "'**'", "'%'", "'*'", "'/'", "'+'", "'-'", "'\\\\'", 
+		"'T'", "'\u00A7'", "'.row'", "'.col'", "'.len'", "'>'", "'<'", "'>='", 
+		"'<='", "'=='", "'true'", "'false'", "'!='"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -1261,7 +1261,7 @@ public partial class EmotionalDamageParser : Parser {
 				case T__9:
 				case T__25:
 				case T__31:
-				case T__34:
+				case T__33:
 				case Inum:
 				case Fnum:
 				case IDENTIFIER:
@@ -1386,7 +1386,7 @@ public partial class EmotionalDamageParser : Parser {
 				case T__9:
 				case T__25:
 				case T__31:
-				case T__34:
+				case T__33:
 				case Inum:
 				case Fnum:
 				case IDENTIFIER:
@@ -1891,6 +1891,29 @@ public partial class EmotionalDamageParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
+	public partial class DotExprsContext : ExprContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IDENTIFIER() { return GetTokens(EmotionalDamageParser.IDENTIFIER); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER(int i) {
+			return GetToken(EmotionalDamageParser.IDENTIFIER, i);
+		}
+		public DotExprsContext(ExprContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IEmotionalDamageListener typedListener = listener as IEmotionalDamageListener;
+			if (typedListener != null) typedListener.EnterDotExprs(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IEmotionalDamageListener typedListener = listener as IEmotionalDamageListener;
+			if (typedListener != null) typedListener.ExitDotExprs(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IEmotionalDamageVisitor<TResult> typedVisitor = visitor as IEmotionalDamageVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDotExprs(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
 	public partial class FloatValContext : ExprContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Fnum() { return GetToken(EmotionalDamageParser.Fnum, 0); }
 		public FloatValContext(ExprContext context) { CopyFrom(context); }
@@ -1936,37 +1959,10 @@ public partial class EmotionalDamageParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class DotExprsContext : ExprContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
-			return GetRuleContexts<ExprContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
-			return GetRuleContext<ExprContext>(i);
-		}
-		public DotExprsContext(ExprContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IEmotionalDamageListener typedListener = listener as IEmotionalDamageListener;
-			if (typedListener != null) typedListener.EnterDotExprs(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IEmotionalDamageListener typedListener = listener as IEmotionalDamageListener;
-			if (typedListener != null) typedListener.ExitDotExprs(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IEmotionalDamageVisitor<TResult> typedVisitor = visitor as IEmotionalDamageVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDotExprs(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
 	public partial class GradientExprContext : ExprContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
-			return GetRuleContexts<ExprContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
-			return GetRuleContext<ExprContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IDENTIFIER() { return GetTokens(EmotionalDamageParser.IDENTIFIER); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER(int i) {
+			return GetToken(EmotionalDamageParser.IDENTIFIER, i);
 		}
 		public GradientExprContext(ExprContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -2282,7 +2278,7 @@ public partial class EmotionalDamageParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 307;
+			State = 313;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,23,Context) ) {
 			case 1:
@@ -2355,150 +2351,176 @@ public partial class EmotionalDamageParser : Parser {
 				break;
 			case 4:
 				{
-				_localctx = new TransposeMatrixStmtContext(_localctx);
+				_localctx = new GradientExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 280;
-				Match(T__34);
+				Match(IDENTIFIER);
 				State = 281;
-				Match(T__9);
+				Match(T__32);
 				State = 282;
 				Match(IDENTIFIER);
-				State = 283;
-				Match(T__11);
 				}
 				break;
 			case 5:
 				{
-				_localctx = new NumValueContext(_localctx);
+				_localctx = new TransposeMatrixStmtContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
+				State = 283;
+				Match(T__33);
 				State = 284;
+				Match(T__9);
+				State = 285;
 				Match(IDENTIFIER);
+				State = 286;
+				Match(T__11);
 				}
 				break;
 			case 6:
 				{
-				_localctx = new NumArrValueContext(_localctx);
+				_localctx = new DotExprsContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 285;
-				Match(IDENTIFIER);
-				{
-				State = 286;
-				Match(T__4);
 				State = 287;
-				_la = TokenStream.LA(1);
-				if ( !(_la==Inum || _la==IDENTIFIER) ) {
-				ErrorHandler.RecoverInline(this);
-				}
-				else {
-					ErrorHandler.ReportMatch(this);
-				    Consume();
-				}
+				Match(IDENTIFIER);
 				State = 288;
-				Match(T__5);
-				}
+				Match(T__34);
+				State = 289;
+				Match(IDENTIFIER);
 				}
 				break;
 			case 7:
 				{
-				_localctx = new NumMatrixValueContext(_localctx);
+				_localctx = new NumValueContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 289;
-				Match(IDENTIFIER);
-				{
 				State = 290;
-				Match(T__4);
-				State = 291;
-				_la = TokenStream.LA(1);
-				if ( !(_la==Inum || _la==IDENTIFIER) ) {
-				ErrorHandler.RecoverInline(this);
-				}
-				else {
-					ErrorHandler.ReportMatch(this);
-				    Consume();
-				}
-				State = 292;
-				Match(T__5);
-				}
-				{
-				State = 294;
-				Match(T__4);
-				State = 295;
-				_la = TokenStream.LA(1);
-				if ( !(_la==Inum || _la==IDENTIFIER) ) {
-				ErrorHandler.RecoverInline(this);
-				}
-				else {
-					ErrorHandler.ReportMatch(this);
-				    Consume();
-				}
-				State = 296;
-				Match(T__5);
-				}
+				Match(IDENTIFIER);
 				}
 				break;
 			case 8:
 				{
-				_localctx = new RowidContext(_localctx);
+				_localctx = new NumArrValueContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 297;
+				State = 291;
 				Match(IDENTIFIER);
-				State = 298;
-				Match(T__35);
+				{
+				State = 292;
+				Match(T__4);
+				State = 293;
+				_la = TokenStream.LA(1);
+				if ( !(_la==Inum || _la==IDENTIFIER) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				State = 294;
+				Match(T__5);
+				}
 				}
 				break;
 			case 9:
 				{
-				_localctx = new ColidContext(_localctx);
+				_localctx = new NumMatrixValueContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 299;
+				State = 295;
 				Match(IDENTIFIER);
+				{
+				State = 296;
+				Match(T__4);
+				State = 297;
+				_la = TokenStream.LA(1);
+				if ( !(_la==Inum || _la==IDENTIFIER) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				State = 298;
+				Match(T__5);
+				}
+				{
 				State = 300;
-				Match(T__36);
+				Match(T__4);
+				State = 301;
+				_la = TokenStream.LA(1);
+				if ( !(_la==Inum || _la==IDENTIFIER) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				State = 302;
+				Match(T__5);
+				}
 				}
 				break;
 			case 10:
 				{
-				_localctx = new LengthidContext(_localctx);
+				_localctx = new RowidContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 301;
+				State = 303;
 				Match(IDENTIFIER);
-				State = 302;
-				Match(T__37);
+				State = 304;
+				Match(T__35);
 				}
 				break;
 			case 11:
 				{
-				_localctx = new NegValContext(_localctx);
+				_localctx = new ColidContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 303;
-				Match(T__31);
-				State = 304;
-				expr(3);
+				State = 305;
+				Match(IDENTIFIER);
+				State = 306;
+				Match(T__36);
 				}
 				break;
 			case 12:
 				{
-				_localctx = new IntValContext(_localctx);
+				_localctx = new LengthidContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 305;
-				Match(Inum);
+				State = 307;
+				Match(IDENTIFIER);
+				State = 308;
+				Match(T__37);
 				}
 				break;
 			case 13:
 				{
+				_localctx = new NegValContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 309;
+				Match(T__31);
+				State = 310;
+				expr(3);
+				}
+				break;
+			case 14:
+				{
+				_localctx = new IntValContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 311;
+				Match(Inum);
+				}
+				break;
+			case 15:
+				{
 				_localctx = new FloatValContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 306;
+				State = 312;
 				Match(Fnum);
 				}
 				break;
@@ -2520,11 +2542,11 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new PowExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 309;
+						State = 315;
 						if (!(Precpred(Context, 18))) throw new FailedPredicateException(this, "Precpred(Context, 18)");
-						State = 310;
+						State = 316;
 						Match(T__26);
-						State = 311;
+						State = 317;
 						expr(19);
 						}
 						break;
@@ -2532,11 +2554,11 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new ModExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 312;
+						State = 318;
 						if (!(Precpred(Context, 17))) throw new FailedPredicateException(this, "Precpred(Context, 17)");
-						State = 313;
+						State = 319;
 						Match(T__27);
-						State = 314;
+						State = 320;
 						expr(18);
 						}
 						break;
@@ -2544,11 +2566,11 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new TimesExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 315;
+						State = 321;
 						if (!(Precpred(Context, 16))) throw new FailedPredicateException(this, "Precpred(Context, 16)");
-						State = 316;
+						State = 322;
 						Match(T__28);
-						State = 317;
+						State = 323;
 						expr(17);
 						}
 						break;
@@ -2556,11 +2578,11 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new DivideExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 318;
+						State = 324;
 						if (!(Precpred(Context, 15))) throw new FailedPredicateException(this, "Precpred(Context, 15)");
-						State = 319;
+						State = 325;
 						Match(T__29);
-						State = 320;
+						State = 326;
 						expr(16);
 						}
 						break;
@@ -2568,11 +2590,11 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new PlusExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 321;
+						State = 327;
 						if (!(Precpred(Context, 14))) throw new FailedPredicateException(this, "Precpred(Context, 14)");
-						State = 322;
+						State = 328;
 						Match(T__30);
-						State = 323;
+						State = 329;
 						expr(15);
 						}
 						break;
@@ -2580,36 +2602,12 @@ public partial class EmotionalDamageParser : Parser {
 						{
 						_localctx = new MinusExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 324;
-						if (!(Precpred(Context, 13))) throw new FailedPredicateException(this, "Precpred(Context, 13)");
-						State = 325;
-						Match(T__31);
-						State = 326;
-						expr(14);
-						}
-						break;
-					case 7:
-						{
-						_localctx = new DotExprsContext(new ExprContext(_parentctx, _parentState));
-						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 327;
-						if (!(Precpred(Context, 12))) throw new FailedPredicateException(this, "Precpred(Context, 12)");
-						State = 328;
-						Match(T__32);
-						State = 329;
-						expr(13);
-						}
-						break;
-					case 8:
-						{
-						_localctx = new GradientExprContext(new ExprContext(_parentctx, _parentState));
-						PushNewRecursionContext(_localctx, _startState, RULE_expr);
 						State = 330;
-						if (!(Precpred(Context, 11))) throw new FailedPredicateException(this, "Precpred(Context, 11)");
+						if (!(Precpred(Context, 13))) throw new FailedPredicateException(this, "Precpred(Context, 13)");
 						State = 331;
-						Match(T__33);
+						Match(T__31);
 						State = 332;
-						expr(12);
+						expr(14);
 						}
 						break;
 					}
@@ -2973,8 +2971,6 @@ public partial class EmotionalDamageParser : Parser {
 		case 3: return Precpred(Context, 15);
 		case 4: return Precpred(Context, 14);
 		case 5: return Precpred(Context, 13);
-		case 6: return Precpred(Context, 12);
-		case 7: return Precpred(Context, 11);
 		}
 		return true;
 	}
@@ -3039,8 +3035,8 @@ public partial class EmotionalDamageParser : Parser {
 		'\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', 
 		'\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', 
 		'\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', 
-		'\r', '\x3', '\r', '\x3', '\r', '\x5', '\r', '\x136', '\n', '\r', '\x3', 
 		'\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', 
+		'\x3', '\r', '\x3', '\r', '\x3', '\r', '\x5', '\r', '\x13C', '\n', '\r', 
 		'\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', 
 		'\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', 
 		'\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', '\r', '\x3', 
@@ -3060,7 +3056,7 @@ public partial class EmotionalDamageParser : Parser {
 		'\x2', '\f', '\x46', '\x3', '\x2', '\x2', '\x2', '\xE', '\x82', '\x3', 
 		'\x2', '\x2', '\x2', '\x10', '\xEC', '\x3', '\x2', '\x2', '\x2', '\x12', 
 		'\xEE', '\x3', '\x2', '\x2', '\x2', '\x14', '\xF6', '\x3', '\x2', '\x2', 
-		'\x2', '\x16', '\xFE', '\x3', '\x2', '\x2', '\x2', '\x18', '\x135', '\x3', 
+		'\x2', '\x16', '\xFE', '\x3', '\x2', '\x2', '\x2', '\x18', '\x13B', '\x3', 
 		'\x2', '\x2', '\x2', '\x1A', '\x167', '\x3', '\x2', '\x2', '\x2', '\x1C', 
 		'\x1D', '\x5', '\x4', '\x3', '\x2', '\x1D', '\x1E', '\a', '\x2', '\x2', 
 		'\x3', '\x1E', '\x3', '\x3', '\x2', '\x2', '\x2', '\x1F', '\"', '\x5', 
@@ -3217,7 +3213,7 @@ public partial class EmotionalDamageParser : Parser {
 		'\x2', '\x101', '\x102', '\a', '\x10', '\x2', '\x2', '\x102', '\x17', 
 		'\x3', '\x2', '\x2', '\x2', '\x103', '\x104', '\b', '\r', '\x1', '\x2', 
 		'\x104', '\x105', '\a', '\f', '\x2', '\x2', '\x105', '\x106', '\x5', '\x18', 
-		'\r', '\x2', '\x106', '\x107', '\a', '\xE', '\x2', '\x2', '\x107', '\x136', 
+		'\r', '\x2', '\x106', '\x107', '\a', '\xE', '\x2', '\x2', '\x107', '\x13C', 
 		'\x3', '\x2', '\x2', '\x2', '\x108', '\x109', '\a', '\x33', '\x2', '\x2', 
 		'\x109', '\x112', '\a', '\f', '\x2', '\x2', '\x10A', '\x10F', '\a', '\x33', 
 		'\x2', '\x2', '\x10B', '\x10C', '\a', '\r', '\x2', '\x2', '\x10C', '\x10E', 
@@ -3227,64 +3223,64 @@ public partial class EmotionalDamageParser : Parser {
 		'\x113', '\x3', '\x2', '\x2', '\x2', '\x111', '\x10F', '\x3', '\x2', '\x2', 
 		'\x2', '\x112', '\x10A', '\x3', '\x2', '\x2', '\x2', '\x112', '\x113', 
 		'\x3', '\x2', '\x2', '\x2', '\x113', '\x114', '\x3', '\x2', '\x2', '\x2', 
-		'\x114', '\x136', '\a', '\xE', '\x2', '\x2', '\x115', '\x116', '\a', '\x1C', 
+		'\x114', '\x13C', '\a', '\xE', '\x2', '\x2', '\x115', '\x116', '\a', '\x1C', 
 		'\x2', '\x2', '\x116', '\x117', '\a', '\f', '\x2', '\x2', '\x117', '\x118', 
 		'\x5', '\x18', '\r', '\x2', '\x118', '\x119', '\a', '\xE', '\x2', '\x2', 
-		'\x119', '\x136', '\x3', '\x2', '\x2', '\x2', '\x11A', '\x11B', '\a', 
-		'%', '\x2', '\x2', '\x11B', '\x11C', '\a', '\f', '\x2', '\x2', '\x11C', 
-		'\x11D', '\a', '\x33', '\x2', '\x2', '\x11D', '\x136', '\a', '\xE', '\x2', 
-		'\x2', '\x11E', '\x136', '\a', '\x33', '\x2', '\x2', '\x11F', '\x120', 
-		'\a', '\x33', '\x2', '\x2', '\x120', '\x121', '\a', '\a', '\x2', '\x2', 
-		'\x121', '\x122', '\t', '\x4', '\x2', '\x2', '\x122', '\x136', '\a', '\b', 
-		'\x2', '\x2', '\x123', '\x124', '\a', '\x33', '\x2', '\x2', '\x124', '\x125', 
-		'\a', '\a', '\x2', '\x2', '\x125', '\x126', '\t', '\x4', '\x2', '\x2', 
-		'\x126', '\x127', '\a', '\b', '\x2', '\x2', '\x127', '\x128', '\x3', '\x2', 
-		'\x2', '\x2', '\x128', '\x129', '\a', '\a', '\x2', '\x2', '\x129', '\x12A', 
-		'\t', '\x4', '\x2', '\x2', '\x12A', '\x136', '\a', '\b', '\x2', '\x2', 
-		'\x12B', '\x12C', '\a', '\x33', '\x2', '\x2', '\x12C', '\x136', '\a', 
-		'&', '\x2', '\x2', '\x12D', '\x12E', '\a', '\x33', '\x2', '\x2', '\x12E', 
-		'\x136', '\a', '\'', '\x2', '\x2', '\x12F', '\x130', '\a', '\x33', '\x2', 
-		'\x2', '\x130', '\x136', '\a', '(', '\x2', '\x2', '\x131', '\x132', '\a', 
-		'\"', '\x2', '\x2', '\x132', '\x136', '\x5', '\x18', '\r', '\x5', '\x133', 
-		'\x136', '\a', '\x31', '\x2', '\x2', '\x134', '\x136', '\a', '\x32', '\x2', 
-		'\x2', '\x135', '\x103', '\x3', '\x2', '\x2', '\x2', '\x135', '\x108', 
-		'\x3', '\x2', '\x2', '\x2', '\x135', '\x115', '\x3', '\x2', '\x2', '\x2', 
-		'\x135', '\x11A', '\x3', '\x2', '\x2', '\x2', '\x135', '\x11E', '\x3', 
-		'\x2', '\x2', '\x2', '\x135', '\x11F', '\x3', '\x2', '\x2', '\x2', '\x135', 
-		'\x123', '\x3', '\x2', '\x2', '\x2', '\x135', '\x12B', '\x3', '\x2', '\x2', 
-		'\x2', '\x135', '\x12D', '\x3', '\x2', '\x2', '\x2', '\x135', '\x12F', 
-		'\x3', '\x2', '\x2', '\x2', '\x135', '\x131', '\x3', '\x2', '\x2', '\x2', 
-		'\x135', '\x133', '\x3', '\x2', '\x2', '\x2', '\x135', '\x134', '\x3', 
-		'\x2', '\x2', '\x2', '\x136', '\x151', '\x3', '\x2', '\x2', '\x2', '\x137', 
-		'\x138', '\f', '\x14', '\x2', '\x2', '\x138', '\x139', '\a', '\x1D', '\x2', 
-		'\x2', '\x139', '\x150', '\x5', '\x18', '\r', '\x15', '\x13A', '\x13B', 
-		'\f', '\x13', '\x2', '\x2', '\x13B', '\x13C', '\a', '\x1E', '\x2', '\x2', 
-		'\x13C', '\x150', '\x5', '\x18', '\r', '\x14', '\x13D', '\x13E', '\f', 
-		'\x12', '\x2', '\x2', '\x13E', '\x13F', '\a', '\x1F', '\x2', '\x2', '\x13F', 
-		'\x150', '\x5', '\x18', '\r', '\x13', '\x140', '\x141', '\f', '\x11', 
-		'\x2', '\x2', '\x141', '\x142', '\a', ' ', '\x2', '\x2', '\x142', '\x150', 
-		'\x5', '\x18', '\r', '\x12', '\x143', '\x144', '\f', '\x10', '\x2', '\x2', 
-		'\x144', '\x145', '\a', '!', '\x2', '\x2', '\x145', '\x150', '\x5', '\x18', 
-		'\r', '\x11', '\x146', '\x147', '\f', '\xF', '\x2', '\x2', '\x147', '\x148', 
-		'\a', '\"', '\x2', '\x2', '\x148', '\x150', '\x5', '\x18', '\r', '\x10', 
-		'\x149', '\x14A', '\f', '\xE', '\x2', '\x2', '\x14A', '\x14B', '\a', '#', 
-		'\x2', '\x2', '\x14B', '\x150', '\x5', '\x18', '\r', '\xF', '\x14C', '\x14D', 
-		'\f', '\r', '\x2', '\x2', '\x14D', '\x14E', '\a', '$', '\x2', '\x2', '\x14E', 
-		'\x150', '\x5', '\x18', '\r', '\xE', '\x14F', '\x137', '\x3', '\x2', '\x2', 
-		'\x2', '\x14F', '\x13A', '\x3', '\x2', '\x2', '\x2', '\x14F', '\x13D', 
-		'\x3', '\x2', '\x2', '\x2', '\x14F', '\x140', '\x3', '\x2', '\x2', '\x2', 
-		'\x14F', '\x143', '\x3', '\x2', '\x2', '\x2', '\x14F', '\x146', '\x3', 
-		'\x2', '\x2', '\x2', '\x14F', '\x149', '\x3', '\x2', '\x2', '\x2', '\x14F', 
-		'\x14C', '\x3', '\x2', '\x2', '\x2', '\x150', '\x153', '\x3', '\x2', '\x2', 
-		'\x2', '\x151', '\x14F', '\x3', '\x2', '\x2', '\x2', '\x151', '\x152', 
-		'\x3', '\x2', '\x2', '\x2', '\x152', '\x19', '\x3', '\x2', '\x2', '\x2', 
-		'\x153', '\x151', '\x3', '\x2', '\x2', '\x2', '\x154', '\x155', '\a', 
-		'\x33', '\x2', '\x2', '\x155', '\x156', '\a', ')', '\x2', '\x2', '\x156', 
-		'\x168', '\t', '\x4', '\x2', '\x2', '\x157', '\x158', '\a', '\x33', '\x2', 
-		'\x2', '\x158', '\x159', '\a', '*', '\x2', '\x2', '\x159', '\x168', '\t', 
-		'\x4', '\x2', '\x2', '\x15A', '\x15B', '\a', '\x33', '\x2', '\x2', '\x15B', 
-		'\x15C', '\a', '+', '\x2', '\x2', '\x15C', '\x168', '\t', '\x4', '\x2', 
-		'\x2', '\x15D', '\x15E', '\a', '\x33', '\x2', '\x2', '\x15E', '\x15F', 
+		'\x119', '\x13C', '\x3', '\x2', '\x2', '\x2', '\x11A', '\x11B', '\a', 
+		'\x33', '\x2', '\x2', '\x11B', '\x11C', '\a', '#', '\x2', '\x2', '\x11C', 
+		'\x13C', '\a', '\x33', '\x2', '\x2', '\x11D', '\x11E', '\a', '$', '\x2', 
+		'\x2', '\x11E', '\x11F', '\a', '\f', '\x2', '\x2', '\x11F', '\x120', '\a', 
+		'\x33', '\x2', '\x2', '\x120', '\x13C', '\a', '\xE', '\x2', '\x2', '\x121', 
+		'\x122', '\a', '\x33', '\x2', '\x2', '\x122', '\x123', '\a', '%', '\x2', 
+		'\x2', '\x123', '\x13C', '\a', '\x33', '\x2', '\x2', '\x124', '\x13C', 
+		'\a', '\x33', '\x2', '\x2', '\x125', '\x126', '\a', '\x33', '\x2', '\x2', 
+		'\x126', '\x127', '\a', '\a', '\x2', '\x2', '\x127', '\x128', '\t', '\x4', 
+		'\x2', '\x2', '\x128', '\x13C', '\a', '\b', '\x2', '\x2', '\x129', '\x12A', 
+		'\a', '\x33', '\x2', '\x2', '\x12A', '\x12B', '\a', '\a', '\x2', '\x2', 
+		'\x12B', '\x12C', '\t', '\x4', '\x2', '\x2', '\x12C', '\x12D', '\a', '\b', 
+		'\x2', '\x2', '\x12D', '\x12E', '\x3', '\x2', '\x2', '\x2', '\x12E', '\x12F', 
+		'\a', '\a', '\x2', '\x2', '\x12F', '\x130', '\t', '\x4', '\x2', '\x2', 
+		'\x130', '\x13C', '\a', '\b', '\x2', '\x2', '\x131', '\x132', '\a', '\x33', 
+		'\x2', '\x2', '\x132', '\x13C', '\a', '&', '\x2', '\x2', '\x133', '\x134', 
+		'\a', '\x33', '\x2', '\x2', '\x134', '\x13C', '\a', '\'', '\x2', '\x2', 
+		'\x135', '\x136', '\a', '\x33', '\x2', '\x2', '\x136', '\x13C', '\a', 
+		'(', '\x2', '\x2', '\x137', '\x138', '\a', '\"', '\x2', '\x2', '\x138', 
+		'\x13C', '\x5', '\x18', '\r', '\x5', '\x139', '\x13C', '\a', '\x31', '\x2', 
+		'\x2', '\x13A', '\x13C', '\a', '\x32', '\x2', '\x2', '\x13B', '\x103', 
+		'\x3', '\x2', '\x2', '\x2', '\x13B', '\x108', '\x3', '\x2', '\x2', '\x2', 
+		'\x13B', '\x115', '\x3', '\x2', '\x2', '\x2', '\x13B', '\x11A', '\x3', 
+		'\x2', '\x2', '\x2', '\x13B', '\x11D', '\x3', '\x2', '\x2', '\x2', '\x13B', 
+		'\x121', '\x3', '\x2', '\x2', '\x2', '\x13B', '\x124', '\x3', '\x2', '\x2', 
+		'\x2', '\x13B', '\x125', '\x3', '\x2', '\x2', '\x2', '\x13B', '\x129', 
+		'\x3', '\x2', '\x2', '\x2', '\x13B', '\x131', '\x3', '\x2', '\x2', '\x2', 
+		'\x13B', '\x133', '\x3', '\x2', '\x2', '\x2', '\x13B', '\x135', '\x3', 
+		'\x2', '\x2', '\x2', '\x13B', '\x137', '\x3', '\x2', '\x2', '\x2', '\x13B', 
+		'\x139', '\x3', '\x2', '\x2', '\x2', '\x13B', '\x13A', '\x3', '\x2', '\x2', 
+		'\x2', '\x13C', '\x151', '\x3', '\x2', '\x2', '\x2', '\x13D', '\x13E', 
+		'\f', '\x14', '\x2', '\x2', '\x13E', '\x13F', '\a', '\x1D', '\x2', '\x2', 
+		'\x13F', '\x150', '\x5', '\x18', '\r', '\x15', '\x140', '\x141', '\f', 
+		'\x13', '\x2', '\x2', '\x141', '\x142', '\a', '\x1E', '\x2', '\x2', '\x142', 
+		'\x150', '\x5', '\x18', '\r', '\x14', '\x143', '\x144', '\f', '\x12', 
+		'\x2', '\x2', '\x144', '\x145', '\a', '\x1F', '\x2', '\x2', '\x145', '\x150', 
+		'\x5', '\x18', '\r', '\x13', '\x146', '\x147', '\f', '\x11', '\x2', '\x2', 
+		'\x147', '\x148', '\a', ' ', '\x2', '\x2', '\x148', '\x150', '\x5', '\x18', 
+		'\r', '\x12', '\x149', '\x14A', '\f', '\x10', '\x2', '\x2', '\x14A', '\x14B', 
+		'\a', '!', '\x2', '\x2', '\x14B', '\x150', '\x5', '\x18', '\r', '\x11', 
+		'\x14C', '\x14D', '\f', '\xF', '\x2', '\x2', '\x14D', '\x14E', '\a', '\"', 
+		'\x2', '\x2', '\x14E', '\x150', '\x5', '\x18', '\r', '\x10', '\x14F', 
+		'\x13D', '\x3', '\x2', '\x2', '\x2', '\x14F', '\x140', '\x3', '\x2', '\x2', 
+		'\x2', '\x14F', '\x143', '\x3', '\x2', '\x2', '\x2', '\x14F', '\x146', 
+		'\x3', '\x2', '\x2', '\x2', '\x14F', '\x149', '\x3', '\x2', '\x2', '\x2', 
+		'\x14F', '\x14C', '\x3', '\x2', '\x2', '\x2', '\x150', '\x153', '\x3', 
+		'\x2', '\x2', '\x2', '\x151', '\x14F', '\x3', '\x2', '\x2', '\x2', '\x151', 
+		'\x152', '\x3', '\x2', '\x2', '\x2', '\x152', '\x19', '\x3', '\x2', '\x2', 
+		'\x2', '\x153', '\x151', '\x3', '\x2', '\x2', '\x2', '\x154', '\x155', 
+		'\a', '\x33', '\x2', '\x2', '\x155', '\x156', '\a', ')', '\x2', '\x2', 
+		'\x156', '\x168', '\t', '\x4', '\x2', '\x2', '\x157', '\x158', '\a', '\x33', 
+		'\x2', '\x2', '\x158', '\x159', '\a', '*', '\x2', '\x2', '\x159', '\x168', 
+		'\t', '\x4', '\x2', '\x2', '\x15A', '\x15B', '\a', '\x33', '\x2', '\x2', 
+		'\x15B', '\x15C', '\a', '+', '\x2', '\x2', '\x15C', '\x168', '\t', '\x4', 
+		'\x2', '\x2', '\x15D', '\x15E', '\a', '\x33', '\x2', '\x2', '\x15E', '\x15F', 
 		'\a', ',', '\x2', '\x2', '\x15F', '\x168', '\t', '\x4', '\x2', '\x2', 
 		'\x160', '\x161', '\a', '\x33', '\x2', '\x2', '\x161', '\x162', '\a', 
 		'-', '\x2', '\x2', '\x162', '\x168', '\t', '\x5', '\x2', '\x2', '\x163', 
@@ -3297,7 +3293,7 @@ public partial class EmotionalDamageParser : Parser {
 		'\x2', '\x167', '\x166', '\x3', '\x2', '\x2', '\x2', '\x168', '\x1B', 
 		'\x3', '\x2', '\x2', '\x2', '\x1D', '!', '#', '.', '\x33', '\x39', '>', 
 		'\x42', '\x46', 'T', 'W', 'j', '\x82', '\x87', '\x8B', '\xAF', '\xBF', 
-		'\xC2', '\xDB', '\xE6', '\xEA', '\xEC', '\x10F', '\x112', '\x135', '\x14F', 
+		'\xC2', '\xDB', '\xE6', '\xEA', '\xEC', '\x10F', '\x112', '\x13B', '\x14F', 
 		'\x151', '\x167',
 	};
 

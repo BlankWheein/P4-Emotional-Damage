@@ -41,24 +41,6 @@ namespace UnitTests.Daniel
         }
 
         [TestMethod]
-        public void IntGradient()
-        {
-            var root = Parse(new StringBuilder("int kage = 5 \\\\ 4;"));
-            scope.Insert(SymbolType.Int, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
-        public void IntGradientFloat()
-        {
-            var root = Parse(new StringBuilder("int kage = 5 \\\\ 4.7;"));
-            scope.Insert(SymbolType.Int, "kage");
-            Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
-        }
-
-        [TestMethod]
         public void IntRowLenCol()
         {
             var root = Parse(new StringBuilder("int kage = 5; int kage3 = kage.row; kage3 = kage.col; kage3 = kage.len;"));
