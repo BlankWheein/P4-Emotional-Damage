@@ -18,11 +18,6 @@ namespace Compiler.Phases
 
         public CodeGeneratorV2()
         {
-            if (File.Exists(_path))
-                File.Delete(_path);
-            _fs = File.Create(_path);
-
-            AddStmt("using AutoGrad;\n");
 
 
         }
@@ -60,6 +55,11 @@ namespace Compiler.Phases
         }
         public void Compile()
         {
+            if (File.Exists(_path))
+                File.Delete(_path);
+            _fs = File.Create(_path);
+
+            AddStmt("using AutoGrad;\n");
             
             foreach (var stmt in Stmts)
                 stmt();
@@ -106,14 +106,6 @@ namespace Compiler.Phases
                 input = input.Replace(".len", ".Length");
             if (input.Contains(".col"))
                 input = input.Replace(".col", ".Columns");
-
-            if (input.Contains("\\\\"))
-            {
-
-                var _expr1 = input.Split("\\\\")[0];
-                var _expr2 = input.Split("\\\\")[1];
-                input = $"{_expr1}.Backward(); {_expr2}.grad";
-            }
 
 
             if (input.Contains("**"))
