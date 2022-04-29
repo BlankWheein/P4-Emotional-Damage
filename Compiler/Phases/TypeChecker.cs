@@ -67,6 +67,7 @@ namespace Compiler.Phases
         internal bool IsValidBexpr(string bexpr)
         {
             var _out = SplitOnOperatorsBexpr(bexpr);
+            if (_out.Count != 2) { return false; }
             string RightAsString = _out[1];
             Symbol? left = Scope.LookUp(_out[0]);
             Symbol? right;

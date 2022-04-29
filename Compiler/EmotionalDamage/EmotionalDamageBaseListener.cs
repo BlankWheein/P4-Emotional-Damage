@@ -304,20 +304,6 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>FuncStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -508,6 +494,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>GradientExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -647,6 +647,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Colid</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.

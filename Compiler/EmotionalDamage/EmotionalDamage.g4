@@ -24,7 +24,6 @@ stmt:
     | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
     | IDENTIFIER'++'';' #UnaryPlus
     | IDENTIFIER'--'';' #UnaryMinus
-    | 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
     | IDENTIFIER'('(IDENTIFIER(',' IDENTIFIER)*)?')'';' #FuncStmt
     | 'while' '('bexpr')' '{' stmts '}' #WhileStmt
     | 'for' '(''int' IDENTIFIER '=' expr';' bexpr';' (IDENTIFIER'++' | IDENTIFIER'--') ')' '{' stmts '}' #ForStmt
@@ -45,7 +44,9 @@ expr:
     | expr '/' expr #DivideExpr
     | expr '+' expr #PlusExpr
     | expr '-' expr #MinusExpr
+    | expr '§' expr #DotExprs
     | expr '\\\\' expr #GradientExpr
+    | 'T''('IDENTIFIER')' #TransposeMatrixStmt
     | IDENTIFIER #NumValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']') #NumArrValue
     | IDENTIFIER('['(IDENTIFIER | Inum)']')('['(IDENTIFIER | Inum)']') #NumMatrixValue

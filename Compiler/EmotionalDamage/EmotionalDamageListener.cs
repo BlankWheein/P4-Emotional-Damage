@@ -259,18 +259,6 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
-	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>FuncStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
@@ -433,6 +421,18 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DotExprs</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>GradientExpr</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
 	/// </summary>
@@ -552,6 +552,18 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TransposeMatrixStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Colid</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.expr"/>.
