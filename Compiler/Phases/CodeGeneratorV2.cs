@@ -13,7 +13,7 @@ namespace Compiler.Phases
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
         bool _isTesting = false;
-        private List<string> Values = new() { };
+        private HashSet<string> Values = new() { };
 
 
         public CodeGeneratorV2()
@@ -73,7 +73,7 @@ namespace Compiler.Phases
             }
             return val;
         }
-        public void PreVisit(List<string> values)
+        public void PreVisit(HashSet<string> values)
         {
             Values = values;
         }
@@ -129,9 +129,18 @@ namespace Compiler.Phases
 
                 if (_expr1.Last().Equals(')'))
                 {
+                    int nrLparen = 1;
                     for (int j = _len1; j >= 0; j--)
                     {
-                        if (_expr1[j].Equals('('))
+                        if (_expr1[j].Equals(')'))
+                        {
+                            nrLparen++;
+                        }
+                        else if (_expr1[j].Equals('(') && nrLparen > 1)
+                        { 
+                            nrLparen--;
+                        }
+                        else if (_expr1[j].Equals('(') && nrLparen == 1)
                         {
                             if(j == 0 || !Char.IsLetter(_expr1[j - 1]) || _expr1[j - 1].Equals('_'))
                             {
@@ -162,9 +171,18 @@ namespace Compiler.Phases
                 }
                 if (_expr2.First().Equals('('))
                 {
+                    int nrRparren = 1;
                     for (int j = 0; j <= _len2; j++)
                     {
-                        if (_expr2[j].Equals(')'))
+                        if (_expr2[j].Equals('('))
+                        {
+                            nrRparren++;
+                        }
+                        else if (_expr2[j].Equals(')') && nrRparren > 1)
+                        {
+                            nrRparren--;
+                        }
+                        else if (_expr2[j].Equals(')')&& nrRparren == 1)
                         {
                             right = _expr2.Substring(1, j - 1);
                             break;
@@ -190,7 +208,19 @@ namespace Compiler.Phases
                 }
                 string _left = _expr1.Last().Equals(')') == true ? $"({left})" : left;
                 string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
-                input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
+               
+                   
+                if (_left.Any(c => char.IsLetter(c)))
+                {
+                    input = input.Replace($"{_left}**{_right}", $"{left}.Pow({right})");
+                }
+                else
+                {
+                    input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
+                }
+                    
+                
+               
             }
 
 
@@ -256,23 +286,7 @@ namespace Compiler.Phases
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)))
                 {
-                    if (expr.Contains("MathF")) { 
-                        var word = expr.Split(' ');
-                        expr = "";
-                        int i = 0;
-                        foreach (var val in word)
-                        {
-                            if (val.Contains("MathF.Pow"))
-                            {
-                                if (!val.Any(c => char.IsDigit(c)))
-                                {
-                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Replace(",", "").Trim()}.Pow(";   
-                                }
-                            }
-                            expr += word[i];
-                            i++;
-                        }
-                    }
+                    
                     AddStmt($"Value {id} = {expr};");
                 }
                 else

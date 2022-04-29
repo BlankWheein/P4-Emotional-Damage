@@ -11,7 +11,7 @@ namespace Compiler.Phases
     internal class PreCodeGen : EmotionalDamageBaseVisitor<object>
     {
        
-        public List<string> Exprs = new();
+        public HashSet<string> Exprs = new();
         private List<string> _grads = new();
 
        // private int count = 0;
@@ -71,21 +71,13 @@ namespace Compiler.Phases
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1];
-                //if(Exprs.Any(v => _expr1 == v) && Exprs.Any(v => _expr2 == v))
-                //{
-                //    count--;
-                //}
-                //else
-                //{
-                //    count++;
                     Exprs.Add(_expr1);
                     Exprs.Add(_expr2);
                     _grads.Add(_expr1);
-                //}
             }
             else if (exprtmp.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 
-                var expr = exprtmp.Split('%', '/', '+', '-', '*');
+                var expr = exprtmp.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
                 foreach (var _expr in expr)
                 {
                     if (_expr.Any(c => char.IsLetter(c)))
@@ -93,7 +85,6 @@ namespace Compiler.Phases
                         if (CheckForGrad(_expr))
                         {
                             Exprs.Add(exprtmp1);
-
                         }                        
                     }
                 }
