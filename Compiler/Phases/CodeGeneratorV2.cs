@@ -230,28 +230,34 @@ namespace Compiler.Phases
                 if (expr.Any(c => char.IsLetter(c)))
                 {
                     if (expr.Contains("MathF")) { 
-                        var word = expr.Split(',');
+                        var word = expr.Split(' ');
                         expr = "";
                         int i = 0;
                         foreach (var val in word)
                         {
-                            if (val.Any(c => char.IsLetter(c)))
+                            if (val.Contains("MathF.Sqrt"))
                             {
-                                word[i] = $"{val}.data";
+                                if (!val.Any(c => char.IsDigit(c)))
+                                {
+                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Trim()}.Pow(1/2)";
+                                }
                             }
-                            if (val.Contains("(")) {
-                                word[i] += ",";
+                            if (val.Contains("MathF.Pow"))
+                            {
+                                if (!val.Any(c => char.IsDigit(c)))
+                                {
+                                    word[i] = $"{val.Split('(').Last().Replace($")", " ").Replace(",", "").Trim()}.Pow(";
+                                    
+                                }
                             }
                             expr += word[i];
                             i++;
                         }
                     }
                     AddStmt($"Value {id} = {expr};");
-
                 }
                 else
                 {
-
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
 

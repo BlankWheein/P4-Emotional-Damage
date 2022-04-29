@@ -1,3 +1,4 @@
+using System;
 namespace AutoGrad
 {
     public class Value
@@ -137,7 +138,7 @@ namespace AutoGrad
         {
             return new Value(self) * other.Pow(-1);
         }
-
+        
         public override string ToString()
         {
             return $"Value(data={data}, grad={grad})";
