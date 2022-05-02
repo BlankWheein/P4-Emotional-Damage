@@ -160,9 +160,36 @@ namespace Compiler.Phases
             res &= CanParseValues(expr, type);
             res &= CanParseFunction(expr, type);
             res &= DoesVariableReturnCompatibleType(expr, type);
-            res &= CanParseMultiDimensionalVariables(expr, type);
             res &= CanUseRowColLen(expr, type);
+            res &= IsExprValid(expr);
             return res;
+        }
+
+        private bool IsExprValid(string expr)
+        {
+            string variable = "";
+            string nextvariable = "";
+            string op = "";
+            foreach (var s in expr)
+            {
+                if (char.IsDigit(s))
+                {
+                    variable += s;
+                } else if (char.IsLetter(s))
+                {
+                    variable += s;
+                } else if (char.IsSymbol(s))
+                {
+                    op += s;
+                } else if (char.IsWhiteSpace(s))
+                {
+
+                } else
+                {
+
+                }
+            }
+            return true;
         }
 
         private bool CanUseRowColLen(string expr, SymbolType type)
@@ -202,28 +229,23 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool CanParseMultiDimensionalVariables(string expr, SymbolType type)
+        private bool CanParseMultiDimensionalVariables(string expr, Symbol type)
         {
             bool res = true;
             var _out = SplitOnOperatorsExpr(expr);
             foreach (var item in _out)
             {
                 Symbol? sym = Scope.LookUpSilent(item.Split("[")[0]);
-                if (sym == null) return false;
+                if (sym == null) continue;
                 int count = item.Split("[").Length;
-                if (count == 1 && (sym.Type.IsArray() || sym.Type.IsMatrix()))
+                if (count == 2 && !sym.Type.IsArray())
                 {
-                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A/M{type.ToString().ToLower()}"));
-                    res = false;
-                }
-                else if (count == 2 && !sym.Type.IsArray())
-                {
-                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A{type.ToString().ToLower()}"));
+                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A{type?.Type.ToString().ToLower()}"));
                     res = false;
                 }
                 else if (count == 3 && !sym.Type.IsMatrix())
                 {
-                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type M{type.ToString().ToLower()}"));
+                    Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type M{type?.Type.ToString().ToLower()}"));
                     res = false;
                 }
             }
@@ -360,7 +382,9 @@ namespace Compiler.Phases
         private bool ExprHelper(string expr, Symbol? sym = null)
         {
             bool res = true;
+            if (sym == null) { throw new Exception(); }
             res &= AreFuncsCompatible(expr, sym);
+            res &= CanParseMultiDimensionalVariables(expr, sym);
             if (res == false) return false;
             return res && sym?.Type switch
             {
