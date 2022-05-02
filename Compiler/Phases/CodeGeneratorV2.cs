@@ -263,9 +263,28 @@ namespace Compiler.Phases
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
+
             var expr = CheckExpr(expr_str);
+            if (expr.Contains('.'))
+            {
+                int fff = expr.Length;
+                for (int i = 0; i < fff; i++)
+                {
+                    char c = expr[i];
+                    char cNext = expr[i];
+                    if (i < fff-1)
+                    {
+                        cNext = expr[i + 1];
+                    }
+                    if (c == '.' && char.IsDigit(cNext))
+                    {
+                        Console.WriteLine(expr);
+                        expr = expr.Insert(i+2, "f");
+                    }
+                }
+            }
             if (Values.Any(v => v.Contains(id))) {
-                if (expr.Any(c => char.IsLetter(c)))
+                if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
                 {
                     AddStmt($"Value {id} = {expr};");
                 }
@@ -274,7 +293,7 @@ namespace Compiler.Phases
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
             }
-            else
+            else if (numtype == "float")
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)
@@ -293,7 +312,7 @@ namespace Compiler.Phases
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }
-
+            
             return false;
         }
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
