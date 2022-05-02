@@ -1,5 +1,5 @@
-﻿float kage = 2;
-float k  = 3;
-float l = k * kage;
-float test = l \\ kage;
-print(test);
+﻿float x = 4;
+float f = sqrt(x+4*sqrt(45));
+float y = sqrt(x);
+
+float h = y\\x;

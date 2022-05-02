@@ -1,8 +1,7 @@
 using AutoGrad;
 
-Value kage = new Value(2, null,"kage", true);
-Value k = new Value(3, null,"k", true);
-Value l = k * kage;
-l.Backward();
-float test = kage.grad;
-Console.WriteLine(test);
+Value x = new Value(4, null,"x", true);
+float f = MathF.Sqrt(x.data + 4 * MathF.Sqrt(45));
+Value y = x.Pow(1 / 2);
+y.Backward();
+float h = x.grad;

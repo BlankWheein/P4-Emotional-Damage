@@ -74,7 +74,7 @@ namespace Compiler.Phases
             if (exprtmp.Contains("\\\\"))
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
-                var _expr2 = input.Split("\\\\")[1];
+                var _expr2 = input.Split("\\\\")[1].Replace(";", "");
                     Exprs.Add(_expr1);
                     Exprs.Add(_expr2);
                     _grads.Add(_expr1);
