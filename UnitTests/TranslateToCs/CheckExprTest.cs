@@ -11,7 +11,7 @@ using Compiler.Phases;
 namespace UnitTests.TranlateToCs
 {
     [TestClass]
-    public class TranslateToCS
+    public class CheckExprTest
     {
         private CodeGeneratorV2 _codeGen = new CodeGeneratorV2(true);
        
@@ -85,6 +85,30 @@ namespace UnitTests.TranlateToCs
             _codeGen.PreVisit(new HashSet<string> { "x" });
             input = _codeGen.CheckExpr(input);
             Assert.AreEqual(res, input);
+        }
+        [TestMethod]
+        public void MatrixRow()
+        {
+            string res = "m.Rows";
+            string input = "m.row";
+            input = _codeGen.CheckExpr(input);
+            Assert.AreEqual(input, res);
+        }
+        [TestMethod]
+        public void MatrixCol()
+        {
+            string res = "m.Columns";
+            string input = "m.col";
+            input = _codeGen.CheckExpr(input);
+            Assert.AreEqual(input, res);
+        }
+        [TestMethod]
+        public void MatrixLen()
+        {
+            string res = "m.Length";
+            string input = "m.len";
+            input = _codeGen.CheckExpr(input);
+            Assert.AreEqual(input, res);
         }
 
     }

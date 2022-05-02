@@ -12,10 +12,10 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-        bool _isTesting = false;
+        bool isTesting = false;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
-
+        public string testString = "";
         public CodeGeneratorV2()
         {
 
@@ -24,7 +24,7 @@ namespace Compiler.Phases
         public CodeGeneratorV2(bool IsTesting)
         {
 
-            _isTesting = IsTesting;
+            isTesting = IsTesting;
         }
         #region Indent
         public string Indent = "";
@@ -40,7 +40,14 @@ namespace Compiler.Phases
         public List<Action> Stmts { get; set; } = new();
         private void AddStmt(string v, bool newline = true, bool indent = true)
         {
-            Stmts.Add(() => AddText(v, newline, indent));
+            if (isTesting)
+            {
+                this.testString += v;
+            }
+            else if (!isTesting) {
+                this.testString = "[NOT TESTING]";
+                Stmts.Add(() => AddText(v, newline, indent));
+            }
         }
         public void AddText(string value, bool newline = true, bool indent = true)
         {
