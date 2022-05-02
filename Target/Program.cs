@@ -5,3 +5,4 @@ float f = MathF.Sqrt(x.data + 4 * MathF.Sqrt(45));
 Value y = x.Pow(1 / 2);
 y.Backward();
 float h = x.grad;
+int i = 5;

@@ -3,3 +3,5 @@ float f = sqrt(x+4*sqrt(45));
 float y = sqrt(x);
 
 float h = y\\x;
+
+int i = 5;
