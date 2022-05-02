@@ -1,41 +1,10 @@
-﻿float x = 4;
-float f = sqrt(x+4*sqrt(45));
-float y = sqrt(x);
-float h = y\\x;
-float[1][2] a;
-float[1][2] j;
-a[0][0] = 1;
-a[0][1] = 2;
-j[0][0] = 2;
-j[0][1] = 1;
-float[1][2] g;
-int s = 4;
-g = a-j;
-bool t= true;
-if(t == true){
-print("hej");
-}
+﻿int[2][2] happy;
+happy[1][0] = 1;
+happy[1][1] = 1;
+happy[0][1] = 1;
 
-if(x >= f){
-print("hej");
-}
+int[2] hap;
+hap[0] = 1;
+hap[1] = 2;
 
-if(x <f){
-print("hej");
-}
-
-if(x <= f){
-print("hej");
-}
-
-if(x == f){
-print("hej");
-}
-
-if(x != f){
-print("hej");
-}
-
-float ttsqrt(float l){return l;}
-float xk = 4;
-f = ttsqrt(xk);
+print(happy);
