@@ -1,7 +1,6 @@
 ﻿float x = 4;
 float f = sqrt(x+4*sqrt(45));
 float y = sqrt(x);
-
 float h = y\\x;
 float[1][2] a;
 float[1][2] j;
@@ -36,3 +35,6 @@ print("hej");
 if(x != f){
 print("hej");
 }
+
+float ttsqrt(float l){return l;}
+float xk = 4;

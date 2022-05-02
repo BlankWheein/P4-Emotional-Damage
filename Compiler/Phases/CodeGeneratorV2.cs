@@ -79,8 +79,32 @@ namespace Compiler.Phases
         }
         public string CheckExpr(string input)
         {
-            if (input.Contains("sqrt(")) { 
-                input = input.Replace("sqrt(", "MathF.Sqrt(");
+            if (input.Contains("sqrt(")) 
+            {
+                string newInput = "";
+                string sqrt = "";
+                for (int i = 0; i < input.ToArray().Length; i++)
+                {
+                    var w = input.ToArray()[i];
+                    if (char.IsLetter(w))
+                    {
+                        sqrt += w;
+                    }
+                    else if (!char.IsLetter(w)) {
+                        newInput += sqrt;
+                        sqrt = "";
+                    }
+                    if (sqrt.Equals("sqrt"))
+                    {
+                        newInput += "MathF.Sqrt";
+                        sqrt = "";
+                    }
+                    else if (!sqrt.Contains(w))
+                    {
+                        newInput += w;
+                    }
+                }
+                input = newInput;
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var val in word)
                 {

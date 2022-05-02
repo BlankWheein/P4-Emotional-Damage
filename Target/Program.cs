@@ -33,3 +33,7 @@ Console.WriteLine("hej");
 if(x.data!=f){
 Console.WriteLine("hej");
 }
+float ttsqrt (float l) {
+    return l;
+}
+float xk = 4;
