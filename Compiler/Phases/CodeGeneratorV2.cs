@@ -80,7 +80,6 @@ namespace Compiler.Phases
         public string CheckExpr(string input)
         {
             if (input.Contains("sqrt(")) { 
-                
                 input = input.Replace("sqrt(", "MathF.Sqrt(");
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var val in word)
