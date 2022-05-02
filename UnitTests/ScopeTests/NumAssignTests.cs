@@ -52,7 +52,7 @@ namespace UnitTests.ScopeTests
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Aint, "a");
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "b");
             Assert.AreNotEqual(scope, root);
-            Assert.AreEqual(0, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
     }
 }
