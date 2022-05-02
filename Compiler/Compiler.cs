@@ -31,8 +31,9 @@ namespace Compiler
             _codeGenerator = new();
             _scopeTypeChecker = new();
         }
-        public void Compile()
+        public bool Compile()
         {
+            if (__parser.NumberOfSyntaxErrors > 0) return false;
             _scopeTypeChecker.Visit(__context);
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (var s in _scopeTypeChecker.Diagnostics)
@@ -42,13 +43,14 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.Green;
             _scopeTypeChecker.Print();
             Console.ResetColor();
-            if (_scopeTypeChecker.Diagnostics.Count > 0) return;
+            if (_scopeTypeChecker.Diagnostics.Count > 0) return false;
             _preCodeGen.Visit(__context);
             _preCodeGen.lookingforGrads = true;
             _preCodeGen.Visit(__context);
             _codeGenerator.PreVisit(_preCodeGen.Exprs);
             _codeGenerator.Visit(__context);
             _codeGenerator.Compile();
+            return true;
         }
 
     }
