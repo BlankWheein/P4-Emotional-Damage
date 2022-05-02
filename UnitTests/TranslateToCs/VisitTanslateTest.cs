@@ -32,7 +32,7 @@ namespace UnitTests.TranslateToCs
             DclContext __context;
             __context = pars("float x = 4.0;").dcl();
             string exprt = "float x = 4.0f;";
-            
+            _codeGen.Visit(__context); 
             Assert.AreEqual(exprt, _codeGen.testString);
         }
     }

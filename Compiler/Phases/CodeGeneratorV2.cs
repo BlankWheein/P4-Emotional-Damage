@@ -12,10 +12,10 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-        bool isTesting = false;
+        private bool isTesting = false;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
-        public string testString = "";
+        public string testString="";
         public CodeGeneratorV2()
         {
 
@@ -42,7 +42,7 @@ namespace Compiler.Phases
         {
             if (isTesting)
             {
-                this.testString += v;
+                this.testString = v;
             }
             else if (!isTesting) {
                 this.testString = "[NOT TESTING]";
