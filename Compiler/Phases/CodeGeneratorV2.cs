@@ -55,9 +55,11 @@ namespace Compiler.Phases
         }
         public void Compile()
         {
-            if (File.Exists(_path))
-                File.Delete(_path);
-            _fs = File.Create(_path);
+            
+                if (File.Exists(_path))
+                    File.Delete(_path);
+                _fs = File.Create(_path);
+            
 
             AddText("using AutoGrad;\n");
             
@@ -86,7 +88,7 @@ namespace Compiler.Phases
                 {
                     if (val.Contains(")"))
                     {
-                        if (val.Split(')').First().Any(c => Values.Contains(c.ToString())))
+                        if (val.Split(')').First().Any(c => Values.Equals(c.ToString())))
                         {
                            input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                         }
@@ -196,7 +198,7 @@ namespace Compiler.Phases
                 string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
                
                    
-                if (_left.Any(c => char.IsLetter(c)))
+                if (Values.Any(c => _left.Equals(c.ToString())))
                 {
                     input = input.Replace($"{_left}**{_right}", $"{left}.Pow({right})");
                 }
