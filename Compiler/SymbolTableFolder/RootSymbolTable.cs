@@ -12,6 +12,7 @@ namespace Compiler.SymbolTableFolder
         public SymbolTable Root { get; set; }
         internal SymbolTable Current { get; set; }
         public List<Symbol> Symbols { get => Current.Symbols; }
+        public List<Symbol> ReservedContains { get; } = new() { new("sqrt") };
         public List<Symbol> ReservedSymbols { get; } = new() { new("true"), new("false") };
         public RootSymbolTable(bool Testing=false)
         {

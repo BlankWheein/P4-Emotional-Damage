@@ -411,9 +411,25 @@ namespace Compiler.Phases
                 if (sym == null) continue;
                 if (sym.Type.IsMatrixArray())
                     Scope.AddDiagnostic(new TypeCheckerException($" cant get Square root of '{sym.Id}'", context));
-
             }
             return base.VisitSqrtExpr(context);
+        }
+        public override object VisitPowExpr([NotNull] EmotionalDamageParser.PowExprContext context)
+        {
+            string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("**")[^1]);
+            string temp = context.expr().Last().GetText();
+            string id2 = "";
+            foreach (var p in temp)
+                if (char.IsLetterOrDigit(p))
+                    id2 += p;
+                else
+                    break;
+            Symbol? sym1 = ConvertValueToSymbol(id1);
+            Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (sym1 == null || sym2 == null) return false;
+            if (sym1.Type.IsMatrix() || sym1.Type.IsArray() || sym2.Type.IsMatrix() || sym2.Type.IsArray())
+                Scope.AddDiagnostic(new($"Could not power {id1} with {id2}"));
+            return base.VisitPowExpr(context);
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
         {
