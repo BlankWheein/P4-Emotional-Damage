@@ -13,6 +13,26 @@ float[1][2] g;
 int s = 4;
 g = a-j;
 bool t= true;
-if(x > f){
+if(t == true){
+print("hej");
+}
+
+if(x >= f){
+print("hej");
+}
+
+if(x <f){
+print("hej");
+}
+
+if(x <= f){
+print("hej");
+}
+
+if(x == f){
+print("hej");
+}
+
+if(x != f){
 print("hej");
 }
