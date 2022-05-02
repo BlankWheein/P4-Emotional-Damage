@@ -281,6 +281,10 @@ namespace Compiler.Phases
                     break;
             Symbol? sym1 = ConvertValueToSymbol(id1);
             Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (id2.Replace("0", "") == "")
+            {
+                Scope.AddDiagnostic(new($"cant divide with 0 on '{id1} / {id2}'"));
+            }
             if (sym1 == null || sym2 == null) return false;
             if (sym1.Type.IsMatrix() || sym1.Type.IsArray() || sym2.Type.IsMatrix() || sym2.Type.IsArray())
                 Scope.AddDiagnostic(new($"Could not divide {id1} with {id2}"));
