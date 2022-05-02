@@ -92,7 +92,6 @@ namespace Compiler.Phases
                         }
                     }
                 }
-                
             }
 
 
@@ -102,7 +101,6 @@ namespace Compiler.Phases
                 input = input.Replace(".len", ".Length");
             if (input.Contains(".col"))
                 input = input.Replace(".col", ".Columns");
-
 
             if (input.Contains("**"))
             {
@@ -211,7 +209,6 @@ namespace Compiler.Phases
                
             }
 
-
             #region formatting
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
@@ -270,14 +267,12 @@ namespace Compiler.Phases
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)))
                 {
-                    
                     AddStmt($"Value {id} = {expr};");
                 }
                 else
                 {
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
-
             }
             else if(numtype == "float")
             {
@@ -302,9 +297,7 @@ namespace Compiler.Phases
             return false;
         }
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
-        {
-            
-                
+        {   
             AddStmt($"{context.IDENTIFIER(1)}.Backward();");
             AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
             
