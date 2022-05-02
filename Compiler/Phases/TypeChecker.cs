@@ -21,34 +21,33 @@ namespace Compiler.Phases
         public ScopeVisitorV2 ScopeVisitorV2 { get; }
         internal List<string> SplitOnOperatorsExpr(string text) => text.Split(new string[] { "**", "*", "/", "+", "-", "sqrt", "%" }, StringSplitOptions.RemoveEmptyEntries).ToList();
         internal List<string> SplitOnOperatorsBexpr(string text) => text.Split(new string[] { ">=", "<=", ">", "<", "==", "!=" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        private Symbol? GetFunctionReturnType(string expr) => Scope.LookUpSilent(expr.Split('(')[0]);
+        private List<string> GetFunctionParameters(string expr) => expr.Split('(')[1].Replace(")", "").Split(",").ToList();
+        public bool CheckNumAssignStmtContext(NumAssignStmtContext ctx) => ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText()));
 
-        public bool CheckBexpr(EmotionalDamageParser.IfstmtContext ctx)
+
+
+        public bool CheckBexpr(IfstmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
             if (bexpr == "true" || bexpr == "false") return true;
-            bool isValid = IsValidBexpr(bexpr);
-            return isValid;
+            return IsValidBexpr(bexpr);
         }
-        public bool CheckBexpr(EmotionalDamageParser.ElifstmtContext ctx)
+        public bool CheckBexpr(ElifstmtContext ctx)
         {
             string bexpr = ctx.bexpr().GetText();
             if (bexpr == "true" || bexpr == "false") return true;
-            bool isValid = IsValidBexpr(bexpr);
-            return isValid;
+            return IsValidBexpr(bexpr);
         }
 
-        internal bool CheckNumDcl(EmotionalDamageParser.NumDclContext context)
+        internal bool CheckNumDcl(NumDclContext context)
         {
-            var text = context.GetText();
-            var expr = context.expr().GetText();
             SymbolType type;
             string numtype = context.numtype().GetText();
-            
             try
             {
                 type = (SymbolType)Enum.Parse(typeof(SymbolType), numtype[0].ToString().ToUpper() + numtype[1..^0]);
-                bool res =  ExprHelper(expr, new Symbol("Constant", type));
-                return res;
+                return ExprHelper(context.expr().GetText(), new Symbol("Constant", type));
             }
             catch (Exception ex)
             {
@@ -72,7 +71,11 @@ namespace Compiler.Phases
 
             bool iscomp;
             if (right != null && left != null)
+            {
                 iscomp = left.Type.IsCompatible(right.Type);
+                if (iscomp == false)
+                    Scope.AddDiagnostic(new($"{left.Id} is not of same type as {right.Id}"));
+            }
             else
                 iscomp = false;
             if (iscomp == false)
@@ -117,10 +120,8 @@ namespace Compiler.Phases
         {
             int count = 0;
             foreach (var stmt in stmts.stmt())
-            {
                 if (stmt != null && stmt is ReturnStmtContext)
                     count++;
-            }
             return count;
         }
 
@@ -151,16 +152,6 @@ namespace Compiler.Phases
             }
             return _items;
         }
-
-        private Symbol? GetFunctionReturnType(string expr)
-        {
-            string id = expr.Split('(')[0];
-            return Scope.LookUpSilent(id);
-        }
-        private List<string> GetFunctionParameters(string expr)
-        {
-            return expr.Split('(')[1].Replace(")", "").Split(",").ToList();
-        }
        
         private bool ExprParser(string expr, SymbolType type)
         {
@@ -171,17 +162,7 @@ namespace Compiler.Phases
             res &= DoesVariableReturnCompatibleType(expr, type);
             res &= CanParseMultiDimensionalVariables(expr, type);
             res &= CanUseRowColLen(expr, type);
-            res &= CheckDotExpr(expr, type);
             return res;
-        }
-
-        private bool CheckDotExpr(string expr, SymbolType type)
-        {
-            if (!expr.Contains("§")) return true;
-            var dotexprsplit = expr.Split("§");
-            Symbol? left = Scope.LookUpSilent(SplitOnOperatorsExpr(dotexprsplit.First()).Last());
-            Symbol? right =  Scope.LookUpSilent(SplitOnOperatorsExpr(dotexprsplit.Last()).First());
-            return true;
         }
 
         private bool CanUseRowColLen(string expr, SymbolType type)
@@ -412,11 +393,6 @@ namespace Compiler.Phases
             return res;
         }
 
-        public bool CheckNumAssignStmtContext(NumAssignStmtContext ctx)
-        {
-            string text = ctx.GetText();
-            return ExprHelper(ctx.expr().GetText(), Scope.LookUp(ctx.IDENTIFIER().GetText()));
-        }
         
         internal bool CheckMatrixDcl(MatrixDeclarationContext context)
         {
