@@ -38,3 +38,4 @@ print("hej");
 
 float ttsqrt(float l){return l;}
 float xk = 4;
+f = ttsqrt(xk);
