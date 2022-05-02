@@ -321,8 +321,12 @@ namespace Compiler.Phases
         }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
+            var text = context.GetText();
+            string Stmt = context.GetText().Split("(")[0].TrimEnd().TrimStart() == "print" ? "Console.Write(" : "Console.WriteLine(";
+            string dollar = text.Split("(")[1].StartsWith("$") == true ? "$" : "";
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
-            AddStmt($"Console.WriteLine({printPart});");
+            
+            AddStmt($"{Stmt}{dollar}{printPart});");
             return false;
         }
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
