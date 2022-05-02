@@ -281,7 +281,7 @@ namespace Compiler.Phases
                     break;
             Symbol? sym1 = ConvertValueToSymbol(id1);
             Symbol? sym2 = ConvertValueToSymbol(id2);
-            if (id2.Replace("0", "") == "")
+            if (id2.Replace("0", "") == "" || id2.Replace("0", "") == ".")
             {
                 Scope.AddDiagnostic(new($"cant divide with 0 on '{id1} / {id2}'"));
             }
