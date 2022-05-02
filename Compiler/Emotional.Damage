@@ -3,5 +3,11 @@ float f = sqrt(x+4*sqrt(45));
 float y = sqrt(x);
 
 float h = y\\x;
-
-int i = 5;
+float[1][2] a;
+float[1][2] j;
+a[0][0] = 1;
+a[0][1] = 2;
+j[0][0] = 2;
+j[0][1] = 1;
+float[1][2] g;
+g = a-j;
