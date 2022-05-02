@@ -435,6 +435,10 @@ namespace Compiler.Phases
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
             string bexprstring = context.bexpr().GetText();
+            if (Values.Any(v => bexprstring.Split('>', '<', '=', ' ').Contains(v)))
+            {
+                bexprstring = bexprstring.Replace(Values.First(v => bexprstring.Split('>', '<', '=',' ').Contains(v)), Values.First(v => bexprstring.Split('>', '<', '=', ' ').Contains(v)) + ".data");
+            }
             AddStmt($"if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
@@ -443,6 +447,10 @@ namespace Compiler.Phases
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             string bexprstring = context.bexpr().GetText();
+            if (Values.Any(v => bexprstring.Split('>', '<', '=', ' ').Contains(v)))
+            {
+                bexprstring = bexprstring.Replace(Values.First(v => bexprstring.Split('>', '<', '=', ' ').Contains(v)), Values.First(v => bexprstring.Split('>', '<', '=', ' ').Contains(v)) + ".data");
+            }
             AddStmt($"else if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");

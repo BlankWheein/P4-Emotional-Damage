@@ -10,4 +10,9 @@ a[0][1] = 2;
 j[0][0] = 2;
 j[0][1] = 1;
 float[1][2] g;
+int s = 4;
 g = a-j;
+bool t= true;
+if(x > f){
+print("hej");
+}
