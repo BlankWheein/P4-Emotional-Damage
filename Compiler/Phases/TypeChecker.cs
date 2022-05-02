@@ -161,35 +161,7 @@ namespace Compiler.Phases
             res &= CanParseFunction(expr, type);
             res &= DoesVariableReturnCompatibleType(expr, type);
             res &= CanUseRowColLen(expr, type);
-            res &= IsExprValid(expr);
             return res;
-        }
-
-        private bool IsExprValid(string expr)
-        {
-            string variable = "";
-            string nextvariable = "";
-            string op = "";
-            foreach (var s in expr)
-            {
-                if (char.IsDigit(s))
-                {
-                    variable += s;
-                } else if (char.IsLetter(s))
-                {
-                    variable += s;
-                } else if (char.IsSymbol(s))
-                {
-                    op += s;
-                } else if (char.IsWhiteSpace(s))
-                {
-
-                } else
-                {
-
-                }
-            }
-            return true;
         }
 
         private bool CanUseRowColLen(string expr, SymbolType type)

@@ -269,6 +269,111 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new TypeCheckerException($"{id} was not defined", context));
             return base.VisitNumAssignStmt(context);
         }
+        public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
+        {
+            string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("/")[^1]);
+            string temp = context.expr().Last().GetText();
+            string id2 = "";
+            foreach (var p in temp)
+                if (char.IsLetterOrDigit(p))
+                    id2 += p;
+                else
+                    break;
+            Symbol? sym1 = ConvertValueToSymbol(id1);
+            Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (sym1 == null || sym2 == null) return false;
+            if (sym1.Type.IsMatrix() || sym1.Type.IsArray() || sym2.Type.IsMatrix() || sym2.Type.IsArray())
+                Scope.AddDiagnostic(new($"Could not divide {id1} with {id2}"));
+            return base.VisitDivideExpr(context);
+        }
+        public override object VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context)
+        {
+            string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("-")[^1]);
+            string temp = context.expr().Last().GetText();
+            string id2 = "";
+            foreach (var p in temp)
+                if (char.IsLetterOrDigit(p))
+                    id2 += p;
+                else
+                    break;
+            Symbol? sym1 = ConvertValueToSymbol(id1);
+            Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (sym1 == null || sym2 == null) return false;
+            if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+                if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
+                    Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
+            if (sym1.Type.IsArray() || sym2.Type.IsArray())
+                if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
+                    Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
+            return base.VisitMinusExpr(context);
+        }
+        public string ConvertLastVarToId(string text)
+        {
+            string id = "";
+            foreach (var p in text.Reverse())
+                if (char.IsLetterOrDigit(p))
+                    id += p;
+                else
+                    break;
+            string final = "";
+            foreach (var p in id.Reverse())
+                final += p;
+            return final;
+        }
+        public override object VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context)
+        {
+            string text = context.expr().First().GetText();
+            string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("+")[^1]);
+            string temp = context.expr().Last().GetText();
+            string id2 = "";
+            foreach (var p in temp)
+                if (char.IsLetterOrDigit(p))
+                    id2 += p;
+                else
+                    break;
+            Symbol? sym1 = ConvertValueToSymbol(id1);
+            Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (sym1 == null || sym2 == null) return false;
+            if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+                if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
+                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type"));
+            if (sym1.Type.IsArray() || sym2.Type.IsArray())
+                if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
+                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type")); 
+            return base.VisitPlusExpr(context);
+        }
+        public override object VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context)
+        {
+            string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("*")[^1]);
+            string temp = context.expr().Last().GetText();
+            string id2 = "";
+            foreach (var p in temp)
+                if (char.IsLetterOrDigit(p))
+                    id2 += p;
+                else
+                    break;
+            Symbol? sym1 = ConvertValueToSymbol(id1);
+            Symbol? sym2 = ConvertValueToSymbol(id2);
+            if (sym1 == null || sym2 == null) return false;
+            if ((sym1.Type.IsMatrix() || sym1.Type.IsArray()) && (sym2.Type.IsMatrix() || sym2.Type.IsArray()))
+                    Scope.AddDiagnostic(new($"could not times {id1} with {id2}"));
+            return base.VisitTimesExpr(context);
+        }
+        private Symbol? ConvertValueToSymbol(string val)
+        {
+            Symbol? sym = Scope.LookUpSilent(val);
+            if (int.TryParse(val, out _))
+                return new Symbol("Constant", SymbolType.Int);
+            else if (float.TryParse(val, out _))
+                return new Symbol("Constant", SymbolType.Float);
+            else if (sym != null)
+                return sym;
+            else
+            {
+                return null;
+            }
+            throw new Exception();
+        }
         public override object VisitBoolAssignStmt([NotNull] EmotionalDamageParser.BoolAssignStmtContext context)
         {
             TypeChecker.CheckBoolAssignStmtContext(context);
@@ -289,12 +394,33 @@ namespace Compiler.Phases
         }
         public override object VisitUnaryMinus([NotNull] EmotionalDamageParser.UnaryMinusContext context)
         {
-            Scope.LookUp(context.IDENTIFIER().GetText());
+            Symbol? sym = Scope.LookUp(context.IDENTIFIER().GetText());
+            if (sym != null)
+                if (sym.Type.IsMatrixArray() || sym.Type.IsBool() || sym.Type.IsString())
+                    Scope.AddDiagnostic(new TypeCheckerException($"{sym?.Id} was not of type int or float", context));
             return base.VisitUnaryMinus(context);
+        }
+        public override object VisitSqrtExpr([NotNull] EmotionalDamageParser.SqrtExprContext context)
+        {
+            string expr = context.expr().GetText();
+            expr = expr.Replace("(", "").Replace(")", "");
+            var _out = TypeChecker.SplitOnOperatorsExpr(expr);
+            foreach (var o in _out)
+            {
+                Symbol? sym = Scope.LookUpSilent(o.Split("[")[0]);
+                if (sym == null) continue;
+                if (sym.Type.IsMatrixArray())
+                    Scope.AddDiagnostic(new TypeCheckerException($" cant get Square root of '{sym.Id}'", context));
+
+            }
+            return base.VisitSqrtExpr(context);
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
         {
-            Scope.LookUp(context.IDENTIFIER().GetText());
+            Symbol? sym = Scope.LookUp(context.IDENTIFIER().GetText());
+            if (sym != null)
+                if (sym.Type.IsMatrixArray() || sym.Type.IsBool() || sym.Type.IsString())
+                    Scope.AddDiagnostic(new TypeCheckerException($"{sym?.Id} was not of type int or float", context));
             return base.VisitUnaryPlus(context);
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context)

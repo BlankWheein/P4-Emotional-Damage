@@ -109,7 +109,7 @@ namespace UnitTests.ScopeTests
             scope.Insert(SymbolType.Float, "m");
             scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
     }
 }

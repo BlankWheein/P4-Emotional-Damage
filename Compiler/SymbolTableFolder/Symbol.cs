@@ -105,6 +105,10 @@ namespace Compiler.SymbolTableFolder
         {
             return (type & (SymbolType.Mint | SymbolType.Mfloat)) != 0;
         }
+        public static bool IsMatrixArray(this SymbolType type)
+        {
+            return IsMatrix(type) || IsArray(type);
+        }
 
         public static bool IsCompatible(this SymbolType functionout, SymbolType variabletype)
         {
