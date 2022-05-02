@@ -1,41 +1,30 @@
-﻿float x = 4;
-float f = sqrt(x+4*sqrt(45));
-float y = sqrt(x);
-float h = y\\x;
-float[1][2] a;
-float[1][2] j;
-a[0][0] = 1;
-a[0][1] = 2;
-j[0][0] = 2;
-j[0][1] = 1;
-float[1][2] g;
-int s = 4;
-g = a-j;
-bool t= true;
-if(t == true){
-print("hej");
+﻿int main() {
+	int[10][10] a;
+	int[10][10] transpose;
+	int r = 5;
+	int c = 5;
+	println("Enter rows and columns: ");
+	println("Enter matrix elements: ");
+	for (int i = 0; i < r; i++){
+		for (int j = 0; j < c; j++) {
+			a[i][j] = a[i][j] + 4; 
+		}
+	} 
+	for (int i = 0; i < r; i++){
+		for (int j = 0; j < c; j++) {
+			transpose[j][i] = a[i][j]; 
+		} 
+	} 
+	println("Transpose of the matrix:");
+	for (int i = 0; i < c; i++){ 
+		for (int j = 0; j < r; j++) { 
+			int kage = transpose[i][j];
+			print($"{kage}"); 
+			r = r -1; if (j == r){
+				println("");
+			}
+		}
+	}
+	int olo = 0;
+	return olo;
 }
-
-if(x >= f){
-print("hej");
-}
-
-if(x <f){
-print("hej");
-}
-
-if(x <= f){
-print("hej");
-}
-
-if(x == f){
-print("hej");
-}
-
-if(x != f){
-print("hej");
-}
-
-float ttsqrt(float l){return l;}
-float xk = 4;
-f = ttsqrt(xk);
