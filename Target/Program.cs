@@ -12,4 +12,24 @@ a.Values[0][1] = new Value(2);
 j.Values[0][0] = new Value(2);
 j.Values[0][1] = new Value(1);
 Matrix g = new(1,2);
+int s = 4;
 g = a - j;
+bool t = true;
+if(t==true){
+Console.WriteLine("hej");
+}
+if(x.data>=f){
+Console.WriteLine("hej");
+}
+if(x.data<f){
+Console.WriteLine("hej");
+}
+if(x.data<=f){
+Console.WriteLine("hej");
+}
+if(x.data==f){
+Console.WriteLine("hej");
+}
+if(x.data!=f){
+Console.WriteLine("hej");
+}
