@@ -211,6 +211,18 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>RandIdentifierStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>RandIdentifierStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BoolAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>

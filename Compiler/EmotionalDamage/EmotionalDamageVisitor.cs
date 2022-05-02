@@ -138,6 +138,13 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>RandIdentifierStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>BoolAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>

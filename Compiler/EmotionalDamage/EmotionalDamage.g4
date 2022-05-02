@@ -20,6 +20,7 @@ stmt:
       print '(' ('$'?STRING_CONSTANT | expr) ')'';' #printStmt
     | 'return' IDENTIFIER ';' #ReturnStmt
     | IDENTIFIER '=' expr';' #NumAssignStmt
+    | IDENTIFIER'.rand''('IDENTIFIER',' IDENTIFIER')'';' #RandIdentifierStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt
     | IDENTIFIER '=' 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
     | IDENTIFIER '=' IDENTIFIER '§' IDENTIFIER';' #DotExprs

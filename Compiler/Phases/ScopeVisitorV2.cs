@@ -291,6 +291,18 @@ namespace Compiler.Phases
         }
         #endregion
         #region Assigns
+        public override object VisitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context)
+        {
+            Symbol? id = Scope.LookUp(context.IDENTIFIER(0).GetText());
+            Symbol? min = Scope.LookUp(context.IDENTIFIER(1).GetText());
+            Symbol? max = Scope.LookUp(context.IDENTIFIER(2).GetText());
+            if (id == null || min == null || max == null) return false;
+
+
+
+            return false;
+
+        }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
             TypeChecker.CheckNumAssignStmtContext(context);
