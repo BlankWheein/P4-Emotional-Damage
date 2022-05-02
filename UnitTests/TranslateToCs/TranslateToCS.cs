@@ -42,6 +42,15 @@ namespace UnitTests.TranlateToCs
             Assert.AreEqual(res, input);
         }
         [TestMethod]
+        public void PowerOfInPowerOf()
+        {
+            string res = "MathF.Pow(f, MathF.Pow(4, 2))";
+            string input = "f**(4**2)";
+            _codeGen.PreVisit(new HashSet<string> { "f" });
+            input = _codeGen.CheckExpr(input);
+            Assert.AreEqual(res, input);
+        }
+        [TestMethod]
         public void SqrtOfValue()
         {
             string res = "x.Pow(1 / 2)";
