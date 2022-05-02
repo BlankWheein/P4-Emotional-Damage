@@ -274,7 +274,7 @@ namespace Compiler.Phases
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
             }
-            else if(numtype == "float")
+            else
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)

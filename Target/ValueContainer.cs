@@ -89,6 +89,16 @@ namespace AutoGrad
                     res.Values[i][j] = self.Values[i][j] + other.Values[i][j];
             return res;
         }
+        public static Matrix operator -(Matrix self, Matrix other)
+        {
+            if (self.Rows != other.Rows && self.Columns != other.Columns)
+                throw new Exception();
+            Matrix res = new(self.Rows, self.Columns, 0);
+            for (int i = 0; i < res.Rows; i++)
+                for (int j = 0; j < res.Columns; j++)
+                    res.Values[i][j] = self.Values[i][j] - other.Values[i][j];
+            return res;
+        }
     }
 
 }
