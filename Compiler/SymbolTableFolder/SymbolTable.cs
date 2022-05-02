@@ -13,7 +13,7 @@ namespace Compiler.SymbolTableFolder
         {
             Parent = parent;
             _testing = Testing;
-            Root = parent?.Root;
+            Root = roottable;
             Diagnostics = roottable.Diagnostics;
             ReservedSymbols = roottable.ReservedSymbols;
             this.SymbolTableType = type;
@@ -81,6 +81,14 @@ namespace Compiler.SymbolTableFolder
         /// <param name="symbol"></param>
         public void Insert(Symbol symbol)
         {
+            foreach (var item in Root?.ReservedContains)
+            {
+                if (symbol.Id.Contains(item.Id))
+                {
+                    Diagnostics.Add(new($"'{symbol.Id}' contains reserved keyword '{item.Id}'"));
+                    return;
+                }
+            }
             if (ReservedSymbols.All(o=>o.Id!=symbol.Id) && LookUpHelper(symbol.Id) == null)
                 Symbols.Add(symbol);
             else 
