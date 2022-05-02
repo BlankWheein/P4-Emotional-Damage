@@ -265,7 +265,7 @@ namespace Compiler.Phases
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
 
             var expr = CheckExpr(expr_str);
-            if (expr.Contains('.'))
+            if (expr.Contains('.') && numtype != "int")
             {
                 int fff = expr.Length;
                 for (int i = 0; i < fff; i++)
@@ -293,7 +293,7 @@ namespace Compiler.Phases
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
             }
-            else if (numtype == "float")
+            else
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)
