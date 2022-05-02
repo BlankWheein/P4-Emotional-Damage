@@ -112,7 +112,7 @@ namespace UnitTests.Daniel
             scope.ExitScope();
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(2, root.Diagnostics.Count);
         }
 
         [TestMethod]
