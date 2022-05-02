@@ -34,6 +34,7 @@ namespace Compiler.SymbolTableFolder
         public int Col { get; }
         public bool IsParameter { get; set; }
         public bool IsFunc { get; }
+        public bool IsUsed { get; set; } = false;
         public List<Symbol> Parameters { get; }
 
         public override string ToString()

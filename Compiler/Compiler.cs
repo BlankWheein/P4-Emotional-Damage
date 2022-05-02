@@ -38,7 +38,11 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (var s in _scopeTypeChecker.Diagnostics)
                 Console.WriteLine(s);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            foreach (var s in _scopeTypeChecker.Warnings)
+                Console.WriteLine(s);
+
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Printing Scope Tree:");
             Console.ForegroundColor = ConsoleColor.Green;
             _scopeTypeChecker.Print();

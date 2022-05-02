@@ -371,7 +371,7 @@ namespace Compiler.Phases
         private bool ExprHelper(string expr, Symbol? sym = null)
         {
             bool res = true;
-            if (sym == null) { throw new Exception(); }
+            if (sym == null) { return false; }
             res &= AreFuncsCompatible(expr, sym);
             res &= CanParseMultiDimensionalVariables(expr, sym);
             if (res == false) return false;
