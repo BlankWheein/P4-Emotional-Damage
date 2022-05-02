@@ -268,11 +268,6 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            //if (expr.Contains("Backward()"))
-            //{
-            //    AddStmt($"{expr.Split(';')[0]};");
-            //    expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
-            //}
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)))
                 {
