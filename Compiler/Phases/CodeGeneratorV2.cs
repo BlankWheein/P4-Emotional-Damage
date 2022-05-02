@@ -14,7 +14,7 @@ namespace Compiler.Phases
         private FileStream _fs;
         bool _isTesting = false;
         private HashSet<string> Values = new() { };
-
+        private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
 
         public CodeGeneratorV2()
         {
@@ -80,33 +80,27 @@ namespace Compiler.Phases
         public string CheckExpr(string input)
         {
             if (input.Contains("sqrt(")) { 
-                var word = input.Split("sqrt(");
-                input = "";
-                int i = 0;
+                input = input.Replace("sqrt(", "MathF.Sqrt(");
+                var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var val in word)
                 {
                     if (val.Contains(")"))
                     {
-                        if (!val.Split(')').First().Any(c => char.IsDigit(c)))
+                        if (val.Split(')').First().Any(c => Values.Contains(c.ToString())))
                         {
-                            word[i] = $"{val.Split(')').First().Trim()}.Pow(1/2{val.Split(val.Split(')').First()).Last()}";
-                        }
-                        else {
-                            word[i] = $"MathF.Sqrt({val.Split(' ').Last()}";
-                            word[i] = checkForVals(word[i]);
+                           input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                         }
                     }
-                    input += word[i];
-                    i++;
                 }
             }
+
+
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
                 input = input.Replace(".len", ".Length");
             if (input.Contains(".col"))
                 input = input.Replace(".col", ".Columns");
-
 
             if (input.Contains("**"))
             {
@@ -215,7 +209,6 @@ namespace Compiler.Phases
                
             }
 
-
             #region formatting
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
@@ -271,24 +264,17 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
             var expr = CheckExpr(expr_str);
-            //if (expr.Contains("Backward()"))
-            //{
-            //    AddStmt($"{expr.Split(';')[0]};");
-            //    expr = expr.Replace(expr.Split(';')[0], "").Replace(";", "");
-            //}
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)))
                 {
-                    
                     AddStmt($"Value {id} = {expr};");
                 }
                 else
                 {
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 }
-
             }
-            else if(numtype == "float")
+            else
             {
                 bool active = false;
                 for (int i = 0; i < expr.Length; i++)
@@ -302,8 +288,8 @@ namespace Compiler.Phases
                         expr = expr.Insert(i, "f");
                     }
                 }
-                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ').Contains(v))){
-                    expr = expr.Replace(Values.First(v => expr.Split(' ').Contains(v)), Values.First(v => expr.Split(' ').Contains(v))+".data");
+                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ', '(', ')', ';').Contains(v))){
+                    expr = expr.Replace(Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v)), Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v))+".data");
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }
@@ -311,9 +297,7 @@ namespace Compiler.Phases
             return false;
         }
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
-        {
-            
-                
+        {   
             AddStmt($"{context.IDENTIFIER(1)}.Backward();");
             AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
             
@@ -451,6 +435,10 @@ namespace Compiler.Phases
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
             string bexprstring = context.bexpr().GetText();
+            if (Values.Any(v => bexprstring.Split(BoolSpilts).Contains(v)))
+            {
+                bexprstring = bexprstring.Replace(Values.First(v => bexprstring.Split(BoolSpilts).Contains(v)), Values.First(v => bexprstring.Split(BoolSpilts).Contains(v)) + ".data");
+            }
             AddStmt($"if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
@@ -459,6 +447,10 @@ namespace Compiler.Phases
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             string bexprstring = context.bexpr().GetText();
+            if (Values.Any(v => bexprstring.Split(BoolSpilts).Contains(v)))
+            {
+                bexprstring = bexprstring.Replace(Values.First(v => bexprstring.Split(BoolSpilts).Contains(v)), Values.First(v => bexprstring.Split(BoolSpilts).Contains(v)) + ".data");
+            }
             AddStmt($"else if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
