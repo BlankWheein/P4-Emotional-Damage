@@ -94,8 +94,19 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
-            foreach (var s in context.IDENTIFIER())
-                Scope.LookUp(s.GetText());
+            Symbol? identifier = Scope.LookUp(context.IDENTIFIER(0).GetText());
+            if (identifier == null) { }
+            else if (context.IDENTIFIER().ToList().Count - 1 != identifier?.Parameters.Count)
+                Scope.AddDiagnostic(new($"Missing parameters on {identifier?.Id}"));
+            else if (context.IDENTIFIER().ToList().Count > 1)
+                for (int i = 1; i < context.IDENTIFIER().ToList().Count; i++)
+                {
+                    Symbol? sym = Scope.LookUp(context.IDENTIFIER(i).GetText());
+                    if (sym == null) continue;
+                    if (!(identifier?.Parameters[i-1].SameReturn(sym) == true))
+                        Scope.AddDiagnostic(new($"Expected input '{identifier?.Parameters[i - 1].Type}[{identifier?.Parameters[i - 1].Row}][{identifier?.Parameters[i - 1].Col}]... Actual {sym.Type}[{sym.Row}][{sym.Col}]'"));
+                }
+            
             return base.VisitFuncStmt(context);
         }
         #endregion
