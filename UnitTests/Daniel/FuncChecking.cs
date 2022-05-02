@@ -315,7 +315,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void FuncArrFails2()
         {
-            var root = Parse(new StringBuilder("int[1] kage(int[3] a, int[2] a2) {int[1] ice; ice[0] = a[1] + a2[2]; return ice;} int[2] arr; int[3] lol; int[1] final; final = kage(arr, lol);"));
+            var root = Parse(new StringBuilder("int[1] kage(int[3] a, int[2] a2) {int[1] ice; ice[0] = a[1] + a2[1]; return ice;} int[2] arr; int[3] lol; int[1] final; final = kage(arr, lol);"));
             scope.Insert(SymbolType.Aint, "kage", row: 1, parameters: new List<Symbol>() { new("a", SymbolType.Aint, row: 3), new("a2", SymbolType.Aint, row: 2) }, isfunc: true);
             scope.Allocate("Func");
             scope.Insert(SymbolType.Aint, "ice", row: 1);
@@ -382,7 +382,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Mint, "lol", row: 3, col: 3);
             scope.Insert(SymbolType.Mint, "final", row: 3, col: 5);
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(3, root.Diagnostics.Count);
         }
 
         [TestMethod]

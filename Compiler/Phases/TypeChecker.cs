@@ -210,6 +210,23 @@ namespace Compiler.Phases
                 Symbol? sym = Scope.LookUpSilent(item.Split("[")[0]);
                 if (sym == null) continue;
                 int count = item.Split("[").Length;
+                if (count == 2 && sym.Type.IsArray())
+                    if (int.TryParse(item.Split("[")[1].ToString().Replace("]", ""), out int x))
+                        if (x >= sym.Row)
+                            Scope.AddDiagnostic(new($"Index '{x}' was out of bounds '{sym.Id}'"));
+                if (count == 3 && sym.Type.IsMatrix()) {
+                    if (int.TryParse(item.Split("[")[1].ToString().Split("]")[0], out int x))
+                    {
+                        if (x >= sym.Row)
+                            Scope.AddDiagnostic(new($"Index '{x}' was out of row bounds '{sym.Id}'"));
+                    }
+                    if (int.TryParse(item.Split("[")[2].ToString().Replace("]", ""), out int y))
+                    {
+                    if (y >= sym.Col)
+                        Scope.AddDiagnostic(new($"Index '{y}' was out of col bounds '{sym.Id}'"));
+                }
+                }
+
                 if (count == 2 && !sym.Type.IsArray())
                 {
                     Scope.AddDiagnostic(new($"{sym.Id} was of type {sym.Type} and not of type A{type?.Type.ToString().ToLower()}"));

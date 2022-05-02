@@ -33,6 +33,16 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new ("Cant use Return in global scope"));
             return base.VisitProg(context);
         }
+        public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
+        {
+            if (context.STRING_CONSTANT() != null && context.GetText().Replace(context?.STRING_CONSTANT()?.ToString(), "").Contains("$"))
+            {
+                var _out = context.STRING_CONSTANT().ToString().Replace("\"", "").Split("{", StringSplitOptions.RemoveEmptyEntries);
+                foreach (var item in _out)
+                    Scope.LookUp(item.Split("}")[0].Split("(")[0].Split("[")[0]);
+            }
+            return base.VisitPrintStmt(context);
+        }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
             Scope.Allocate("Elif");
