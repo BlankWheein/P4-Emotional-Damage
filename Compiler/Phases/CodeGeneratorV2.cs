@@ -86,13 +86,12 @@ namespace Compiler.Phases
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var val in word)
                 {
-                    if (val.Contains(")"))
+                    
+                    if (Values.Contains(val.Split(')').First()) && !val.Any(c => char.IsDigit(c)))
                     {
-                        if (val.Split(')').First().Any(c => Values.Equals(c.ToString())))
-                        {
-                           input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
-                        }
+                        input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                     }
+                    
                 }
             }
 

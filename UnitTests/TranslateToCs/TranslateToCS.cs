@@ -59,5 +59,15 @@ namespace UnitTests.TranlateToCs
             input = _codeGen.CheckExpr(input);
             Assert.AreEqual(res, input);
         }
+        [TestMethod]
+        public void SqrtOfValuePlusVar()
+        {
+            string res = "MathF.Sqrt(x + 2)";
+            string input = "sqrt(x+2)";
+            _codeGen.PreVisit(new HashSet<string> { "x" });
+            input = _codeGen.CheckExpr(input);
+            Assert.AreEqual(res, input);
+        }
+
     }
 }
