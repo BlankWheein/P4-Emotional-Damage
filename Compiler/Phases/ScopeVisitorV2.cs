@@ -317,18 +317,26 @@ namespace Compiler.Phases
             else
             {
                 sym.IsUsed = false;
-                //chekcing if matrix dimensions are compatible
+                //checking if matrix dimensions are compatible
                if(sym.Type.IsMatrix())
                 {
-                    string[] ids = context.expr().GetText().Split(new Char[] { '+', '-'});
-                    Symbol sym1 = Scope.LookUpSilent(ids[0]);
-                    if (sym1 != null)
+                    string[] ids = context.expr().GetText().Split(new Char[] { '+', '-','*'});
+                    Symbol[] syms = new Symbol[ids.Length];
+                    bool IsAdded = false;
+                    for(int i = 0; i < ids.Length; i++)
                     {
-                        if ((sym.Col != sym1.Col || sym.Row != sym1.Row) && res == true)
+                        syms[i] = Scope.LookUpSilent(ids[i]);
+                        if (syms[i] != null && syms[i].Type.IsMatrix() && IsAdded == false)
                         {
-                            Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions does not match the expression!", context));
+                            if ((sym.Col != syms[i].Col || sym.Row != syms[i].Row) && res == true)
+                            {
+                                Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions do not match the expression!", context));
+                                IsAdded = true;
+                            }
                         }
                     }
+                   
+                  
                 }
             }
             return base.VisitNumAssignStmt(context);
