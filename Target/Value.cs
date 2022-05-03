@@ -152,5 +152,7 @@ namespace AutoGrad
         {
             return $"Value(data={data}, grad={grad})";
         }
+
+        public string ToStringExtension() => ToString();
     }
 }

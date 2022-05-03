@@ -31,7 +31,7 @@ namespace UnitTests.TranslateToCs
         public void VisitFunDcl() {
             DclContext __context;
             __context = pars("int testfunc(float x, float[2][4] y){\nprint(x);\n}").dcl();
-            string exprt = "int testfunc (float x, Matrix y) {Console.WriteLine(x);}";
+            string exprt = "int testfunc (float x, Matrix y) {Console.Write(x);}";
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }

@@ -11,14 +11,8 @@ namespace Compiler.Phases
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
         public string testString="";
-        public CodeGeneratorV2()
-        {
-
-
-        }
         public CodeGeneratorV2(bool IsTesting)
         {
-
             isTesting = IsTesting;
         }
         #region Indent
@@ -97,6 +91,7 @@ namespace Compiler.Phases
                 }
             }
 
+
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
@@ -126,9 +121,12 @@ namespace Compiler.Phases
                     input = input.Replace($"{temp_left}**{temp_right}", $"MathF.Pow({left}, {right})");
             }
 
+            #region formatting
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
+            input = input.Replace(",", ", ");
+            #endregion
 
             return input;
         }
@@ -261,7 +259,7 @@ namespace Compiler.Phases
                     if (c == '.' && char.IsDigit(cNext))
                     {
                         Console.WriteLine(expr);
-                        expr = expr.Insert(i+2, "f");
+                        expr +="f";
                     }
                 }
             }
@@ -320,10 +318,16 @@ namespace Compiler.Phases
             return false;
         }
         #endregion
+        #region stmt
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
-            var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
-            AddStmt($"Console.WriteLine({printPart});");
+            var text = context.GetText();
+            string Stmt = context.GetText().Split("(")[0].TrimEnd().TrimStart() == "print" ? "Console.Write(" : "Console.WriteLine(";
+            string dollar = text.Split("(")[1].StartsWith("$") == true ? "$" : "";
+            var printPart = context?.expr()?.GetText() == null ? context.STRING_CONSTANT().GetText() : CheckExpr(context.expr().GetText());
+            if (dollar == "$")
+                printPart = printPart.Replace("}", ".ToStringExtension()}");
+            AddStmt($"{Stmt}{dollar}{printPart});");
             return false;
         }
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
@@ -352,7 +356,7 @@ namespace Compiler.Phases
             var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
             var expr = CheckExpr(context.expr().GetText());
-            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr});");
+            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr}, CalculateGradient: false);");
 
             return false;
         }
@@ -466,6 +470,7 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        #endregion
 
     }
 }
