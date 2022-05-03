@@ -250,14 +250,9 @@ namespace Compiler.Phases
                     char c = expr[i];
                     char cNext = expr[i];
                     if (i < fff-1)
-                    {
                         cNext = expr[i + 1];
-                    }
                     if (c == '.' && char.IsDigit(cNext))
-                    {
-                        Console.WriteLine(expr);
                         expr +="f";
-                    }
                 }
             }
             if (Values.Any(v => v.Contains(id))) {
@@ -295,8 +290,7 @@ namespace Compiler.Phases
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
         {   
             AddStmt($"{context.IDENTIFIER(1)}.Backward();");
-            AddStmt($"Value {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
-            Console.WriteLine("here");
+            AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
             return false;
         }
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
