@@ -91,5 +91,77 @@ namespace UnitTests.TranslateToCs
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
+        [TestMethod]
+        public void VisitUnaryPlus()
+        {
+            string exprt = "x++;";
+            __context = pars("x++;").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitUnaryMinus()
+        {
+            string exprt = "x--;";
+            __context = pars("x--;").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitWhileStmt()
+        {
+            string exprt = "while(true){Console.WriteLine(\"Doing Stuff\");}";
+            __context = pars("while(true){println(\"Doing Stuff\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitForStmt()
+        {
+            string exprt = "for (int i = 0; i<10; i++){Console.WriteLine(\"Doing Stuff\");}";
+            __context = pars("for(int i = 0; i < 10; i++){println(\"Doing Stuff\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitMatrixTransposeStmt()
+        {
+            string exprt = "x = y.Transpose()";
+            __context = pars("x = T(y)").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitSelectiveStmt1()
+        {
+            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}";
+            __context = pars("if(i<10){println(\"Doing Stuff\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitSelectiveStmt2()
+        {
+            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else{Console.WriteLine(\"Doing Other Stuff\");}";
+            __context = pars("if(i<10){println(\"Doing Stuff\");} else {println(\"Doing Other Stuff\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitSelectiveStmt3()
+        {
+            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==u){Console.WriteLine(\"Doing Other Stuff\");}";
+            __context = pars("if(i<10){println(\"Doing Stuff\");} elif (i == u){println(\"Doing Other Stuff\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitSelectiveStmt4()
+        {
+            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==u){Console.WriteLine(\"Doing Other Stuff\");}else{Console.WriteLine(\"something else\");}";
+            __context = pars("if(i<10){println(\"Doing Stuff\");} elif (i == u){println(\"Doing Other Stuff\");} else {println(\"something else\");}").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
     }
 }
