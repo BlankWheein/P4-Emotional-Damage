@@ -31,8 +31,16 @@ namespace UnitTests.TranslateToCs
         }
         [TestMethod]
         public void VisitPrintStmt() {
-            string exprt = "Console.WriteLine(x);";
+            string exprt = "Console.Write(x);";
             __context = pars("print(x);").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitPrintStmt2()
+        {
+            string exprt = "Console.WriteLine(x);";
+            __context = pars("println(x);").stmt();
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
@@ -57,6 +65,22 @@ namespace UnitTests.TranslateToCs
         {
             string exprt = "x = false;";
             __context = pars("x = false;").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitMatrixAssignStmt()
+        {
+            string exprt = "x.Values[2][2] = new Value(6, CalculateGradient: false);";
+            __context = pars("x[2][2] = 6").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitArrayAssignStmt()
+        {
+            string exprt = "x[2] = 6;";
+            __context = pars("x[2] = 6").stmt();
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
