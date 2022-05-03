@@ -358,7 +358,7 @@ namespace Compiler.Phases
             var text = context.GetText();
             string Stmt = context.GetText().Split("(")[0].TrimEnd().TrimStart() == "print" ? "Console.Write(" : "Console.WriteLine(";
             string dollar = text.Split("(")[1].StartsWith("$") == true ? "$" : "";
-            var printPart = context?.expr()?.GetText() == null ? context.STRING_CONSTANT()?.GetText() : CheckExpr(context.expr().GetText());
+            var printPart = context?.expr()?.GetText() == null ? context.STRING_CONSTANT().GetText() : CheckExpr(context.expr().GetText());
             if (dollar == "$")
                 printPart = printPart.Replace("}", ".ToStringExtension()}");
             AddStmt($"{Stmt}{dollar}{printPart});");
