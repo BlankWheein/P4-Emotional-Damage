@@ -84,5 +84,12 @@ namespace UnitTests.TranslateToCs
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
+        [TestMethod]
+        public void VisitFunStmt() {
+            string exprt = "x(f, g);";
+            __context = pars("x(f, g);").stmt();
+            _codeGen.Visit(__context);
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
     }
 }
