@@ -307,10 +307,25 @@ namespace Compiler.Phases
         {
             TypeChecker.CheckNumAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUpSilent(id) == null)
+            var sym = Scope.LookUpSilent(id);
+
+            if (sym == null)
                 Scope.AddDiagnostic(new TypeCheckerException($"{id} was not defined", context));
             else
-                Scope.LookUpSilent(id).IsUsed = false;
+            {
+                sym.IsUsed = false;
+                //chekcing if matrix dimensions are compatible
+               if(sym.Type.IsMatrix())
+                {
+                    string[] ids = context.expr().GetText().Split(new Char[] { '+', '-'});
+                    Symbol sym1 = Scope.LookUpSilent(ids[0]);
+                 
+                    if (sym.Col!=sym1.Col || sym.Row!=sym1.Row)
+                    {
+                        Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions does not match the expression!", context));
+                    }
+                }
+            }
             return base.VisitNumAssignStmt(context);
         }
         public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
