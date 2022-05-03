@@ -35,7 +35,7 @@ namespace UnitTests.TranlateToCs
         [TestMethod]
         public void PowerOfValuePlusVar()
         {
-            string res = "MathF.Pow((f+2), 4)";
+            string res = "MathF.Pow(f + 2, 4)";
             string input = "(f+2)**4";
             _codeGen.PreVisit(new HashSet<string> { "f" });
             input = _codeGen.CheckExpr(input);
@@ -44,7 +44,7 @@ namespace UnitTests.TranlateToCs
         [TestMethod]
         public void PowerOfInPowerOf()
         {
-            string res = "MathF.Pow(f, MathF.Pow(4, 2))";
+            string res = "f.Pow(MathF.Pow(4, 2))";
             string input = "f**(4**2)";
             _codeGen.PreVisit(new HashSet<string> { "f" });
             input = _codeGen.CheckExpr(input);
