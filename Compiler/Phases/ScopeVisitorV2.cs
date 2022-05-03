@@ -308,7 +308,7 @@ namespace Compiler.Phases
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
-            TypeChecker.CheckNumAssignStmtContext(context);
+            bool res = TypeChecker.CheckNumAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
             var sym = Scope.LookUpSilent(id);
 
@@ -324,7 +324,7 @@ namespace Compiler.Phases
                     Symbol sym1 = Scope.LookUpSilent(ids[0]);
                     if (sym1 != null)
                     {
-                        if (sym.Col != sym1.Col || sym.Row != sym1.Row)
+                        if ((sym.Col != sym1.Col || sym.Row != sym1.Row) && res == true)
                         {
                             Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions does not match the expression!", context));
                         }
@@ -366,16 +366,10 @@ namespace Compiler.Phases
             Symbol? sym2 = ConvertValueToSymbol(id2);
             if (sym1 == null || sym2 == null) return false;
             if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
-            {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
-                {
                     Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
-                }
                 else if (sym1.Row != sym2.Row || sym1.Col != sym2.Col)
-                {
                     Scope.AddDiagnostic(new TypeCheckerException($"Matrices {sym1.Id} and {sym2.Id} do not have the same dimensions!", context));
-                }
-            }
 
             if (sym1.Type.IsArray() || sym2.Type.IsArray())
                 if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
