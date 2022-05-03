@@ -1,5 +1,12 @@
 ﻿using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
+using Compiler.SymbolTableFolder;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using static EmotionalDamageParser;
 
 namespace Compiler.Phases
 {
@@ -7,7 +14,9 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-        private bool isTesting = false;
+        bool isTesting = false;
+        public RootSymbolTable Scope { get; set; }
+        private int _level = 0;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
         public string testString="";
@@ -393,6 +402,7 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
             var id1 = context.IDENTIFIER()[0].GetText();
@@ -430,6 +440,7 @@ namespace Compiler.Phases
         }
         public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
         {
+            Scope.NextScope();
             string bexprstring = context.bexpr().GetText();
             if (Values.Any(v => bexprstring.Split(BoolSpilts).Contains(v)))
             {
@@ -438,6 +449,7 @@ namespace Compiler.Phases
             AddStmt($"if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
@@ -452,6 +464,11 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
             
+        }
+        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
+        {
+            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
+            return base.VisitRandIdentifierStmt(context);
         }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
