@@ -293,7 +293,7 @@ namespace Compiler.Phases
                     if (c == '.' && char.IsDigit(cNext))
                     {
                         Console.WriteLine(expr);
-                        expr = expr.Insert(i+2, "f");
+                        expr +="f";
                     }
                 }
             }
