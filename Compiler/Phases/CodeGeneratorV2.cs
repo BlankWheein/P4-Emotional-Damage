@@ -1,10 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Compiler.Phases
 {
@@ -12,19 +7,13 @@ namespace Compiler.Phases
     {
         private string _path = @"../../../../Target/Program.cs";
         private FileStream _fs;
-        bool _isTesting = false;
+        private bool isTesting = false;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
-
-        public CodeGeneratorV2()
-        {
-
-
-        }
+        public string testString="";
         public CodeGeneratorV2(bool IsTesting)
         {
-
-            _isTesting = IsTesting;
+            isTesting = IsTesting;
         }
         #region Indent
         public string Indent = "";
@@ -40,7 +29,14 @@ namespace Compiler.Phases
         public List<Action> Stmts { get; set; } = new();
         private void AddStmt(string v, bool newline = true, bool indent = true)
         {
-            Stmts.Add(() => AddText(v, newline, indent));
+            if (isTesting)
+            {
+                this.testString += v;
+            }
+            else if (!isTesting) {
+                this.testString = "[NOT TESTING]";
+                Stmts.Add(() => AddText(v, newline, indent));
+            }
         }
         public void AddText(string value, bool newline = true, bool indent = true)
         {
@@ -55,9 +51,11 @@ namespace Compiler.Phases
         }
         public void Compile()
         {
-            if (File.Exists(_path))
-                File.Delete(_path);
-            _fs = File.Create(_path);
+            
+                if (File.Exists(_path))
+                    File.Delete(_path);
+                _fs = File.Create(_path);
+            
 
             AddText("using AutoGrad;\n");
             
@@ -84,13 +82,12 @@ namespace Compiler.Phases
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var val in word)
                 {
-                    if (val.Contains(")"))
+                    
+                    if (Values.Contains(val.Split(')').First()) && !val.Any(c => char.IsDigit(c)))
                     {
-                        if (val.Split(')').First().Any(c => Values.Contains(c.ToString())))
-                        {
-                           input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
-                        }
+                        input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                     }
+                    
                 }
             }
 
@@ -196,7 +193,7 @@ namespace Compiler.Phases
                 string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
                
                    
-                if (_left.Any(c => char.IsLetter(c)))
+                if (Values.Any(c => _left.Equals(c.ToString())))
                 {
                     input = input.Replace($"{_left}**{_right}", $"{left}.Pow({right})");
                 }
@@ -218,15 +215,32 @@ namespace Compiler.Phases
 
             return input;
         }
+        #region Dcl
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             var returntype = context.returntype().GetText();
             var id = context.IDENTIFIER().First().GetText();
             var stmts = context.stmts();
             string parameters = "";
-
-            for (int i = 0; i < context.types().Length; i++)
-                parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
+            int numofSqr = 0;
+            for (int i = 0; i < context.types().Length; i++) {
+                if (context.types()[i].GetText().Contains("["))
+                {
+                    foreach (var c in context.types()[i].GetText()) {
+                        if (c == '[') { 
+                            numofSqr++;
+                        }
+                    }
+                }
+                if (numofSqr == 2)
+                {
+                    parameters += $"Matrix {context.IDENTIFIER()[i + 1].GetText()}, ";
+                }
+                else { 
+                    parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
+                }
+            
+            }
 
             if (parameters != "") parameters = parameters[0..^2];
 
@@ -263,9 +277,28 @@ namespace Compiler.Phases
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
+
             var expr = CheckExpr(expr_str);
+            if (expr.Contains('.') && numtype != "int")
+            {
+                int fff = expr.Length;
+                for (int i = 0; i < fff; i++)
+                {
+                    char c = expr[i];
+                    char cNext = expr[i];
+                    if (i < fff-1)
+                    {
+                        cNext = expr[i + 1];
+                    }
+                    if (c == '.' && char.IsDigit(cNext))
+                    {
+                        Console.WriteLine(expr);
+                        expr +="f";
+                    }
+                }
+            }
             if (Values.Any(v => v.Contains(id))) {
-                if (expr.Any(c => char.IsLetter(c)))
+                if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
                 {
                     AddStmt($"Value {id} = {expr};");
                 }
@@ -293,17 +326,16 @@ namespace Compiler.Phases
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }
-
+            
             return false;
         }
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
         {   
             AddStmt($"{context.IDENTIFIER(1)}.Backward();");
-            AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
-            
+            AddStmt($"Value {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
+            Console.WriteLine("here");
             return false;
         }
-
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {
             var id = context.IDENTIFIER().GetText();
@@ -319,10 +351,17 @@ namespace Compiler.Phases
             AddStmt($"bool {id} = {val};");
             return false;
         }
+        #endregion
+        #region stmt
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
-            var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
-            AddStmt($"Console.WriteLine({printPart});");
+            var text = context.GetText();
+            string Stmt = context.GetText().Split("(")[0].TrimEnd().TrimStart() == "print" ? "Console.Write(" : "Console.WriteLine(";
+            string dollar = text.Split("(")[1].StartsWith("$") == true ? "$" : "";
+            var printPart = context?.expr()?.GetText() == null ? context.STRING_CONSTANT().GetText() : CheckExpr(context.expr().GetText());
+            if (dollar == "$")
+                printPart = printPart.Replace("}", ".ToStringExtension()}");
+            AddStmt($"{Stmt}{dollar}{printPart});");
             return false;
         }
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
@@ -351,7 +390,7 @@ namespace Compiler.Phases
             var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
             var expr = CheckExpr(context.expr().GetText());
-            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr});");
+            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr}, CalculateGradient: false);");
 
             return false;
         }
@@ -465,6 +504,7 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        #endregion
 
     }
 }
