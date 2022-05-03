@@ -21,6 +21,7 @@ namespace UnitTests.TranslateToCs
         private CommonTokenStream? __lexerStream;
         private CodeGeneratorV2 _codeGen = new CodeGeneratorV2(true);
         public EmotionalDamageParser pars(string v) {
+            _codeGen.testString = "";
             __stream = new(new StringBuilder(v).ToString());
             __lexer = new(__stream);
             __lexerStream = new(__lexer);
@@ -33,6 +34,14 @@ namespace UnitTests.TranslateToCs
             __context = pars("float x = 4.0;").dcl();
             string exprt = "float x = 4.0f;";
             _codeGen.Visit(__context); 
+            Assert.AreEqual(exprt, _codeGen.testString);
+        }
+        [TestMethod]
+        public void VisitFun() {
+            DclContext __context;
+            __context = pars("int testfunc(float x, float[2][4] y){\nprint(x);\n}").dcl();
+            string exprt = "int testfunc (float x, Matrix y) {Console.WriteLine(x);}";
+            _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
     }

@@ -1,10 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Compiler.Phases
 {
@@ -42,7 +37,7 @@ namespace Compiler.Phases
         {
             if (isTesting)
             {
-                this.testString = v;
+                this.testString += v;
             }
             else if (!isTesting) {
                 this.testString = "[NOT TESTING]";
@@ -232,9 +227,25 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER().First().GetText();
             var stmts = context.stmts();
             string parameters = "";
-
-            for (int i = 0; i < context.types().Length; i++)
-                parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
+            int numofSqr = 0;
+            for (int i = 0; i < context.types().Length; i++) {
+                if (context.types()[i].GetText().Contains("["))
+                {
+                    foreach (var c in context.types()[i].GetText()) {
+                        if (c == '[') { 
+                            numofSqr++;
+                        }
+                    }
+                }
+                if (numofSqr == 2)
+                {
+                    parameters += $"Matrix {context.IDENTIFIER()[i + 1].GetText()}, ";
+                }
+                else { 
+                    parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
+                }
+            
+            }
 
             if (parameters != "") parameters = parameters[0..^2];
 
