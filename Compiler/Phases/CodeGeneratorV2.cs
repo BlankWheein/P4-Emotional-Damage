@@ -67,7 +67,7 @@ namespace Compiler.Phases
             
 
             AddText("using AutoGrad;");
-            AddText("Random rnd = ();");
+            AddText("Random rnd = new();");
             
             foreach (var stmt in Stmts)
                 stmt();
@@ -486,6 +486,8 @@ namespace Compiler.Phases
         public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
         {
             Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
+
+            AddStmt("");
             return base.VisitRandIdentifierStmt(context);
         }
         #endregion
