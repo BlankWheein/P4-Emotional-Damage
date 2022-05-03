@@ -15,6 +15,7 @@ namespace Compiler.SymbolTableFolder
             _testing = Testing;
             Root = roottable;
             Diagnostics = roottable.Diagnostics;
+            Warnings = roottable.Warnings;
             ReservedSymbols = roottable.ReservedSymbols;
             this.SymbolTableType = type;
         }
@@ -24,6 +25,7 @@ namespace Compiler.SymbolTableFolder
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable? Root { get; set; }
         public List<Exception> Diagnostics { get; set; }
+        public List<Exception> Warnings { get; set; }
         internal string SymbolTableType { get; set; } = "NotDefined";
 
         /// <summary>
@@ -61,6 +63,8 @@ namespace Compiler.SymbolTableFolder
             Symbol? symbol = Symbols.FirstOrDefault(o => id == o.Id);
             if (symbol == null)
                 return Parent?.LookUpHelper(id);
+            if (symbol != null)
+                symbol.IsUsed = true;
             return symbol;
         }
 

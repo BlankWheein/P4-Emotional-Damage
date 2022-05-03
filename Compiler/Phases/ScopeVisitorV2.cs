@@ -7,6 +7,7 @@ namespace Compiler.Phases
     public class ScopeVisitorV2 : EmotionalDamageBaseVisitor<object>
     {
         public List<Exception> Diagnostics { get; set; }
+        public List<Exception> Warnings { get; set; }
         public RootSymbolTable Scope { get; set; }
         public TypeChecker TypeChecker { get; set; }
         private Symbol? CurrentFunction = null;
@@ -15,6 +16,7 @@ namespace Compiler.Phases
         {
             this.Scope = new RootSymbolTable();
             Diagnostics = Scope.Diagnostics;
+            Warnings = Scope.Warnings;
             TypeChecker = new(this);
         }
         #region ControlStructures
@@ -231,6 +233,13 @@ namespace Compiler.Phases
                 Scope.Insert(SymbolType.String, id);
             return base.VisitStringDcl(context);
         }
+        public override object VisitStmts([NotNull] EmotionalDamageParser.StmtsContext context)
+        {
+            base.VisitChildren(context);
+            foreach (var item in Scope.Current.Symbols.Where(p => p.IsUsed == false))
+                Scope.AddWarning(new TypeCheckerException($"{item.Id} is declared but never used", context));
+            return false;
+        }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
         {
             string id = context.IDENTIFIER().GetText();
@@ -282,12 +291,26 @@ namespace Compiler.Phases
         }
         #endregion
         #region Assigns
+        public override object VisitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context)
+        {
+            Symbol? id = Scope.LookUp(context.IDENTIFIER(0).GetText());
+            Symbol? min = Scope.LookUp(context.IDENTIFIER(1).GetText());
+            Symbol? max = Scope.LookUp(context.IDENTIFIER(2).GetText());
+            if (id == null || min == null || max == null) return false;
+
+
+
+            return false;
+
+        }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {
             TypeChecker.CheckNumAssignStmtContext(context);
             string id = context.IDENTIFIER().GetText();
-            if (Scope.LookUp(id) == null)
+            if (Scope.LookUpSilent(id) == null)
                 Scope.AddDiagnostic(new TypeCheckerException($"{id} was not defined", context));
+            else
+                Scope.LookUpSilent(id).IsUsed = false;
             return base.VisitNumAssignStmt(context);
         }
         public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)

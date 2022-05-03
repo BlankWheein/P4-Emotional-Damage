@@ -248,6 +248,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>RandIdentifierStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>RandIdentifierStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BoolAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>

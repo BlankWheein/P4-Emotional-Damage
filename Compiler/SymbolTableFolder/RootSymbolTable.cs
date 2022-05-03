@@ -22,6 +22,7 @@ namespace Compiler.SymbolTableFolder
         }
 
         public List<Exception> Diagnostics { get; set; } = new();
+        public List<Exception> Warnings { get; set; } = new();
         /// <summary>
         /// Creating a new symbol table and entering its scope
         /// </summary>
@@ -50,6 +51,14 @@ namespace Compiler.SymbolTableFolder
         internal void AddDiagnostic(Exception exception)
         {
             Diagnostics.Add(exception);
+        }
+        internal void AddWarning(Exception exception)
+        {
+            Warnings.Add(exception);
+        }
+        internal void AddWarning(string exception)
+        {
+            Warnings.Add(new Exception(exception));
         }
         public override bool Equals(object? obj)
         {
