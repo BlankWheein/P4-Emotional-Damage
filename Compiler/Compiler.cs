@@ -28,7 +28,7 @@ namespace Compiler
 
             //_scopeTypeChecker = new();
             _preCodeGen = new PreCodeGen();
-            _codeGenerator = new();
+            _codeGenerator = new(false);
             _scopeTypeChecker = new();
         }
         public bool Compile()

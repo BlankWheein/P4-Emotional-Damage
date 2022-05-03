@@ -11,14 +11,8 @@ namespace Compiler.Phases
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
         public string testString="";
-        public CodeGeneratorV2()
-        {
-
-
-        }
         public CodeGeneratorV2(bool IsTesting)
         {
-
             isTesting = IsTesting;
         }
         #region Indent
@@ -358,6 +352,7 @@ namespace Compiler.Phases
             return false;
         }
         #endregion
+        #region stmt
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
@@ -504,6 +499,7 @@ namespace Compiler.Phases
             AddStmt("}");
             return false;
         }
+        #endregion
 
     }
 }
