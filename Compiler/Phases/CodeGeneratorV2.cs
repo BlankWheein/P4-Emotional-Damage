@@ -355,8 +355,12 @@ namespace Compiler.Phases
         #region stmt
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
+            var text = context.GetText();
+            string Stmt = context.GetText().Split("(")[0].TrimEnd().TrimStart() == "print" ? "Console.Write(" : "Console.WriteLine(";
+            string dollar = text.Split("(")[1].StartsWith("$") == true ? "$" : "";
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
-            AddStmt($"Console.WriteLine({printPart});");
+            
+            AddStmt($"{Stmt}{dollar}{printPart});");
             return false;
         }
         public override object VisitReturnStmt([NotNull] EmotionalDamageParser.ReturnStmtContext context)
@@ -385,7 +389,7 @@ namespace Compiler.Phases
             var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
             var expr = CheckExpr(context.expr().GetText());
-            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr});");
+            AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr}, CalculateGradient: false);");
 
             return false;
         }

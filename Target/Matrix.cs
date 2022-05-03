@@ -99,6 +99,17 @@ namespace AutoGrad
                     res.Values[i][j] = self.Values[i][j] - other.Values[i][j];
             return res;
         }
-    }
 
+        public override string ToString()
+        {
+            string s = "";
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                    s += $"{Values[i][j]}  ";
+                s += "\n";
+            }
+            return s;
+        }
+    }
 }
