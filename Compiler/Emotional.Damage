@@ -7,4 +7,4 @@ int[2] hap;
 hap[0] = 1;
 hap[1] = 2;
 
-print(happy);
+print("{hap}");
