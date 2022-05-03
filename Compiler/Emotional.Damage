@@ -1,8 +1,9 @@
-﻿float kage = 2.34;
-float lol = 10.56;
+﻿int min = 1;
+int max = 10000;
+min.rand(min, max);
+max.rand(min, max);
 
-float din = 0.95;
-
-din.rand(kage, lol);
-
-print($"{din}");
+float[5] k;
+float[5] lol;
+k.rand(k, lol);
+print($"{k}");

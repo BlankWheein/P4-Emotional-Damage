@@ -485,13 +485,10 @@ namespace Compiler.Phases
         }
         public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
         {
-            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
-            Symbol? v = Scope.LookUpSilent(context.IDENTIFIER(1).GetText());
-            Symbol? l = Scope.LookUpSilent(context.IDENTIFIER(2).GetText());
             var id1 = context.IDENTIFIER(0).GetText();
             var id2 = context.IDENTIFIER(1).GetText();
             var id3 = context.IDENTIFIER(2).GetText();
-            AddStmt($"{id1} = rnd.Next({id2}, {id3});");
+            AddStmt($"{id1}.Next({id2}, {id3});");
             return false;
         }
         #endregion

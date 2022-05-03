@@ -1,7 +1,9 @@
 using AutoGrad;
 Random rnd = new();
-float kage = 2.34f;
-float lol = 10.56f;
-float din = 0.95f;
-din = rnd.Next(kage, lol);
-Console.Write($"{din.ToStringExtension()}");
+int min = 1;
+int max = 10000;
+min.Next(min, max);
+max.Next(min, max);
+float[] k = new float[5];
+k.Next(min, max);
+Console.Write($"{k.ToStringExtension()}");

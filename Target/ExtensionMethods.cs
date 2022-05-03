@@ -1,4 +1,6 @@
-﻿public static class ExtensionMethods
+﻿using AutoGrad;
+
+public static class ExtensionMethods
 {
     public static string ToStringExtension(this int[] kage)
     {
@@ -43,7 +45,7 @@
         return $"{kage}";
     }
 
-    public static float Next(this Random rnd, float min, float max)
+    public static float Next( this Random rnd, float min, float max)
     {
         double dmin = (double)min;
         double dmax = (double)max;
@@ -52,5 +54,27 @@
         double scaled = (sample * range) + dmin;
         float k = (float)scaled;
         return k;
+    }
+
+    public static void Next(this int num, int min, int max)
+    {
+        num = new Random().Next(min, max);
+    }
+    public static void Next(this float num, float min, float max)
+    {
+        num = new Random().Next(min, max);
+    }
+
+    public static void Next(this int[] arr, int min, int max)
+    {
+        for (int i = 0; i < arr.Length; i++)
+            arr[i] = new Random().Next(min, max);
+    }
+
+    public static void Next(this float[] arr, float min, float max)
+    {
+        var rnd = new Random();
+        for (int i = 0; i < arr.Length; i++)
+            arr[i] = new Random().Next(min, max);
     }
 } 
