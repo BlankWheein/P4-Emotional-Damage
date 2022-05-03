@@ -91,7 +91,6 @@ namespace Compiler.Phases
                 }
             }
 
-
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
@@ -101,121 +100,73 @@ namespace Compiler.Phases
 
             if (input.Contains("**"))
             {
-                string left = "", right = "";
-                var _expr1 = input.Split("**")[0];
-                var _expr2 = input.Split("**")[1];
-                int _len1 = _expr1.Length - 1;
-                int _len2 = _expr2.Length - 1;
+                string left = input.Split("**")[0];
+                string right = input.Split("**")[1];
+                int x = GetIndexParenthesis(')', '(', left, reverse: true);
+                left = (x == -1) ? GetSingleExpr(left, true) : left.Substring(x + 1, left.Length - x - 2);
 
-
-                int start_index = 0;
-
-                if (_expr1.Last().Equals(')'))
-                {
-                    int nrLparen = 1;
-                    for (int j = _len1; j >= 0; j--)
-                    {
-                        if (_expr1[j].Equals(')'))
-                        {
-                            nrLparen++;
-                        }
-                        else if (_expr1[j].Equals('(') && nrLparen > 1)
-                        { 
-                            nrLparen--;
-                        }
-                        else if (_expr1[j].Equals('(') && nrLparen == 1)
-                        {
-                            if(j == 0 || !Char.IsLetter(_expr1[j - 1]) || _expr1[j - 1].Equals('_'))
-                            {
-                                left = _expr1.Substring(j + 1, _len1 - j - 1);
-                                start_index = j;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (!_expr1.Any(o=> "%*+/-(".Contains(o)))
-                {
-                    left = _expr1;
-                }
-                else
-                {
-                    string _symbols = "%*+/-=(";
-                    for (int j = _len1; j >= 0; j--)
-                    {
-                        if (char.IsLetterOrDigit(_expr1[j]) || _expr1[j].Equals('_')) continue;
-                        if (_symbols.Contains(_expr1[j]) || j == 0)
-                        {
-                            left = _expr1.Substring(j + 1, _len1 - j);
-                            start_index = j + 1;
-                            break;
-                        }
-                    }
-                }
-                if (_expr2.First().Equals('('))
-                {
-                    int nrRparren = 1;
-                    for (int j = 0; j <= _len2; j++)
-                    {
-                        if (_expr2[j].Equals('('))
-                        {
-                            nrRparren++;
-                        }
-                        else if (_expr2[j].Equals(')') && nrRparren > 1)
-                        {
-                            nrRparren--;
-                        }
-                        else if (_expr2[j].Equals(')')&& nrRparren == 1)
-                        {
-                            right = _expr2.Substring(1, j - 1);
-                            break;
-                        }
-                    }
-                }
-                else if (!_expr2.Any(o => "%*+/-)".Contains(o)))
-                {
-                    right = _expr2;
-                }
-                else
-                {
-                    string _symbols = "%*+/-=";
-                    for (int j = 0; j <= _len2; j++)
-                    {
-                        if (char.IsLetterOrDigit(_expr2[j]) || _expr2[j].Equals('_')) continue;
-                        if (_symbols.Contains(_expr2[j]) || j == 1)
-                        {
-                            right = _expr2.Substring(0, j);
-                            break;
-                        }
-                    }
-                }
-                string _left = _expr1.Last().Equals(')') == true ? $"({left})" : left;
-                string _right = _expr2.First().Equals('(') == true ? $"({right})" : right;
-               
-                   
-                if (Values.Any(c => _left.Equals(c.ToString())))
-                {
-                    input = input.Replace($"{_left}**{_right}", $"{left}.Pow({right})");
-                }
-                else
-                {
-                    input = input.Replace($"{_left}**{_right}", $"MathF.Pow({left},{right})");
-                }
-                    
-                
-               
+                int y = GetIndexParenthesis('(', ')', right, reverse: false);
+                right = (y == -1) ? GetSingleExpr(right, false) : right[1..y];
+                input = $"MathF.Pow({left}, {right})";
             }
 
-            #region formatting
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
-            input = input.Replace(",", ", ");
-            #endregion
 
             return input;
         }
-        #region Dcl
+
+        int GetIndexParenthesis(char firstPar, char targetPar, string str, bool reverse)
+        {
+            if (reverse) str = Reverse(str);
+            if (!str.First().Equals(firstPar)) return -1;
+
+            int index = 0, pairs = 0;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                char _c = str[i];
+                if (_c.Equals(firstPar)) // pair of parenthesis is found
+                    pairs++;
+                else if (_c.Equals(targetPar))
+                {
+                    if (pairs == 1) // if only one pair is active
+                    {
+                        index = i;
+                        break;
+                    }
+                    pairs--;
+                }
+            }
+            if (reverse) index = str.Length - index - 1;
+            return index;
+        }
+
+        string GetSingleExpr(string str, bool reverse)
+        {
+            if (reverse) str = Reverse(str);
+            for (int i = 0; i < str.Length; i++)
+            {
+                string _symbols = "%*+/-";
+                char c = str[i];
+                if (_symbols.Contains(c))
+                {
+                    str = str.Substring(0, i);
+                    break;
+                }
+            }
+            if (reverse) str = Reverse(str);
+            return str;
+        }
+
+        string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             var returntype = context.returntype().GetText();
