@@ -211,7 +211,6 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new TypeCheckerException($"{id1}'s Rows is not Equal to {id2}'s Columns", context));
             if (sym.Row != sym1.Row || sym.Col != sym2.Col)
                 Scope.AddDiagnostic(new TypeCheckerException($"{identifier} does not have the dimensions [{sym1.Row}][{sym2.Col}]", context));
-
             return false;
         }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
@@ -294,14 +293,18 @@ namespace Compiler.Phases
         public override object VisitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context)
         {
             Symbol? id = Scope.LookUp(context.IDENTIFIER(0).GetText());
+            if (id != null && (id.Type.IsBool() || id.Type.IsString()))
+                Scope.AddDiagnostic(new TypeCheckerException($"{id.Id} can not be of type bool or string", context));
             Symbol? min = Scope.LookUp(context.IDENTIFIER(1).GetText());
             Symbol? max = Scope.LookUp(context.IDENTIFIER(2).GetText());
             if (id == null || min == null || max == null) return false;
-
-
-
+            if ((min.Type & (SymbolType.Int | SymbolType.Float)) == 0)
+                Scope.AddDiagnostic(new TypeCheckerException($"{min.Id} was not of type int or float", context));
+            if ((max.Type & (SymbolType.Int | SymbolType.Float)) == 0)
+                Scope.AddDiagnostic(new TypeCheckerException($"{max.Id} was not of type int or float", context));
+            if (min.SameReturn(max) == false)
+                Scope.AddDiagnostic(new TypeCheckerException($"{min.Id} and {max.Id} was not of same type", context));
             return false;
-
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
         {

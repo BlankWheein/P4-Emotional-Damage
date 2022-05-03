@@ -19,6 +19,8 @@ namespace Compiler.SymbolTableFolder
             ReservedSymbols = roottable.ReservedSymbols;
             this.SymbolTableType = type;
         }
+        private int? _currentScope = 0;
+        public int? CurrentScope { get { if (_currentScope < Children.Count) return _currentScope; return null; } set { _currentScope = value; } }
         public List<Symbol> ReservedSymbols { get; }
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }

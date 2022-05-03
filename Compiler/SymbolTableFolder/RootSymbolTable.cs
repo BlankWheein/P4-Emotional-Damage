@@ -32,13 +32,22 @@ namespace Compiler.SymbolTableFolder
             Current.Children.Add(symbolTable);
             Current = symbolTable;
         }
+        internal void NextScope()
+        {
+            int CurrentIndex = Current.CurrentScope ?? throw new NullReferenceException();
+            Current = Current.Children[CurrentIndex];
+        }
+        public void ExitScopeCodeGen()
+        {
+            Current.CurrentScope = Current.CurrentScope + 1;
+            Current = Current?.Parent;
+            
+        }
         /// <summary>
         /// Exit the current scope
         /// </summary>
         public void ExitScope()
         {
-            if (_testing)
-                Current.Dispose();
             Current = Current?.Parent;
         }
         // Decorator stuff
@@ -68,5 +77,7 @@ namespace Compiler.SymbolTableFolder
         {
             return Root.ToString();
         }
+
+        
     }
 }

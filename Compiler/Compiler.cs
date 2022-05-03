@@ -28,7 +28,7 @@ namespace Compiler
 
             //_scopeTypeChecker = new();
             _preCodeGen = new PreCodeGen();
-            _codeGenerator = new();
+            _codeGenerator = new(false);
             _scopeTypeChecker = new();
         }
         public bool Compile()
@@ -52,6 +52,7 @@ namespace Compiler
             _preCodeGen.lookingforGrads = true;
             _preCodeGen.Visit(__context);
             _codeGenerator.PreVisit(_preCodeGen.Exprs);
+            _codeGenerator.Scope = _scopeTypeChecker.Scope;
             _codeGenerator.Visit(__context);
             _codeGenerator.Compile();
             return true;
