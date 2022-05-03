@@ -1,4 +1,8 @@
-﻿float f = 2.5;
-float g = f**(4**2);
+﻿float kage = 2.34;
+float lol = 10.56;
 
-float d = f \\ g;
+float din = 0.95;
+
+din.rand(kage, lol);
+
+print($"{din}");

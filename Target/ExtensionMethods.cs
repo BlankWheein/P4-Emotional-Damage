@@ -43,13 +43,7 @@
         return $"{kage}";
     }
 
-    public static int Next(Random rnd, int min, int max)
-    {
-        int k = rnd.Next(min, max); 
-        return k;
-    }
-
-    public static float Next(Random rnd, float min, float max)
+    public static float Next(this Random rnd, float min, float max)
     {
         double dmin = (double)min;
         double dmax = (double)max;

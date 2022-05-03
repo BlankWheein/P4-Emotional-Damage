@@ -1,6 +1,7 @@
 using AutoGrad;
-
-Value f = new Value(2.5f, null,"f", true);
-Value g = f.Pow(MathF.Pow(4, 2));
-f.Backward();
-float d = g.grad;
+Random rnd = new();
+float kage = 2.34f;
+float lol = 10.56f;
+float din = 0.95f;
+din = rnd.Next(kage, lol);
+Console.Write($"{din.ToStringExtension()}");
