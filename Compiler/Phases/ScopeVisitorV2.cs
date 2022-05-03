@@ -346,8 +346,17 @@ namespace Compiler.Phases
             Symbol? sym2 = ConvertValueToSymbol(id2);
             if (sym1 == null || sym2 == null) return false;
             if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+            {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
+                {
                     Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
+                }
+                else if (sym1.Row != sym2.Row || sym1.Col != sym2.Col)
+                {
+                    Scope.AddDiagnostic(new TypeCheckerException($"Matrices {sym1.Id} and {sym2.Id} do not have the same dimensions!", context));
+                }
+            }
+
             if (sym1.Type.IsArray() || sym2.Type.IsArray())
                 if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
                     Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
@@ -381,8 +390,16 @@ namespace Compiler.Phases
             Symbol? sym2 = ConvertValueToSymbol(id2);
             if (sym1 == null || sym2 == null) return false;
             if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+            {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
+                {
                     Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type"));
+                }
+                else if (sym1.Row != sym2.Row || sym1.Col != sym2.Col)
+                {
+                    Scope.AddDiagnostic(new TypeCheckerException($"Matrices {sym1.Id} and {sym2.Id} do not have the same dimensions!", context));
+                }
+            }
             if (sym1.Type.IsArray() || sym2.Type.IsArray())
                 if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
                     Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type")); 
@@ -402,7 +419,7 @@ namespace Compiler.Phases
             Symbol? sym2 = ConvertValueToSymbol(id2);
             if (sym1 == null || sym2 == null) return false;
             if ((sym1.Type.IsMatrix() || sym1.Type.IsArray()) && (sym2.Type.IsMatrix() || sym2.Type.IsArray()))
-                    Scope.AddDiagnostic(new($"could not times {id1} with {id2}"));
+                    Scope.AddDiagnostic(new($"could not multiply {id1} with {id2}"));
             return base.VisitTimesExpr(context);
         }
         private Symbol? ConvertValueToSymbol(string val)
