@@ -221,6 +221,7 @@ namespace Compiler.Phases
 
             return input;
         }
+        #region Dcl
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             var returntype = context.returntype().GetText();
@@ -337,11 +338,10 @@ namespace Compiler.Phases
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
         {   
             AddStmt($"{context.IDENTIFIER(1)}.Backward();");
-            AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
-            
+            AddStmt($"Value {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
+            Console.WriteLine("here");
             return false;
         }
-
         public override object VisitStringDcl([NotNull] EmotionalDamageParser.StringDclContext context)
         {
             var id = context.IDENTIFIER().GetText();
@@ -357,6 +357,7 @@ namespace Compiler.Phases
             AddStmt($"bool {id} = {val};");
             return false;
         }
+        #endregion
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             var printPart = context?.expr()?.GetText() == null ? context?.STRING_CONSTANT()?.GetText() : CheckExpr(context?.expr()?.GetText());
