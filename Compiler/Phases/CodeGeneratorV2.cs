@@ -121,12 +121,9 @@ namespace Compiler.Phases
                     input = input.Replace($"{temp_left}**{temp_right}", $"MathF.Pow({left}, {right})");
             }
 
-            #region formatting
             string symbols = "%*+/-";
             foreach(var symbol in symbols)
                 input = input.Replace(symbol.ToString(), $" {symbol} ");
-            input = input.Replace(",", ", ");
-            #endregion
 
             return input;
         }
