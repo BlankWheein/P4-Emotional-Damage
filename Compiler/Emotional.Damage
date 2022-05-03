@@ -1,4 +1,7 @@
-﻿float f = 2.5;
-float g = f**(4**2);
-
-float d = f \\ g;
+﻿float[2][2] ik;
+float h = ik[1][1] + ik[1][0];
+float ha = ik[1][1] - ik[1][0];
+float hb = ik[1][1] * ik[1][0];
+float hc = ik[1][1] / ik[1][0];
+float hg = ik[1][1]; 
+float b = ik[1][1];

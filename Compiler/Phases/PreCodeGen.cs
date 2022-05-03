@@ -25,7 +25,7 @@ namespace Compiler.Phases
             return false;
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
-        {
+        { 
             CheckExpr(context.GetText());
            
             return false;
