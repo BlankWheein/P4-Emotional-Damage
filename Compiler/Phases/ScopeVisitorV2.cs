@@ -319,10 +319,12 @@ namespace Compiler.Phases
                 {
                     string[] ids = context.expr().GetText().Split(new Char[] { '+', '-'});
                     Symbol sym1 = Scope.LookUpSilent(ids[0]);
-                 
-                    if (sym.Col!=sym1.Col || sym.Row!=sym1.Row)
+                    if (sym1 != null)
                     {
-                        Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions does not match the expression!", context));
+                        if (sym.Col != sym1.Col || sym.Row != sym1.Row)
+                        {
+                            Scope.AddDiagnostic(new TypeCheckerException($"{sym.Id}'s dimensions does not match the expression!", context));
+                        }
                     }
                 }
             }
