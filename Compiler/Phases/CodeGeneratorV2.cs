@@ -104,16 +104,26 @@ namespace Compiler.Phases
             if (input.Contains(".col"))
                 input = input.Replace(".col", ".Columns");
 
-            if (input.Contains("**"))
+            while (input.Contains("**"))
             {
-                string left = input.Split("**")[0];
-                string right = input.Split("**")[1];
+                // takes one pow at a time
+                int ix = input.IndexOf("**");
+                string left = input[..ix];
+                string right = input[(ix + 2)..];
+                
                 int x = GetIndexParenthesis(')', '(', left, reverse: true);
                 left = (x == -1) ? GetSingleExpr(left, true) : left.Substring(x + 1, left.Length - x - 2);
 
                 int y = GetIndexParenthesis('(', ')', right, reverse: false);
                 right = (y == -1) ? GetSingleExpr(right, false) : right[1..y];
-                input = $"MathF.Pow({left}, {right})";
+
+                string temp_left = (x == -1) ? left : $"({left})";
+                string temp_right = (y == -1) ? right : $"({right})";
+
+                if (x == -1 && Values.Contains(left))
+                    input = input.Replace($"{temp_left}**{temp_right}", $"{left}.Pow({right})");
+                else
+                    input = input.Replace($"{temp_left}**{temp_right}", $"MathF.Pow({left}, {right})");
             }
 
             string symbols = "%*+/-";
@@ -154,9 +164,9 @@ namespace Compiler.Phases
             if (reverse) str = Reverse(str);
             for (int i = 0; i < str.Length; i++)
             {
-                string _symbols = "%*+/-";
+                string _symbols = "%*+/-()";
                 char c = str[i];
-                if (_symbols.Contains(c))
+                if (_symbols.Contains(c) ||c.Equals(' '))
                 {
                     str = str.Substring(0, i);
                     break;
@@ -173,6 +183,7 @@ namespace Compiler.Phases
             return new string(charArray);
         }
 
+        #region Dcl
         public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
         {
             var returntype = context.returntype().GetText();

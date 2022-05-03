@@ -1,5 +1,4 @@
-﻿float kage(float a){return a;}
-float f = 2;
-float a = (f+2)**10;
-float b = 263 + 2353 + (12326+234238) + 230**10;
-float c = (20+kage(f)+30)**(10*2456);
+﻿float f = 2.5;
+float g = f**(4**2);
+
+float d = f \\ g;
