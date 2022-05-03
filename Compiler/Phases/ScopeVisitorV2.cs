@@ -211,7 +211,6 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new TypeCheckerException($"{id1}'s Rows is not Equal to {id2}'s Columns", context));
             if (sym.Row != sym1.Row || sym.Col != sym2.Col)
                 Scope.AddDiagnostic(new TypeCheckerException($"{identifier} does not have the dimensions [{sym1.Row}][{sym2.Col}]", context));
-
             return false;
         }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
