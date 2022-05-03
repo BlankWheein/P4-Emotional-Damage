@@ -111,5 +111,7 @@ namespace AutoGrad
             }
             return s;
         }
+
+        public string ToStringExtension() => ToString();
     }
 }
