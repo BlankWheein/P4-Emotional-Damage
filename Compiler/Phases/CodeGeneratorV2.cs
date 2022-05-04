@@ -208,12 +208,15 @@ namespace Compiler.Phases
                 {
                     parameters += $"Matrix {context.IDENTIFIER()[i + 1].GetText()}, ";
                 }
+                else if(numofSqr == 1)
+                {
+                    parameters += $"{context.types(0).GetText().Split("[")[0]}[] {context.IDENTIFIER()[i + 1].GetText()}, ";
+                }
                 else { 
                     parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
                 }
             
             }
-
             if (parameters != "") parameters = parameters[0..^2];
 
             AddStmt($"{returntype} {id} ({parameters}) {{");
