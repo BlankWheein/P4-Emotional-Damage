@@ -30,6 +30,12 @@ namespace Compiler.Phases
            
             return false;
         }
+
+        public override object VisitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context)
+        {
+            CheckExpr(context.GetText());
+            return false;
+        }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             if (context.expr() != null) { 
@@ -71,13 +77,25 @@ namespace Compiler.Phases
         {
             var exprtmp1 = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
             var exprtmp = input.Replace(";", "").Split('=').Last();
-            if (exprtmp.Contains("\\\\"))
+            if (exprtmp.Contains("\\\\") && !lookingforGrads)
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1].Replace(";", "");
                     Exprs.Add(_expr1);
                     Exprs.Add(_expr2);
                     _grads.Add(_expr1);
+            }
+            else if (input.Contains(".relu") && !lookingforGrads)
+            {
+                int index = input.IndexOf(".relu");
+                int sq_bckt = input.IndexOf('[');
+                if (sq_bckt != -1) 
+                {
+                    string str = input.Substring(sq_bckt, input.Length - index);
+                    input = input.Replace(str, "");
+                }
+                input = input.Replace(".relu;", "");
+                Exprs.Add(input);
             }
             else if (exprtmp.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 

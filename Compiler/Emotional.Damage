@@ -1,0 +1,6 @@
+float a = 2.5;
+float[2][2] b;
+float[3] c;
+b[1][1].relu;
+a.relu;
+c.relu;
