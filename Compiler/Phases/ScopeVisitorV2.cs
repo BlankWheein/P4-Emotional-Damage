@@ -39,9 +39,12 @@ namespace Compiler.Phases
         {
             if (context.STRING_CONSTANT() != null && context.GetText().Replace(context?.STRING_CONSTANT()?.ToString(), "").Contains("$"))
             {
-                var _out = context.STRING_CONSTANT().ToString().Replace("\"", "").Split("{", StringSplitOptions.RemoveEmptyEntries);
+                var _out = context.STRING_CONSTANT().ToString().Replace("\"", "").Split("}", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var item in _out)
-                    Scope.LookUp(item.Split("}")[0].Split("(")[0].Split("[")[0]);
+                {
+                    if (item.Contains("{"))
+                    Scope.LookUp(item.Split("{")[1].Split("(")[0].Split("[")[0]);
+                }
             }
             return base.VisitPrintStmt(context);
         }
