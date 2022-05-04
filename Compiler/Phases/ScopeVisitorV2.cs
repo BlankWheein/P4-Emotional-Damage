@@ -42,6 +42,7 @@ namespace Compiler.Phases
                 var _out = context.STRING_CONSTANT().ToString().Replace("\"", "").Split("}", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var item in _out)
                 {
+                    if (item.Contains("{"))
                     Scope.LookUp(item.Split("{")[1].Split("(")[0].Split("[")[0]);
                 }
             }
