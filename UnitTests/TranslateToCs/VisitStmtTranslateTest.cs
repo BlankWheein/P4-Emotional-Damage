@@ -15,152 +15,159 @@ namespace UnitTests.TranslateToCs
     [TestClass]
     public class VisitStmtTranslateTest
     {
+        internal RootSymbolTable? scope;
         private EmotionalDamageLexer? __lexer;
         internal EmotionalDamageParser? __parser;
         private AntlrInputStream? __stream;
         private CommonTokenStream? __lexerStream;
-        private CodeGeneratorV2 _codeGen = new CodeGeneratorV2(true);
-        private StmtContext __context;
-        public EmotionalDamageParser pars(string v)
+        private CodeGeneratorV2 _codeGen = new(true);
+        private ProgContext __context;
+        private ScopeVisitorV2 _typeChecker = new();
+        public void Parse(string v)
         {
             __stream = new(new StringBuilder(v).ToString());
             __lexer = new(__stream);
             __lexerStream = new(__lexer);
             __parser = new(__lexerStream);
-            return __parser;
+            __context = __parser.prog();
+            _typeChecker.Visit(__context);
+            Assert.AreEqual(0, _typeChecker.Diagnostics.Count);
+            Assert.AreEqual(0, __parser.NumberOfSyntaxErrors);
+            _codeGen.Scope = _typeChecker.Scope;
+            _codeGen.Visit(__context);
         }
         [TestMethod]
         public void VisitPrintStmt() {
-            string exprt = "Console.Write(x);";
-            __context = pars("print(x);").stmt();
-            _codeGen.Visit(__context);
+            Parse("int x = 0;print(x);");
+            string exprt = "int x = 0;Console.Write(x);";
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitPrintStmt2()
         {
-            string exprt = "Console.WriteLine(x);";
-            __context = pars("println(x);").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int x = 0;Console.WriteLine(x);";
+            Parse("int x =0; println(x);");
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitReturnStmt()
         {
-            string exprt = "return x;";
-            __context = pars("return x;").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "float testfun () {float x = 0;return x;}";
+            Parse("float testfun(){float x = 0;return x;}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitNumAssignStmt()
         {
-            string exprt = "x = 4.0;";
-            __context = pars("x = 4.0f;").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "float x = 0;x = 4.0f;";
+            Parse("float x=0;x = 4.0;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitBoolAssignStmt()
         {
-            string exprt = "x = false;";
-            __context = pars("x = false;").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "bool x = true;x = false;";
+            Parse("bool x = true;x = false;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitMatrixAssignStmt()
         {
-            string exprt = "x.Values[2][2] = new Value(6, CalculateGradient: false);";
-            __context = pars("x[2][2] = 6").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "Matrix x = new(3,3);x.Values[2][2] = new Value(6, CalculateGradient: false);";
+            Parse("float[3][3] x; x[2][2] = 6;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitArrayAssignStmt()
         {
-            string exprt = "x[2] = 6;";
-            __context = pars("x[2] = 6").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int[] x = new int[4];x[2] = 6;";
+            Parse("int[4] x;x[2] = 6;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitFunStmt() {
-            string exprt = "x(f, g);";
-            __context = pars("x(f, g);").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "float g = 2;int f = 3;float xy (int y, float x) {return x;}xy(f, g);";
+            Parse("float g = 2; int f = 3; float xy(int y, float x){return x;}xy(f, g);");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitUnaryPlus()
         {
-            string exprt = "x++;";
-            __context = pars("x++;").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int x = 0;x++;";
+            Parse("int x = 0;x++;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitUnaryMinus()
         {
-            string exprt = "x--;";
-            __context = pars("x--;").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int x = 0;x--;";
+            Parse("int x = 0;x--;");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitWhileStmt()
         {
             string exprt = "while(true){Console.WriteLine(\"Doing Stuff\");}";
-            __context = pars("while(true){println(\"Doing Stuff\");}").stmt();
-            _codeGen.Visit(__context);
+            Parse("while(true){println(\"Doing Stuff\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitForStmt()
         {
             string exprt = "for (int i = 0; i<10; i++){Console.WriteLine(\"Doing Stuff\");}";
-            __context = pars("for(int i = 0; i < 10; i++){println(\"Doing Stuff\");}").stmt();
-            _codeGen.Visit(__context);
+            Parse("for(int i = 0; i < 10; i++){println(\"Doing Stuff\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitMatrixTransposeStmt()
         {
-            string exprt = "x = y.Transpose()";
-            __context = pars("x = T(y)").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "Matrix y = new(2,2);Matrix x = new(2,2);x = y.Transpose()";
+            Parse("float[2][2] y; float[2][2]x;x = T(y);");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitSelectiveStmt1()
         {
-            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}";
-            __context = pars("if(i<10){println(\"Doing Stuff\");}").stmt();
-            _codeGen.Visit(__context);
+            _codeGen.Scope = _typeChecker.Scope;
+            string exprt = "int i = 0;if(i<10){Console.WriteLine(\"Doing Stuff\");}";
+            Parse("int i =0;if(i<10){println(\"Doing Stuff\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitSelectiveStmt2()
         {
-            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else{Console.WriteLine(\"Doing Other Stuff\");}";
-            __context = pars("if(i<10){println(\"Doing Stuff\");} else {println(\"Doing Other Stuff\");}").stmt();
-            _codeGen.Visit(__context);
+            _codeGen.Scope = new(true);
+            string exprt = "int i = 0;if(i<10){Console.WriteLine(\"Doing Stuff\");}else{Console.WriteLine(\"Doing Other Stuff\");}";
+            Parse("int i = 0;if(i<10){println(\"Doing Stuff\");} else {println(\"Doing Other Stuff\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitSelectiveStmt3()
         {
-            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==u){Console.WriteLine(\"Doing Other Stuff\");}";
-            __context = pars("if(i<10){println(\"Doing Stuff\");} elif (i == u){println(\"Doing Other Stuff\");}").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int i = 0;if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==9){Console.WriteLine(\"Doing Other Stuff\");}";
+            Parse("int i = 0;if(i<10){println(\"Doing Stuff\");} elif (i == 9){println(\"Doing Other Stuff\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitSelectiveStmt4()
         {
-            string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==u){Console.WriteLine(\"Doing Other Stuff\");}else{Console.WriteLine(\"something else\");}";
-            __context = pars("if(i<10){println(\"Doing Stuff\");} elif (i == u){println(\"Doing Other Stuff\");} else {println(\"something else\");}").stmt();
-            _codeGen.Visit(__context);
+            string exprt = "int i = 0;if(i<10){Console.WriteLine(\"Doing Stuff\");}else if(i==9){Console.WriteLine(\"Doing Other Stuff\");}else{Console.WriteLine(\"something else\");}";
+            Parse("int i = 0;if(i<10){println(\"Doing Stuff\");} elif (i == 9){println(\"Doing Other Stuff\");} else {println(\"something else\");}");
+            
             Assert.AreEqual(exprt, _codeGen.testString);
         }
     }
