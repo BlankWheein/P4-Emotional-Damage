@@ -31,6 +31,7 @@ namespace UnitTests.TranslateToCs
             __parser = new(__lexerStream);
             __context = __parser.prog();
             _typeChecker.Visit(__context);
+            Assert.AreEqual(0, _typeChecker.Diagnostics);
             _codeGen.Scope = _typeChecker.Scope;
             _codeGen.Visit(__context);
         }
