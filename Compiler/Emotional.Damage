@@ -1,4 +1,0 @@
-﻿float f = 2.5;
-float g = f**(4**2);
-
-float d = f \\ g;

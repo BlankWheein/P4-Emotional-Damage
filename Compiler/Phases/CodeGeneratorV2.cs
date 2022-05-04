@@ -66,7 +66,8 @@ namespace Compiler.Phases
                 _fs = File.Create(_path);
             
 
-            AddText("using AutoGrad;\n");
+            AddText("using AutoGrad;");
+            AddText("Random rnd = new();");
             
             foreach (var stmt in Stmts)
                 stmt();
@@ -96,7 +97,6 @@ namespace Compiler.Phases
                     {
                         input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                     }
-                    
                 }
             }
 
@@ -208,12 +208,15 @@ namespace Compiler.Phases
                 {
                     parameters += $"Matrix {context.IDENTIFIER()[i + 1].GetText()}, ";
                 }
+                else if(numofSqr == 1)
+                {
+                    parameters += $"{context.types(0).GetText().Split("[")[0]}[] {context.IDENTIFIER()[i + 1].GetText()}, ";
+                }
                 else { 
                     parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i+1].GetText()}, ";
                 }
             
             }
-
             if (parameters != "") parameters = parameters[0..^2];
 
             AddStmt($"{returntype} {id} ({parameters}) {{");
@@ -251,14 +254,14 @@ namespace Compiler.Phases
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
 
             var expr = CheckExpr(expr_str);
-            if (expr.Contains('.') && numtype != "int")
+            if (expr.Contains('.') && numtype != "int") // add f if float: e.g. 2.3 -> 2.3f
             {
-                int fff = expr.Length;
-                for (int i = 0; i < fff; i++)
+                int len = expr.Length;
+                for (int i = 0; i < len; i++)
                 {
                     char c = expr[i];
                     char cNext = expr[i];
-                    if (i < fff-1)
+                    if (i < len-1)
                         cNext = expr[i + 1];
                     if (c == '.' && char.IsDigit(cNext))
                         expr +="f";
@@ -266,30 +269,35 @@ namespace Compiler.Phases
             }
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
-                {
                     AddStmt($"Value {id} = {expr};");
-                }
                 else
-                {
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
-                }
             }
             else
             {
-                bool active = false;
-                for (int i = 0; i < expr.Length; i++)
-                {
-                    char c = expr[i];
-                    if (char.IsDigit(c)) continue;
-                    if (c.Equals('.')) active = true;
-                    if (char.IsLetter(c)) active = false;
-                    if (active && char.IsSymbol(c)) {
-                        active = false;
-                        expr = expr.Insert(i, "f");
-                    }
-                }
-                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ', '(', ')', ';').Contains(v))){
+                // adds .data if assigned to non-Value type
+                if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ', '(', ')', ';').Contains(v)))
                     expr = expr.Replace(Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v)), Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v))+".data");
+                else
+                {
+                    // matrix handling
+                    expr = expr.Replace(" ", "");
+                    var str = expr.Split(new Char[] { '*', '%', '/', '+', '-'});
+                    for(int i = 0; i < str.Length; i++)
+                    {
+                        string ex = str[i];
+                        if(ex.Count(f => f == '[') == 2 && ex.Count(f => f == ']') == 2)
+                        {
+                            int index = ex.IndexOf('[');
+                            expr = expr.Replace(ex, ex.Insert(index, ".Values"));
+                        }
+                    }
+
+                    foreach(char s in "*%/+-")
+                        expr = expr.Replace($"{s}", $" {s} ");
+
+                    if (numtype.Equals("int") && expr.Contains("MathF.Sqrt") || expr.Contains("MathF.Pow"))
+                        expr = expr.Replace("MathF", "(int) MathF");
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }
@@ -370,6 +378,7 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
+            Scope.NextScope();
             var ids = context.IDENTIFIER();
             string str = $"{ids[0].GetText()}(";
 
@@ -380,6 +389,7 @@ namespace Compiler.Phases
 
             str += ");";
             AddStmt(str);
+            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
@@ -396,15 +406,18 @@ namespace Compiler.Phases
         }
         public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
+            Scope.NextScope();
             var arg = context?.bexpr()?.GetText() == null ? context?.IDENTIFIER()?.GetText() : context?.bexpr()?.GetText();
             AddStmt($"while({arg})" + "{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
         }
         
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
+            Scope.NextScope();
             var id1 = context.IDENTIFIER()[0].GetText();
             var expr = CheckExpr(context.expr().GetText());
             var bexpr = context.bexpr().GetText();
@@ -414,6 +427,7 @@ namespace Compiler.Phases
             AddStmt($"for (int {id1} = {expr}; {bexpr}; {id1}{result})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
@@ -423,6 +437,17 @@ namespace Compiler.Phases
             AddStmt($"{id1} = {id2}.Transpose()");
             return false;
         }
+
+        public override object VisitDotExprs([NotNull] DotExprsContext context)
+        {
+            var id1 = context.IDENTIFIER()[0].GetText();
+            var id2 = context.IDENTIFIER()[1].GetText();
+            var id3 = context.IDENTIFIER()[2].GetText();
+
+            AddStmt($"{id1} = {id2}.Dot({id3});");
+            return false;
+        }
+
         public override object VisitSelective([NotNull] EmotionalDamageParser.SelectiveContext context)
         {
             if(context.ifstmt() != null){
@@ -454,6 +479,7 @@ namespace Compiler.Phases
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
+            Scope.NextScope();
             string bexprstring = context.bexpr().GetText();
             if (Values.Any(v => bexprstring.Split(BoolSpilts).Contains(v)))
             {
@@ -462,15 +488,25 @@ namespace Compiler.Phases
             AddStmt($"else if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
             
         }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
-            
+            Scope.NextScope();
             AddStmt("else{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
+        {
+            var id1 = context.IDENTIFIER(0).GetText();
+            var id2 = context.IDENTIFIER(1).GetText();
+            var id3 = context.IDENTIFIER(2).GetText();
+            AddStmt($"{id1}.Next({id2}, {id3});");
             return false;
         }
         public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
