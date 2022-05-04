@@ -304,6 +304,20 @@ public partial class EmotionalDamageBaseListener : IEmotionalDamageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ReluStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ReluStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>MatrixElementAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// <para>The default implementation does nothing.</para>

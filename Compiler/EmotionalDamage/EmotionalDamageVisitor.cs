@@ -166,6 +166,13 @@ public interface IEmotionalDamageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ReluStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>MatrixElementAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>

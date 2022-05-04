@@ -259,6 +259,18 @@ public interface IEmotionalDamageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDotExprs([NotNull] EmotionalDamageParser.DotExprsContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ReluStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ReluStmt</c>
+	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>MatrixElementAssignStmt</c>
 	/// labeled alternative in <see cref="EmotionalDamageParser.stmt"/>.
 	/// </summary>
