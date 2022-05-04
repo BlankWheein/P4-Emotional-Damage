@@ -19,6 +19,7 @@ namespace Compiler.Phases
         private int _level = 0;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
+        private char[] exprOprator = new[] {' ', '(', '+', '-', '/', '*', ')'};
         public string testString="";
         public CodeGeneratorV2(bool IsTesting)
         {
@@ -85,8 +86,36 @@ namespace Compiler.Phases
         {
             Values = values;
         }
+        public string addFtoFloatNum(string expr)
+        {
+            if (expr.Contains('.')) // add f if float: e.g. 2.3 -> 2.3f
+            {
+                int len = expr.Length;
+                int Dotpos = 0;
+                for (int i = 0; i < len; i++)
+                {
+                    char c = expr[i];
+                    char cNext = expr[i];
+                    if (i < len - 1)
+                        cNext = expr[i + 1];
+                    if (c == '.')
+                        Dotpos = i;
+                    if (expr[Dotpos] == '.' && exprOprator.Contains(cNext) && char.IsDigit(c))
+                    {
+                        Dotpos = i;
+                        expr = expr.Insert(i+1, "f");
+                    }
+                    else if (expr[Dotpos] == '.' && i + 1 >= len)
+                    {
+                        expr += "f";
+                    }
+                }
+            }
+            return expr;
+        }
         public string CheckExpr(string input)
         {
+            input = addFtoFloatNum(input);
             if (input.Contains("sqrt(")) { 
                 input = input.Replace("sqrt(", "MathF.Sqrt(");
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
@@ -247,6 +276,7 @@ namespace Compiler.Phases
             AddStmt($"{type}[] {id} = new {type}[{arr_size}];");
             return false;
         }
+        
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             var numtype = context.numtype().GetText();
@@ -254,19 +284,6 @@ namespace Compiler.Phases
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
 
             var expr = CheckExpr(expr_str);
-            if (expr.Contains('.') && numtype != "int") // add f if float: e.g. 2.3 -> 2.3f
-            {
-                int len = expr.Length;
-                for (int i = 0; i < len; i++)
-                {
-                    char c = expr[i];
-                    char cNext = expr[i];
-                    if (i < len-1)
-                        cNext = expr[i + 1];
-                    if (c == '.' && char.IsDigit(cNext))
-                        expr +="f";
-                }
-            }
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
                     AddStmt($"Value {id} = {expr};");
@@ -348,6 +365,7 @@ namespace Compiler.Phases
         {
             var id = context.IDENTIFIER().GetText();
             var expr = CheckExpr(context.expr().GetText());
+
             AddStmt($"{id} = {expr};");
             return false;
         }
@@ -509,11 +527,7 @@ namespace Compiler.Phases
             AddStmt($"{id1}.Next({id2}, {id3});");
             return false;
         }
-        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
-        {
-            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
-            return base.VisitRandIdentifierStmt(context);
-        }
+        
         #endregion
 
     }
