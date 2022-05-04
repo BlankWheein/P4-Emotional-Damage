@@ -150,7 +150,7 @@ namespace AutoGrad
 
         public override string ToString()
         {
-            return $"Value(data={data}, grad={grad})";
+            return $"{data}";
         }
 
         public string ToStringExtension() => ToString();
