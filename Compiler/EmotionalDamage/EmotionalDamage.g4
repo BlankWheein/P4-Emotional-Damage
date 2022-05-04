@@ -9,7 +9,7 @@ returntype: types | 'void';
 dcl :
       returntype IDENTIFIER '(' ((types IDENTIFIER) (',' types IDENTIFIER)* )? ')' '{'stmts'}' #FuncDcl
     | numtype'['Inum']''['Inum']' IDENTIFIER';' #MatrixDeclaration
-    | ( numtype | 'string' )'['Inum']' IDENTIFIER';' #ArrayDeclaration
+    | numtype '['Inum']' IDENTIFIER';' #ArrayDeclaration
     | numtype IDENTIFIER '=' expr';' #NumDcl
     | 'string' IDENTIFIER '=' STRING_CONSTANT';' #StringDcl
     | 'bool' IDENTIFIER '=' bexpr';' #BoolDeclaration
