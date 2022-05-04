@@ -88,7 +88,7 @@ namespace Compiler.Phases
         }
         public string addFtoFloatNum(string expr)
         {
-            if (expr.Contains('.')) // add f if float: e.g. 2.3 -> 2.3f
+            if (expr.Contains('.') && expr.Any(c => char.IsDigit(c))) // add f if float: e.g. 2.3 -> 2.3f
             {
                 int len = expr.Length;
                 int Dotpos = 0;
