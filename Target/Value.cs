@@ -126,27 +126,25 @@ namespace AutoGrad
         }
         public static Value operator -(float self, Value other)
         {
-            return new Value(self) + (-other);
+            return new Value(self, CalculateGradient: other.CalculateGradient) + (-other);
         }
         public static Value operator -(Value self, float other)
         {
-            return self + new Value(-other);
+            return self + new Value(-other, CalculateGradient: self.CalculateGradient);
         }
-
 
         public static Value operator /(Value self, float other)
         {
-            return self * new Value(other).Pow(-1);
+            return self * new Value(other, CalculateGradient: self.CalculateGradient).Pow(-1);
         }
         public static Value operator /(Value self, Value other)
         {
-            return self * new Value(other.data).Pow(-1);
+            return self * new Value(other.data, CalculateGradient: self.CalculateGradient).Pow(-1);
         }
         public static Value operator /(float self, Value other)
         {
-            return new Value(self) * other.Pow(-1);
+            return new Value(self, CalculateGradient: other.CalculateGradient) * other.Pow(-1);
         }
-       
 
         public override string ToString()
         {

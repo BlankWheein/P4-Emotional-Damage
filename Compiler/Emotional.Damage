@@ -1,9 +1,0 @@
-﻿int min = 1;
-int max = 10000;
-min.rand(min, max);
-max.rand(min, max);
-
-float[5] k;
-float[5] lol;
-k.rand(k, lol);
-print($"{k}");
