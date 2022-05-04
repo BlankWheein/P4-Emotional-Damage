@@ -476,7 +476,7 @@ namespace Compiler.Phases
                     Scope.AddDiagnostic(new TypeCheckerException($"{id.Id}[{id.Row}] does not have the dimension {x}", context));
                 }
             }
-            if (!id.Type.IsArray())
+            if (id != null && !id.Type.IsArray())
             {
                 Scope.AddDiagnostic(new TypeCheckerException($"{id.Id} was not an array", context));
                 return false;
