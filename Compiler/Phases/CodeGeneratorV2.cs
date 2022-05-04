@@ -98,7 +98,7 @@ namespace Compiler.Phases
                     char cNext = expr[i];
                     if (i < len - 1)
                         cNext = expr[i + 1];
-                    if (c == '.')
+                    if (c == '.' && char.IsDigit(cNext))
                         Dotpos = i;
                     if (expr[Dotpos] == '.' && exprOprator.Contains(cNext) && char.IsDigit(c))
                     {
