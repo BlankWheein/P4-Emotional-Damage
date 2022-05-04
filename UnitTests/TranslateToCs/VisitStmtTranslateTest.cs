@@ -52,8 +52,8 @@ namespace UnitTests.TranslateToCs
         [TestMethod]
         public void VisitReturnStmt()
         {
-            string exprt = "float kage () {float x = 0;return x;}";
-            Parse("float kage(){float x = 0;return x;}");
+            string exprt = "float testfun () {float x = 0;return x;}";
+            Parse("float testfun(){float x = 0;return x;}");
             
             Assert.AreEqual(exprt, _codeGen.testString);
         }
