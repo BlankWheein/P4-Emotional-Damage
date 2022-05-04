@@ -66,7 +66,8 @@ namespace Compiler.Phases
                 _fs = File.Create(_path);
             
 
-            AddText("using AutoGrad;\n");
+            AddText("using AutoGrad;");
+            AddText("Random rnd = new();");
             
             foreach (var stmt in Stmts)
                 stmt();
@@ -374,6 +375,7 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
+            Scope.NextScope();
             var ids = context.IDENTIFIER();
             string str = $"{ids[0].GetText()}(";
 
@@ -384,6 +386,7 @@ namespace Compiler.Phases
 
             str += ");";
             AddStmt(str);
+            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
@@ -400,15 +403,18 @@ namespace Compiler.Phases
         }
         public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
+            Scope.NextScope();
             var arg = context?.bexpr()?.GetText() == null ? context?.IDENTIFIER()?.GetText() : context?.bexpr()?.GetText();
             AddStmt($"while({arg})" + "{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
         }
         
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
+            Scope.NextScope();
             var id1 = context.IDENTIFIER()[0].GetText();
             var expr = CheckExpr(context.expr().GetText());
             var bexpr = context.bexpr().GetText();
@@ -418,6 +424,7 @@ namespace Compiler.Phases
             AddStmt($"for (int {id1} = {expr}; {bexpr}; {id1}{result})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitTransposeMatrixStmt([NotNull] EmotionalDamageParser.TransposeMatrixStmtContext context){
@@ -469,6 +476,7 @@ namespace Compiler.Phases
         }
         public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
         {
+            Scope.NextScope();
             string bexprstring = context.bexpr().GetText();
             if (Values.Any(v => bexprstring.Split(BoolSpilts).Contains(v)))
             {
@@ -477,20 +485,25 @@ namespace Compiler.Phases
             AddStmt($"else if({bexprstring})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
             return false;
             
         }
-        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
-        {
-            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
-            return base.VisitRandIdentifierStmt(context);
-        }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
-            
+            Scope.NextScope();
             AddStmt("else{");
             VisitStmts(context.stmts());
             AddStmt("}");
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
+        {
+            var id1 = context.IDENTIFIER(0).GetText();
+            var id2 = context.IDENTIFIER(1).GetText();
+            var id3 = context.IDENTIFIER(2).GetText();
+            AddStmt($"{id1}.Next({id2}, {id3});");
             return false;
         }
         #endregion

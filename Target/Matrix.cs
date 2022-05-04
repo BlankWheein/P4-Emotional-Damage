@@ -5,7 +5,7 @@ namespace AutoGrad
     {
         Random Random = new();
         private float grad;
-
+        private Random rnd = new();
         public int Rows { get; }
         public int Columns { get; }
         public bool CalculateGradient { get; }
@@ -98,6 +98,27 @@ namespace AutoGrad
                 for (int j = 0; j < res.Columns; j++)
                     res.Values[i][j] = self.Values[i][j] - other.Values[i][j];
             return res;
+        }
+
+        public void Next(int min, int max)
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    Values[i][j] = new Value(rnd.Next(min, max), CalculateGradient: Values[i][j].CalculateGradient);
+                }
+            }
+        }
+        public void Next(float min, float max)
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    Values[i][j] = new Value(rnd.Next(min, max), CalculateGradient: Values[i][j].CalculateGradient);
+                }
+            }
         }
 
         public override string ToString()

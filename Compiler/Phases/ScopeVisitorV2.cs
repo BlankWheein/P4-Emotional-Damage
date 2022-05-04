@@ -288,6 +288,33 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new TypeCheckerException($"{id} does not have return type of {CurrentFunction.Type}", context));
             return base.VisitReturnStmt(context);
         }
+        public override object VisitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context)
+        {
+            string identifier = context.IDENTIFIER(0).GetText();
+            var sym = Scope.LookUpSilent(identifier);
+            foreach (var s in context.IDENTIFIER())
+            {
+                var sym2 = Scope.LookUp(s.GetText());
+                if (sym2?.Type != null && sym2?.Type != SymbolType.Int && sym != sym2)
+                    Scope.AddDiagnostic(new TypeCheckerException($"{sym2?.Id} was not of type int", context));
+            }
+            int? count = (context?.IDENTIFIER().Length ?? 0) + (context?.Inum().Length ?? 0);
+            if (sym == null) { return false; }
+            else if (count == 1 && (sym.Type & (SymbolType.Int | SymbolType.Float)) == 0)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Int or Float", context));
+            else if (count == 2 && (sym.Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Aint or Afloat", context));
+            else if (count == 3 && (sym.Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Aint or Afloat", context));
+            if (context.Inum().Length == 2)
+            {
+                if (int.Parse(context.Inum(0).GetText()) >= sym.Row)
+                    Scope.AddDiagnostic(new TypeCheckerException($"Index {context.Inum(0).GetText()} was out of row bounds", context));
+                if (int.Parse(context.Inum(1).GetText()) >= sym.Col)
+                    Scope.AddDiagnostic(new TypeCheckerException($"Index {context.Inum(0).GetText()} was out of col bounds", context));
+            }
+            return base.VisitReluStmt(context);
+        }
         #endregion
         #region Assigns
         public override object VisitRandIdentifierStmt([NotNull] EmotionalDamageParser.RandIdentifierStmtContext context)
