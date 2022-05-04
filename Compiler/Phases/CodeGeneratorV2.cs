@@ -271,6 +271,7 @@ namespace Compiler.Phases
             }
             else
             {
+                // adds .data if assigned to non-Value type
                 if (Values.Any(v => v != id) && Values.Any(v => expr.Split(' ', '(', ')', ';').Contains(v)))
                     expr = expr.Replace(Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v)), Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v))+".data");
                 else
@@ -289,9 +290,10 @@ namespace Compiler.Phases
                     }
 
                     foreach(char s in "*%/+-")
-                    {
                         expr = expr.Replace($"{s}", $" {s} ");
-                    }
+
+                    if (numtype.Equals("int") && expr.Contains("MathF.Sqrt") || expr.Contains("MathF.Pow"))
+                        expr = expr.Replace("MathF", "(int) MathF");
                 }
                 AddStmt($"{numtype} {id} = {expr};");
             }
