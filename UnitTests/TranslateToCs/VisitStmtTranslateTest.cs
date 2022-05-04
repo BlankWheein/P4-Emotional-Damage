@@ -32,6 +32,7 @@ namespace UnitTests.TranslateToCs
             __context = __parser.prog();
             _typeChecker.Visit(__context);
             Assert.AreEqual(0, _typeChecker.Diagnostics.Count);
+            Assert.AreEqual(0, __parser.NumberOfSyntaxErrors);
             _codeGen.Scope = _typeChecker.Scope;
             _codeGen.Visit(__context);
         }
