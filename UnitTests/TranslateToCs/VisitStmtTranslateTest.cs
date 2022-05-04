@@ -15,12 +15,14 @@ namespace UnitTests.TranslateToCs
     [TestClass]
     public class VisitStmtTranslateTest
     {
+        internal RootSymbolTable? scope;
         private EmotionalDamageLexer? __lexer;
         internal EmotionalDamageParser? __parser;
         private AntlrInputStream? __stream;
         private CommonTokenStream? __lexerStream;
         private CodeGeneratorV2 _codeGen = new CodeGeneratorV2(true);
         private StmtContext __context;
+        private TypeChecker _typeChecker = new(new ScopeVisitorV2());
         public EmotionalDamageParser pars(string v)
         {
             __stream = new(new StringBuilder(v).ToString());
@@ -134,6 +136,7 @@ namespace UnitTests.TranslateToCs
         [TestMethod]
         public void VisitSelectiveStmt1()
         {
+            _codeGen.Scope = _typeChecker.Scope;
             string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}";
             __context = pars("if(i<10){println(\"Doing Stuff\");}").stmt();
             _codeGen.Visit(__context);
@@ -142,6 +145,7 @@ namespace UnitTests.TranslateToCs
         [TestMethod]
         public void VisitSelectiveStmt2()
         {
+            _codeGen.Scope = new(true);
             string exprt = "if(i<10){Console.WriteLine(\"Doing Stuff\");}else{Console.WriteLine(\"Doing Other Stuff\");}";
             __context = pars("if(i<10){println(\"Doing Stuff\");} else {println(\"Doing Other Stuff\");}").stmt();
             _codeGen.Visit(__context);

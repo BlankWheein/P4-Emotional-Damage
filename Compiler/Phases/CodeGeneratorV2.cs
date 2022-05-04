@@ -465,11 +465,6 @@ namespace Compiler.Phases
             return false;
             
         }
-        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
-        {
-            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
-            return base.VisitRandIdentifierStmt(context);
-        }
         public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
         {
             
@@ -477,6 +472,11 @@ namespace Compiler.Phases
             VisitStmts(context.stmts());
             AddStmt("}");
             return false;
+        }
+        public override object VisitRandIdentifierStmt([NotNull] RandIdentifierStmtContext context)
+        {
+            Symbol? k = Scope.LookUpSilent(context.IDENTIFIER(0).GetText());
+            return base.VisitRandIdentifierStmt(context);
         }
         #endregion
 
