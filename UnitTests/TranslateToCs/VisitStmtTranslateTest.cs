@@ -36,22 +36,22 @@ namespace UnitTests.TranslateToCs
         }
         [TestMethod]
         public void VisitPrintStmt() {
-            Parse("print(x)");
-            string exprt = "Console.Write(x);";
+            Parse("int x = 0;print(x)");
+            string exprt = "int x = 0;Console.Write(x);";
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitPrintStmt2()
         {
-            string exprt = "Console.WriteLine(x);";
-            Parse("println(x);");
+            string exprt = "int x = 0;Console.WriteLine(x);";
+            Parse("int x =0; println(x);");
             Assert.AreEqual(exprt, _codeGen.testString);
         }
         [TestMethod]
         public void VisitReturnStmt()
         {
-            string exprt = "return x;";
-            Parse("return x;");
+            string exprt = "int x = 0;return x;";
+            Parse("int x = 0;return x;");
             
             Assert.AreEqual(exprt, _codeGen.testString);
         }
