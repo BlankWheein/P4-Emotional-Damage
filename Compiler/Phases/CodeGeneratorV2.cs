@@ -96,7 +96,6 @@ namespace Compiler.Phases
                     {
                         input = input.Replace($"MathF.Sqrt({val.Split(')').First()})", $"{val.Split(')').First()}.Pow(1/2)");
                     }
-                    
                 }
             }
 
@@ -276,7 +275,7 @@ namespace Compiler.Phases
                     expr = expr.Replace(Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v)), Values.First(v => expr.Split(' ', '(', ')', ';').Contains(v))+".data");
                 else
                 {
-                    numtype = "Value";
+                    // matrix handling
                     expr = expr.Replace(" ", "");
                     var str = expr.Split(new Char[] { '*', '%', '/', '+', '-'});
                     for(int i = 0; i < str.Length; i++)
