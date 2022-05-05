@@ -436,13 +436,14 @@ namespace Compiler.Phases
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
             Scope.NextScope();
-            var id1 = context.IDENTIFIER()[0].GetText();
+            var id1 = context.IDENTIFIER(0).GetText();
+            var id2 = context.IDENTIFIER(1).GetText();
             var expr = CheckExpr(context.expr().GetText());
             var bexpr = context.bexpr().GetText();
             var text = context.GetText().Split(';');
             var unaryoperator = text[2];
             string result = unaryoperator.Contains("++") == true ? "++" : "--";
-            AddStmt($"for (int {id1} = {expr}; {bexpr}; {id1}{result})"+"{");
+            AddStmt($"for (int {id1} = {expr}; {bexpr}; {id2}{result})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
             Scope.ExitScopeCodeGen();
