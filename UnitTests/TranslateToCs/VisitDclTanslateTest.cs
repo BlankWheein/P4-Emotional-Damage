@@ -66,7 +66,7 @@ namespace UnitTests.TranslateToCs
         {
             DclContext __context;
             __context = pars("float v = y\\\\x;").dcl();
-            string exprt = "y.Backward();Value v = x.grad;";
+            string exprt = "y.Backward();float v = x.grad;";
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }

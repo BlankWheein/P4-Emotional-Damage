@@ -19,6 +19,7 @@ namespace Compiler.Phases
         private int _level = 0;
         private HashSet<string> Values = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
+        private char[] exprOprator = new[] {' ', '(', '+', '-', '/', '*', ')'};
         public string testString="";
         public CodeGeneratorV2(bool IsTesting)
         {
@@ -85,8 +86,36 @@ namespace Compiler.Phases
         {
             Values = values;
         }
+        public string addFtoFloatNum(string expr)
+        {
+            if (expr.Contains('.') && expr.Any(c => char.IsDigit(c))) // add f if float: e.g. 2.3 -> 2.3f
+            {
+                int len = expr.Length;
+                int Dotpos = 0;
+                for (int i = 0; i < len; i++)
+                {
+                    char c = expr[i];
+                    char cNext = expr[i];
+                    if (i < len - 1)
+                        cNext = expr[i + 1];
+                    if (c == '.' && char.IsDigit(cNext))
+                        Dotpos = i;
+                    if (expr[Dotpos] == '.' && exprOprator.Contains(cNext) && char.IsDigit(c))
+                    {
+                        Dotpos = i;
+                        expr = expr.Insert(i+1, "f");
+                    }
+                    else if (expr[Dotpos] == '.' && i + 1 >= len)
+                    {
+                        expr += "f";
+                    }
+                }
+            }
+            return expr;
+        }
         public string CheckExpr(string input)
         {
+            input = addFtoFloatNum(input);
             if (input.Contains("sqrt(")) { 
                 input = input.Replace("sqrt(", "MathF.Sqrt(");
                 var word = input.Split("MathF.Sqrt(", StringSplitOptions.RemoveEmptyEntries);
@@ -246,6 +275,7 @@ namespace Compiler.Phases
             AddStmt($"{type}[] {id} = new {type}[{arr_size}];");
             return false;
         }
+        
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
             var numtype = context.numtype().GetText();
@@ -253,19 +283,6 @@ namespace Compiler.Phases
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
 
             var expr = CheckExpr(expr_str);
-            if (expr.Contains('.') && numtype != "int") // add f if float: e.g. 2.3 -> 2.3f
-            {
-                int len = expr.Length;
-                for (int i = 0; i < len; i++)
-                {
-                    char c = expr[i];
-                    char cNext = expr[i];
-                    if (i < len-1)
-                        cNext = expr[i + 1];
-                    if (c == '.' && char.IsDigit(cNext))
-                        expr +="f";
-                }
-            }
             if (Values.Any(v => v.Contains(id))) {
                 if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
                     AddStmt($"Value {id} = {expr};");
@@ -347,6 +364,7 @@ namespace Compiler.Phases
         {
             var id = context.IDENTIFIER().GetText();
             var expr = CheckExpr(context.expr().GetText());
+
             AddStmt($"{id} = {expr};");
             return false;
         }
@@ -417,13 +435,14 @@ namespace Compiler.Phases
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
             Scope.NextScope();
-            var id1 = context.IDENTIFIER()[0].GetText();
+            var id1 = context.IDENTIFIER(0).GetText();
+            var id2 = context.IDENTIFIER(1).GetText();
             var expr = CheckExpr(context.expr().GetText());
             var bexpr = context.bexpr().GetText();
             var text = context.GetText().Split(';');
             var unaryoperator = text[2];
             string result = unaryoperator.Contains("++") == true ? "++" : "--";
-            AddStmt($"for (int {id1} = {expr}; {bexpr}; {id1}{result})"+"{");
+            AddStmt($"for (int {id1} = {expr}; {bexpr}; {id2}{result})"+"{");
             VisitStmts(context.stmts());
             AddStmt("}");
             Scope.ExitScopeCodeGen();
@@ -521,6 +540,7 @@ namespace Compiler.Phases
             AddStmt($"{id1}.Next({id2}, {id3});");
             return false;
         }
+        
         #endregion
 
     }
