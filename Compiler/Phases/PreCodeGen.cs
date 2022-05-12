@@ -75,9 +75,9 @@ namespace Compiler.Phases
         }
         public void CheckExpr(string input)
         {
-            var id_ = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
-            var exprs_ = input.Replace(";", "").Split('=').Last();
-            if (exprs_.Contains("\\\\") && !lookingforGrads)
+            var id = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
+            var exprs = input.Replace(";", "").Split('=').Last();
+            if (exprs.Contains("\\\\") && !lookingforGrads)
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1].Replace(";", "");
@@ -85,7 +85,7 @@ namespace Compiler.Phases
                     Exprs.Add(_expr2);
                     _grads.Add(_expr1);
             }
-            else if (input.Contains(".relu") && !lookingforGrads)
+            else if (exprs.Contains(".relu") && !lookingforGrads)
             {
                 int index = input.IndexOf(".relu");
                 int sq_bckt = input.IndexOf('[');
@@ -97,13 +97,13 @@ namespace Compiler.Phases
                 input = input.Replace(".relu;", "");
                 Exprs.Add(input);
             }
-            else if (exprs_.Any(c => char.IsLetter(c)) && lookingforGrads) { 
+            else if (exprs.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 
-                var expr = exprs_.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
+                var expr = exprs.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
                 foreach (var _expr in expr)
                     if (_expr.Any(c => char.IsLetter(c)))
                         if (CheckForGrad(_expr))
-                            Exprs.Add(id_);
+                            Exprs.Add(id);
             }
         }
         public bool CheckForGrad(string input)
