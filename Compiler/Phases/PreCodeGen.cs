@@ -87,15 +87,7 @@ namespace Compiler.Phases
             }
             else if (exprs.Contains(".relu") && !lookingforGrads)
             {
-                int index = input.IndexOf(".relu");
-                int sq_bckt = input.IndexOf('[');
-                if (sq_bckt != -1) 
-                {
-                    string str = input.Substring(sq_bckt, input.Length - index);
-                    input = input.Replace(str, "");
-                }
-                input = input.Replace(".relu;", "");
-                Exprs.Add(input);
+                Exprs.Add(input.Replace(".relu;", ""));
             }
             else if (exprs.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 
