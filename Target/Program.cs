@@ -1,8 +1,8 @@
 using AutoGrad;
 Random rnd = new();
-Value a = new Value(2.5f, null,"a", true);
-Matrix b = new(2,2);
-float[] c = new float[3];
-b.Values[1][1] = b.Values[1][1].relu();
-a = a.relu();
-c[0] = c.relu();
+float a = 2.5f;
+Value b = new Value(2.612f, null,"b", true);
+Value c = new Value(235 + a, null,"c", true);
+b.Backward();
+float d = c.grad;
+Console.WriteLine();
