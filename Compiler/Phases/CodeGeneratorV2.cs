@@ -129,7 +129,6 @@ namespace Compiler.Phases
                 }
             }
 
-
             if (input.Contains(".row"))
                 input = input.Replace(".row", ".Rows");
             if (input.Contains(".len"))
@@ -201,7 +200,7 @@ namespace Compiler.Phases
                 char c = str[i];
                 if (_symbols.Contains(c) ||c.Equals(' '))
                 {
-                    str = str.Substring(0, i);
+                    str = str[..i];
                     break;
                 }
             }
@@ -464,6 +463,19 @@ namespace Compiler.Phases
             var id3 = context.IDENTIFIER()[2].GetText();
 
             AddStmt($"{id1} = {id2}.Dot({id3});");
+            return false;
+        }
+
+        public override object VisitReluStmt([NotNull] ReluStmtContext context)
+        {
+            var stmt = context.GetText()[..^1];
+            var id = context.IDENTIFIER().First().GetText();
+            if(stmt.Count(f => f == '[') == 2 && stmt.Count(f => f == ']') == 2)
+            {
+                stmt = stmt.Replace(id, $"{id}.Values");
+                id = stmt.Replace(".relu", "");
+            }
+            AddStmt($"{id} = {stmt}();");
             return false;
         }
 

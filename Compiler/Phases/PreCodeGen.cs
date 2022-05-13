@@ -30,6 +30,12 @@ namespace Compiler.Phases
            
             return false;
         }
+
+        public override object VisitReluStmt([NotNull] EmotionalDamageParser.ReluStmtContext context)
+        {
+            CheckExpr(context.GetText());
+            return false;
+        }
         public override object VisitPrintStmt([NotNull] EmotionalDamageParser.PrintStmtContext context)
         {
             if (context.expr() != null) { 
@@ -69,9 +75,9 @@ namespace Compiler.Phases
         }
         public void CheckExpr(string input)
         {
-            var exprtmp1 = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
-            var exprtmp = input.Replace(";", "").Split('=').Last();
-            if (exprtmp.Contains("\\\\"))
+            var id = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
+            var exprs = input.Replace(";", "").Split('=').Last();
+            if (exprs.Contains("\\\\") && !lookingforGrads)
             {
                 var _expr1 = input.Split('=')[1].Split("\\\\")[0];
                 var _expr2 = input.Split("\\\\")[1].Replace(";", "");
@@ -79,19 +85,17 @@ namespace Compiler.Phases
                     Exprs.Add(_expr2);
                     _grads.Add(_expr1);
             }
-            else if (exprtmp.Any(c => char.IsLetter(c)) && lookingforGrads) { 
+            else if (exprs.Contains(".relu") && !lookingforGrads)
+            {
+                Exprs.Add(input.Replace(".relu;", ""));
+            }
+            else if (exprs.Any(c => char.IsLetter(c)) && lookingforGrads) { 
 
-                var expr = exprtmp.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
+                var expr = exprs.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
                 foreach (var _expr in expr)
-                {
                     if (_expr.Any(c => char.IsLetter(c)))
-                    {
                         if (CheckForGrad(_expr))
-                        {
-                            Exprs.Add(exprtmp1);
-                        }                        
-                    }
-                }
+                            Exprs.Add(id);
             }
         }
         public bool CheckForGrad(string input)

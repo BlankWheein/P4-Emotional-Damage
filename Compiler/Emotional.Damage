@@ -1,0 +1,8 @@
+float a = 2.5;
+float b = 2.612;
+float c = 235 + a;
+float e = 262;
+int f = 263;
+e.relu;
+f.relu;
+float d = b \\ c;
