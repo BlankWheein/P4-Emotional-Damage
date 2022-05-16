@@ -18,19 +18,19 @@ namespace UnitTests.TranlateToCs
         public void GetIndexParenthesisTest()
         {
             string input = "(fan + 4)";
-            int reslut;
-            int exprexted = 8;
-            reslut = _codeGen.GetIndexParenthesis('(', ')', input, false);
-            Assert.AreEqual(exprexted, reslut);
+            int resultat;
+            int exp = 8;
+            resultat = _codeGen.GetIndexParenthesis('(', ')', input, false);
+            Assert.AreEqual(exp, resultat);
         }
         [TestMethod]
         public void GetSingleExprTest()
         {
             string input = "fan + 4";
-            string reslut;
-            string exprexted = "fan";
-            reslut = _codeGen.GetSingleExpr(input, false);
-            Assert.AreEqual(exprexted, reslut);
+            string resultat;
+            string exp = "fan";
+            resultat = _codeGen.GetSingleExpr(input, false);
+            Assert.AreEqual(exp, resultat);
         }
         [TestMethod]
         public void CheckforValsTest()
