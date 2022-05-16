@@ -17,6 +17,7 @@ namespace ScopeTests
         private AntlrInputStream? __stream;
         private CommonTokenStream? __lexerStream;
         internal ScopeVisitorV2? _scopeTypeChecker;
+        internal TypeChecker? TypeChecker;
         public RootSymbolTable Parse(StringBuilder __source)
         {
             __stream = new(__source.ToString());
@@ -26,9 +27,7 @@ namespace ScopeTests
             __context = __parser.prog();
             _scopeTypeChecker = new();
             _scopeTypeChecker.Visit(__context);
-
             return _scopeTypeChecker.Scope;
-
         }
 
         [TestInitialize]
@@ -40,7 +39,7 @@ namespace ScopeTests
         [TestCleanup]
         public void CleanUp()
         {
-            Assert.AreEqual(0, __parser?.NumberOfSyntaxErrors);
+            Assert.AreEqual(0, __parser?.NumberOfSyntaxErrors ?? 0);
         }
     }
 }

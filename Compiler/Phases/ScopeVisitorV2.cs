@@ -69,12 +69,14 @@ namespace Compiler.Phases
             string id = context.IDENTIFIER().First().GetText();
             if (Scope.LookUpExsting(id) == null)
                 Scope.Insert(SymbolType.Int, context.IDENTIFIER().First().GetText());
-            Scope.LookUp(context.IDENTIFIER().Last().GetText());
+            var unary = Scope.LookUp(context.IDENTIFIER().Last().GetText());
+            if (unary != null && unary.Type != SymbolType.Int)
+                Scope.AddDiagnostic(new TypeCheckerException($"{unary.Id} was not of type int", context));
             VisitChildren(context);
             Scope.ExitScope();
             return false;
         }
-
+        
         internal void Print()
         {
             PrintScope(Scope.Root);
@@ -125,7 +127,7 @@ namespace Compiler.Phases
             return base.VisitFuncStmt(context);
         }
         #endregion
-        private string FixMatrixArrayType(string type)
+        public string FixMatrixArrayType(string type)
         {
             string rawtype = type.Split("[")[0];
             if (type.Count(p => p == '[') == 1)
@@ -239,7 +241,7 @@ namespace Compiler.Phases
         {
             base.VisitChildren(context);
             foreach (var item in Scope.Current.Symbols.Where(p => p.IsUsed == false))
-                Scope.AddWarning(new TypeCheckerException($"{item.Id} is declared but never used", context));
+                Scope.AddWarning(new TypeCheckerException($"{item.Id} is declared but might not be used", context));
             return false;
         }
         public override object VisitArrayDeclaration([NotNull] EmotionalDamageParser.ArrayDeclarationContext context)
@@ -333,7 +335,7 @@ namespace Compiler.Phases
             if ((max.Type & (SymbolType.Int | SymbolType.Float)) == 0)
                 Scope.AddDiagnostic(new TypeCheckerException($"{max.Id} was not of type int or float", context));
             if (min.SameReturn(max) == false)
-                Scope.AddDiagnostic(new TypeCheckerException($"{min.Id} and {max.Id} was not of same type", context));
+                Scope.AddDiagnostic(new TypeCheckerException($"{min.Id} and {max.Id} was not of same type2", context));
             return false;
         }
         public override object VisitNumAssignStmt([NotNull] EmotionalDamageParser.NumAssignStmtContext context)
@@ -372,21 +374,21 @@ namespace Compiler.Phases
             return base.VisitNumAssignStmt(context);
         }
         public override object VisitDivideExpr([NotNull] EmotionalDamageParser.DivideExprContext context)
-        {
+        { 
             string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("/")[^1]);
             string temp = context.expr().Last().GetText();
             string id2 = "";
             foreach (var p in temp)
-                if (char.IsLetterOrDigit(p))
+                if (char.IsLetterOrDigit(p) || p == '.')
                     id2 += p;
                 else
                     break;
-            Symbol? sym1 = ConvertValueToSymbol(id1);
-            Symbol? sym2 = ConvertValueToSymbol(id2);
+            Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
+            Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (id2.Replace("0", "") == "" || id2.Replace("0", "") == ".")
                 Scope.AddDiagnostic(new($"cant divide with 0 on '{id1} / {id2}'"));
             if (sym1 == null || sym2 == null) return false;
-            if (sym1.Type.IsMatrix() || sym1.Type.IsArray() || sym2.Type.IsMatrix() || sym2.Type.IsArray())
+            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row")) || (sym1.Type.IsArray() && !id1.Contains(".len")) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")) || (sym2.Type.IsArray()) && !id1.Contains(".len"))
                 Scope.AddDiagnostic(new($"Could not divide {id1} with {id2}"));
             return base.VisitDivideExpr(context);
         }
@@ -396,22 +398,27 @@ namespace Compiler.Phases
             string temp = context.expr().Last().GetText();
             string id2 = "";
             foreach (var p in temp)
-                if (char.IsLetterOrDigit(p))
+                if (char.IsLetterOrDigit(p) || p == '.')
                     id2 += p;
                 else
                     break;
-            Symbol? sym1 = ConvertValueToSymbol(id1);
-            Symbol? sym2 = ConvertValueToSymbol(id2);
+            Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
+            Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (sym1 == null || sym2 == null) return false;
-            if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row")) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")))
+            {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
-                    Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
+                {
+                    Scope.AddDiagnostic(new TypeCheckerException($"'{id1} - {id2}' was not of same type5", context));
+                }
                 else if (sym1.Row != sym2.Row || sym1.Col != sym2.Col)
+                {
                     Scope.AddDiagnostic(new TypeCheckerException($"Matrices {sym1.Id} and {sym2.Id} do not have the same dimensions!", context));
-
-            if (sym1.Type.IsArray() || sym2.Type.IsArray())
+                }
+            }
+            if ((sym1.Type.IsArray() && !id1.Contains(".len")) || (sym2.Type.IsArray() && !id2.Contains(".len")))
                 if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
-                    Scope.AddDiagnostic(new($"'{id1} - {id2}' was not of same type"));
+                    Scope.AddDiagnostic(new TypeCheckerException($"'{id1} - {id2}' was not of same type1", context));
             return base.VisitMinusExpr(context);
         }
         public string ConvertLastVarToId(string text)
@@ -429,32 +436,31 @@ namespace Compiler.Phases
         }
         public override object VisitPlusExpr([NotNull] EmotionalDamageParser.PlusExprContext context)
         {
-            string text = context.expr().First().GetText();
             string id1 = ConvertLastVarToId(context.expr().First().GetText().Split("+")[^1]);
             string temp = context.expr().Last().GetText();
             string id2 = "";
             foreach (var p in temp)
-                if (char.IsLetterOrDigit(p))
+                if (char.IsLetterOrDigit(p) || p == '.')
                     id2 += p;
                 else
                     break;
-            Symbol? sym1 = ConvertValueToSymbol(id1);
-            Symbol? sym2 = ConvertValueToSymbol(id2);
+            Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
+            Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (sym1 == null || sym2 == null) return false;
-            if (sym1.Type.IsMatrix() || sym2.Type.IsMatrix())
+            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row") ) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")))
             {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
                 {
-                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type"));
+                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type5"));
                 }
                 else if (sym1.Row != sym2.Row || sym1.Col != sym2.Col)
                 {
                     Scope.AddDiagnostic(new TypeCheckerException($"Matrices {sym1.Id} and {sym2.Id} do not have the same dimensions!", context));
                 }
             }
-            if (sym1.Type.IsArray() || sym2.Type.IsArray())
+            if ((sym1.Type.IsArray() && !id1.Contains(".len")) || (sym2.Type.IsArray() && !id2.Contains(".len")))
                 if (!(sym1.Type.IsArray() && sym2.Type.IsArray()))
-                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type")); 
+                    Scope.AddDiagnostic(new($"'{id1} + {id2}' was not of same type1")); 
             return base.VisitPlusExpr(context);
         }
         public override object VisitTimesExpr([NotNull] EmotionalDamageParser.TimesExprContext context)

@@ -55,4 +55,4 @@ namespace UnitTests.ScopeTests
             Assert.AreEqual(1, root.Diagnostics.Count);
         }
     }
-}
+    }

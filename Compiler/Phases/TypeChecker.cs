@@ -55,7 +55,7 @@ namespace Compiler.Phases
                 return false;
             }
         }
-        internal bool IsValidBexpr(string bexpr)
+        public bool IsValidBexpr(string bexpr)
         {
             var _out = SplitOnOperatorsBexpr(bexpr);
             if (_out.Count != 2) { return false; }
@@ -125,7 +125,7 @@ namespace Compiler.Phases
             return count;
         }
 
-        List<string> GetExprVariableNoFunc(string _text)
+        public List<string> GetExprVariableNoFunc(string _text)
         {
             List<string> _items = new();
             foreach (var _outvar in SplitOnOperatorsExpr(_text))
@@ -164,7 +164,7 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool CanUseRowColLen(string expr, SymbolType type)
+        public bool CanUseRowColLen(string expr, SymbolType type)
         {
             bool res = true;
             var _out = SplitOnOperatorsExpr(expr);
@@ -201,7 +201,7 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool CanParseMultiDimensionalVariables(string expr, Symbol type)
+        public bool CanParseMultiDimensionalVariables(string expr, Symbol type)
         {
             bool res = true;
             var _out = SplitOnOperatorsExpr(expr);
@@ -277,7 +277,7 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool DoesVariableReturnCompatibleType(string expr, SymbolType type)
+        public bool DoesVariableReturnCompatibleType(string expr, SymbolType type)
         {
             bool res = true;
             List<Symbol?> symbols = new();
@@ -355,7 +355,7 @@ namespace Compiler.Phases
             return res;
         }
 
-        private bool IsVariablesDeclared(string expr, SymbolType type)
+        public bool IsVariablesDeclared(string expr, SymbolType type)
         {
             bool res = true;
             var items = GetExprVariableNoFunc(expr);
