@@ -14,7 +14,35 @@ namespace UnitTests.TranlateToCs
     public class CheckExprTest
     {
         private CodeGeneratorV2 _codeGen = new CodeGeneratorV2(true);
-       
+        [TestMethod]
+        public void GetIndexParenthesisTest()
+        {
+            string input = "(fan + 4)";
+            int reslut;
+            int exprexted = 8;
+            reslut = _codeGen.GetIndexParenthesis('(', ')', input, false);
+            Assert.AreEqual(exprexted, reslut);
+        }
+        [TestMethod]
+        public void GetSingleExprTest()
+        {
+            string input = "fan + 4";
+            string reslut;
+            string exprexted = "fan";
+            reslut = _codeGen.GetSingleExpr(input, false);
+            Assert.AreEqual(exprexted, reslut);
+        }
+        [TestMethod]
+        public void CheckforValsTest()
+        {
+            string res = "x.data";
+            string input = "x";
+            _codeGen.PreVisit(new HashSet<string> { "x" });
+            input = _codeGen.checkForVals(input);
+            Assert.AreEqual(res, input);
+        }
+
+
         [TestMethod]
         public void PowerOfValue()
         {
