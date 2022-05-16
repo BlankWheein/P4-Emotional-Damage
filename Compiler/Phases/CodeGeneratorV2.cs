@@ -165,7 +165,7 @@ namespace Compiler.Phases
             return input;
         }
 
-        int GetIndexParenthesis(char firstPar, char targetPar, string str, bool reverse)
+        public int GetIndexParenthesis(char firstPar, char targetPar, string str, bool reverse)
         {
             if (reverse) str = Reverse(str);
             if (!str.First().Equals(firstPar)) return -1;
@@ -191,7 +191,7 @@ namespace Compiler.Phases
             return index;
         }
 
-        string GetSingleExpr(string str, bool reverse)
+        public string GetSingleExpr(string str, bool reverse)
         {
             if (reverse) str = Reverse(str);
             for (int i = 0; i < str.Length; i++)
