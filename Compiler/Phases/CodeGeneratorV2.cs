@@ -18,6 +18,7 @@ namespace Compiler.Phases
         public RootSymbolTable Scope { get; set; }
         private int _level = 0;
         private HashSet<string> Values = new() { };
+        private List<bool> ValuesRunBackwards = new() { };
         private char[] BoolSpilts = new[] { '>', '<', '=', ' ', '!' };
         private char[] exprOprator = new[] {' ', '(', '+', '-', '/', '*', ')'};
         public string testString="";
@@ -85,6 +86,9 @@ namespace Compiler.Phases
         public void PreVisit(HashSet<string> values)
         {
             Values = values;
+            foreach (var v in Values) {
+                ValuesRunBackwards.Add(false);
+            }
         }
         public string addFtoFloatNum(string expr)
         {
@@ -284,10 +288,35 @@ namespace Compiler.Phases
 
             var expr = CheckExpr(expr_str);
             if (Values.Any(v => v.Contains(id))) {
-                if (expr.Any(c => char.IsLetter(c)) && (!expr.Any(c => char.IsDigit(c)) || expr.Contains(".Pow")))
-                    AddStmt($"Value {id} = {expr};");
-                else
+                string newExprString = expr;
+                var newcharting = new List<char>();
+                bool IsPrevDigit = false;
+                for (int i = 0; i < newExprString.Length; i++)//0.6f
+                {
+                    if (IsPrevDigit && char.IsLetter(newExprString[i]))
+                    {
+
+                    } 
+                    else
+                    {
+                        newcharting.Add(newExprString[i]);
+                    }
+                    if (char.IsDigit(newExprString[i])) 
+                    {
+                        IsPrevDigit = true;
+                    } 
+                    else
+                    {
+                        IsPrevDigit = false;
+                    }
+                }
+                newExprString = String.Join("", newcharting);
+
+                Console.WriteLine(newExprString);
+                if (!newExprString.Any(c => char.IsLetter(c)))
                     AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
+                else if (expr.Any(c => char.IsLetter(c)) || expr.Contains(".Pow"))
+                    AddStmt($"Value {id} = {expr};");
             }
             else
             {
@@ -321,8 +350,14 @@ namespace Compiler.Phases
             return false;
         }
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
-        {   
-            AddStmt($"{context.IDENTIFIER(1)}.Backward();");
+        {
+            string id1 = context.IDENTIFIER(1).GetText();
+            int pos = Values.ToList().IndexOf(id1);
+            if (ValuesRunBackwards.ElementAtOrDefault(pos) == false) { 
+                AddStmt($"{id1}.Backward();");
+                ValuesRunBackwards[pos] = true;
+            }
+
             AddStmt($"{context.numtype().GetText()} {context.IDENTIFIER(0)} = {context.IDENTIFIER(2)}.grad;");
             return false;
         }
