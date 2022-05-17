@@ -62,7 +62,7 @@ namespace AutoGrad
             for (int i = 0; i < prod.Rows; i++)
                 for (int j = 0; j < prod.Columns; j++)
                     for (int k = 0; k < Columns; k++)
-                        prod.Values[i][j] += Values[i][k] * other.Values[k][j];
+                        prod.Values[i][j] = prod.Values[i][j] + (Values[i][k] * other.Values[k][j]);
             return prod;
         }
 

@@ -14,9 +14,9 @@ namespace AutoGrad
         public float grad { get; set; }
         public bool? CalculateGradient { get; }
 
-        public Value(float data, IEnumerable<Value>? _children = null, string _op = "", bool? CalculateGradient = null)
+        public Value(float data, IEnumerable<Value?>? _children = null, string _op = "", bool? CalculateGradient = null)
         {
-            if (CalculateGradient == null) throw new Exception();
+            if (CalculateGradient == null) this.CalculateGradient = true;
             grad = 0;
             this.data = data;
             this._op = _op;
@@ -26,6 +26,7 @@ namespace AutoGrad
             prev = new();
             if (_children != null)
                 foreach (var child in _children.Reverse())
+                    if (child != null)
                     prev.Add(child);
         }
         public static Value operator +(Value self, float other) => self + new Value(other);
@@ -39,15 +40,18 @@ namespace AutoGrad
         }
         public Value Plus(Value other)
         {
-            Value _out = new(this.data + other.data, new List<Value>() { this, other }, "+", CalculateGradient: CalculateGradient | other.CalculateGradient);
+            Value _out = new(this.data + other.data, null, "+", CalculateGradient: CalculateGradient | other.CalculateGradient);
             if (_out.CalculateGradient == true)
+            {
+                _out.prev.Add(other);
+                _out.prev.Add(this);
                 _out._backwards = () =>
                 {
                     this.grad += _out.grad;
                     other.grad += _out.grad;
                 };
+            }
             return _out;
-
         }
 
         public static Value operator *(Value self, float other) => self * new Value(other, CalculateGradient: self.CalculateGradient);
@@ -60,13 +64,18 @@ namespace AutoGrad
         }
         public Value Times(Value other)
         {
-            Value? _out = new(this.data * other.data, new List<Value>() { this, other }, "*", CalculateGradient: CalculateGradient | other.CalculateGradient);
+            Value? _out = new(data * other.data, null, "*", CalculateGradient: CalculateGradient | other.CalculateGradient);
             if (_out.CalculateGradient == true)
+            {
+                _out.prev.Add(other);
+                _out.prev.Add(this);
                 _out._backwards = () =>
-                {
-                    this.grad += other.data * _out.grad;
-                    other.grad += this.data * _out.grad;
-                };
+                    {
+                        this.grad += other.data * _out.grad;
+                        other.grad += this.data * _out.grad;
+                    };
+            }
+
             return _out;
         }
 
@@ -103,6 +112,7 @@ namespace AutoGrad
                 {
                     visited.Add(v);
                     foreach (Value child in v.prev)
+                        if (child.CalculateGradient == true)
                         build_topo(child);
                     topo.Add(v);
                 }
