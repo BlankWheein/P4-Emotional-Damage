@@ -59,15 +59,16 @@ namespace AutoGrad
             if (Columns != other.Rows)
                 throw new Exception();
             var prod = new Matrix(Rows, other.Columns, 0);
-            for (int i = 0; i < prod.Rows; i++)
-                for (int j = 0; j < prod.Columns; j++)
-                    for (int k = 0; k < Columns; k++)
-                    {
-                        if (CalculateGradient == false)
-                            prod.Values[i][j].data = prod.Values[i][j].data + (Values[i][k].data * other.Values[k][j].data);
-                        else
+            if (CalculateGradient == true)
+                for (int i = 0; i < prod.Rows; i++)
+                    for (int j = 0; j < prod.Columns; j++)
+                        for (int k = 0; k < Columns; k++)
                             prod.Values[i][j] = prod.Values[i][j] + (Values[i][k] * other.Values[k][j]);
-                    }
+            else
+                for (int i = 0; i < prod.Rows; i++)
+                    for (int j = 0; j < prod.Columns; j++)
+                        for (int k = 0; k < Columns; k++)
+                            prod.Values[i][j].data = prod.Values[i][j].data + (Values[i][k].data * other.Values[k][j].data);
             return prod;
         }
 

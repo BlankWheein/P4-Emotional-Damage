@@ -305,12 +305,8 @@ namespace Compiler.Phases
             }
             int? count = (context?.IDENTIFIER().Length ?? 0) + (context?.Inum().Length ?? 0);
             if (sym == null) { return false; }
-            else if (count == 1 && (sym.Type & (SymbolType.Int | SymbolType.Float)) == 0)
-                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Int or Float", context));
-            else if (count == 2 && (sym.Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
-                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Aint or Afloat", context));
-            else if (count == 3 && (sym.Type & (SymbolType.Aint | SymbolType.Afloat)) == 0)
-                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type Aint or Afloat", context));
+            else if (count == 1 && !(sym.Type.IsFloat() || sym.Type.IsInt() || sym.Type.IsMatrixArray()))
+                Scope.AddDiagnostic(new TypeCheckerException($"{identifier} was not of type A/M/Int or A/M/Float", context));
             if (context.Inum().Length == 2)
             {
                 if (int.Parse(context.Inum(0).GetText()) >= sym.Row)
