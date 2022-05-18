@@ -64,9 +64,11 @@ namespace UnitTests.TranslateToCs
         [TestMethod]
         public void VisitGradientDcl()
         {
+            
             DclContext __context;
             __context = pars("float v = y\\\\x;").dcl();
             string exprt = "y.Backward();float v = x.grad;";
+            _codeGen.PreVisit(new HashSet<string> {"y", "x" });
             _codeGen.Visit(__context);
             Assert.AreEqual(exprt, _codeGen.testString);
         }
