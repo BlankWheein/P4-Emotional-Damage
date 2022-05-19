@@ -120,7 +120,7 @@ namespace UnitTests
             TypeChecker = new(new Compiler.Phases.ScopeVisitorV2());
             TypeChecker.Scope.Insert(Compiler.SymbolTableFolder.SymbolType.Mint, "x", row: 2, col: 2);
             TypeChecker.DoesVariableReturnCompatibleType(expr, Compiler.SymbolTableFolder.SymbolType.Int);
-            Assert.AreEqual(2, TypeChecker.Scope.Diagnostics.Count);
+            Assert.AreEqual(0, TypeChecker.Scope.Diagnostics.Count);
         }
 
 

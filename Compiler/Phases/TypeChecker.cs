@@ -267,7 +267,7 @@ namespace Compiler.Phases
                 {
                     var fp = function.Parameters[i];
                     var fc = Scope.LookUpSilent(ParametersAsString[i]);
-                    if (fc != null && !fc.Type.IsCompatible(fp.Type) || !(fp.Row == fc.Row && fp.Col == fc.Col))
+                    if (fc != null &&( !fc.Type.IsCompatible(fp.Type) || !(fp.Row == fc.Row && fp.Col == fc.Col)))
                     {
                         res = false;
                         Scope.AddDiagnostic(new CouldNotParseIntException($"Input parameter {fc} Does not have type {fp.Type}"));
