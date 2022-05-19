@@ -41,8 +41,9 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ValueAndFloatValueButItHasToFail()
         {
-            var root = Parse(new StringBuilder("float a = 4.0; float h = a + c * 20; int testFunc(float e, int k){ 	k = k + e; 	e = k*2.5 - 2; return k;}float b = a + 4; h = h + b; float ac = ac\\\\c;int f = 5;int hh = testFunc(ac, f);a = 4.3;k = a + e;k.relu;print(k);print(\"program over\");"));
-            Assert.AreEqual(7, root.Diagnostics.Count);
+            var root = Parse(new StringBuilder("float a = 4.0; float h = a + c * 20; int testFunc(float e, int k){ 	k = k + e; 	e = k*2.5 - 2; return k;}float b = a + 4; h = h + b; a.relu; c.relu; float ac = ac\\\\c;int f = 5;int hh = testFunc(ac, f);a = 4.3;k = a + e;k.relu;print(k);print(\"program over\");"));
+            Assert.AreEqual(8, root.Diagnostics.Count);
         }
+
     }
 }
