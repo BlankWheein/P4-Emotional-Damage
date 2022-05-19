@@ -28,7 +28,7 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ValueAndFloatValue()
         {
-            var root = Parse(new StringBuilder("float a = 4.0; float c = 5; float h = a + c * 20; float b = a + 4; h = h + b; float ac = a\\\\c;"));
+            var root = Parse(new StringBuilder("float a = 4.0; float c = 5; float h = a + c * 20;float acr = 0; float b = a + 4; h = h + b; float ac = a\\c; int MakePrint(float x, string first_part, string last_bit){print(first_part); print(x); print(last_bit); int lll = 1; return lll;} string first = \"flost is \"; string last = \" not someting else \";MakePrint(b, first, last);"));
             Assert.AreEqual(0, root.Diagnostics.Count);
         }
         [TestMethod]
@@ -41,8 +41,8 @@ namespace UnitTests.Daniel
         [TestMethod]
         public void ValueAndFloatValueButItHasToFail()
         {
-            var root = Parse(new StringBuilder("float a = 4.0; float h = a + c * 20; float b = a + 4; h = h + b; float ac = ac\\\\c;"));
-            Assert.AreEqual(3, root.Diagnostics.Count);
+            var root = Parse(new StringBuilder("float a = 4.0; float h = a + c * 20; int testFunc(float e, int k){ 	k = k + e; 	e = k*2.5 - 2; return k;}float b = a + 4; h = h + b; float ac = ac\\\\c;int f = 5;int hh = testFunc(ac, f);a = 4.3;k = a + e;k.relu;print(k);print(\"program over\");"));
+            Assert.AreEqual(7, root.Diagnostics.Count);
         }
     }
 }
