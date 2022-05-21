@@ -31,7 +31,7 @@ namespace UnitTests
             Assert.AreEqual(0, TypeChecker.Scope.Diagnostics.Count);
         }
         [TestMethod]
-        public void FixMatrixArrayTypeTest0()
+        public void ValidBoolExpr()
         {
             string bexpr = "x >= y";
             TypeChecker = new(new Compiler.Phases.ScopeVisitorV2());
@@ -41,7 +41,7 @@ namespace UnitTests
             Assert.AreEqual(0, TypeChecker.Scope.Diagnostics.Count);
         }
         [TestMethod]
-        public void FixMatrixArrayTypeTest1()
+        public void NotValidBoolExpr()
         {
             string bexpr = "y>=x";
             TypeChecker = new(new Compiler.Phases.ScopeVisitorV2());
