@@ -161,7 +161,6 @@ namespace Compiler.Phases
         public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
         {
             Scope.NextScope();
-            CheckExpr(context.GetText()); 
             VisitStmts(context.stmts());
             Scope.ExitScopeCodeGen();
             return false;

@@ -98,7 +98,6 @@ namespace Compiler.Phases
                 Console.Write(indent + "├──");
             }
             Console.WriteLine(s);
-            Console.ForegroundColor = ConsoleColor.Green;
         }
 
 

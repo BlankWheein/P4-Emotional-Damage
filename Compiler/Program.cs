@@ -5,6 +5,7 @@ using Compiler.Phases;
 
 StringBuilder text = new();
 string readText = File.ReadAllText("../../../Emotional.Damage");
+Console.ForegroundColor = ConsoleColor.White;
 Console.WriteLine(readText);
 text.AppendLine(readText);
 Wrapper wrapper = new(text);

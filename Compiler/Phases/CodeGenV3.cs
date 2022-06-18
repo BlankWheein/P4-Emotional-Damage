@@ -303,21 +303,12 @@ namespace Compiler.Phases
                 bool IsPrevDigit = false;
                 for (int i = 0; i < newExprString.Length; i++) //0.6f
                 {
-                    if (IsPrevDigit && char.IsLetter(newExprString[i]))
-                    {
-                    }
-                    else
-                    {
+                    if (!(IsPrevDigit && char.IsLetter(newExprString[i])))
                         newcharting.Add(newExprString[i]);
-                    }
                     if (char.IsDigit(newExprString[i]))
-                    {
                         IsPrevDigit = true;
-                    }
                     else
-                    {
                         IsPrevDigit = false;
-                    }
                 }
                 newExprString = String.Join("", newcharting);
 
@@ -429,11 +420,13 @@ namespace Compiler.Phases
                 var variable = item.Split("[")[0];
                 expr = expr.Replace(item, $"{variable}.Values{item.Split(variable)[1]}");
             }
-            var variables_expr = expr.GetVariablesInExpr();
             var pos1 = context.Inum().FirstOrDefault()?.GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum().LastOrDefault()?.GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
-            fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = {expr.Replace($"{id}[{pos1}][{pos2}]", $"{id}.Values[{pos1}][{pos2}]")};");
-
+            var variables_expr = expr.GetVariablesInExpr();
+            if (variables_expr.ToList().Any(x => Scope.LookupTree(x)?.IsValue == true))
+                fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = {expr.Replace($"{id}[{pos1}][{pos2}]", $"{id}.Values[{pos1}][{pos2}]")};");
+            else
+                fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr.Replace($"{id}[{pos1}][{pos2}]", $"{id}.Values[{pos1}][{pos2}]")}, null, \"{id}\", false);");
             return false;
         }
         public override object VisitArrayElementAssignStmt([NotNull] EmotionalDamageParser.ArrayElementAssignStmtContext context)
@@ -502,7 +495,7 @@ namespace Compiler.Phases
             var id1 = context.IDENTIFIER().First().GetText();
             var id2 = context.IDENTIFIER().Last().GetText();
 
-            fw.AddStmt($"{id1} = {id2}.Transpose()");
+            fw.AddStmt($"{id1} = {id2}.Transpose();");
             return false;
         }
         public override object VisitDotExprs([NotNull] DotExprsContext context)
