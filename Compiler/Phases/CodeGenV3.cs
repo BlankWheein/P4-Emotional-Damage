@@ -123,7 +123,8 @@ namespace Compiler.Phases
             string parameters = "";
             int numofSqr = 0;
             Scope.NextScope();
-            
+            if (returntype.Count(p => p == ']') == 2)
+                returntype = "Matrix";
             for (int i = 0; i < context.types().Length; i++)
             {
                 if (context.types()[i].GetText().Contains("["))
@@ -292,7 +293,8 @@ namespace Compiler.Phases
             var numtype = context.numtype().GetText();
             var id = context.IDENTIFIER().GetText();
             var expr_str = context.GetText().Replace(";", "").Split('=').Last();
-
+            var exprlist = expr_str.GetVariablesInExpr();
+            var exprlist_matrices = expr_str.GetMatricesInExpr();
             var expr = CheckExpr(expr_str);
             if (Scope.LookupTree(id)?.IsValue == true)
             {
@@ -303,7 +305,6 @@ namespace Compiler.Phases
                 {
                     if (IsPrevDigit && char.IsLetter(newExprString[i]))
                     {
-
                     }
                     else
                     {
@@ -321,37 +322,53 @@ namespace Compiler.Phases
                 newExprString = String.Join("", newcharting);
 
                 Console.WriteLine(newExprString);
-                if (!newExprString.Any(c => char.IsLetter(c)))
+                if (exprlist_matrices.Count > 0)
+                    foreach (var matrix in exprlist_matrices)
+                        expr = expr.Replace(matrix, matrix + ".data");
+                var str = expr.Split(new Char[] { '*', '%', '/', '+', '-' });
+                for (int i = 0; i < str.Length; i++)
+                {
+                    string ex = str[i];
+                    if (ex.Count(f => f == '[') == 2 && ex.Count(f => f == ']') == 2)
+                    {
+                        int index = ex.IndexOf('[');
+                        expr = expr.Replace(ex, ex.Insert(index, ".Values"));
+                    }
+                }
+                if (exprlist.All(c => Scope.LookupTree(c)?.IsValue == false))
                     fw.AddStmt($"Value {id} = new Value({expr}, null," + $"\"{id}\"".Trim() + ", true);");
                 else if (expr.Any(c => char.IsLetter(c)) || expr.Contains(".Pow"))
                     fw.AddStmt($"Value {id} = {expr};");
+                
             }
             else
             {
                 //adds.data if assigned to non-Value type
-                if (Scope.LookupTree(id)?.IsValue != true && expr.GetVariablesInExpr().ToList().Any(p => Scope.LookupTree(p)?.IsValue == true))
+                var tree = Scope.LookupTree(id);
+                if (tree?.IsValue != true && exprlist.Count > 0 && exprlist.ToList().Any(p => Scope.LookupTree(p)?.IsValue == true))
                     expr = expr.Replace(Scope.LookupTree(expr.GetVariablesInExpr().First())?.VariableName, Scope.LookupTree(expr.GetVariablesInExpr().First())?.VariableName + ".data");
-                else
+                if (exprlist_matrices.Count > 0)
+                    foreach (var matrix in exprlist_matrices)
+                        expr = expr.Replace(matrix, matrix + ".data");
+                
+                //matrix handling
+                expr = expr.Replace(" ", "");
+                var str = expr.Split(new Char[] { '*', '%', '/', '+', '-' });
+                for (int i = 0; i < str.Length; i++)
                 {
-                    //matrix handling
-                    expr = expr.Replace(" ", "");
-                    var str = expr.Split(new Char[] { '*', '%', '/', '+', '-' });
-                    for (int i = 0; i < str.Length; i++)
+                    string ex = str[i];
+                    if (ex.Count(f => f == '[') == 2 && ex.Count(f => f == ']') == 2)
                     {
-                        string ex = str[i];
-                        if (ex.Count(f => f == '[') == 2 && ex.Count(f => f == ']') == 2)
-                        {
-                            int index = ex.IndexOf('[');
-                            expr = expr.Replace(ex, ex.Insert(index, ".Values"));
-                        }
+                        int index = ex.IndexOf('[');
+                        expr = expr.Replace(ex, ex.Insert(index, ".Values"));
                     }
+                }
 
-                    foreach (char s in "*%/+-")
-                        expr = expr.Replace($"{s}", $" {s} ");
+                foreach (char s in "*%/+-")
+                    expr = expr.Replace($"{s}", $" {s} ");
 
-                    if (numtype.Equals("int") && expr.Contains("MathF.Sqrt") || expr.Contains("MathF.Pow"))
-                        expr = expr.Replace("MathF", "(int) MathF");
-            }
+                if (numtype.Equals("int") && expr.Contains("MathF.Sqrt") || expr.Contains("MathF.Pow"))
+                    expr = expr.Replace("MathF", "(int) MathF");
             fw.AddStmt($"{numtype} {id} = {expr};");
             }
 
@@ -423,7 +440,6 @@ namespace Compiler.Phases
         }
         public override object VisitFuncStmt([NotNull] EmotionalDamageParser.FuncStmtContext context)
         {
-            Scope.NextScope();
             var ids = context.IDENTIFIER();
             string str = $"{ids[0].GetText()}(";
             for (var i = 1; i < ids.Length; i++)
@@ -431,7 +447,6 @@ namespace Compiler.Phases
             if (ids.Length > 1) str = str[..^2];
             str += ");";
             fw.AddStmt(str);
-            Scope.ExitScopeCodeGen();
             return false;
         }
         public override object VisitUnaryPlus([NotNull] EmotionalDamageParser.UnaryPlusContext context)
