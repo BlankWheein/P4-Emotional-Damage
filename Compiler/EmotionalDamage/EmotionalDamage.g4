@@ -23,7 +23,7 @@ stmt:
     | IDENTIFIER'.rand''('IDENTIFIER',' IDENTIFIER')'';' #RandIdentifierStmt
     | IDENTIFIER '=' bexpr';' #BoolAssignStmt
     | IDENTIFIER '=' 'T''('IDENTIFIER')'';' #TransposeMatrixStmt
-    | IDENTIFIER '=' IDENTIFIER '§' IDENTIFIER';' #DotExprs
+    | IDENTIFIER '=' IDENTIFIER '#' IDENTIFIER';' #DotExprs
     | IDENTIFIER('['(IDENTIFIER | Inum)']')?('['(IDENTIFIER | Inum)']')?'.''relu'';' #ReluStmt
     | IDENTIFIER '['(IDENTIFIER | Inum)']''['(IDENTIFIER | Inum)']' '=' expr';' #MatrixElementAssignStmt
     | IDENTIFIER '['(IDENTIFIER | Inum)']' '=' (expr | STRING_CONSTANT)';' #ArrayElementAssignStmt
