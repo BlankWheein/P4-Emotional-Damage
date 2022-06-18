@@ -363,13 +363,12 @@ namespace Compiler.Phases
                         expr = expr.Replace(ex, ex.Insert(index, ".Values"));
                     }
                 }
-
                 foreach (char s in "*%/+-")
                     expr = expr.Replace($"{s}", $" {s} ");
 
                 if (numtype.Equals("int") && expr.Contains("MathF.Sqrt") || expr.Contains("MathF.Pow"))
                     expr = expr.Replace("MathF", "(int) MathF");
-            fw.AddStmt($"{numtype} {id} = {expr};");
+            fw.AddStmt($"{numtype} {id} = ({numtype})({expr});");
             }
 
             return false;
@@ -423,10 +422,17 @@ namespace Compiler.Phases
         public override object VisitMatrixElementAssignStmt([NotNull] EmotionalDamageParser.MatrixElementAssignStmtContext context)
         {
             var id = context.IDENTIFIER()[0].GetText();
-            var pos1 = context.Inum()[0].GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
-            var pos2 = context.Inum()[1].GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
             var expr = CheckExpr(context.expr().GetText());
-            fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = new Value({expr}, CalculateGradient: false);");
+            var matrices_expr = expr.GetMatricesInExpr();
+            foreach (var item in matrices_expr)
+            {
+                var variable = item.Split("[")[0];
+                expr = expr.Replace(item, $"{variable}.Values{item.Split(variable)[1]}");
+            }
+            var variables_expr = expr.GetVariablesInExpr();
+            var pos1 = context.Inum().FirstOrDefault()?.GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
+            var pos2 = context.Inum().LastOrDefault()?.GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
+            fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = {expr.Replace($"{id}[{pos1}][{pos2}]", $"{id}.Values[{pos1}][{pos2}]")};");
 
             return false;
         }
@@ -463,10 +469,12 @@ namespace Compiler.Phases
         }
         public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
-            Scope.NextScope();
+            fw.Increment();
             var arg = context?.bexpr()?.GetText() == null ? context?.IDENTIFIER()?.GetText() : context?.bexpr()?.GetText();
             fw.AddStmt($"while({arg})" + "{");
+            Scope.NextScope();
             VisitStmts(context.stmts());
+            fw.Decrement();
             fw.AddStmt("}");
             Scope.ExitScopeCodeGen();
             return false;
@@ -482,7 +490,9 @@ namespace Compiler.Phases
             var unaryoperator = text[2];
             string result = unaryoperator.Contains("++") == true ? "++" : "--";
             fw.AddStmt($"for (int {id1} = {expr}; {bexpr}; {id2}{result})" + "{");
+            fw.Increment();
             VisitStmts(context.stmts());
+            fw.Decrement();
             fw.AddStmt("}");
             Scope.ExitScopeCodeGen();
             return false;
@@ -554,7 +564,11 @@ namespace Compiler.Phases
                     bexprstring = bexprstring.Replace(item, item + ".data");
             }
             fw.AddStmt($"if({bexprstring})" + "{");
+            fw.Increment();
+
             VisitStmts(context.stmts());
+            fw.Decrement();
+
             fw.AddStmt("}");
             Scope.ExitScopeCodeGen();
             return false;
@@ -570,7 +584,11 @@ namespace Compiler.Phases
                     bexprstring = bexprstring.Replace(item, item + ".data");
             }
             fw.AddStmt($"else if({bexprstring})" + "{");
+            fw.Increment();
+
             VisitStmts(context.stmts());
+            fw.Decrement();
+
             fw.AddStmt("}");
             Scope.ExitScopeCodeGen();
             return false;
@@ -580,7 +598,9 @@ namespace Compiler.Phases
         {
             Scope.NextScope();
             fw.AddStmt("else{");
+            fw.Increment();
             VisitStmts(context.stmts());
+            fw.Decrement();
             fw.AddStmt("}");
             Scope.ExitScopeCodeGen();
             return false;

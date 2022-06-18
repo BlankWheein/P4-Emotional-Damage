@@ -116,7 +116,7 @@ namespace Compiler.SymbolTableFolder
         {
             if (variabletype.IsInt())
             {
-                if (functionout.IsInt())
+                if (functionout.IsInt() || functionout.IsFloat())
                     return true;
                 return false;
             }

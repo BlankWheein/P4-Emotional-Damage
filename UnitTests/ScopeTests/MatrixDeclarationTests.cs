@@ -55,7 +55,7 @@ namespace UnitTests.ScopeTests
             scope.Insert(SymbolType.Mfloat, "m", row: 2, col: 2);
             scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
         [TestMethod]
         public void UseIntMatrixInInt()

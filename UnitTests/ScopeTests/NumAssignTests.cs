@@ -27,11 +27,11 @@ namespace UnitTests.ScopeTests
         [TestMethod]
         public void TestIntDclFail()
         {
-            var root = Parse(new System.Text.StringBuilder("float a = 2.14; int b=3.7/a;"));
+            var root = Parse(new System.Text.StringBuilder("float a = 2.14; int b = 3.7/a;"));
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Float, "a");
             scope.Insert(Compiler.SymbolTableFolder.SymbolType.Int, "b");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
         [TestMethod]

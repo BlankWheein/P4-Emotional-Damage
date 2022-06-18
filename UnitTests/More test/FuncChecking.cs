@@ -112,7 +112,7 @@ namespace UnitTests.Daniel
             scope.ExitScope();
             scope.ExitScope();
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(2, root.Diagnostics.Count);
+            Assert.AreEqual(1, root.Diagnostics.Count);
         }
 
         [TestMethod]
@@ -186,7 +186,7 @@ namespace UnitTests.Daniel
             scope.Insert(SymbolType.Bool, "kage4");
             scope.Insert(SymbolType.Float, "kage5");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(4, root.Diagnostics.Count);
+            Assert.AreEqual(3, root.Diagnostics.Count);
         }
 
         [TestMethod]

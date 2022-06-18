@@ -52,7 +52,7 @@ namespace UnitTests.ScopeTests
             scope.Insert(SymbolType.Afloat, "m", row: 2);
             scope.Insert(SymbolType.Int, "k");
             Assert.AreEqual(scope, root);
-            Assert.AreEqual(1, root.Diagnostics.Count);
+            Assert.AreEqual(0, root.Diagnostics.Count);
         }
         [TestMethod]
         public void UseIntArrayInInt()

@@ -118,6 +118,8 @@ namespace AutoGrad
                 }
             }
             build_topo(this);
+            foreach (Value v in topo.Reverse<Value>())
+                v.grad = 0;
             grad = 1.0f;
             foreach (Value v in topo.Reverse<Value>())
                 if (v?._backwards != null)

@@ -379,6 +379,7 @@ namespace Compiler.Phases
                     id2 += p;
                 else
                     break;
+            if (id1 == "" || id2 == "") return true;
             Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
             Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (id2.Replace("0", "") == "" || id2.Replace("0", "") == ".")
