@@ -77,4 +77,25 @@ public static class ExtensionMethods
         for (int i = 0; i < arr.Length; i++)
             arr[i] = new Random().Next(min, max);
     }
-} 
+
+    public static float Pow(this float self, float other)
+    {
+        return MathF.Pow(self, other);
+    }
+    public static int Pow(this int self, int other)
+    {
+        return (int)MathF.Pow(self, other);
+    }
+    public static float relu(this float self)
+    {
+        return self < 0 ? 0 : self;
+    }
+    public static int relu(this int self)
+    {
+        return self < 0 ? 0 : self;
+    }
+
+
+
+}
+
