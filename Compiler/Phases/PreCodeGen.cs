@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using Compiler.SymbolTableFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,63 @@ using System.Threading.Tasks;
 
 namespace Compiler.Phases
 {
+    public static class PreCodeGenExtensionMethods
+    {
+        public static HashSet<string> GetVariablesInExpr(this string text)
+        {
+            HashSet<string> res = new();
+            string _res = "";
+            text.ToList().ForEach(s =>
+            {
+                if (_res.Length == 0 && char.IsLetter(s))
+                {
+                    _res += s;
+                } else if (_res.Length > 0 && char.IsLetterOrDigit(s) || s == '_')
+                {
+                    _res += s;
+                } else
+                {
+
+                    if (_res.Length > 0 && s != '(')
+                        res.Add(_res);
+                    _res = "";
+                }
+            });
+
+            if (_res.Length > 0)
+                res.Add(_res);
+            return res;
+        }
+    }
+    public class ExprTree
+    {
+        public string VariableName;
+        public bool IsValue;
+        public void AddExprToVariable(HashSet<string> Variables) => Variables.Where(p => p != this.VariableName && p != "relu").ToList().ForEach(p => this.Variables.Add(p));
+        public HashSet<string> Variables = new();
+        public ExprTree(string name, HashSet<string> Variables, bool isValue)
+        {
+            this.VariableName = name;
+            AddExprToVariable(Variables);
+            IsValue = isValue;
+        }
+        public override string ToString()
+        {
+            var v = "";
+            Variables.ToList().ForEach(p => v += $"{p}, ");
+            if (v.Length > 2)
+            v = v[0..^2];
+            return $"{VariableName} | {v} | {IsValue}";
+        }
+    }
     internal class PreCodeGen : EmotionalDamageBaseVisitor<object>
     {
-       
-        public HashSet<string> Exprs = new();
-        private List<string> _grads = new();
-
-       // private int count = 0;
-        public bool lookingforGrads = false;
-        public PreCodeGen() {}
+        public RootSymbolTable Scope { get; set; }
+        public PreCodeGen(RootSymbolTable Scope) {
+            this.Scope = Scope;
+        }
         public override object VisitNumDcl([NotNull] EmotionalDamageParser.NumDclContext context)
         {
-           
             var expr_str = context.GetText().Replace(";", "");
             CheckExpr(expr_str);
             return false;
@@ -58,15 +104,7 @@ namespace Compiler.Phases
             
             return false;
         }
-        public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
-        {
-           
-           CheckExpr(context.GetText());
-           
-            VisitStmts(context.stmts());
-            
-            return false;
-        }
+        
 
         public override object VisitGradientDcl([NotNull] EmotionalDamageParser.GradientDclContext context)
         {
@@ -75,38 +113,58 @@ namespace Compiler.Phases
         }
         public void CheckExpr(string input)
         {
-            var id = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
-            var exprs = input.Replace(";", "").Split('=').Last();
-            if (exprs.Contains("\\\\") && !lookingforGrads)
+            if (input.Split("=").Length > 1)
             {
-                var _expr1 = input.Split('=')[1].Split("\\\\")[0];
-                var _expr2 = input.Split("\\\\")[1].Replace(";", "");
-                    Exprs.Add(_expr1);
-                    Exprs.Add(_expr2);
-                    _grads.Add(_expr1);
-            }
-            else if (exprs.Contains(".relu") && !lookingforGrads)
-            {
-                Exprs.Add(input.Replace(".relu;", ""));
-            }
-            else if (exprs.Any(c => char.IsLetter(c)) && lookingforGrads) { 
-
-                var expr = exprs.Replace("(", "").Replace(")","").Split('%', '/', '+', '-', '*');
-                foreach (var _expr in expr)
-                    if (_expr.Any(c => char.IsLetter(c)))
-                        if (CheckForGrad(_expr))
-                            Exprs.Add(id);
+                var id = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
+                Scope.AddExprTree(id, input.Split("=").Last().ToString().GetVariablesInExpr(), input.Contains("\\\\"));
+                if (input.Contains("\\\\"))
+                    Scope.SetExprTreeTrue(id, input.Split("\\\\").Last().ToString().Replace(";", ""));
             }
         }
-        public bool CheckForGrad(string input)
+
+        public override object VisitWhileStmt([NotNull] EmotionalDamageParser.WhileStmtContext context)
         {
-            if (Exprs.Any(c => c == input) && !_grads.Any(c => c == input)) { 
-                return true;
-            }
-            
+            Scope.NextScope();
+            VisitStmts(context.stmts());
+            Scope.ExitScopeCodeGen();
             return false;
         }
-
-
+        public override object VisitForStmt([NotNull] EmotionalDamageParser.ForStmtContext context)
+        {
+            Scope.NextScope();
+            CheckExpr(context.GetText()); 
+            VisitStmts(context.stmts());
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitIfstmt([NotNull] EmotionalDamageParser.IfstmtContext context)
+        {
+            Scope.NextScope();
+            VisitStmts(context.stmts());
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitElifstmt([NotNull] EmotionalDamageParser.ElifstmtContext context)
+        {
+            Scope.NextScope();
+            VisitStmts(context.stmts());
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitElsestmt([NotNull] EmotionalDamageParser.ElsestmtContext context)
+        {
+            Scope.NextScope();
+            VisitStmts(context.stmts());
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
+        public override object VisitFuncDcl([NotNull] EmotionalDamageParser.FuncDclContext context)
+        {
+            Scope.NextScope();
+            var stmts = context.stmts();
+            VisitStmts(stmts);
+            Scope.ExitScopeCodeGen();
+            return false;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler.Phases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,15 +22,73 @@ namespace Compiler.SymbolTableFolder
         }
         private int? _currentScope = 0;
         public int? CurrentScope { get { if (_currentScope < Children.Count) return _currentScope; return null; } set { _currentScope = value; } }
+        public void ResetToRoot()
+        {
+            _currentScope = 0;
+            foreach (var item in Children)
+            {
+                item.ResetToRoot();
+            }
+        }
         public List<Symbol> ReservedSymbols { get; }
         public List<Symbol> Symbols { get; set; } = new();
         public SymbolTable? Parent { get; set; }
+
+        public List<ExprTree> ExprTrees = new();
         public List<SymbolTable> Children { get; set; } = new();
         public RootSymbolTable? Root { get; set; }
         public List<Exception> Diagnostics { get; set; }
         public List<Exception> Warnings { get; set; }
         internal string SymbolTableType { get; set; } = "NotDefined";
+        internal void GoThroughTrees()
+        {
+            foreach (var item in ExprTrees)
+                Console.WriteLine(item);
+            foreach (var item in Children)
+            {
+                item.GoThroughTrees();
+            }
+        }
+        internal void SetExprTreeTrue(string name, string target)
+        {
 
+            foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
+            {
+                SetExprTreeTrueLocal(item, target);
+            }
+        }
+        public ExprTree? GetTreeFromName(string name)
+        {
+            var t = ExprTrees.FirstOrDefault(p => p.VariableName == name);
+            if (t == null)
+                t = Parent?.GetTreeFromName(name);
+            return t;
+        }
+        private bool SetExprTreeTrueLocal(string name, string target)
+        {
+            bool hitTarget = false;
+            var t = GetTreeFromName(name);
+            if (t == null) return false;
+            
+            if (t.VariableName == target)
+            {
+                SetToValue(t);
+                return true;
+            }
+            foreach (var item in t.Variables)
+            {
+                hitTarget |= SetExprTreeTrueLocal(item, target);
+                if (hitTarget)
+                    SetToValue(t);
+            }
+            return hitTarget;
+        }
+        private void SetToValue(ExprTree t)
+        {
+            t.IsValue = true;
+            Symbol? sym = LookUpSilent(t.VariableName);
+            sym.IsValue = true;
+        }
         /// <summary>
         /// Look for a symbol
         /// </summary>
@@ -80,7 +139,9 @@ namespace Compiler.SymbolTableFolder
             Symbol symbol = new(id, type, row, col, isfunc, parameters);
             Insert(symbol);
         }
-   
+
+        
+
         /// <summary>
         /// Inserts a symbol in a symbol table
         /// </summary>

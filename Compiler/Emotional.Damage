@@ -1,21 +1,13 @@
-float a = -4.0;
-float b = 2.0;
-float c = a + b;
-float d = a * b + b**3;
-c = c + c + 1;
-c = c + 1 + c + (-a);
-float k1 = (b + a);
-k1.relu;
-float k2 = (b - a);
-k2.relu;
-d = d + d * 2 + k1;
-d = d + 3 * d + k2;
-float e = c - d;
-float f = e**2;
-float g = f / 2.0;
-g = g + 10.0 / f;
-println($"{g}");
-float x = g \\ a;
-float x2 = g \\ b;
-println(x);
-println(x2);
+void kage() {
+	float a = -23.0;
+	float b = 24.0;
+	float c = a + b;
+}
+
+
+void kage2() {
+	float a = -4.0;
+	float b = 2.0;
+	float c = a + b;
+	float g = c \\ a;
+}

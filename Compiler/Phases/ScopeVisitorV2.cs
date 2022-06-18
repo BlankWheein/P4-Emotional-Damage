@@ -595,6 +595,7 @@ namespace Compiler.Phases
                 Scope.AddDiagnostic(new TypeCheckerException($"{id2} was of type Bool/String", context));
             if (sym1.Type.IsVoid() || sym2.Type.IsVoid())
                 Scope.AddDiagnostic(new TypeCheckerException($"{id1} OR {id2} was of type void... How did this happen", context));
+            Scope.Insert(SymbolType.Float, identifier);
             return false;
         }
     }

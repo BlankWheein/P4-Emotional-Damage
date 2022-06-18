@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler.Phases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,16 +33,39 @@ namespace Compiler.SymbolTableFolder
             Current.Children.Add(symbolTable);
             Current = symbolTable;
         }
+        public void AddExprTree(string name, HashSet<string> Variables, bool isValue)
+        {
+            bool hasadded = false;
+            foreach (ExprTree? item in Current.ExprTrees)
+            {
+                if (item.VariableName == name)
+                {
+                    item.AddExprToVariable(Variables);
+                    hasadded = true;
+                    return;
+                }
+            }
+            if (!hasadded)
+                Current.ExprTrees.Add(new ExprTree(name, Variables, isValue));
+        }
+        internal void SetExprTreeTrue(string name, string target) => Current.SetExprTreeTrue(name, target);
+        public void ResetToRoot()
+        {
+            Current = Root;
+            Current.ResetToRoot();
+        }
         internal void NextScope()
         {
             int CurrentIndex = Current.CurrentScope ?? throw new NullReferenceException();
             Current = Current.Children[CurrentIndex];
         }
+        public ExprTree? LookupTree(string name) => Current.GetTreeFromName(name);
         public void ExitScopeCodeGen()
         {
             Current.CurrentScope = Current.CurrentScope + 1;
             Current = Current?.Parent;
-            
+            if (Current != null)
+                Current.CurrentScope += 1;
         }
         /// <summary>
         /// Exit the current scope
@@ -78,6 +102,10 @@ namespace Compiler.SymbolTableFolder
             return Root.ToString();
         }
 
+        public void GoThroughTreesFromRoot()
+        {
+            Root.GoThroughTrees();
+        }
         
     }
 }

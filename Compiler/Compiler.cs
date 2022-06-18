@@ -15,7 +15,7 @@ namespace Compiler
         private readonly CommonTokenStream __lexerStream;
         //private ScopeVisitorV2 _scopeTypeChecker;
         private PreCodeGen _preCodeGen;
-        private CodeGeneratorV2 _codeGenerator;
+        //private CodeGeneratorV2 _codeGenerator;
         private ScopeVisitorV2 _scopeTypeChecker;
         public Wrapper(StringBuilder __source)
         {
@@ -27,8 +27,7 @@ namespace Compiler
             __context = __parser.prog();
 
             //_scopeTypeChecker = new();
-            _preCodeGen = new PreCodeGen();
-            _codeGenerator = new(false);
+            //_codeGenerator = new(false);
             _scopeTypeChecker = new();
         }
         public bool Compile()
@@ -45,16 +44,17 @@ namespace Compiler
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Printing Scope Tree:");
             Console.ForegroundColor = ConsoleColor.Green;
-            _scopeTypeChecker.Print();
             Console.ResetColor();
             if (_scopeTypeChecker.Diagnostics.Count > 0) return false;
+            _preCodeGen = new PreCodeGen(_scopeTypeChecker.Scope);
             _preCodeGen.Visit(__context);
-            _preCodeGen.lookingforGrads = true;
-            _preCodeGen.Visit(__context);
-            _codeGenerator.PreVisit(_preCodeGen.Exprs);
-            _codeGenerator.Scope = _scopeTypeChecker.Scope;
+
+            _scopeTypeChecker.Scope.GoThroughTreesFromRoot();
+            var _codeGenerator = new CodeGenV3(_scopeTypeChecker.Scope, false);
             _codeGenerator.Visit(__context);
-            _codeGenerator.Compile();
+            _codeGenerator.fw.Compile();
+            _scopeTypeChecker.Print();
+
             return true;
         }
 

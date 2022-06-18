@@ -32,6 +32,7 @@ namespace Compiler.SymbolTableFolder
         public string Id { get; set; }
         public int Row { get; }
         public int Col { get; }
+        public bool IsValue { get; set; } = false;
         public bool IsParameter { get; set; }
         public bool IsFunc { get; }
         public bool IsUsed { get; set; } = false;
@@ -44,7 +45,7 @@ namespace Compiler.SymbolTableFolder
             {
                 parameters += p.ToString();
             });
-            string text = $"{Type} {Id} {Row}:{Col} // {IsParameter}^{IsFunc} {parameters}";
+            string text = $"{Type} {Id} {Row}:{Col}?{IsValue} // {IsParameter}^{IsFunc} {parameters}";
             return text;
             if (Row == 0)
                 return $"{Type} {Id}";
