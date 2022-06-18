@@ -56,7 +56,7 @@ public partial class EmotionalDamageParser : Parser {
 	private static readonly string[] _LiteralNames = {
 		null, "'int'", "'float'", "'print'", "'println'", "'['", "']'", "'bool'", 
 		"'string'", "'void'", "'('", "','", "')'", "'{'", "'}'", "';'", "'='", 
-		"'\\\\'", "'$'", "'return'", "'.rand'", "'T'", "'\u00A7'", "'.'", "'relu'", 
+		"'\\\\'", "'$'", "'return'", "'.rand'", "'T'", "'#'", "'.'", "'relu'", 
 		"'++'", "'--'", "'while'", "'for'", "'if'", "'elif'", "'else'", "'sqrt'", 
 		"'**'", "'%'", "'*'", "'/'", "'+'", "'-'", "'.row'", "'.col'", "'.len'", 
 		"'>'", "'<'", "'>='", "'<='", "'=='", "'true'", "'false'", "'!='"
