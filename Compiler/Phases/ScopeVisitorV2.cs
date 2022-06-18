@@ -384,8 +384,14 @@ namespace Compiler.Phases
             if (id2.Replace("0", "") == "" || id2.Replace("0", "") == ".")
                 Scope.AddDiagnostic(new($"cant divide with 0 on '{id1} / {id2}'"));
             if (sym1 == null || sym2 == null) return false;
-            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row")) || (sym1.Type.IsArray() && !id1.Contains(".len")) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")) || (sym2.Type.IsArray()) && !id1.Contains(".len"))
-                Scope.AddDiagnostic(new($"Could not divide {id1} with {id2}"));
+            if (
+                (sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row"))
+                || (sym1.Type.IsArray() && !id1.Contains(".len")) 
+                || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")) 
+                || sym2.Type.IsArray() 
+                && !id1.Contains(".len"))
+                if (temp.Count(p => p == ']') != 2)
+                    Scope.AddDiagnostic(new($"Could not divide {id1} with {id2}"));
             return base.VisitDivideExpr(context);
         }
         public override object VisitMinusExpr([NotNull] EmotionalDamageParser.MinusExprContext context)
@@ -401,7 +407,7 @@ namespace Compiler.Phases
             Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
             Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (sym1 == null || sym2 == null) return false;
-            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row")) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")))
+            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row")) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")) && temp.Count(p => p == ']') != 2)
             {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
                 {
@@ -443,7 +449,7 @@ namespace Compiler.Phases
             Symbol? sym1 = ConvertValueToSymbol(id1.Split(".")[0]);
             Symbol? sym2 = ConvertValueToSymbol(id2.Split(".")[0]);
             if (sym1 == null || sym2 == null) return false;
-            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row") ) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")))
+            if ((sym1.Type.IsMatrix() && !id1.Contains(".col") && !id1.Contains(".row") ) || (sym2.Type.IsMatrix() && !id2.Contains(".col") && !id2.Contains(".row")) && temp.Count(p => p == ']') != 2)
             {
                 if (!(sym1.Type.IsMatrix() && sym2.Type.IsMatrix()))
                 {
@@ -472,7 +478,7 @@ namespace Compiler.Phases
             Symbol? sym1 = ConvertValueToSymbol(id1);
             Symbol? sym2 = ConvertValueToSymbol(id2);
             if (sym1 == null || sym2 == null) return false;
-            if ((sym1.Type.IsMatrix() || sym1.Type.IsArray()) && (sym2.Type.IsMatrix() || sym2.Type.IsArray()))
+            if ((sym1.Type.IsMatrix() || sym1.Type.IsArray()) && (sym2.Type.IsMatrix() || sym2.Type.IsArray()) && temp.Count(p => p == ']') != 2)
                     Scope.AddDiagnostic(new($"could not multiply {id1} with {id2}"));
             return base.VisitTimesExpr(context);
         }
