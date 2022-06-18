@@ -15,6 +15,7 @@ namespace Compiler.Phases
         {
             HashSet<string> res = new();
             string _res = "";
+            char? prev = null;
             text.ToList().ForEach(s =>
             {
                 if (_res.Length == 0 && char.IsLetter(s))
@@ -33,6 +34,34 @@ namespace Compiler.Phases
             });
 
             if (_res.Length > 0)
+                res.Add(_res);
+            return res;
+        }
+        public static HashSet<string> GetMatricesInExpr(this string text)
+        {
+            HashSet<string> res = new();
+            string _res = "";
+            char? prev = null;
+            text.ToList().ForEach(s =>
+            {
+                if (_res.Length == 0 && char.IsLetter(s))
+                {
+                    _res += s;
+                }
+                else if (_res.Length > 0 && (char.IsLetterOrDigit(s) || s == '[' || s == ']'))
+                {
+                    _res += s;
+                }
+                else
+                {
+
+                    if (_res.Length > 0 && s != '(' && _res.Count(p => p == ']') == 2)
+                        res.Add(_res);
+                    _res = "";
+                }
+            });
+
+            if (_res.Length > 0 && _res.Count(p => p == ']') == 2)
                 res.Add(_res);
             return res;
         }
