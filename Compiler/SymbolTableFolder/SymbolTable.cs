@@ -49,11 +49,6 @@ namespace Compiler.SymbolTableFolder
                 item.GoThroughTrees();
             }
         }
-        internal void SetExprTreeTrue(string name, string target)
-        {
-            foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
-                SetExprTreeTrueLocal(item, target);
-        }
         public ExprTree? GetTreeFromName(string name)
         {
             var t = ExprTrees.FirstOrDefault(p => p.VariableName == name);
@@ -61,7 +56,15 @@ namespace Compiler.SymbolTableFolder
                 t = Parent?.GetTreeFromName(name);
             return t;
         }
-        private bool SetExprTreeTrueLocal(string name, string target)
+
+        public void SetExprTreeTrue(string name, string target)
+        {
+            bool Hit = false;
+            foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
+                Hit |= SetExprTreeTrueChildren(item, target);
+            if (Hit) SetToValue(ExprTrees.First(p => p.VariableName == name));
+        }
+        private bool SetExprTreeTrueChildren(string name, string target)
         {
             bool hitTarget = false;
             var t = GetTreeFromName(name);
@@ -70,13 +73,13 @@ namespace Compiler.SymbolTableFolder
                 return SetToValue(t);
             foreach (var item in t.Variables)
             {
-                hitTarget |= SetExprTreeTrueLocal(item, target);
+                hitTarget |= SetExprTreeTrueChildren(item, target);
                 if (hitTarget)
                     SetToValue(t);
             }
             return hitTarget;
         }
-        private bool SetToValue(ExprTree t)
+        public bool SetToValue(ExprTree t)
         {
             t.IsValue = true;
             Symbol? sym = LookUpSilent(t.VariableName);

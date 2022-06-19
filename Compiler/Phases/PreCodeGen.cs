@@ -70,7 +70,9 @@ namespace Compiler.Phases
     {
         public string VariableName;
         public bool IsValue;
-        public void AddExprToVariable(HashSet<string> Variables) => Variables.Where(p => p != this.VariableName && p != "relu").ToList().ForEach(p => this.Variables.Add(p));
+        public void AddExprToVariable(HashSet<string> Variables) => 
+            Variables.Where(p => p != VariableName && p != "relu").ToList().ForEach(p => this.Variables.Add(p));
+
         public HashSet<string> Variables = new();
         public ExprTree(string name, HashSet<string> Variables, bool isValue)
         {
@@ -147,7 +149,10 @@ namespace Compiler.Phases
                 var id = input.Split('=').First().Replace("float", "").Replace("int", "").Trim();
                 Scope.AddExprTree(id, input.Split("=").Last().ToString().GetVariablesInExpr(), input.Contains("\\\\"));
                 if (input.Contains("\\\\"))
+                {
+                    Scope.Current.SetToValue(Scope.LookupTree(input.Split("=").Last().ToString().Split("\\\\").First()));
                     Scope.SetExprTreeTrue(id, input.Split("\\\\").Last().ToString().Replace(";", ""));
+                }
             }
         }
 

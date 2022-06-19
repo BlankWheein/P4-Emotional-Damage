@@ -128,27 +128,15 @@ namespace Compiler.Phases
             for (int i = 0; i < context.types().Length; i++)
             {
                 if (context.types()[i].GetText().Contains("["))
-                {
                     foreach (var c in context.types()[i].GetText())
-                    {
                         if (c == '[')
-                        {
                             numofSqr++;
-                        }
-                    }
-                }
                 if (numofSqr == 2)
-                {
                     parameters += $"Matrix {context.IDENTIFIER()[i + 1].GetText()}, ";
-                }
                 else if (numofSqr == 1)
-                {
                     parameters += $"{context.types(0).GetText().Split("[")[0]}[] {context.IDENTIFIER()[i + 1].GetText()}, ";
-                }
                 else
-                {
                     parameters += $"{context.types()[i].GetText()} {context.IDENTIFIER()[i + 1].GetText()}, ";
-                }
 
             }
             if (parameters != "") parameters = parameters[0..^2];
