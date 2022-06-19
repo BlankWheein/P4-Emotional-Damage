@@ -1,4 +1,4 @@
-void kage() {
+void grad_a() {
 	float a = -4.0;
 	float b = 2.0;
 	float c = a + b;
@@ -20,7 +20,7 @@ void kage() {
 	println(x);
 }
 
-void kage2() {
+void grad_b() {
 	float a = -4.0;
 	float b = 2.0;
 	float c = a + b;
@@ -42,5 +42,5 @@ void kage2() {
 	println(x2);
 }
 
-kage();
-kage2();
+grad_a();
+grad_b();
