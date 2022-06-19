@@ -60,9 +60,9 @@ namespace Compiler.SymbolTableFolder
         public void SetExprTreeTrue(string name, string target)
         {
             bool Hit = false;
-            Hit |= SetExprTreeTrueChildren(ExprTrees.First(p => p.VariableName == name).Variables.First(), target, new List<string>());
+            foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
+                Hit |= SetExprTreeTrueChildren(item, target, new List<string>());
             if (Hit) SetToValue(ExprTrees.First(p => p.VariableName == name));
-            else Root.AddDiagnostic(new Exception($"could not go from {ExprTrees.First(p => p.VariableName == name).Variables.First()} to {target}"));
         }
         private bool SetExprTreeTrueChildren(string name, string target, List<string> HasVisited)
         {
