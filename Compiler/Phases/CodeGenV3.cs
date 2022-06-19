@@ -284,6 +284,7 @@ namespace Compiler.Phases
             var exprlist = expr_str.GetVariablesInExpr();
             var exprlist_matrices = expr_str.GetMatricesInExpr();
             var expr = CheckExpr(expr_str);
+            var tree = Scope.LookupTree(id);
             if (Scope.LookupTree(id)?.IsValue == true)
             {
                 string newExprString = expr;
@@ -301,7 +302,7 @@ namespace Compiler.Phases
                 newExprString = String.Join("", newcharting);
 
                 Console.WriteLine(newExprString);
-                if (exprlist_matrices.Count > 0)
+                if (tree?.IsValue != true && exprlist_matrices.Count > 0)
                     foreach (var matrix in exprlist_matrices)
                         expr = expr.Replace(matrix, matrix + ".data");
                 var str = expr.Split(new Char[] { '*', '%', '/', '+', '-' });
@@ -323,10 +324,9 @@ namespace Compiler.Phases
             else
             {
                 //adds.data if assigned to non-Value type
-                var tree = Scope.LookupTree(id);
                 if (tree?.IsValue != true && exprlist.Count > 0 && exprlist.ToList().Any(p => Scope.LookupTree(p)?.IsValue == true))
                     expr = expr.Replace(Scope.LookupTree(expr.GetVariablesInExpr().First())?.VariableName, Scope.LookupTree(expr.GetVariablesInExpr().First())?.VariableName + ".data");
-                if (exprlist_matrices.Count > 0)
+                if ( exprlist_matrices.Count > 0)
                     foreach (var matrix in exprlist_matrices)
                         expr = expr.Replace(matrix, matrix + ".data");
                 
