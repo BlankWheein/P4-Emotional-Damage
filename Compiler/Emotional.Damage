@@ -1,4 +1,4 @@
-void kage(float test) {
+void kage() {
 	float a = -4.0;
 	float b = 2.0;
 	float c = a + b;
@@ -20,7 +20,7 @@ void kage(float test) {
 	println(x);
 }
 
-void kage2(float[2][2] test) {
+void kage2() {
 	float a = -4.0;
 	float b = 2.0;
 	float c = a + b;
@@ -42,15 +42,5 @@ void kage2(float[2][2] test) {
 	println(x2);
 }
 
-float[2][2] DotTest(float[2][2] m) {
-	float[2][2] n;
-	float[2][2] res;
-	res = m # n;
-	return res;
-}
-
-float ting = 2;
-float[2][2] ting_1;
-kage(ting);
-kage2(ting_1);
-DotTest(ting_1);
+kage();
+kage2();
