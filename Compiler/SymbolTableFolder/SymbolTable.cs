@@ -61,19 +61,22 @@ namespace Compiler.SymbolTableFolder
         {
             bool Hit = false;
             foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
-                Hit |= SetExprTreeTrueChildren(item, target);
+                Hit |= SetExprTreeTrueChildren(item, target, new List<string>());
             if (Hit) SetToValue(ExprTrees.First(p => p.VariableName == name));
         }
-        private bool SetExprTreeTrueChildren(string name, string target)
+        private bool SetExprTreeTrueChildren(string name, string target, List<string> HasVisited)
         {
             bool hitTarget = false;
             var t = GetTreeFromName(name);
-            if (t == null) return false;
+            if (t == null || HasVisited.Contains(t.VariableName)) return false;
+            HasVisited.Add(t.VariableName);
             if (t.VariableName == target)
                 return SetToValue(t);
             foreach (var item in t.Variables)
             {
-                hitTarget |= SetExprTreeTrueChildren(item, target);
+                List<string> visited = new List<string>();
+                HasVisited.ForEach(p => visited.Add(p));
+                hitTarget |= SetExprTreeTrueChildren(item, target, visited);
                 if (hitTarget)
                     SetToValue(t);
             }
