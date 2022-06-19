@@ -60,9 +60,9 @@ namespace Compiler.SymbolTableFolder
         public void SetExprTreeTrue(string name, string target)
         {
             bool Hit = false;
-            foreach (var item in ExprTrees.First(p => p.VariableName == name).Variables)
-                Hit |= SetExprTreeTrueChildren(item, target, new List<string>());
+            Hit |= SetExprTreeTrueChildren(ExprTrees.First(p => p.VariableName == name).Variables.First(), target, new List<string>());
             if (Hit) SetToValue(ExprTrees.First(p => p.VariableName == name));
+            else Root.AddDiagnostic(new Exception($"could not go from {ExprTrees.First(p => p.VariableName == name).Variables.First()} to {target}"));
         }
         private bool SetExprTreeTrueChildren(string name, string target, List<string> HasVisited)
         {
@@ -70,8 +70,10 @@ namespace Compiler.SymbolTableFolder
             var t = GetTreeFromName(name);
             if (t == null || HasVisited.Contains(t.VariableName)) return false;
             HasVisited.Add(t.VariableName);
-            if (t.VariableName == target)
-                return SetToValue(t);
+            if (t.VariableName == target || t.Variables.Contains(target))
+            {
+                hitTarget |= SetToValue(t);
+            }
             foreach (var item in t.Variables)
             {
                 List<string> visited = new List<string>();

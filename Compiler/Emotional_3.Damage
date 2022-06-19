@@ -1,0 +1,5 @@
+float[2][2] M;
+float[2][2] N;
+float[2][2] MN;
+
+MN = M # N;

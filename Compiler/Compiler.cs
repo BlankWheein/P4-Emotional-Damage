@@ -31,18 +31,20 @@ namespace Compiler
         {
             if (__parser.NumberOfSyntaxErrors > 0) return false;
             _scopeTypeChecker.Visit(__context);
+            
+
+            
+            _preCodeGen = new PreCodeGen(_scopeTypeChecker.Scope);
+            _preCodeGen.Visit(__context);
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (var s in _scopeTypeChecker.Diagnostics)
                 Console.WriteLine(s);
             Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (var s in _scopeTypeChecker.Warnings)
                 Console.WriteLine(s);
-
             Console.ForegroundColor = ConsoleColor.Green;
             Console.ResetColor();
             if (_scopeTypeChecker.Diagnostics.Count > 0) return false;
-            _preCodeGen = new PreCodeGen(_scopeTypeChecker.Scope);
-            _preCodeGen.Visit(__context);
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Printing EXPR Tree:");
             _scopeTypeChecker.Scope.GoThroughTreesFromRoot();
