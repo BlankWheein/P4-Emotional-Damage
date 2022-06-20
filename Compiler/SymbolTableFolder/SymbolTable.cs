@@ -71,9 +71,7 @@ namespace Compiler.SymbolTableFolder
             if (t == null || HasVisited.Contains(t.VariableName)) return false;
             HasVisited.Add(t.VariableName);
             if (t.VariableName == target || t.Variables.Contains(target))
-            {
                 hitTarget |= SetToValue(t);
-            }
             foreach (var item in t.Variables)
             {
                 List<string> visited = new List<string>();

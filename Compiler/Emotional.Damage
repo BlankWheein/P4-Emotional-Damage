@@ -1,5 +1,7 @@
-float a = 2;
-float b = 2;
-float c = a * b;
-float x = 2;
-float g = c \\ x;
+int kage() {
+int d = 2;
+return d;
+float k = 2;
+}
+
+int dec = kage();

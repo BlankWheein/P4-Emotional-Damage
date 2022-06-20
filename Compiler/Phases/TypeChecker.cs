@@ -97,8 +97,15 @@ namespace Compiler.Phases
             bool isValid = IsValidBexpr(bexpr);
             return isValid;
         }
+        
         internal void CheckForReturns(StmtsContext stmts, Symbol rettype)
         {
+            //var st = stmts?.stmt()?.LastOrDefault();
+            //var dcl = stmts?.dcl()?.LastOrDefault();
+            //if (rettype?.Type.IsVoid() == false && dcl != null && st != null && dcl.Start.Line > st.Start.Line)
+            //{
+            //    Scope.AddDiagnostic(new($"Last Statement in function {rettype.Id} was not return"));
+            //}
             switch (rettype?.Type.IsVoid())
             {
                 case true when stmts?.stmt() != null && stmts?.stmt()?.LastOrDefault() is ReturnStmtContext ret:

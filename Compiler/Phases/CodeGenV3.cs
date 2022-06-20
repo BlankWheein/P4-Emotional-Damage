@@ -403,6 +403,7 @@ namespace Compiler.Phases
             var id = context.IDENTIFIER()[0].GetText();
             var expr = CheckExpr(context.expr().GetText());
             var matrices_expr = expr.GetMatricesInExpr();
+            var variables_expr = expr.GetVariablesInExpr();
             foreach (var item in matrices_expr)
             {
                 var variable = item.Split("[")[0];
@@ -410,7 +411,6 @@ namespace Compiler.Phases
             }
             var pos1 = context.Inum().FirstOrDefault()?.GetText() == null ? context.IDENTIFIER()[1].GetText() : context.Inum()[0].GetText();
             var pos2 = context.Inum().LastOrDefault()?.GetText() == null ? context.IDENTIFIER()[2].GetText() : context.Inum()[1].GetText();
-            var variables_expr = expr.GetVariablesInExpr();
             if (variables_expr.ToList().Any(x => Scope.LookupTree(x)?.IsValue == true))
                 fw.AddStmt($"{id}.Values[{pos1}][{pos2}] = {expr.Replace($"{id}[{pos1}][{pos2}]", $"{id}.Values[{pos1}][{pos2}]")};");
             else
