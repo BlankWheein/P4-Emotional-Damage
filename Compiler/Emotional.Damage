@@ -1,7 +1,22 @@
-int kage() {
-int d = 2;
-return d;
-float k = 2;
-}
+float x = 2;
+float y = 2;
+float z = x + y;
+float __x = x;
+float k = x * z;
 
-int dec = kage();
+float g = k \\ y;
+
+
+
+float x = 2f;
+float y = 2f;
+float z = x + y;
+
+
+float _y = 0;
+float _z = 0;
+float _k = 1;
+_y += __x * _k;
+_y += _z;
+
+float g = _y;
