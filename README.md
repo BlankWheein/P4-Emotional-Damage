@@ -80,5 +80,3 @@ float x2 = b.grad;
 Console.WriteLine(x);
 Console.WriteLine(x2);
 ```
-
-These files 
